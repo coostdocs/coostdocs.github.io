@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/flag.h.
+#Basic concepts co/flag is a command line and config file parsing library similar to google gflags. Its principle is very simple, define global variables in code, then parse the command line parameters or config file when the program starts, and update the value of these global variables.
+#flag variable The global variable defined by macros in co/flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="co/flag" />
+<meta property="og:description" content="include: co/flag.h.
+#Basic concepts co/flag is a command line and config file parsing library similar to google gflags. Its principle is very simple, define global variables in code, then parse the command line parameters or config file when the program starts, and update the value of these global variables.
+#flag variable The global variable defined by macros in co/flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/flag/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-10-04T10:55:00+08:00" />
+
+<title>co/flag | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/flag/" title="命令行参数与配置文件解析">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class=" active">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>co/flag</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a>
+          <ul>
+            <li><a href="#flag-variable">flag variable</a></li>
+            <li><a href="#command-line-flag">command line flag</a></li>
+          </ul>
+        </li>
+        <li><a href="#initialization-flaginit">Initialization (flag::init)</a></li>
+        <li><a href="#use-flag-variable-in-the-code">Use flag variable in the code</a>
+          <ul>
+            <li><a href="#define-a-flag-variable">Define a flag variable</a></li>
+            <li><a href="#declare-the-flag-variable">Declare the flag variable</a></li>
+            <li><a href="#use-the-flag-variable">Use the flag variable</a></li>
+          </ul>
+        </li>
+        <li><a href="#use-flag-in-the-command-line">Use flag in the command line</a>
+          <ul>
+            <li><a href="#set-value-of-flag-variables">Set value of flag variables</a></li>
+            <li><a href="#list-help-information">List Help Information</a></li>
+            <li><a href="#list-all-flags">List all flags</a></li>
+          </ul>
+        </li>
+        <li><a href="#config-file">config file</a>
+          <ul>
+            <li><a href="#config-file-format">config file format</a></li>
+            <li><a href="#generate-config-file">Generate config file</a></li>
+            <li><a href="#adjust-the-order-of-config-items-in-config-file">Adjust the order of config items in config file</a></li>
+            <li><a href="#prohibit-config-items-from-being-generated-in-the-config-file">Prohibit config items from being generated in the config file</a></li>
+            <li><a href="#specify-the-config-file-when-the-program-starts">Specify the config file when the program starts</a></li>
+          </ul>
+        </li>
+        <li><a href="#custom-help-information">Custom help information</a></li>
+        <li><a href="#run-program-as-a-daemon">Run program as a daemon</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/flag.h">co/flag.h</a>.</p>
+<h2 id="basic-concepts"><a class="anchor" href="#basic-concepts">#</a>Basic concepts</h2>
+<p><code>co/flag</code> is a command line and config file parsing library similar to <a href="https://github.com/gflags/gflags">google gflags</a>. Its principle is very simple, define global variables in code, then parse the command line parameters or config file when the program starts, and update the value of these global variables.</p>
+<h3 id="flag-variable"><a class="anchor" href="#flag-variable">#</a>flag variable</h3>
+<p>The global variable defined by macros in co/flag are called <strong>flag variable</strong>. For example, the following code defines a flag variable, the variable name is <code>FLG_x</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;xxx&#34;</span>); <span style="color:#998;font-style:italic">// bool FLG_x = false;
+</span></code></pre></div><p>co/flag supports 7 types of flag variable:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span>, int32, int64, uint32, uint64, <span style="color:#458;font-weight:bold">double</span>, string
+</code></pre></div><p>Every flag variable has a default value, and a new value can be passed to it from command-line or config file. Take the previously <code>FLG_x</code> as an example, we can use <code>-x=true</code> in command line, or <code>x = true</code> in the config file, to set a new value for it.</p>
+<h3 id="command-line-flag"><a class="anchor" href="#command-line-flag">#</a>command line flag</h3>
+<p>Command line parameters appear in the form of <code>-x=y</code>, where <code>x</code> is called a <strong>command line flag</strong> (hereinafter referred to as flag). The flag <code>x</code> in command line corresponds to the global variable <code>FLG_x</code> in the code, and <code>-x=y</code> in command line is equivalent to setting the value of <code>FLG_x</code> to <code>y</code>.</p>
+<p>co/flag is designed to be very flexible:</p>
+<ul>
+<li>
+<p><code>-x=y</code> can omit the preceding <code>-</code>, abbreviated as <code>x=y</code>.</p>
+</li>
+<li>
+<p><code>-x=y</code> can also be written as <code>-x y</code>.</p>
+</li>
+<li>
+<p><code>x=y</code> can be preceded by any number of <code>-</code>.</p>
+</li>
+<li>
+<p>For bool type flags, <code>-b=true</code> can be abbreviated as <code>-b</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># b, i, s are all flags, xx is not a flag</span>
+./exe -b -i<span style="color:#000;font-weight:bold">=</span><span style="color:#099">32</span> -s<span style="color:#000;font-weight:bold">=</span>hello xx
+</code></pre></div><h2 id="initialization-flaginit"><a class="anchor" href="#initialization-flaginit">#</a>Initialization (flag::init)</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> init(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
+std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> init(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>
+<p>The first 2 init functions, parse the command line parameters and config file, and update value of the flag variables. It usually needs to be called once at the beginning of the main function. Generally speaking, it does the following steps:</p>
+<ul>
+<li>Preprocess the command line parameters, the value of <code>FLG_config</code> may be updated then.</li>
+<li>If <code>FLG_config</code> is not empty, parse the config file specified by it, and update value of the flag variables.</li>
+<li>Parse other command line parameters and update value of the flag variables.</li>
+<li>If <code>FLG_mkconf</code> is true, generate a config file and terminate the program.</li>
+<li>If <code>FLG_daemon</code> is true, run the program as a daemon (for Linux only).</li>
+<li>When any error occurs, print the error message and terminate the program immediately.</li>
+<li>If no error occurs, return the non-flag list. For example, when executing <code>./exe x y</code>, this function will return <code>[&quot;x&quot;, &quot;y&quot;]</code>.</li>
+</ul>
+</li>
+<li>
+<p>The third init function, parses the config file and updates value of the flag variables. The parameter <code>path</code> is the path of the config file. When any error occurs, print the error message and terminate the program.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+}
+</code></pre></div><h2 id="use-flag-variable-in-the-code"><a class="anchor" href="#use-flag-variable-in-the-code">#</a>Use flag variable in the code</h2>
+<h3 id="define-a-flag-variable"><a class="anchor" href="#define-a-flag-variable">#</a>Define a flag variable</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_bool(name, value, help)    _DEFINE_FLAG(bool, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_int32(name, value, help)   _DEFINE_FLAG(int32, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_int64(name, value, help)   _DEFINE_FLAG(int64, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_uint32(name, value, help)  _DEFINE_FLAG(uint32, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_uint64(name, value, help)  _DEFINE_FLAG(uint64, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_double(name, value, help)  _DEFINE_FLAG(double, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_string(name, value, help)  _DEFINE_FLAG(string, name, value, help)
+</span></code></pre></div><ul>
+<li>
+<p>The above 7 macros are used to define 7 different types of flag variables.</p>
+</li>
+<li>
+<p>The parameter <code>name</code> is the flag name, the corresponding global variable name is <code>FLG_name</code>, the parameter <code>value</code> is the default value, and the parameter <code>help</code> is comment for the flag.</p>
+</li>
+<li>
+<p>A flag variable is a global variable and generally should not be defined in the header file.</p>
+</li>
+<li>
+<p>The name of the flag variable is unique, and we cannot define two flag variables with the same name.</p>
+</li>
+<li>
+<p>The flag variable is generally defined outside the namespace, otherwise it may be not possible to use FLG_name to access the flag variable.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(b, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// bool FLG_b = false;
+</span><span style="color:#998;font-style:italic"></span>DEF_int32(i32, <span style="color:#099">32</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// int32 FLG_i32 = 32;
+</span><span style="color:#998;font-style:italic"></span>DEF_int64(i64, <span style="color:#099">64</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// int64 FLG_i64 = 64;
+</span><span style="color:#998;font-style:italic"></span>DEF_uint32(u32, <span style="color:#099">0</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// uint32 FLG_u32 = 0;
+</span><span style="color:#998;font-style:italic"></span>DEF_uint64(u64, <span style="color:#099">0</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// uint64 FLG_u64 = 0;
+</span><span style="color:#998;font-style:italic"></span>DEF_double(d, <span style="color:#099">2.0</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// double FLG_d = 2.0;
+</span><span style="color:#998;font-style:italic"></span>DEF_string(s, <span style="color:#d14">&#34;x&#34;</span>, <span style="color:#d14">&#34;comments&#34;</span>); <span style="color:#998;font-style:italic">// fastring FLG_s = &#34;x&#34;;
+</span></code></pre></div><h3 id="declare-the-flag-variable"><a class="anchor" href="#declare-the-flag-variable">#</a>Declare the flag variable</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_bool(name)   _DECLARE_FLAG(bool, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_int32(name)  _DECLARE_FLAG(int32, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_int64(name)  _DECLARE_FLAG(int64, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_uint32(name) _DECLARE_FLAG(uint32, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_uint64(name) _DECLARE_FLAG(uint64, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_double(name) _DECLARE_FLAG(double, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_string(name) _DECLARE_FLAG(string, name)
+</span></code></pre></div><ul>
+<li>
+<p>The 7 macros above are used to declare 7 different types of flag variables.</p>
+</li>
+<li>
+<p>The parameter <code>name</code> is the flag name, and the corresponding global variable name is <code>FLG_name</code>.</p>
+</li>
+<li>
+<p>A flag variable can be defined only once, but it can be declared multiple times, which can be declared wherever needed.</p>
+</li>
+<li>
+<p>The flag variable is generally declared outside the namespace, otherwise it may be not possible to use FLG_name to access the flag variable.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEC_bool(b);     <span style="color:#998;font-style:italic">// extern bool FLG_b;
+</span><span style="color:#998;font-style:italic"></span>DEC_int32(i32);  <span style="color:#998;font-style:italic">// extern int32 FLG_i32;
+</span><span style="color:#998;font-style:italic"></span>DEC_int64(i64);  <span style="color:#998;font-style:italic">// extern int64 FLG_i64;
+</span><span style="color:#998;font-style:italic"></span>DEC_uint32(u32); <span style="color:#998;font-style:italic">// extern uint32 FLG_u32;
+</span><span style="color:#998;font-style:italic"></span>DEC_uint64(u64); <span style="color:#998;font-style:italic">// extern uint64 FLG_u64;
+</span><span style="color:#998;font-style:italic"></span>DEC_double(d);   <span style="color:#998;font-style:italic">// extern double FLG_d;
+</span><span style="color:#998;font-style:italic"></span>DEC_string(s);   <span style="color:#998;font-style:italic">// extern fastring FLG_s;
+</span></code></pre></div><h3 id="use-the-flag-variable"><a class="anchor" href="#use-the-flag-variable">#</a>Use the flag variable</h3>
+<p>Once a flag variable is defined or declared, we can use it the same as an ordinary variable.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEC_bool(b);
+DEF_string(s, <span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#d14">&#34;xxx&#34;</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    
+    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>FLG_b) std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;b is false&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> std<span style="color:#000;font-weight:bold">::</span>endl;
+    FLG_s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34; world&#34;</span>;
+    std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s <span style="color:#000;font-weight:bold">&lt;&lt;</span> std<span style="color:#000;font-weight:bold">::</span>endl;
+    
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="use-flag-in-the-command-line"><a class="anchor" href="#use-flag-in-the-command-line">#</a>Use flag in the command line</h2>
+<h3 id="set-value-of-flag-variables"><a class="anchor" href="#set-value-of-flag-variables">#</a>Set value of flag variables</h3>
+<p>Suppose the following flags are defined in the program:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool x&#34;</span>);
+DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool y&#34;</span>);
+DEF_int32(i, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">32</span>, <span style="color:#d14">&#34;int32&#34;</span>);
+DEF_uint64(u, <span style="color:#099">64</span>, <span style="color:#d14">&#34;uint64&#34;</span>);
+DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color:#d14">&#34;string&#34;</span>);
+</code></pre></div><p>When the program starts, we can modify value of the flag variables through command line parameters:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># -x=y, x=y, -x y, the three are equivalent</span>
+./xx -i<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8</span> <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">88</span> -s<span style="color:#000;font-weight:bold">=</span>xxx
+./xx -i <span style="color:#099">8</span> -u <span style="color:#099">88</span> -s <span style="color:#d14">&#34;hello world&#34;</span>
+./xx -i8       <span style="color:#998;font-style:italic"># -i=8, only for single-letter named integer flags</span>
+
+<span style="color:#998;font-style:italic"># When a bool type is set to true, the value can be omitted</span>
+./xx -x        <span style="color:#998;font-style:italic"># -x=true</span>
+
+<span style="color:#998;font-style:italic"># Multiple single-letter named bool flags can be combined and set to true</span>
+./xx -xy       <span style="color:#998;font-style:italic"># -x=true -y=true</span>
+
+<span style="color:#998;font-style:italic"># Integer type flags can have units k, m, g, t, p, not case sensitive</span>
+./xx -i -4k    <span style="color:#998;font-style:italic"># i=-4096</span>
+
+<span style="color:#998;font-style:italic"># Integer type flags can pass octal or hexadecimal numbers</span>
+./xx <span style="color:#008080">i</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">032</span>     <span style="color:#998;font-style:italic"># i=26 octal</span>
+./xx <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span>0xff    <span style="color:#998;font-style:italic"># u=255 hexadecimal</span>
+</code></pre></div><h3 id="list-help-information"><a class="anchor" href="#list-help-information">#</a>List Help Information</h3>
+<p>co/flag supports using <code>--help</code> command to print the help information of the program:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./xx --help
+usage:
+    ./xx - print flags info
+    ./xx --help print this <span style="color:#0086b3">help</span> info
+    ./xx --mkconf generate config file
+    ./xx --daemon run as a daemon <span style="color:#000;font-weight:bold">(</span>Linux<span style="color:#000;font-weight:bold">)</span>
+    ./xx xx.conf run with config file
+    ./xx <span style="color:#008080">config</span><span style="color:#000;font-weight:bold">=</span>xx.conf run with config file
+    ./xx -x -i<span style="color:#000;font-weight:bold">=</span>8k -s<span style="color:#000;font-weight:bold">=</span>ok run with commandline flags
+    ./xx -x -i 8k -s ok run with commandline flags
+    ./xx <span style="color:#008080">x</span><span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> <span style="color:#008080">i</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span> <span style="color:#008080">s</span><span style="color:#000;font-weight:bold">=</span>ok run with commandline flags
+</code></pre></div><h3 id="list-all-flags"><a class="anchor" href="#list-all-flags">#</a>List all flags</h3>
+<p>co/flag provides <code>--</code> command to list all the flags defined in the program:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./xx --
+--config: .path of config file
+		type: string default: <span style="color:#d14">&#34;&#34;</span>
+		from: ../../base/flag.cc
+--mkconf: .generate config file
+		type: bool default: <span style="color:#0086b3">false</span>
+		from: ../../base/flag.cc
+</code></pre></div><h2 id="config-file"><a class="anchor" href="#config-file">#</a>config file</h2>
+<h3 id="config-file-format"><a class="anchor" href="#config-file-format">#</a>config file format</h3>
+<p>The config file format of co/flag is flexible:</p>
+<ul>
+<li>
+<p>One config item per line, each config item corresponds to a flag, and the form is unified as <code>x = y</code>, which looks clear at a glance.</p>
+</li>
+<li>
+<p><code>#</code> or <code>//</code> are for comments.</p>
+</li>
+<li>
+<p><code>#</code> or <code>//</code> in quotation marks are not comments.</p>
+</li>
+<li>
+<p>Ignore the blank characters at the beginning or end of the line.</p>
+</li>
+<li>
+<p>Blank characters can be added before or after the <code>=</code> sign.</p>
+</li>
+<li>
+<p><code>\</code> can be used to continue a line to avoid too long a line.</p>
+</li>
+<li>
+<p>The string does not support escaping to avoid ambiguity.</p>
+</li>
+<li>
+<p>The string can be enclosed in double quotes, single quotes or 3 back quotes.</p>
+</li>
+<li>
+<p>Sample config file</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">   </span><span style="color:#998;font-style:italic"># config file: xx.conf</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>boo = true                <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># bool type</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s =                       <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># empty string</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = hello \<span style="color:#bbb">
+</span><span style="color:#bbb">         </span>world                 <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># s = &#34;helloworld&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = &#34;http://github.com&#34;    #<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># or // in quotation marks are not comments</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = &#34;I&#39;m ok&#34;              <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># enclose the string in double quotes</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s =&#39;how are &#34;U&#34;&#39;          <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># enclose the string in single quotes</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = ```I&#39;m &#34;ok&#34;```        <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># enclose the string in 3 back quotes</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 4k                  <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 4096, integers can have units k, m, g, t, p, not case sensitive</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 032                 <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># octal, i32 = 26</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 0xff                <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># hexadecimal, i32 = 255</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>pi = 3.14159              <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># double type</span><span style="color:#bbb">
+</span></code></pre></div><h3 id="generate-config-file"><a class="anchor" href="#generate-config-file">#</a>Generate config file</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(mkconf, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;.generate config file&#34;</span>);
+</code></pre></div><ul>
+<li><code>mkconf</code> is a flag defined internally in co/flag, which is a switch for automatically generating config file.</li>
+<li>You can use <code>-mkconf</code> to generate a config file in command line.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -mkconf            <span style="color:#998;font-style:italic"># Generate xx.conf</span>
+./xx -mkconf -x <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">88</span>    <span style="color:#998;font-style:italic"># Custom config item value</span>
+</code></pre></div><h3 id="adjust-the-order-of-config-items-in-config-file"><a class="anchor" href="#adjust-the-order-of-config-items-in-config-file">#</a>Adjust the order of config items in config file</h3>
+<p>In the automatically generated config file, the config items are sorted by flag level, file name, and code line number. If the user wants some config items to be ranked higher, the flag level can be set to a smaller value, otherwise, the flag level can be set to a larger value.</p>
+<p>When defining a flag, you can use <code>#n</code> at the beginning of the comment to specify the flag level, <strong>n must be an integer between 0 and 99</strong>. If the comment is not empty, there must be a space after n. When not specified, the default flag level is 10.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;comments&#34;</span>);    <span style="color:#998;font-style:italic">// The default level is 10
+</span><span style="color:#998;font-style:italic"></span>DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#23&#34;</span>);         <span style="color:#998;font-style:italic">// The level is 23, and the comment is empty
+</span><span style="color:#998;font-style:italic"></span>DEF_bool(z, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#3 comments&#34;</span>); <span style="color:#998;font-style:italic">// The level is 3
+</span></code></pre></div><h3 id="prohibit-config-items-from-being-generated-in-the-config-file"><a class="anchor" href="#prohibit-config-items-from-being-generated-in-the-config-file">#</a>Prohibit config items from being generated in the config file</h3>
+<p>Flags beginning with <code>.</code>, are <strong>hidden flags</strong>, which will not be present in the config file, but can be found with the <code>--</code> command in command line. A flag with an empty comment is completely invisible and will neither be generated in the config file nor be found with the <code>--</code> command.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;.say something here&#34;</span>);
+DEF_string(s, <span style="color:#d14">&#34;good&#34;</span>, <span style="color:#d14">&#34;&#34;</span>);
+</code></pre></div><h3 id="specify-the-config-file-when-the-program-starts"><a class="anchor" href="#specify-the-config-file-when-the-program-starts">#</a>Specify the config file when the program starts</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(config, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;.path of config file&#34;</span>);
+</code></pre></div><ul>
+<li><code>config</code> is a flag defined internally in co/flag, which is the path of the config file.</li>
+<li>You can use <code>-config</code> to specify the config file in command line.</li>
+<li>Another way, you can modify the value of <code>FLG_config</code> to specify the config file, before calling <code>flag::init()</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -config xx.conf
+
+<span style="color:#998;font-style:italic"># If the config file name ends with .conf or config, </span>
+<span style="color:#998;font-style:italic"># and it is the first non-flag parameter in command line, </span>
+<span style="color:#998;font-style:italic"># -config can be omitted.</span>
+./xx xx.conf
+./xx xx.conf -x
+</code></pre></div><h2 id="custom-help-information"><a class="anchor" href="#custom-help-information">#</a>Custom help information</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(help, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;.help info&#34;</span>);
+</code></pre></div><ul>
+<li>
+<p><code>help</code> is a flag defined in co/flag, which stores the help information of the program. This information can be seen with the command <code>--help</code> in command line.</p>
+</li>
+<li>
+<p><code>FLG_help</code> is empty by default, and the default help information provided by co/flag is used.</p>
+</li>
+<li>
+<p>You can modify the value of <code>FLG_help</code> before calling <code>flag::init()</code> to customize the help information.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    FLG_help <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;usage:</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+             <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;</span><span style="color:#d14">\t</span><span style="color:#d14">./xx -ip 127.0.0.1 -port 7777</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="run-program-as-a-daemon"><a class="anchor" href="#run-program-as-a-daemon">#</a>Run program as a daemon</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(daemon, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#0 run program as a daemon&#34;</span>);
+</code></pre></div><ul>
+<li>
+<p><code>daemon</code> is a flag defined in co/flag. If it is true, the program will run as a daemon. It only works on Linux platform.</p>
+</li>
+<li>
+<p>You can use <code>-daemon</code> in command line to make the program run in the background as a daemon.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -daemon
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/flag/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/10d4fdb40ec891b00d7a399766ad93022312ed01" title='Last modified by idealvin | October 4, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>October 4, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/flag.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a>
+          <ul>
+            <li><a href="#flag-variable">flag variable</a></li>
+            <li><a href="#command-line-flag">command line flag</a></li>
+          </ul>
+        </li>
+        <li><a href="#initialization-flaginit">Initialization (flag::init)</a></li>
+        <li><a href="#use-flag-variable-in-the-code">Use flag variable in the code</a>
+          <ul>
+            <li><a href="#define-a-flag-variable">Define a flag variable</a></li>
+            <li><a href="#declare-the-flag-variable">Declare the flag variable</a></li>
+            <li><a href="#use-the-flag-variable">Use the flag variable</a></li>
+          </ul>
+        </li>
+        <li><a href="#use-flag-in-the-command-line">Use flag in the command line</a>
+          <ul>
+            <li><a href="#set-value-of-flag-variables">Set value of flag variables</a></li>
+            <li><a href="#list-help-information">List Help Information</a></li>
+            <li><a href="#list-all-flags">List all flags</a></li>
+          </ul>
+        </li>
+        <li><a href="#config-file">config file</a>
+          <ul>
+            <li><a href="#config-file-format">config file format</a></li>
+            <li><a href="#generate-config-file">Generate config file</a></li>
+            <li><a href="#adjust-the-order-of-config-items-in-config-file">Adjust the order of config items in config file</a></li>
+            <li><a href="#prohibit-config-items-from-being-generated-in-the-config-file">Prohibit config items from being generated in the config file</a></li>
+            <li><a href="#specify-the-config-file-when-the-program-starts">Specify the config file when the program starts</a></li>
+          </ul>
+        </li>
+        <li><a href="#custom-help-information">Custom help information</a></li>
+        <li><a href="#run-program-as-a-daemon">Run program as a daemon</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

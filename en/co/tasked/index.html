@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/tasked.h.
+#Tasked The Tasked class is a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use Tasked to schedule tasks that may block for a long time.
+#Tasked::Tasked Tasked(); Tasked(Tasked&amp;&amp; t);  The first version is the default constructor. When the object is created, the scheduling thread will start.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Timed task scheduler" />
+<meta property="og:description" content="include: co/tasked.h.
+#Tasked The Tasked class is a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use Tasked to schedule tasks that may block for a long time.
+#Tasked::Tasked Tasked(); Tasked(Tasked&amp;&amp; t);  The first version is the default constructor. When the object is created, the scheduling thread will start." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/tasked/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-02T00:06:00+08:00" />
+
+<title>Timed task scheduler | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/tasked/" title="定时任务">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class=" active">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Timed task scheduler</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tasked">Tasked</a>
+          <ul>
+            <li><a href="#taskedtasked">Tasked::Tasked</a></li>
+            <li><a href="#taskedtasked-1">Tasked::~Tasked</a></li>
+            <li><a href="#taskedf">Tasked::F</a></li>
+            <li><a href="#taskedrun_at">Tasked::run_at</a></li>
+            <li><a href="#taskedrun_daily">Tasked::run_daily</a></li>
+            <li><a href="#taskedrun_every">Tasked::run_every</a></li>
+            <li><a href="#taskedrun_in">Tasked::run_in</a></li>
+            <li><a href="#taskedstop">Tasked::stop</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/tasked.h">co/tasked.h</a>.</p>
+<h2 id="tasked"><a class="anchor" href="#tasked">#</a>Tasked</h2>
+<p>The <code>Tasked</code> class is a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use Tasked to schedule tasks that may block for a long time.</p>
+<h3 id="taskedtasked"><a class="anchor" href="#taskedtasked">#</a>Tasked::Tasked</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Tasked();
+Tasked(Tasked<span style="color:#000;font-weight:bold">&amp;&amp;</span> t);
+</code></pre></div><ul>
+<li>The first version is the default constructor. When the object is created, the scheduling thread will start.</li>
+<li>The second version is the move constructor.</li>
+</ul>
+<h3 id="taskedtasked-1"><a class="anchor" href="#taskedtasked-1">#</a>Tasked::~Tasked</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>Tasked();
+</code></pre></div><ul>
+<li>Destructor, stop the task scheduling thread.</li>
+</ul>
+<h3 id="taskedf"><a class="anchor" href="#taskedf">#</a>Tasked::F</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">typedef</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>()<span style="color:#000;font-weight:bold">&gt;</span> F;
+</code></pre></div><ul>
+<li>The task type.</li>
+</ul>
+<h3 id="taskedrun_at"><a class="anchor" href="#taskedrun_at">#</a>Tasked::run_at</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Add a task to run at the specified time, f will run once at time of <code>hour:minute:second</code>.</li>
+<li>hour must be an integer between 0-23, minute and second must be an integer between 0-59, and the default is 0.</li>
+</ul>
+<h3 id="taskedrun_daily"><a class="anchor" href="#taskedrun_daily">#</a>Tasked::run_daily</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Add a periodic task that runs at a specified time every day, f will run once every day at the time of <code>hour:minute:second</code>.</li>
+<li>hour must be an integer between 0-23, the default is 0, minute and second are integers between 0-59, and the default is 0.</li>
+</ul>
+<h3 id="taskedrun_every"><a class="anchor" href="#taskedrun_every">#</a>Tasked::run_every</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
+<li>Add a periodic task that run every n seconds.</li>
+</ul>
+<h3 id="taskedrun_in"><a class="anchor" href="#taskedrun_in">#</a>Tasked::run_in</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
+<li>Add a task that runs once in n seconds.</li>
+</ul>
+<h3 id="taskedstop"><a class="anchor" href="#taskedstop">#</a>Tasked::stop</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop</span>();
+</code></pre></div><ul>
+<li>Stop the task scheduling thread, this method will be automatically called in the destructor.</li>
+<li>It is safe to call this method multiple times.</li>
+</ul>
+<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Tasked s;                           <span style="color:#998;font-style:italic">// create and start the scheduler
+</span><span style="color:#998;font-style:italic"></span>s.run_in(f, <span style="color:#099">3</span>);                     <span style="color:#998;font-style:italic">// run f 3 seconds later
+</span><span style="color:#998;font-style:italic"></span>s.run_every(std<span style="color:#000;font-weight:bold">::</span>bind(f, <span style="color:#099">0</span>), <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// run f every 3 seconds
+</span><span style="color:#998;font-style:italic"></span>s.run_at(f, <span style="color:#099">23</span>);                    <span style="color:#998;font-style:italic">// run f once at 23:00:00
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f);                     <span style="color:#998;font-style:italic">// run f at 00:00:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>);                 <span style="color:#998;font-style:italic">// run f at 23:00:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>, <span style="color:#099">30</span>);             <span style="color:#998;font-style:italic">// run f at 23:30:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.stop();                           <span style="color:#998;font-style:italic">// stop the scheduler
+</span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/tasked/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/0f6eef5e1f89354b56d0da1de637b1fd139726ab" title='Last modified by idealvin | August 2, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 2, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/tasked.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tasked">Tasked</a>
+          <ul>
+            <li><a href="#taskedtasked">Tasked::Tasked</a></li>
+            <li><a href="#taskedtasked-1">Tasked::~Tasked</a></li>
+            <li><a href="#taskedf">Tasked::F</a></li>
+            <li><a href="#taskedrun_at">Tasked::run_at</a></li>
+            <li><a href="#taskedrun_daily">Tasked::run_daily</a></li>
+            <li><a href="#taskedrun_every">Tasked::run_every</a></li>
+            <li><a href="#taskedrun_in">Tasked::run_in</a></li>
+            <li><a href="#taskedstop">Tasked::stop</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

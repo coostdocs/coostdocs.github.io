@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/os.h.
+#os #os::cpunum int cpunum();  返回系统 CPU 核数。  #os::cwd fastring cwd();  返回当前工作目录 (current working directory)。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::daemon void daemon();  将当前进程放到后台运行，仅支持 linux 平台。  #os::env fastring env(const char* name); bool env(const char* name, const char* value);  第 1 个版本，获取系统环境变量的值，参数 name 是环境变量名。 第 2 个版本，v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。  #os::exename fastring exename();  返回当前进程名，不含路径。  #os::exepath fastring exepath();  返回当前进程的完整路径。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::homedir fastring homedir();  返回当前用户的 home 目录。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::pid int pid();  返回当前进程的 id。  #os::signal typedef void (*sig_handler_t)(int); sig_handler_t signal(int sig, sig_handler_t handler, int flag=0);   设置信号处理函数，参数 sig 是信号值，参数 flag 是 SA_RESTART，SA_ONSTACK 等选项的组合。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="操作系统" />
+<meta property="og:description" content="include: co/os.h.
+#os #os::cpunum int cpunum();  返回系统 CPU 核数。  #os::cwd fastring cwd();  返回当前工作目录 (current working directory)。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::daemon void daemon();  将当前进程放到后台运行，仅支持 linux 平台。  #os::env fastring env(const char* name); bool env(const char* name, const char* value);  第 1 个版本，获取系统环境变量的值，参数 name 是环境变量名。 第 2 个版本，v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。  #os::exename fastring exename();  返回当前进程名，不含路径。  #os::exepath fastring exepath();  返回当前进程的完整路径。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::homedir fastring homedir();  返回当前用户的 home 目录。 在 windows 平台，返回值中的 \ 会转换成 /。  #os::pid int pid();  返回当前进程的 id。  #os::signal typedef void (*sig_handler_t)(int); sig_handler_t signal(int sig, sig_handler_t handler, int flag=0);   设置信号处理函数，参数 sig 是信号值，参数 flag 是 SA_RESTART，SA_ONSTACK 等选项的组合。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/os/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-10-04T11:24:10+08:00" />
+
+<title>操作系统 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/os/" title="Operating System">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class=" active">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>操作系统</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#os">os</a>
+          <ul>
+            <li><a href="#oscpunum">os::cpunum</a></li>
+            <li><a href="#oscwd">os::cwd</a></li>
+            <li><a href="#osdaemon">os::daemon</a></li>
+            <li><a href="#osenv">os::env</a></li>
+            <li><a href="#osexename">os::exename</a></li>
+            <li><a href="#osexepath">os::exepath</a></li>
+            <li><a href="#oshomedir">os::homedir</a></li>
+            <li><a href="#ospid">os::pid</a></li>
+            <li><a href="#ossignal">os::signal</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/os.h">co/os.h</a>.</p>
+<h2 id="os"><a class="anchor" href="#os">#</a>os</h2>
+<h3 id="oscpunum"><a class="anchor" href="#oscpunum">#</a>os::cpunum</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">cpunum</span>();
+</code></pre></div><ul>
+<li>返回系统 CPU 核数。</li>
+</ul>
+<h3 id="oscwd"><a class="anchor" href="#oscwd">#</a>os::cwd</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">cwd</span>();
+</code></pre></div><ul>
+<li>返回当前工作目录 (current working directory)。</li>
+<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
+</ul>
+<h3 id="osdaemon"><a class="anchor" href="#osdaemon">#</a>os::daemon</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">daemon</span>();
+</code></pre></div><ul>
+<li>将当前进程放到后台运行，仅支持 linux 平台。</li>
+</ul>
+<h3 id="osenv"><a class="anchor" href="#osenv">#</a>os::env</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">env</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> name);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">env</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> name, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> value);
+</code></pre></div><ul>
+<li>第 1 个版本，获取系统环境变量的值，参数 name 是环境变量名。</li>
+<li>第 2 个版本，v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。</li>
+</ul>
+<h3 id="osexename"><a class="anchor" href="#osexename">#</a>os::exename</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">exename</span>();
+</code></pre></div><ul>
+<li>返回当前进程名，不含路径。</li>
+</ul>
+<h3 id="osexepath"><a class="anchor" href="#osexepath">#</a>os::exepath</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">exepath</span>();
+</code></pre></div><ul>
+<li>返回当前进程的完整路径。</li>
+<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
+</ul>
+<h3 id="oshomedir"><a class="anchor" href="#oshomedir">#</a>os::homedir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">homedir</span>();
+</code></pre></div><ul>
+<li>返回当前用户的 home 目录。</li>
+<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
+</ul>
+<h3 id="ospid"><a class="anchor" href="#ospid">#</a>os::pid</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">pid</span>();
+</code></pre></div><ul>
+<li>返回当前进程的 id。</li>
+</ul>
+<h3 id="ossignal"><a class="anchor" href="#ossignal">#</a>os::signal</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">typedef</span> <span style="color:#900;font-weight:bold">void</span> (<span style="color:#000;font-weight:bold">*</span>sig_handler_t)(<span style="color:#458;font-weight:bold">int</span>);
+sig_handler_t <span style="color:#900;font-weight:bold">signal</span>(<span style="color:#458;font-weight:bold">int</span> sig, sig_handler_t handler, <span style="color:#458;font-weight:bold">int</span> flag<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>
+<p>设置信号处理函数，参数 sig 是信号值，参数 flag 是 <code>SA_RESTART</code>，<code>SA_ONSTACK</code> 等选项的组合。</p>
+</li>
+<li>
+<p>参数 flag 仅适用于 linux/mac 平台，windows 平台会忽略此参数。</p>
+</li>
+<li>
+<p>此函数返回旧的信号处理函数。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>(<span style="color:#458;font-weight:bold">int</span>);
+os<span style="color:#000;font-weight:bold">::</span>signal(SIGINT, f);         <span style="color:#998;font-style:italic">// user defined handler
+</span><span style="color:#998;font-style:italic"></span>os<span style="color:#000;font-weight:bold">::</span>signal(SIGABRT, SIG_DFL);  <span style="color:#998;font-style:italic">// default handler
+</span><span style="color:#998;font-style:italic"></span>os<span style="color:#000;font-weight:bold">::</span>signal(SIGPIPE, SIG_IGN);  <span style="color:#998;font-style:italic">// ignore SIGPIPE
+</span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/os/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/1077430ac20484fcac309ebac0873a3f1bb833c6" title='最后修改者 idealvin | October 4, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>October 4, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/os.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#os">os</a>
+          <ul>
+            <li><a href="#oscpunum">os::cpunum</a></li>
+            <li><a href="#oscwd">os::cwd</a></li>
+            <li><a href="#osdaemon">os::daemon</a></li>
+            <li><a href="#osenv">os::env</a></li>
+            <li><a href="#osexename">os::exename</a></li>
+            <li><a href="#osexepath">os::exepath</a></li>
+            <li><a href="#oshomedir">os::homedir</a></li>
+            <li><a href="#ospid">os::pid</a></li>
+            <li><a href="#ossignal">os::signal</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

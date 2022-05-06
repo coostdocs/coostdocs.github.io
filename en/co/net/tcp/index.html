@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/so/tcp.h.
+#tcp::Connection tcp::Connection is a simple encapsulation of TCP connection, it is designed for TCP server. When SSL is enabled in a TCP server, tcp::Connection will transfer data by SSL.
+#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  The constructor, Connection is created by tcp::Server, users do not need to create it manually. The first version constructs a normal TCP connection, the second version constructs a TCP connection that support SSL, and the third is a move constructor.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="TCP" />
+<meta property="og:description" content="include: co/so/tcp.h.
+#tcp::Connection tcp::Connection is a simple encapsulation of TCP connection, it is designed for TCP server. When SSL is enabled in a TCP server, tcp::Connection will transfer data by SSL.
+#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  The constructor, Connection is created by tcp::Server, users do not need to create it manually. The first version constructs a normal TCP connection, the second version constructs a TCP connection that support SSL, and the third is a move constructor." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/net/tcp/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+
+<title>TCP | Documents for CO</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/net/tcp/" title="TCP">
+<link rel="stylesheet" href="../../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle" checked />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class=" active">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>TCP</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcpconnection">tcp::Connection</a>
+          <ul>
+            <li><a href="#connectionconnection">Connection::Connection</a></li>
+            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
+            <li><a href="#connectionclose">Connection::close</a></li>
+            <li><a href="#connectionrecv">Connection::recv</a></li>
+            <li><a href="#connectionrecvn">Connection::recvn</a></li>
+            <li><a href="#connectionreset">Connection::reset</a></li>
+            <li><a href="#connectionsend">Connection::send</a></li>
+            <li><a href="#connectionsocket">Connection::socket</a></li>
+            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpserver">tcp::Server</a>
+          <ul>
+            <li><a href="#serverserver">Server::Server</a></li>
+            <li><a href="#serveron_connection">Server::on_connection</a></li>
+            <li><a href="#serverstart">Server::start</a></li>
+            <li><a href="#serverexit">Server::exit</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpclient">tcp::Client</a>
+          <ul>
+            <li><a href="#clientclient">Client::Client</a></li>
+            <li><a href="#clientclient-1">Client::~Client</a></li>
+            <li><a href="#clientclose">Client::close</a></li>
+            <li><a href="#clientconnect">Client::connect</a></li>
+            <li><a href="#clientconnected">Client::connected</a></li>
+            <li><a href="#clientdisconnect">Client::disconnect</a></li>
+            <li><a href="#clientrecv">Client::recv</a></li>
+            <li><a href="#clientrecvn">Client::recvn</a></li>
+            <li><a href="#clientsend">Client::send</a></li>
+            <li><a href="#clientsocket">Client::socket</a></li>
+            <li><a href="#clientstrerror">Client::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcp-server-example">TCP server example</a></li>
+        <li><a href="#tcp-client-code-example">TCP client code example</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">co/so/tcp.h</a>.</p>
+<h2 id="tcpconnection"><a class="anchor" href="#tcpconnection">#</a>tcp::Connection</h2>
+<p><code>tcp::Connection</code> is a simple encapsulation of TCP connection, it is designed for TCP server. When SSL is enabled in a TCP server, tcp::Connection will transfer data by SSL.</p>
+<h3 id="connectionconnection"><a class="anchor" href="#connectionconnection">#</a>Connection::Connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Connection(<span style="color:#458;font-weight:bold">int</span> sock);
+Connection(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> ssl);
+Connection(Connection<span style="color:#000;font-weight:bold">&amp;&amp;</span> c);
+</code></pre></div><ul>
+<li>The constructor, <code>Connection</code> is created by <code>tcp::Server</code>, users do not need to create it manually.</li>
+<li>The first version constructs a normal TCP connection, the second version constructs a TCP connection that support SSL, and the third is a move constructor.</li>
+</ul>
+<h3 id="connectionconnection-1"><a class="anchor" href="#connectionconnection-1">#</a>Connection::~Connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Connection<span style="color:#000;font-weight:bold">::~</span>Connection();
+</code></pre></div><ul>
+<li>Destructor, call close() to close the connection.</li>
+</ul>
+<h3 id="connectionclose"><a class="anchor" href="#connectionclose">#</a>Connection::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">close</span>(<span style="color:#458;font-weight:bold">int</span> ms <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Close the connection. When the parameter ms &gt; 0, close the connection after a certain delay.</li>
+<li>Since v2.0.1, this method can be called anywhere(in coroutine or non-coroutine).</li>
+</ul>
+<h3 id="connectionrecv"><a class="anchor" href="#connectionrecv">#</a>Connection::recv</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data, similar to <a href="../../coroutine/#corecv">co::recv</a>.</li>
+<li>This method must be called in the coroutine.</li>
+<li>Return &gt; 0 on success, &lt; 0 on timeout or any error, and 0 will be returned if the peer closed the connection.</li>
+</ul>
+<h3 id="connectionrecvn"><a class="anchor" href="#connectionrecvn">#</a>Connection::recvn</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data of specified length, similar to <a href="../../coroutine/#corecvn">co::recvn</a>.</li>
+<li>Return n on success, &lt; 0 on timeout or any error, and 0 will be returned if the peer closed the connection.</li>
+</ul>
+<h3 id="connectionreset"><a class="anchor" href="#connectionreset">#</a>Connection::reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> reset(<span style="color:#458;font-weight:bold">int</span> ms <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>)
+</code></pre></div><ul>
+<li>Reset the TCP connection, unlike close(), it will not enter the <code>TIME_WAIT</code> state. When the parameter ms &gt; 0, the connection will be reset after a certain delay.</li>
+<li>This method must be called in the I/O thread (usually a coroutine that performs the I/O operations).</li>
+</ul>
+<h3 id="connectionsend"><a class="anchor" href="#connectionsend">#</a>Connection::send</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">send</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Send data, similar to <a href="../../coroutine/#cosend">co::send()</a>.</li>
+<li>return n on success, &lt;= 0 on timeout or error.</li>
+</ul>
+<h3 id="connectionsocket"><a class="anchor" href="#connectionsocket">#</a>Connection::socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">socket</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Return the internal socket descriptor, -1 will be returned if the connection was closed.</li>
+</ul>
+<h3 id="connectionstrerror"><a class="anchor" href="#connectionstrerror">#</a>Connection::strerror</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>When an error occurs in a method of Connection, the user can call this method to get the error message.</li>
+</ul>
+<h2 id="tcpserver"><a class="anchor" href="#tcpserver">#</a>tcp::Server</h2>
+<p><code>tcp::Server</code> is a TCP server based on coroutine. It has the following features:</p>
+<ul>
+<li>Support IPv4 and IPv6.</li>
+<li>Support SSL (openssl is required).</li>
+<li>One coroutine for each client connection.</li>
+</ul>
+<h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server();
+</code></pre></div><ul>
+<li>The constructor, initialization.</li>
+</ul>
+<h3 id="serveron_connection"><a class="anchor" href="#serveron_connection">#</a>Server::on_connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Connection)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Connection)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> on_connection(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(Connection), T<span style="color:#000;font-weight:bold">*</span> o);
+</code></pre></div><ul>
+<li>
+<p>Set a callback for handling connections.</p>
+</li>
+<li>
+<p>In the first 2 versions, the parameter f is a function of type <code>void f(Connection)</code>, or a function object of type <code>std::function&lt;void(Connection)&gt;</code>.</p>
+</li>
+<li>
+<p>In the third version, the parameter f is a method in the class T, and the parameter o is a pointer to type T.</p>
+</li>
+<li>
+<p>Since v2.0.2, the parameter of f is an object of tcp::Connection, rather than a pointer, and users do not need to <strong>delete it</strong> any more.</p>
+</li>
+<li>
+<p>When the server receives a connection, it will create a new coroutine and call the callback set by this method in the coroutine to handle the connection.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn);
+
+tcp<span style="color:#000;font-weight:bold">::</span>Server s;
+s.on_connection(f);
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn) {
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        conn.recv(...);
+        process(...);
+        conn.send(...);
+    }
+    
+    conn.close();
+}
+</code></pre></div><h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Start the TCP server, this method will not block the current thread.</li>
+<li>The parameter ip is the server ip, which can be an IPv4 or IPv6 address, and the parameter port is the server port.</li>
+<li>The parameter <strong>key</strong> is path of a <strong>PEM</strong> file which stores the SSL private key, and the parameter <strong>ca</strong> is path of a PEM file which stores the SSL certificate. They are NULL by default, and SSL is disabled.</li>
+</ul>
+<h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+</code></pre></div><ul>
+<li>Added since v2.0.2.</li>
+<li>Exit the TCP server, close the listening socket, and no longer receive new connections.</li>
+<li>This method will not close the connections that has been established before.</li>
+</ul>
+<h2 id="tcpclient"><a class="anchor" href="#tcpclient">#</a>tcp::Client</h2>
+<p><code>tcp::Client</code> is a TCP client based on coroutine. It has following features:</p>
+<ul>
+<li>Support IPv4 and IPv6.</li>
+<li>Support SSL (openssl is required).</li>
+<li>One client corresponds to one connection.</li>
+<li>It must be used in coroutine.</li>
+<li>It is not coroutine-safe, and it cannot be used by multiple coroutines at the same time.</li>
+</ul>
+<h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#458;font-weight:bold">bool</span> use_ssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+Client(<span style="color:#000;font-weight:bold">const</span> Client<span style="color:#000;font-weight:bold">&amp;</span> c);
+</code></pre></div><ul>
+<li>Constructor. The parameter ip is the ip of the server, which can be a domain name, or an IPv4 or IPv6 address; the parameter port is the server port; the parameter use_ssl indicates whether to enable SSL transmission, the default is false, and SSL is not enabled.</li>
+<li>The second version is the copy constructor, value of ip, port and use_ssl will be copied from another client.</li>
+<li><strong>The connection is not established in the constructor.</strong> It is generally recommended to check whether the connection has been established before calling recv, send. If not, call the connect() method to establish the connection. It is easy to support auto-reconnection in this way.</li>
+</ul>
+<h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client<span style="color:#000;font-weight:bold">::~</span>Client();
+</code></pre></div><ul>
+<li>Destructor, call the disconnect() method to close the connection.</li>
+</ul>
+<h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</code></pre></div><ul>
+<li>Close the connection, same as disconnect().</li>
+</ul>
+<h3 id="clientconnect"><a class="anchor" href="#clientconnect">#</a>Client::connect</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">connect</span>(<span style="color:#458;font-weight:bold">int</span> ms);
+</code></pre></div><ul>
+<li>Establish a connection, the parameter ms is the timeout period in milliseconds.</li>
+<li>This method must be called in the coroutine.</li>
+<li>This method returns true on success, otherwise it returns false. When it fails, the user can use the <code>strerror()</code> method to get the error message.</li>
+</ul>
+<h3 id="clientconnected"><a class="anchor" href="#clientconnected">#</a>Client::connected</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">connected</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the connection has been established.</li>
+</ul>
+<h3 id="clientdisconnect"><a class="anchor" href="#clientdisconnect">#</a>Client::disconnect</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">disconnect</span>();
+</code></pre></div><ul>
+<li>Since v2.0.1, it can be called anywhere(in coroutine or non-coroutine).</li>
+<li>It is safe to call this method multiple times, and it will be called automatically in the destructor.</li>
+</ul>
+<h3 id="clientrecv"><a class="anchor" href="#clientrecv">#</a>Client::recv</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data, similar to <a href="../../coroutine/#corecv">co::recv()</a>.</li>
+<li>This method must be called in the coroutine.</li>
+<li>Return &gt; 0 on success, &lt; 0 on timeout or any error, and 0 will be returned if the peer closed the connection.</li>
+</ul>
+<h3 id="clientrecvn"><a class="anchor" href="#clientrecvn">#</a>Client::recvn</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data of specified length, similar to <a href="../../coroutine/#corecvn">co::recvn()</a>.</li>
+<li>This method must be called in the coroutine.</li>
+<li>Return n on success, &lt; 0 on timeout or any error, and 0 will be returned if the peer closed the connection.</li>
+</ul>
+<h3 id="clientsend"><a class="anchor" href="#clientsend">#</a>Client::send</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">send</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Send data, similar to <a href="../../coroutine/#cosend">co::send()</a>.</li>
+<li>This method must be called in the coroutine.</li>
+<li>return n on success, &lt;= 0 on timeout or error.</li>
+</ul>
+<h3 id="clientsocket"><a class="anchor" href="#clientsocket">#</a>Client::socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">socket</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Return the internal socket descriptor.</li>
+<li>When the connection is not established or the connection has been closed, the return value is -1.</li>
+</ul>
+<h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>When an error occurs in a method of tcp::Client, the user can call this method to get the error message.</li>
+</ul>
+<h2 id="tcp-server-example"><a class="anchor" href="#tcp-server-example">#</a>TCP server example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn) {
+    <span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>] <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0</span> };
+
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> conn.recv(buf, <span style="color:#099">8</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) {         <span style="color:#998;font-style:italic">/* client close the connection */</span>
+            conn.close();
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) { <span style="color:#998;font-style:italic">/* error */</span>
+            conn.reset(<span style="color:#099">3000</span>);
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server recv &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> fastring(buf, r);
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server send pong&#34;</span>;
+            r <span style="color:#000;font-weight:bold">=</span> conn.send(<span style="color:#d14">&#34;pong&#34;</span>, <span style="color:#099">4</span>);
+            <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;=</span> <span style="color:#099">0</span>) {
+                LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server send error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> conn.strerror();
+                conn.reset(<span style="color:#099">3000</span>);
+                <span style="color:#000;font-weight:bold">break</span>;
+            }
+        }
+    }
+}
+
+tcp<span style="color:#000;font-weight:bold">::</span>Server s;
+s.on_connection(on_connection);
+s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7788</span>);                                    <span style="color:#998;font-style:italic">// no ssl
+</span><span style="color:#998;font-style:italic"></span>s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>);  <span style="color:#998;font-style:italic">// use ssl
+</span></code></pre></div><ul>
+<li>The above example implements a simple ping-pong server, when it receives a ping sent by the client, it will reply with a pong.</li>
+</ul>
+<h2 id="tcp-client-code-example"><a class="anchor" href="#tcp-client-code-example">#</a>TCP client code example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> use_ssl <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+std<span style="color:#000;font-weight:bold">::</span>unique_ptr<span style="color:#000;font-weight:bold">&lt;</span>tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> proto;
+
+co<span style="color:#000;font-weight:bold">::</span>Pool pool(
+    []() {<span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> tcp<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#000;font-weight:bold">*</span>proto); },
+    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) {<span style="color:#000;font-weight:bold">delete</span> (tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">*</span>) p;}
+);
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>PoolGuard<span style="color:#000;font-weight:bold">&lt;</span>tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> c(pool);
+    
+    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>c<span style="color:#000;font-weight:bold">-&gt;</span>connect(<span style="color:#099">3000</span>)) {
+        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;connect failed: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+        <span style="color:#000;font-weight:bold">return</span>;
+    }
+
+    <span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>] <span style="color:#000;font-weight:bold">=</span> {<span style="color:#099">0</span> };
+
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client send ping&#34;</span>;
+        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> c<span style="color:#000;font-weight:bold">-&gt;</span>send(<span style="color:#d14">&#34;ping&#34;</span>, <span style="color:#099">4</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;=</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client send error: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+            <span style="color:#000;font-weight:bold">break</span>;
+        }
+
+        r <span style="color:#000;font-weight:bold">=</span> c<span style="color:#000;font-weight:bold">-&gt;</span>recv(buf, <span style="color:#099">8</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client recv error: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server close the connection&#34;</span>;
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client recv &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> fastring(buf, r) <span style="color:#000;font-weight:bold">&lt;&lt;</span><span style="color:#d14">&#39;\n&#39;</span>;
+            co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+        }
+    }
+}
+
+proto.reset(<span style="color:#000;font-weight:bold">new</span> tcp<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, use_ssl));
+<span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
+    go(client_fun);
+}
+</code></pre></div><ul>
+<li>In the above example, we use co::Pool to cache client connections, and different coroutines can share connections in co::Pool.</li>
+<li>co::PoolGuard automatically pop an idle connection from co::Pool during construction, and automatically puts the connection back into co::Pool during destruction.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/net/tcp/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='Last modified by idealvin | November 6, 2021' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>November 6, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/net/tcp.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcpconnection">tcp::Connection</a>
+          <ul>
+            <li><a href="#connectionconnection">Connection::Connection</a></li>
+            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
+            <li><a href="#connectionclose">Connection::close</a></li>
+            <li><a href="#connectionrecv">Connection::recv</a></li>
+            <li><a href="#connectionrecvn">Connection::recvn</a></li>
+            <li><a href="#connectionreset">Connection::reset</a></li>
+            <li><a href="#connectionsend">Connection::send</a></li>
+            <li><a href="#connectionsocket">Connection::socket</a></li>
+            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpserver">tcp::Server</a>
+          <ul>
+            <li><a href="#serverserver">Server::Server</a></li>
+            <li><a href="#serveron_connection">Server::on_connection</a></li>
+            <li><a href="#serverstart">Server::start</a></li>
+            <li><a href="#serverexit">Server::exit</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpclient">tcp::Client</a>
+          <ul>
+            <li><a href="#clientclient">Client::Client</a></li>
+            <li><a href="#clientclient-1">Client::~Client</a></li>
+            <li><a href="#clientclose">Client::close</a></li>
+            <li><a href="#clientconnect">Client::connect</a></li>
+            <li><a href="#clientconnected">Client::connected</a></li>
+            <li><a href="#clientdisconnect">Client::disconnect</a></li>
+            <li><a href="#clientrecv">Client::recv</a></li>
+            <li><a href="#clientrecvn">Client::recvn</a></li>
+            <li><a href="#clientsend">Client::send</a></li>
+            <li><a href="#clientsocket">Client::socket</a></li>
+            <li><a href="#clientstrerror">Client::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcp-server-example">TCP server example</a></li>
+        <li><a href="#tcp-client-code-example">TCP client code example</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

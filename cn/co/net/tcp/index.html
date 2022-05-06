@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/so/tcp.h.
+#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
+#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。  #Connection::~Connection Connection::~Connection();  析构函数，调用 close() 关闭连接。  #Connection::close int close(int ms = 0);  关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。  #Connection::recv int recv(void* buf, int n, int ms=-1);  接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::recvn int recvn(void* buf, int n, int ms=-1);  接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::reset int reset(int ms = 0)  重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。  #Connection::send int send(const void* buf, int n, int ms=-1);  发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。  #Connection::socket int socket() const;  返回内部的 socket 描述符，连接已关闭时返回 -1。  #Connection::strerror const char* strerror() const;  Connection 中的方法报错时，可以调用此方法查看错误信息。  #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="TCP" />
+<meta property="og:description" content="include: co/so/tcp.h.
+#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
+#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。  #Connection::~Connection Connection::~Connection();  析构函数，调用 close() 关闭连接。  #Connection::close int close(int ms = 0);  关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。  #Connection::recv int recv(void* buf, int n, int ms=-1);  接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::recvn int recvn(void* buf, int n, int ms=-1);  接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::reset int reset(int ms = 0)  重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。  #Connection::send int send(const void* buf, int n, int ms=-1);  发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。  #Connection::socket int socket() const;  返回内部的 socket 描述符，连接已关闭时返回 -1。  #Connection::strerror const char* strerror() const;  Connection 中的方法报错时，可以调用此方法查看错误信息。  #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/tcp/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+
+<title>TCP | Documents for CO</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/tcp/" title="TCP">
+<link rel="stylesheet" href="../../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle" checked />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class=" active">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>TCP</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcpconnection">tcp::Connection</a>
+          <ul>
+            <li><a href="#connectionconnection">Connection::Connection</a></li>
+            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
+            <li><a href="#connectionclose">Connection::close</a></li>
+            <li><a href="#connectionrecv">Connection::recv</a></li>
+            <li><a href="#connectionrecvn">Connection::recvn</a></li>
+            <li><a href="#connectionreset">Connection::reset</a></li>
+            <li><a href="#connectionsend">Connection::send</a></li>
+            <li><a href="#connectionsocket">Connection::socket</a></li>
+            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpserver">tcp::Server</a>
+          <ul>
+            <li><a href="#serverserver">Server::Server</a></li>
+            <li><a href="#serveron_connection">Server::on_connection</a></li>
+            <li><a href="#serverstart">Server::start</a></li>
+            <li><a href="#serverexit">Server::exit</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpclient">tcp::Client</a>
+          <ul>
+            <li><a href="#clientclient">Client::Client</a></li>
+            <li><a href="#clientclient-1">Client::~Client</a></li>
+            <li><a href="#clientclose">Client::close</a></li>
+            <li><a href="#clientconnect">Client::connect</a></li>
+            <li><a href="#clientconnected">Client::connected</a></li>
+            <li><a href="#clientdisconnect">Client::disconnect</a></li>
+            <li><a href="#clientrecv">Client::recv</a></li>
+            <li><a href="#clientrecvn">Client::recvn</a></li>
+            <li><a href="#clientsend">Client::send</a></li>
+            <li><a href="#clientsocket">Client::socket</a></li>
+            <li><a href="#clientstrerror">Client::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcp-服务端代码示例">TCP 服务端代码示例</a></li>
+        <li><a href="#tcp-客户端代码示例">TCP 客户端代码示例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">co/so/tcp.h</a>.</p>
+<h2 id="tcpconnection"><a class="anchor" href="#tcpconnection">#</a>tcp::Connection</h2>
+<p><code>tcp::Connection</code> 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。</p>
+<h3 id="connectionconnection"><a class="anchor" href="#connectionconnection">#</a>Connection::Connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Connection(<span style="color:#458;font-weight:bold">int</span> sock);
+Connection(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> ssl);
+Connection(Connection<span style="color:#000;font-weight:bold">&amp;&amp;</span> c);
+</code></pre></div><ul>
+<li>构造函数，<code>Connection</code> 由 <code>tcp::Server</code> 创建，用户不需要手动创建。</li>
+<li>第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。</li>
+<li>从 v2.0.2 开始，用户不能继承 <code>Connection</code> 类。</li>
+</ul>
+<h3 id="connectionconnection-1"><a class="anchor" href="#connectionconnection-1">#</a>Connection::~Connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Connection<span style="color:#000;font-weight:bold">::~</span>Connection();
+</code></pre></div><ul>
+<li>析构函数，调用 close() 关闭连接。</li>
+</ul>
+<h3 id="connectionclose"><a class="anchor" href="#connectionclose">#</a>Connection::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">close</span>(<span style="color:#458;font-weight:bold">int</span> ms <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。</li>
+<li>从 v2.0.1 开始，此方法可以在协程或非协程中调用。</li>
+</ul>
+<h3 id="connectionrecv"><a class="anchor" href="#connectionrecv">#</a>Connection::recv</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>接收数据，与 <a href="../../coroutine/#corecv">co::recv</a> 类似。</li>
+<li>此方法必须在协程中调用。</li>
+<li>此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
+</ul>
+<h3 id="connectionrecvn"><a class="anchor" href="#connectionrecvn">#</a>Connection::recvn</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>接收指定长度的数据，与 <a href="../../coroutine/#corecvn">co::recvn</a> 类似。</li>
+<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
+</ul>
+<h3 id="connectionreset"><a class="anchor" href="#connectionreset">#</a>Connection::reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> reset(<span style="color:#458;font-weight:bold">int</span> ms <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>)
+</code></pre></div><ul>
+<li>重置 TCP 连接，与 close() 不同，它不会进入 <code>TIME_WAIT</code> 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。</li>
+<li>此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。</li>
+</ul>
+<h3 id="connectionsend"><a class="anchor" href="#connectionsend">#</a>Connection::send</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">send</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>发送数据，与 <a href="../../coroutine/#cosend">co::send()</a> 类似。</li>
+<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。</li>
+</ul>
+<h3 id="connectionsocket"><a class="anchor" href="#connectionsocket">#</a>Connection::socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">socket</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回内部的 socket 描述符，连接已关闭时返回 -1。</li>
+</ul>
+<h3 id="connectionstrerror"><a class="anchor" href="#connectionstrerror">#</a>Connection::strerror</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Connection 中的方法报错时，可以调用此方法查看错误信息。</li>
+</ul>
+<h2 id="tcpserver"><a class="anchor" href="#tcpserver">#</a>tcp::Server</h2>
+<p><code>tcp::Server</code> 是基于协程的 TCP 服务端，它的特性如下：</p>
+<ul>
+<li>支持 IPv4 与 IPv6。</li>
+<li>支持 SSL (需要 openssl)。</li>
+<li>采用一个连接一个协程的模型。</li>
+</ul>
+<h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server();
+</code></pre></div><ul>
+<li>构造函数，初始化。</li>
+</ul>
+<h3 id="serveron_connection"><a class="anchor" href="#serveron_connection">#</a>Server::on_connection</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Connection)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Connection)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> on_connection(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(Connection), T<span style="color:#000;font-weight:bold">*</span> o);
+</code></pre></div><ul>
+<li>
+<p>设置处理客户端连接的回调函数。</p>
+</li>
+<li>
+<p>第 1, 2 个版本中，参数 f 是 <code>void f(Connection)</code> 类型的函数，或 <code>std::function&lt;void(Connection)&gt;</code> 类型的函数对象。</p>
+</li>
+<li>
+<p>第 3 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</p>
+</li>
+<li>
+<p>从 v2.0.2 开始，f 的参数改为 tcp::Connection 对象，而非指针，用户不需要手动 delete。</p>
+</li>
+<li>
+<p>服务端接收到新的客户端连接时，会新建一个协程，并在协程中调用此方法设置的回调函数，处理新连接上的数据。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn);
+
+tcp<span style="color:#000;font-weight:bold">::</span>Server s;
+s.on_connection(f);
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn) {
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        conn.recv(...);
+        process(...);
+        conn.send(...);
+    }
+    
+    conn.close();
+}
+</code></pre></div><h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>启动 TCP server，此方法不会阻塞当前线程。</li>
+<li>参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。</li>
+<li>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</li>
+</ul>
+<h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+</code></pre></div><ul>
+<li>v2.0.2 新增。</li>
+<li>退出 TCP server，关闭 listening socket，不再接收新的连接。</li>
+<li>此方法不会关闭之前已经建立的连接。</li>
+</ul>
+<h2 id="tcpclient"><a class="anchor" href="#tcpclient">#</a>tcp::Client</h2>
+<p><code>tcp::Client</code> 是基于协程的 TCP 客户端，它有如下特性：</p>
+<ul>
+<li>支持 IPv4 与 IPv6。</li>
+<li>支持 SSL (需要安装 openssl)。</li>
+<li>一个客户端对象，对应一个连接。</li>
+<li>它必须在协程中使用。</li>
+<li>它不是协程安全的，同一时刻，不能有多个协程对它进行操作。</li>
+</ul>
+<h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#458;font-weight:bold">bool</span> use_ssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+Client(<span style="color:#000;font-weight:bold">const</span> Client<span style="color:#000;font-weight:bold">&amp;</span> c);
+</code></pre></div><ul>
+<li>构造函数。参数 ip 是服务器的 ip，可以是域名、IPv4 或 IPv6 地址；参数 port 是服务器端口；参数 use_ssl 表示是否启用 SSL 传输，默认为 false，不启用 SSL。</li>
+<li>第 2 个版本是拷贝构造函数，仅拷贝 ip, port, use_ssl。</li>
+<li>tcp::Client 构建时，并没有建立连接。</li>
+<li>一般建议在调用 recv, send 前，判断连接是否建立，没有的话就调用 connect 方法建立连接，这种方式可以实现自动重连。</li>
+</ul>
+<h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client<span style="color:#000;font-weight:bold">::~</span>Client();
+</code></pre></div><ul>
+<li>析构函数，调用 disconnect() 方法关闭连接。</li>
+</ul>
+<h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</code></pre></div><ul>
+<li>关闭连接，与 disconnect() 相同。</li>
+</ul>
+<h3 id="clientconnect"><a class="anchor" href="#clientconnect">#</a>Client::connect</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">connect</span>(<span style="color:#458;font-weight:bold">int</span> ms);
+</code></pre></div><ul>
+<li>建立连接，参数 ms 是超时时间，单位为毫秒。</li>
+<li>此方法必须在协程中调用。</li>
+<li>此方法成功时返回 true，否则返回 false。失败时，用户可以调用 <code>strerror()</code> 方法查看错误信息。</li>
+</ul>
+<h3 id="clientconnected"><a class="anchor" href="#clientconnected">#</a>Client::connected</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">connected</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>判断是否已经建立连接。</li>
+</ul>
+<h3 id="clientdisconnect"><a class="anchor" href="#clientdisconnect">#</a>Client::disconnect</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">disconnect</span>();
+</code></pre></div><ul>
+<li>从 v2.0.1 开始，可以在协程或非协程中调用。</li>
+<li>多次调用此方法是安全的，析构函数中会自动调用此方法。</li>
+</ul>
+<h3 id="clientrecv"><a class="anchor" href="#clientrecv">#</a>Client::recv</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>接收数据，与 <a href="../../coroutine/#corecv">co::recv()</a> 类似。</li>
+<li>此方法必须在协程中调用。</li>
+<li>此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
+</ul>
+<h3 id="clientrecvn"><a class="anchor" href="#clientrecvn">#</a>Client::recvn</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>接收指定长度的数据，与 <a href="../../coroutine/#corecvn">co::recvn()</a> 类似。</li>
+<li>此方法必须在协程中调用。</li>
+<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
+</ul>
+<h3 id="clientsend"><a class="anchor" href="#clientsend">#</a>Client::send</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">send</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>发送数据，与 <a href="../../coroutine/#cosend">co::send()</a> 类似。</li>
+<li>此方法必须在协程中调用。</li>
+<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。</li>
+</ul>
+<h3 id="clientsocket"><a class="anchor" href="#clientsocket">#</a>Client::socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">socket</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回内部的 socket 描述符。</li>
+<li>未建立连接或连接已经关闭时，返回值是 -1。</li>
+</ul>
+<h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>tcp::Client 中的方法报错时，可以调用此方法查看错误信息。</li>
+</ul>
+<h2 id="tcp-服务端代码示例"><a class="anchor" href="#tcp-%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>TCP 服务端代码示例</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(tcp<span style="color:#000;font-weight:bold">::</span>Connection conn) {
+    <span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>] <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0</span> };
+
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> conn.recv(buf, <span style="color:#099">8</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) {         <span style="color:#998;font-style:italic">/* client close the connection */</span>
+            conn.close();
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) { <span style="color:#998;font-style:italic">/* error */</span>
+            conn.reset(<span style="color:#099">3000</span>);
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server recv &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> fastring(buf, r);
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server send pong&#34;</span>;
+            r <span style="color:#000;font-weight:bold">=</span> conn.send(<span style="color:#d14">&#34;pong&#34;</span>, <span style="color:#099">4</span>);
+            <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;=</span> <span style="color:#099">0</span>) {
+                LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server send error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> conn.strerror();
+                conn.reset(<span style="color:#099">3000</span>);
+                <span style="color:#000;font-weight:bold">break</span>;
+            }
+        }
+    }
+}
+
+tcp<span style="color:#000;font-weight:bold">::</span>Server s;
+s.on_connection(on_connection);
+s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7788</span>);                                    <span style="color:#998;font-style:italic">// no ssl
+</span><span style="color:#998;font-style:italic"></span>s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>);  <span style="color:#998;font-style:italic">// use ssl
+</span></code></pre></div><ul>
+<li>上面的例子实现了一个简单的 ping-pong server，收到客户端发送的 ping 时，回复一个 pong。</li>
+</ul>
+<h2 id="tcp-客户端代码示例"><a class="anchor" href="#tcp-%e5%ae%a2%e6%88%b7%e7%ab%af%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>TCP 客户端代码示例</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> use_ssl <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+std<span style="color:#000;font-weight:bold">::</span>unique_ptr<span style="color:#000;font-weight:bold">&lt;</span>tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> proto;
+
+co<span style="color:#000;font-weight:bold">::</span>Pool pool(
+    []() {<span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> tcp<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#000;font-weight:bold">*</span>proto); },
+    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) {<span style="color:#000;font-weight:bold">delete</span> (tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">*</span>) p;}
+);
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>PoolGuard<span style="color:#000;font-weight:bold">&lt;</span>tcp<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> c(pool);
+    
+    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>c<span style="color:#000;font-weight:bold">-&gt;</span>connect(<span style="color:#099">3000</span>)) {
+        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;connect failed: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+        <span style="color:#000;font-weight:bold">return</span>;
+    }
+
+    <span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>] <span style="color:#000;font-weight:bold">=</span> {<span style="color:#099">0</span> };
+
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client send ping&#34;</span>;
+        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> c<span style="color:#000;font-weight:bold">-&gt;</span>send(<span style="color:#d14">&#34;ping&#34;</span>, <span style="color:#099">4</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;=</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client send error: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+            <span style="color:#000;font-weight:bold">break</span>;
+        }
+
+        r <span style="color:#000;font-weight:bold">=</span> c<span style="color:#000;font-weight:bold">-&gt;</span>recv(buf, <span style="color:#099">8</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client recv error: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c<span style="color:#000;font-weight:bold">-&gt;</span>strerror();
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;server close the connection&#34;</span>;
+            <span style="color:#000;font-weight:bold">break</span>;
+        } <span style="color:#000;font-weight:bold">else</span> {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;client recv &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> fastring(buf, r) <span style="color:#000;font-weight:bold">&lt;&lt;</span><span style="color:#d14">&#39;\n&#39;</span>;
+            co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+        }
+    }
+}
+
+proto.reset(<span style="color:#000;font-weight:bold">new</span> tcp<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, use_ssl));
+<span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
+    go(client_fun);
+}
+</code></pre></div><ul>
+<li>上面的例子中，我们用 co::Pool 缓存客户端连接，不同协程可以共用 co::Pool 中的连接。</li>
+<li>co::PoolGuard 构建时自动从 co::Pool 中拉取一个空闲连接，析构时自动将该连接放回 co::Pool 中。</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/co/net/tcp/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='最后修改者 idealvin | November 6, 2021' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>November 6, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/net/tcp.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcpconnection">tcp::Connection</a>
+          <ul>
+            <li><a href="#connectionconnection">Connection::Connection</a></li>
+            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
+            <li><a href="#connectionclose">Connection::close</a></li>
+            <li><a href="#connectionrecv">Connection::recv</a></li>
+            <li><a href="#connectionrecvn">Connection::recvn</a></li>
+            <li><a href="#connectionreset">Connection::reset</a></li>
+            <li><a href="#connectionsend">Connection::send</a></li>
+            <li><a href="#connectionsocket">Connection::socket</a></li>
+            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpserver">tcp::Server</a>
+          <ul>
+            <li><a href="#serverserver">Server::Server</a></li>
+            <li><a href="#serveron_connection">Server::on_connection</a></li>
+            <li><a href="#serverstart">Server::start</a></li>
+            <li><a href="#serverexit">Server::exit</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcpclient">tcp::Client</a>
+          <ul>
+            <li><a href="#clientclient">Client::Client</a></li>
+            <li><a href="#clientclient-1">Client::~Client</a></li>
+            <li><a href="#clientclose">Client::close</a></li>
+            <li><a href="#clientconnect">Client::connect</a></li>
+            <li><a href="#clientconnected">Client::connected</a></li>
+            <li><a href="#clientdisconnect">Client::disconnect</a></li>
+            <li><a href="#clientrecv">Client::recv</a></li>
+            <li><a href="#clientrecvn">Client::recvn</a></li>
+            <li><a href="#clientsend">Client::send</a></li>
+            <li><a href="#clientsocket">Client::socket</a></li>
+            <li><a href="#clientstrerror">Client::strerror</a></li>
+          </ul>
+        </li>
+        <li><a href="#tcp-服务端代码示例">TCP 服务端代码示例</a></li>
+        <li><a href="#tcp-客户端代码示例">TCP 客户端代码示例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

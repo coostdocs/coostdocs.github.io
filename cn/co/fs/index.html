@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/fs.h.
+co/fs.h 最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 &#39;/&#39;。
+#元数据操作 #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path);  判断文件是否存在，参数 path 是文件或目录路径。  #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path);  获取文件大小，文件不存在或其他错误返回 -1。  #fs::isdir bool isdir(const char* path); bool isdir(const fastring&amp; path); bool isdir(const std::string&amp; path);  判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。  #fs::mtime int64 mtime(const char* path); int64 mtime(const fastring&amp; path); int64 mtime(const std::string&amp; path);  获取文件的修改时间，文件不存在时返回 -1。  #fs::mkdir bool mkdir(const char* path, bool p=false); bool mkdir(const fastring&amp; path, bool p=false); bool mkdir(const std::string&amp; path, bool p=false);  创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。 参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 mkdir -p ，父目录不存在时，先创建父目录。  #fs::remove bool remove(const char* path, bool rf=false); bool remove(const fastring&amp; path, bool rf=false); bool remove(const std::string&amp; path, bool rf=false);  删除文件或目录，参数 path 是路径。 path 是目录时，参数 rf 表示是否强制删除，默认为 false，仅删除空目录。若 rf 为 true，则相当于 rm -rf，非空目录也会被删除。 path 是文件时，参数 rf 会被忽略。  #fs::rename bool rename(const char* from, const char* to); bool rename(const fastring&amp; from, const fastring&amp; to); bool rename(const std::string&amp; from, const std::string&amp; to);  重命名文件或目录，参数 from 是原路径，参数 to 是新路径。 参数 to 是目录时，windows 要求 to 和 from 在同一个盘符(drive) 下面。 一般建议在参数 to 指定的路径不存在时使用，详情可以参考 win32/MoveFile, linux/rename。  #fs::symlink bool symlink(const char* dst, const char* lnk); bool symlink(const fastring&amp; dst, const fastring&amp; lnk); bool symlink(const std::string&amp; dst, const std::string&amp; lnk);  创建软链接，参数 dst 是目标文件或目录的路径，参数 lnk 是软链接的路径。 此函数先调用 fs::remove(lnk) 删除旧的软链接，再创建新的软链接文件。 在 windows 平台，此函数需要 admin 权限。  #代码示例 bool x = fs::exists(path); // 判断文件是否存在 bool x = fs::isdir(path); // 判断文件是否为目录 int64 x = fs::mtime(path); // 获取文件的修改时间 int64 x = fs::fsize(path); // 获取文件的大小  fs::mkdir(&#34;a/b&#34;); // mkdir a/b fs::mkdir(&#34;a/b&#34;, true); // mkdir -p a/b  fs::remove(&#34;x/x.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="文件系统" />
+<meta property="og:description" content="include: co/fs.h.
+co/fs.h 最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 &#39;/&#39;。
+#元数据操作 #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path);  判断文件是否存在，参数 path 是文件或目录路径。  #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path);  获取文件大小，文件不存在或其他错误返回 -1。  #fs::isdir bool isdir(const char* path); bool isdir(const fastring&amp; path); bool isdir(const std::string&amp; path);  判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。  #fs::mtime int64 mtime(const char* path); int64 mtime(const fastring&amp; path); int64 mtime(const std::string&amp; path);  获取文件的修改时间，文件不存在时返回 -1。  #fs::mkdir bool mkdir(const char* path, bool p=false); bool mkdir(const fastring&amp; path, bool p=false); bool mkdir(const std::string&amp; path, bool p=false);  创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。 参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 mkdir -p ，父目录不存在时，先创建父目录。  #fs::remove bool remove(const char* path, bool rf=false); bool remove(const fastring&amp; path, bool rf=false); bool remove(const std::string&amp; path, bool rf=false);  删除文件或目录，参数 path 是路径。 path 是目录时，参数 rf 表示是否强制删除，默认为 false，仅删除空目录。若 rf 为 true，则相当于 rm -rf，非空目录也会被删除。 path 是文件时，参数 rf 会被忽略。  #fs::rename bool rename(const char* from, const char* to); bool rename(const fastring&amp; from, const fastring&amp; to); bool rename(const std::string&amp; from, const std::string&amp; to);  重命名文件或目录，参数 from 是原路径，参数 to 是新路径。 参数 to 是目录时，windows 要求 to 和 from 在同一个盘符(drive) 下面。 一般建议在参数 to 指定的路径不存在时使用，详情可以参考 win32/MoveFile, linux/rename。  #fs::symlink bool symlink(const char* dst, const char* lnk); bool symlink(const fastring&amp; dst, const fastring&amp; lnk); bool symlink(const std::string&amp; dst, const std::string&amp; lnk);  创建软链接，参数 dst 是目标文件或目录的路径，参数 lnk 是软链接的路径。 此函数先调用 fs::remove(lnk) 删除旧的软链接，再创建新的软链接文件。 在 windows 平台，此函数需要 admin 权限。  #代码示例 bool x = fs::exists(path); // 判断文件是否存在 bool x = fs::isdir(path); // 判断文件是否为目录 int64 x = fs::mtime(path); // 获取文件的修改时间 int64 x = fs::fsize(path); // 获取文件的大小  fs::mkdir(&#34;a/b&#34;); // mkdir a/b fs::mkdir(&#34;a/b&#34;, true); // mkdir -p a/b  fs::remove(&#34;x/x." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/fs/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-02T00:06:00+08:00" />
+
+<title>文件系统 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/fs/" title="File System">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class=" active">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>文件系统</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#元数据操作">元数据操作</a>
+          <ul>
+            <li><a href="#fsexists">fs::exists</a></li>
+            <li><a href="#fsfsize">fs::fsize</a></li>
+            <li><a href="#fsisdir">fs::isdir</a></li>
+            <li><a href="#fsmtime">fs::mtime</a></li>
+            <li><a href="#fsmkdir">fs::mkdir</a></li>
+            <li><a href="#fsremove">fs::remove</a></li>
+            <li><a href="#fsrename">fs::rename</a></li>
+            <li><a href="#fssymlink">fs::symlink</a></li>
+            <li><a href="#代码示例">代码示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#读写文件fsfile">读写文件(fs::file)</a>
+          <ul>
+            <li><a href="#filefile">file::file</a></li>
+            <li><a href="#filefile-1">file::~file</a></li>
+            <li><a href="#fileclose">file::close</a></li>
+            <li><a href="#fileexists">file::exists</a></li>
+            <li><a href="#fileopen">file::open</a></li>
+            <li><a href="#fileoperator-bool">file::operator bool</a></li>
+            <li><a href="#fileoperator">file::operator!</a></li>
+            <li><a href="#filepath">file::path</a></li>
+            <li><a href="#fileread">file::read</a></li>
+            <li><a href="#fileseek">file::seek</a></li>
+            <li><a href="#filesize">file::size</a></li>
+            <li><a href="#filewrite">file::write</a></li>
+            <li><a href="#代码示例-1">代码示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#文件流fsfstream">文件流(fs::fstream)</a>
+          <ul>
+            <li><a href="#fstreamfstream">fstream::fstream</a></li>
+            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
+            <li><a href="#fstreamappend">fstream::append</a></li>
+            <li><a href="#fstreamclose">fstream::close</a></li>
+            <li><a href="#fstreamflush">fstream::flush</a></li>
+            <li><a href="#fstreamopen">fstream::open</a></li>
+            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
+            <li><a href="#fstreamoperator">fstream::operator!</a></li>
+            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
+            <li><a href="#fstreamreserve">fstream::reserve</a></li>
+            <li><a href="#代码示例-2">代码示例</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/fs.h">co/fs.h</a>.</p>
+<p><code>co/fs.h</code> 最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 <code>'/'</code>。</p>
+<h2 id="元数据操作"><a class="anchor" href="#%e5%85%83%e6%95%b0%e6%8d%ae%e6%93%8d%e4%bd%9c">#</a>元数据操作</h2>
+<h3 id="fsexists"><a class="anchor" href="#fsexists">#</a>fs::exists</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>判断文件是否存在，参数 path 是文件或目录路径。</li>
+</ul>
+<h3 id="fsfsize"><a class="anchor" href="#fsfsize">#</a>fs::fsize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>获取文件大小，文件不存在或其他错误返回 -1。</li>
+</ul>
+<h3 id="fsisdir"><a class="anchor" href="#fsisdir">#</a>fs::isdir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。</li>
+</ul>
+<h3 id="fsmtime"><a class="anchor" href="#fsmtime">#</a>fs::mtime</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>获取文件的修改时间，文件不存在时返回 -1。</li>
+</ul>
+<h3 id="fsmkdir"><a class="anchor" href="#fsmkdir">#</a>fs::mkdir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</code></pre></div><ul>
+<li>创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。</li>
+<li>参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 <code>mkdir -p</code> ，父目录不存在时，先创建父目录。</li>
+</ul>
+<h3 id="fsremove"><a class="anchor" href="#fsremove">#</a>fs::remove</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</code></pre></div><ul>
+<li>删除文件或目录，参数 path 是路径。</li>
+<li>path 是目录时，参数 rf 表示是否强制删除，默认为 false，仅删除空目录。若 rf 为 true，则相当于 <code>rm -rf</code>，非空目录也会被删除。</li>
+<li>path 是文件时，参数 rf 会被忽略。</li>
+</ul>
+<h3 id="fsrename"><a class="anchor" href="#fsrename">#</a>fs::rename</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> from, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> from, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> to);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> from, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> to);
+</code></pre></div><ul>
+<li>重命名文件或目录，参数 from 是原路径，参数 to 是新路径。</li>
+<li>参数 to 是目录时，windows 要求 to 和 from 在同一个盘符(drive) 下面。</li>
+<li>一般建议在参数 to 指定的路径不存在时使用，详情可以参考 <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefilea">win32/MoveFile</a>, <a href="https://www.man7.org/linux/man-pages/man2/rename.2.html">linux/rename</a>。</li>
+</ul>
+<h3 id="fssymlink"><a class="anchor" href="#fssymlink">#</a>fs::symlink</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> dst, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> lnk);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> dst, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> lnk);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> dst, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> lnk);
+</code></pre></div><ul>
+<li>创建软链接，参数 dst 是目标文件或目录的路径，参数 lnk 是软链接的路径。</li>
+<li>此函数先调用 <code>fs::remove(lnk)</code> 删除旧的软链接，再创建新的软链接文件。</li>
+<li>在 windows 平台，此函数需要 admin 权限。</li>
+</ul>
+<h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>exists(path);  <span style="color:#998;font-style:italic">// 判断文件是否存在
+</span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>isdir(path);   <span style="color:#998;font-style:italic">// 判断文件是否为目录
+</span><span style="color:#998;font-style:italic"></span>int64 x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>mtime(path);  <span style="color:#998;font-style:italic">// 获取文件的修改时间
+</span><span style="color:#998;font-style:italic"></span>int64 x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>fsize(path);  <span style="color:#998;font-style:italic">// 获取文件的大小
+</span><span style="color:#998;font-style:italic"></span>
+fs<span style="color:#000;font-weight:bold">::</span>mkdir(<span style="color:#d14">&#34;a/b&#34;</span>);           <span style="color:#998;font-style:italic">// mkdir a/b
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>mkdir(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#0086b3">true</span>);     <span style="color:#998;font-style:italic">// mkdir -p a/b
+</span><span style="color:#998;font-style:italic"></span>
+fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;x/x.txt&#34;</span>);      <span style="color:#998;font-style:italic">// rm x/x.txt
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;a/b&#34;</span>);          <span style="color:#998;font-style:italic">// rmdir a/b
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#0086b3">true</span>);    <span style="color:#998;font-style:italic">// rm -rf a/b     
+</span><span style="color:#998;font-style:italic"></span>
+fs<span style="color:#000;font-weight:bold">::</span>rename(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#d14">&#34;a/c&#34;</span>);   <span style="color:#998;font-style:italic">// mv a/b a/c
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>symlink(<span style="color:#d14">&#34;/usr&#34;</span>, <span style="color:#d14">&#34;x&#34;</span>);   <span style="color:#998;font-style:italic">// ln -s /usr x
+</span></code></pre></div><h2 id="读写文件fsfile"><a class="anchor" href="#%e8%af%bb%e5%86%99%e6%96%87%e4%bb%b6fsfile">#</a>读写文件(fs::file)</h2>
+<p><code>fs::file</code> 类实现了文件的基本读写操作，与 <code>fread</code> 与 <code>fwrite</code> 不同，它内部<strong>没有缓存</strong>，直接读写文件。</p>
+<h3 id="filefile"><a class="anchor" href="#filefile">#</a>file::file</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">file();
+file(file<span style="color:#000;font-weight:bold">&amp;&amp;</span> f)<span style="color:#a61717;background-color:#e3d2d2">；</span>
+file(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+file(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+file(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</code></pre></div><ul>
+<li>第 1 个版本是默认构造函数，创建一个空的 file 对象，不会打开任何文件。</li>
+<li>第 2 个版本是 move 构造函数，支持将 file 对象放到 STL 容器中。</li>
+<li>第 3-5 个版本，打开指定的文件，参数 path 是文件路径，参数 mode 是打开模式。</li>
+<li>mode 是 <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'m'</code> 中的一种，r 是只读模式，w 是写模式，a 是追加模式，m 是修改模式，与 w 类似，但不会清空已存在文件的数据。</li>
+<li>mode 为 <code>'r'</code> 时，文件必须存在，否则打开失败。</li>
+<li>mode 为 <code>'w'</code> 时，文件不存在时自动创建，文件已存在时清空文件数据。</li>
+<li>mode 为 <code>'a'</code> 时，文件不存在时自动创建，文件已存在时不清空文件数据。</li>
+<li>mode 为 <code>'m'</code> 时，文件不存在时自动创建，文件已存在时不清空文件数据。</li>
+</ul>
+<h3 id="filefile-1"><a class="anchor" href="#filefile-1">#</a>file::~file</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>file();
+</code></pre></div><ul>
+<li>析构函数，关闭之前打开的文件，释放相关资源。</li>
+</ul>
+<h3 id="fileclose"><a class="anchor" href="#fileclose">#</a>file::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</code></pre></div><ul>
+<li>关闭文件，析构函数中会自动调用此方法。</li>
+<li>多次调用此方法是安全的。</li>
+</ul>
+<h3 id="fileexists"><a class="anchor" href="#fileexists">#</a>file::exists</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>判断文件是否存在。</li>
+<li>文件可能被其他进程删除，调用此方法可以判断之前打开的文件，是否仍然存在。</li>
+</ul>
+<h3 id="fileopen"><a class="anchor" href="#fileopen">#</a>file::open</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</code></pre></div><ul>
+<li>此方法打开指定的文件，path 是文件路径，mode 是打开模式，见<a href="#filefile">构造函数</a>中的说明。</li>
+<li>此方法在打开文件前，会先关闭之前打开的文件。</li>
+</ul>
+<h3 id="fileoperator-bool"><a class="anchor" href="#fileoperator-bool">#</a>file::operator bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>将 fs::file 转换为 bool 类型，文件成功打开时返回 true，否则返回 false。</li>
+</ul>
+<h3 id="fileoperator"><a class="anchor" href="#fileoperator">#</a>file::operator!</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>文件未打开或打开失败时返回 true，否则返回 false。</li>
+</ul>
+<h3 id="filepath"><a class="anchor" href="#filepath">#</a>file::path</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>此方法返回 file 内部文件路径的引用。</li>
+<li>若 file 对象并未关联任何文件，则返回值会引用一个空字符串。</li>
+</ul>
+<h3 id="fileread"><a class="anchor" href="#fileread">#</a>file::read</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">read</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, size_t n);
+fastring <span style="color:#900;font-weight:bold">read</span>(size_t n);
+</code></pre></div><ul>
+<li>第 1 个版本读取数据到指定的 buffer 中，n 是要读取的字节数，返回实际读取的字节数。</li>
+<li>第 2 个版本与第 1 个版本类似，但以 fastring 的形式返回读取的数据，n 是要读取的字节数。</li>
+<li>此方法在遇到文件尾或发生错误时，实际读取的字节数可能小于 n。</li>
+</ul>
+<h3 id="fileseek"><a class="anchor" href="#fileseek">#</a>file::seek</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">seek</span>(int64 off, <span style="color:#458;font-weight:bold">int</span> whence<span style="color:#000;font-weight:bold">=</span>seek_beg);
+</code></pre></div><ul>
+<li>设置文件指针的当前位置，参数 off 是偏移位置，参数 whence 是起始位置，可以是 <code>file::seek_beg</code>, <code>file::seek_cur</code>, <code>file::seek_end</code> 中的一种。</li>
+<li>此方法对以 <code>'a'</code> (append) 模式打开的文件无效。</li>
+</ul>
+<h3 id="filesize"><a class="anchor" href="#filesize">#</a>file::size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">size</span>()  <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>此方法返回文件的大小，文件未打开或打开失败时，调用此方法会返回 -1。</li>
+</ul>
+<h3 id="filewrite"><a class="anchor" href="#filewrite">#</a>file::write</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color:#458;font-weight:bold">char</span> s);
+</code></pre></div><ul>
+<li>第 1 个版本写入指定长度的数据。</li>
+<li>第 2-4 个版本写入字符串。</li>
+<li>第 5 个版本写入单个字符。</li>
+<li>此方法返回实际写入的字节数，在磁盘空间不足或发生其他错误时，返回值可能小于 n。</li>
+<li>此方法内部已经处理了 <code>EINTR</code> 错误，用户无需担心。</li>
+</ul>
+<h3 id="代码示例-1"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1">#</a>代码示例</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fs<span style="color:#000;font-weight:bold">::</span>file f;               <span style="color:#998;font-style:italic">// empty file
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>file f(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;w&#39;</span>);    <span style="color:#998;font-style:italic">// write mode
+</span><span style="color:#998;font-style:italic"></span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;m&#39;</span>);        <span style="color:#998;font-style:italic">// reopen with modify mode
+</span><span style="color:#998;font-style:italic"></span>
+f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;r&#39;</span>);        <span style="color:#998;font-style:italic">// read mode
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (f) f.read(buf, <span style="color:#099">512</span>);  <span style="color:#998;font-style:italic">// read at most 512 bytes
+</span><span style="color:#998;font-style:italic"></span>fastring s <span style="color:#000;font-weight:bold">=</span> f.read(<span style="color:#099">32</span>);  <span style="color:#998;font-style:italic">// read at most 32 bytes and return fastring
+</span><span style="color:#998;font-style:italic"></span>
+f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;a&#39;</span>);        <span style="color:#998;font-style:italic">// append mode
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span>(f) f.write(buf, <span style="color:#099">32</span>);   <span style="color:#998;font-style:italic">// write 32 bytes
+</span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#34;hello&#34;</span>);         <span style="color:#998;font-style:italic">// write a C string
+</span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#39;c&#39;</span>);             <span style="color:#998;font-style:italic">// write a single character
+</span><span style="color:#998;font-style:italic"></span>f.close();                <span style="color:#998;font-style:italic">// close the file
+</span></code></pre></div><h2 id="文件流fsfstream"><a class="anchor" href="#%e6%96%87%e4%bb%b6%e6%b5%81fsfstream">#</a>文件流(fs::fstream)</h2>
+<p><code>fs::file</code> 不支持缓存，写小文件性能较差，为此，<code>co/fs.h</code> 另外实现了支持缓存的 <code>fs::fstream</code> 类，fs::fstream 只用于写文件，不支持读操作。</p>
+<h3 id="fstreamfstream"><a class="anchor" href="#fstreamfstream">#</a>fstream::fstream</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fstream();
+fstream(fstream<span style="color:#000;font-weight:bold">&amp;&amp;</span> fs);
+<span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">fstream</span>(size_t cap);
+fstream(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+fstream(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+fstream(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+</code></pre></div><ul>
+<li>第 1 个版本是默认构造函数，内部缓存大小为 8k。</li>
+<li>第 2 个版本是 move 构造函数，可以将 fstream 对象放到 STL 容器中。</li>
+<li>第 3 个版本用参数 cap 指定缓存的大小。</li>
+<li>第 4-6 个版本打开指定的文件，path 是文件路径，mode 是模式，cap 是缓存大小，默认为 8k。</li>
+<li>参数 mode 是 <code>'w'</code> 或 <code>'a'</code> 中的一种，不支持读模式。</li>
+<li>mode 为 <code>'w'</code> 时，文件不存在时自动创建，文件已存在时清空文件数据。</li>
+<li>mode 为 <code>'a'</code> 时，文件不存在时自动创建，文件已存在时不会清空文件数据，在文件尾追加写。</li>
+</ul>
+<h3 id="fstreamfstream-1"><a class="anchor" href="#fstreamfstream-1">#</a>fstream::~fstream</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>fstream();
+</code></pre></div><ul>
+<li>析构函数，关闭打开的文件，释放相关的资源。</li>
+</ul>
+<h3 id="fstreamappend"><a class="anchor" href="#fstreamappend">#</a>fstream::append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fstream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</code></pre></div><ul>
+<li>追加数据，参数 n 是数据的长度。</li>
+</ul>
+<h3 id="fstreamclose"><a class="anchor" href="#fstreamclose">#</a>fstream::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</code></pre></div><ul>
+<li>关闭文件，析构函数中会自动调用此方法。</li>
+<li>多次调用此方法是安全的。</li>
+</ul>
+<h3 id="fstreamflush"><a class="anchor" href="#fstreamflush">#</a>fstream::flush</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">flush</span>();
+</code></pre></div><ul>
+<li>将缓存中的数据写入文件。</li>
+</ul>
+<h3 id="fstreamopen"><a class="anchor" href="#fstreamopen">#</a>fstream::open</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</code></pre></div><ul>
+<li>打开指定的文件，参数 path 是文件路径，参数 mode 是打开模式，见<a href="#fstreamfstream">构造函数</a>中的说明。</li>
+<li>此方法在打开文件前，会关闭之前打开的文件。</li>
+</ul>
+<h3 id="fstreamoperator-bool"><a class="anchor" href="#fstreamoperator-bool">#</a>fstream::operator bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>将 fs::fstream 转换为 bool 类型，文件成功打开时返回 true，否则返回 false。</li>
+</ul>
+<h3 id="fstreamoperator"><a class="anchor" href="#fstreamoperator">#</a>fstream::operator!</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>文件未打开或打开失败时返回 true，否则返回 false。</li>
+</ul>
+<h3 id="fstreamoperator-1"><a class="anchor" href="#fstreamoperator-1">#</a>fstream::operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(T v);
+</code></pre></div><ul>
+<li>第 1-3 个版本中，参数 s 是字符串类型。</li>
+<li>第 4 个版本中，参数 s 是 fastream 类型。</li>
+<li>第 5 个版本中，T 可以是任意内置类型，如 bool, char, int, double 等。</li>
+</ul>
+<h3 id="fstreamreserve"><a class="anchor" href="#fstreamreserve">#</a>fstream::reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</code></pre></div><ul>
+<li>调整缓存容量，参数 n 是容量大小。若 n 小于之前的容量，则缓存容量保持不变。</li>
+</ul>
+<h3 id="代码示例-2"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-2">#</a>代码示例</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fs<span style="color:#000;font-weight:bold">::</span>fstream s;                     <span style="color:#998;font-style:italic">// cache size: 8k
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#099">4096</span>);               <span style="color:#998;font-style:italic">// cache size: 4k
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#d14">&#34;path&#34;</span>, <span style="color:#d14">&#39;a&#39;</span>);        <span style="color:#998;font-style:italic">// append mode, cache size: 8k
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#d14">&#34;path&#34;</span>, <span style="color:#d14">&#39;w&#39;</span>, <span style="color:#099">4096</span>);  <span style="color:#998;font-style:italic">// write mode, cache size: 4k
+</span><span style="color:#998;font-style:italic"></span>s.reserve(<span style="color:#099">8192</span>);                   <span style="color:#998;font-style:italic">// make cache size at least 8k
+</span><span style="color:#998;font-style:italic"></span>
+s.open(<span style="color:#d14">&#34;path&#34;</span>, <span style="color:#d14">&#39;a&#39;</span>);               <span style="color:#998;font-style:italic">// open with append mode
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (s) s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;   <span style="color:#998;font-style:italic">// operator&lt;&lt;
+</span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#099">5</span>);              <span style="color:#998;font-style:italic">// append
+</span><span style="color:#998;font-style:italic"></span>s.flush();                         <span style="color:#998;font-style:italic">// flush data in cache to file
+</span><span style="color:#998;font-style:italic"></span>s.close();                         <span style="color:#998;font-style:italic">// close the file
+</span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/fs/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/0f6eef5e1f89354b56d0da1de637b1fd139726ab" title='最后修改者 idealvin | August 2, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 2, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/fs.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#元数据操作">元数据操作</a>
+          <ul>
+            <li><a href="#fsexists">fs::exists</a></li>
+            <li><a href="#fsfsize">fs::fsize</a></li>
+            <li><a href="#fsisdir">fs::isdir</a></li>
+            <li><a href="#fsmtime">fs::mtime</a></li>
+            <li><a href="#fsmkdir">fs::mkdir</a></li>
+            <li><a href="#fsremove">fs::remove</a></li>
+            <li><a href="#fsrename">fs::rename</a></li>
+            <li><a href="#fssymlink">fs::symlink</a></li>
+            <li><a href="#代码示例">代码示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#读写文件fsfile">读写文件(fs::file)</a>
+          <ul>
+            <li><a href="#filefile">file::file</a></li>
+            <li><a href="#filefile-1">file::~file</a></li>
+            <li><a href="#fileclose">file::close</a></li>
+            <li><a href="#fileexists">file::exists</a></li>
+            <li><a href="#fileopen">file::open</a></li>
+            <li><a href="#fileoperator-bool">file::operator bool</a></li>
+            <li><a href="#fileoperator">file::operator!</a></li>
+            <li><a href="#filepath">file::path</a></li>
+            <li><a href="#fileread">file::read</a></li>
+            <li><a href="#fileseek">file::seek</a></li>
+            <li><a href="#filesize">file::size</a></li>
+            <li><a href="#filewrite">file::write</a></li>
+            <li><a href="#代码示例-1">代码示例</a></li>
+          </ul>
+        </li>
+        <li><a href="#文件流fsfstream">文件流(fs::fstream)</a>
+          <ul>
+            <li><a href="#fstreamfstream">fstream::fstream</a></li>
+            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
+            <li><a href="#fstreamappend">fstream::append</a></li>
+            <li><a href="#fstreamclose">fstream::close</a></li>
+            <li><a href="#fstreamflush">fstream::flush</a></li>
+            <li><a href="#fstreamopen">fstream::open</a></li>
+            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
+            <li><a href="#fstreamoperator">fstream::operator!</a></li>
+            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
+            <li><a href="#fstreamreserve">fstream::reserve</a></li>
+            <li><a href="#代码示例-2">代码示例</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

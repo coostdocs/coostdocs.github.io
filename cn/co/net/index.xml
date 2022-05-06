@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络编程 on Documents for CO</title>
+    <link>https://cocoyaxi.github.io/cn/co/net/</link>
+    <description>Recent content in 网络编程 on Documents for CO</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://cocoyaxi.github.io/cn/co/net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>字节序</title>
+      <link>https://cocoyaxi.github.io/cn/co/net/byte_order/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cocoyaxi.github.io/cn/co/net/byte_order/</guid>
+      <description>include: co/byte_order.h.
+计算机中的数据在内存中是以字节(8 bit)为基本单位进行存储的，大端机采用大端字节序，即高位字节在低地址，低位字节在高地址，小端机则采用小端字节序，即低位字节在低地址，高位字节在高地址。
+单个字节在大、小端机器上是完全相同的，而多个字节的基本数据类型，在大、小端机器上有着不同的字节序。这里说的基本数据类型是指像 int, double 这样的内置类型，字符串不在此列，它是由单字节构成的序列，在大、小端机器上有着相同的存储形式。
+网络上传输的数据采用大端字节序，所谓的网络字节序也就是大端字节序。发送数据到网络上时，需要将其中的多字节基本类型转换成网络字节序，而从网络上接收数据时，则需要转换成所在主机的字节序。
+byte_order.h 定义了如下的方法：
+ntoh16 ntoh32 ntoh64 hton16 hton32 hton64 这些方法分别适用于长度为 2, 4, 8 字节的整数，其中 ntoh 系列将网络字节序转换成主机字节序，hton 系列则将主机字节序转换成网络字节序。
+ 代码示例  uint32 h = 777; uint32 n = hton32(h); </description>
+    </item>
+    
+    <item>
+      <title>TCP</title>
+      <link>https://cocoyaxi.github.io/cn/co/net/tcp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cocoyaxi.github.io/cn/co/net/tcp/</guid>
+      <description>include: co/so/tcp.h.
+#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
+#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;amp;&amp;amp; c);  构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。  #Connection::~Connection Connection::~Connection();  析构函数，调用 close() 关闭连接。  #Connection::close int close(int ms = 0);  关闭连接，参数 ms &amp;gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。  #Connection::recv int recv(void* buf, int n, int ms=-1);  接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &amp;gt;0，超时或发生错误时返回值 &amp;lt;0，对端关闭连接时返回 0。  #Connection::recvn int recvn(void* buf, int n, int ms=-1);  接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &amp;lt;0，对端关闭连接时返回 0。  #Connection::reset int reset(int ms = 0)  重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &amp;gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。  #Connection::send int send(const void* buf, int n, int ms=-1);  发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &amp;lt;=0。  #Connection::socket int socket() const;  返回内部的 socket 描述符，连接已关闭时返回 -1。  #Connection::strerror const char* strerror() const;  Connection 中的方法报错时，可以调用此方法查看错误信息。  #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：</description>
+    </item>
+    
+    <item>
+      <title>HTTP</title>
+      <link>https://cocoyaxi.github.io/cn/co/net/http/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cocoyaxi.github.io/cn/co/net/http/</guid>
+      <description>include: co/so/http.h.
+#http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
+#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo;   http::Client 对象创建时，并没有建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const char* body() const;  获取当前 HTTP 请求的响应体，返回一个指针，用户需要用 body_size() 方法获取它的长度。  #Client::body_size size_t body_size() const;  返回当前 HTTP 请求的响应体长度。  #Client::close void close();  关闭 HTTP 连接，需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &amp;lsquo;\0&amp;rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const char* header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。</description>
+    </item>
+    
+    <item>
+      <title>RPC</title>
+      <link>https://cocoyaxi.github.io/cn/co/net/rpc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cocoyaxi.github.io/cn/co/net/rpc/</guid>
+      <description>include: co/so/rpc.h.
+co/rpc 是一个类似 grpc 与 thrift 的 RPC 框架，只不过它使用 JSON 格式传输数据，而不是 protobuf, thrift 等二进制协议。
+#rpc::Service rpc::Service 是一个接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。
+#Service::name virtual const char* name() const = 0;  返回 service 的名字，该名字包含包名，如 &amp;ldquo;xx.yy.HelloWorld&amp;rdquo;。 RPC 请求中，必须带一个 **&amp;ldquo;service&amp;rdquo; **字段，它的值就是 service 的名字。  #Service::process virtual void process(const Json&amp;amp; req, Json&amp;amp; res) = 0;  该方法处理 RPC 请求，结果被填充到参数 res 中。 server 接收到 RPC 请求时，根据 req 中的 &amp;ldquo;service&amp;rdquo; 字段找到对应的 service，然后调用该 service 的 process() 方法处理该请求。  #rpc::Server rpc::Server 基于 tcp::Server 实现，它支持 SSL 以及用户名与密码认证。几年前的测试结果显示，单线程 QPS 可以达到 120k+。</description>
+    </item>
+    
+  </channel>
+</rss>

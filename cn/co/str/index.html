@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/str.h.
+#切分、修剪、替换、连接 #str::split std::vector&lt;fastring&gt; split(const char* s, char c, uint32 n=0); std::vector&lt;fastring&gt; split(const fastring&amp; s, char c, uint32 n=0); std::vector&lt;fastring&gt; split(const char* s, const char* c, uint32 n=0); std::vector&lt;fastring&gt; split(const fastring&amp; s, const char* c, uint32 n=0)；   此函数将字符串切分成若干个子串，原字符串保持不变，返回切分后的结果。
+  参数 s 是 C 字符串或 fastring，参数 c 是分隔符或 C 字符串，参数 n 是最大切分次数，0 或 -1 表示不限次数。
+  第 4 个版本中，s 不能包含 &lsquo;\0&rsquo;，因为内部实现中需要用 strstr() 搜索子串。
+  示例">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="字符串操作" />
+<meta property="og:description" content="include: co/str.h.
+#切分、修剪、替换、连接 #str::split std::vector&lt;fastring&gt; split(const char* s, char c, uint32 n=0); std::vector&lt;fastring&gt; split(const fastring&amp; s, char c, uint32 n=0); std::vector&lt;fastring&gt; split(const char* s, const char* c, uint32 n=0); std::vector&lt;fastring&gt; split(const fastring&amp; s, const char* c, uint32 n=0)；   此函数将字符串切分成若干个子串，原字符串保持不变，返回切分后的结果。
+  参数 s 是 C 字符串或 fastring，参数 c 是分隔符或 C 字符串，参数 n 是最大切分次数，0 或 -1 表示不限次数。
+  第 4 个版本中，s 不能包含 &lsquo;\0&rsquo;，因为内部实现中需要用 strstr() 搜索子串。
+  示例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/str/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+
+<title>字符串操作 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/str/" title="String utilities">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class=" active">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>字符串操作</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#切分修剪替换连接">切分、修剪、替换、连接</a>
+          <ul>
+            <li><a href="#strsplit">str::split</a></li>
+            <li><a href="#strstrip">str::strip</a></li>
+            <li><a href="#strreplace">str::replace</a></li>
+            <li><a href="#strcat">str::cat</a></li>
+          </ul>
+        </li>
+        <li><a href="#字符串转换为内置类型">字符串转换为内置类型</a>
+          <ul>
+            <li><a href="#strto_bool">str::to_bool</a></li>
+            <li><a href="#strto_double">str::to_double</a></li>
+            <li><a href="#strto_int">str::to_int</a></li>
+          </ul>
+        </li>
+        <li><a href="#内置类型转换为字符串">内置类型转换为字符串</a>
+          <ul>
+            <li><a href="#strfrom">str::from</a></li>
+          </ul>
+        </li>
+        <li><a href="#stl-容器转换成-debug-string">STL 容器转换成 debug string</a>
+          <ul>
+            <li><a href="#strdbg">str::dbg</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/tree/master/include/co/str.h">co/str.h</a>.</p>
+<h2 id="切分修剪替换连接"><a class="anchor" href="#%e5%88%87%e5%88%86%e4%bf%ae%e5%89%aa%e6%9b%bf%e6%8d%a2%e8%bf%9e%e6%8e%a5">#</a>切分、修剪、替换、连接</h2>
+<h3 id="strsplit"><a class="anchor" href="#strsplit">#</a>str::split</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, <span style="color:#458;font-weight:bold">char</span> c, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">char</span> c, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> c, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> c, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>)<span style="color:#a61717;background-color:#e3d2d2">；</span>
+</code></pre></div><ul>
+<li>
+<p>此函数将字符串切分成若干个子串，原字符串保持不变，返回切分后的结果。</p>
+</li>
+<li>
+<p>参数 s 是 C 字符串或 fastring，参数 c 是分隔符或 C 字符串，参数 n 是最大切分次数，0 或 -1 表示不限次数。</p>
+</li>
+<li>
+<p>第 4 个版本中，s 不能包含 &lsquo;\0&rsquo;，因为内部实现中需要用 <code>strstr()</code> 搜索子串。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">str<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;x y z&#34;</span>, <span style="color:#d14">&#39; &#39;</span>);    <span style="color:#998;font-style:italic">// -&gt;  [ &#34;x&#34;, &#34;y&#34;, &#34;z&#34; ]
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;|x|y|&#34;</span>, <span style="color:#d14">&#39;|&#39;</span>);    <span style="color:#998;font-style:italic">// -&gt;  [ &#34;&#34;, &#34;x&#34;, &#34;y&#34; ]
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;xooy&#34;</span>, <span style="color:#d14">&#34;oo&#34;</span>);    <span style="color:#998;font-style:italic">// -&gt;  [ &#34;x&#34;, &#34;y&#34;]
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;xooy&#34;</span>, <span style="color:#d14">&#39;o&#39;</span>);     <span style="color:#998;font-style:italic">// -&gt;  [ &#34;x&#34;, &#34;&#34;, &#34;y&#34; ]
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;xooy&#34;</span>, <span style="color:#d14">&#39;o&#39;</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// -&gt;  [ &#34;x&#34;, &#34;oy&#34; ]
+</span></code></pre></div><h3 id="strstrip"><a class="anchor" href="#strstrip">#</a>str::strip</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">strip</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> c<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34; </span><span style="color:#d14">\t\r\n</span><span style="color:#d14">&#34;</span>, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+fastring <span style="color:#900;font-weight:bold">strip</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> c<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34; </span><span style="color:#d14">\t\r\n</span><span style="color:#d14">&#34;</span>, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+fastring <span style="color:#900;font-weight:bold">strip</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, <span style="color:#458;font-weight:bold">char</span> c, <span style="color:#458;font-weight:bold">char</span> d <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;b&#39;</span>);
+fastring <span style="color:#900;font-weight:bold">strip</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">char</span> c, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+fastring <span style="color:#900;font-weight:bold">strip</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> c, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</code></pre></div><ul>
+<li>
+<p>此函数去掉字符串左边或右边的字符，原字符串保持不变，返回 strip 后的结果。</p>
+</li>
+<li>
+<p>参数 s 是 C 字符串或 fastring，参数 c 是要去掉的字符集，参数 d 是方向，&lsquo;l&rsquo; 或 &lsquo;L&rsquo; 表示左边，&lsquo;r&rsquo; 或 &lsquo;R&rsquo; 表示右边，默认为 &lsquo;b&rsquo; 表示两边。</p>
+</li>
+<li>
+<p>第 1 个与第 2 个版本默认去掉字符串两边的空白字符。</p>
+</li>
+<li>
+<p>第 3 个与第 4 个版本中，c 是单个字符。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">str<span style="color:#000;font-weight:bold">::</span>strip(<span style="color:#d14">&#34; xx</span><span style="color:#d14">\r\n</span><span style="color:#d14">&#34;</span>);           <span style="color:#998;font-style:italic">// -&gt; &#34;xx&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>strip(<span style="color:#d14">&#34;abxxa&#34;</span>, <span style="color:#d14">&#34;ab&#34;</span>);       <span style="color:#998;font-style:italic">// -&gt; &#34;xx&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>strip(<span style="color:#d14">&#34;abxxa&#34;</span>, <span style="color:#d14">&#34;ab&#34;</span>, <span style="color:#d14">&#39;l&#39;</span>);  <span style="color:#998;font-style:italic">// -&gt; &#34;xxa&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>strip(<span style="color:#d14">&#34;abxxa&#34;</span>, <span style="color:#d14">&#34;ab&#34;</span>, <span style="color:#d14">&#39;r&#39;</span>);  <span style="color:#998;font-style:italic">// -&gt; &#34;abxx&#34;
+</span></code></pre></div><h3 id="strreplace"><a class="anchor" href="#strreplace">#</a>str::replace</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">replace</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> sub, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+fastring <span style="color:#900;font-weight:bold">replace</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> sub, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to, uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>
+<p>此函数用于替换字符串中的子串，原字符串保持不变，返回替换后的结果。</p>
+</li>
+<li>
+<p>参数 s 是 C 字符串或 fastring，参数 sub 是要替换的子串，参数 to 是替换后的子串，参数 n 是最大替换次数，0 或 -1 表示不限次数。</p>
+</li>
+<li>
+<p>第 2 个版本中，s 不能包含 &lsquo;\0&rsquo;，因为内部实现中需要用 <code>strstr()</code> 搜索子串。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">str<span style="color:#000;font-weight:bold">::</span>replace(<span style="color:#d14">&#34;xooxoox&#34;</span>, <span style="color:#d14">&#34;oo&#34;</span>, <span style="color:#d14">&#34;ee&#34;</span>);     <span style="color:#998;font-style:italic">// -&gt; &#34;xeexeex&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>replace(<span style="color:#d14">&#34;xooxoox&#34;</span>, <span style="color:#d14">&#34;oo&#34;</span>, <span style="color:#d14">&#34;ee&#34;</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// -&gt; &#34;xeexoox&#34;
+</span></code></pre></div><h3 id="strcat"><a class="anchor" href="#strcat">#</a>str::cat</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> ...X<span style="color:#000;font-weight:bold">&gt;</span>
+<span style="color:#000;font-weight:bold">inline</span> fastring cat(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... x);
+</code></pre></div><ul>
+<li>
+<p>v2.0.3 新增。将任意数量的元素连接为一个字符串。</p>
+</li>
+<li>
+<p>此函数调用 <code>operator&lt;&lt;</code> 操作将参数中的元素逐个追加到字符串中。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23true&#34;
+</span><span style="color:#998;font-style:italic"></span>fastring s <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>cat(<span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#d14">&#39; &#39;</span>, <span style="color:#099">23</span>, <span style="color:#0086b3">true</span>);
+</code></pre></div><h2 id="字符串转换为内置类型"><a class="anchor" href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e8%bd%ac%e6%8d%a2%e4%b8%ba%e5%86%85%e7%bd%ae%e7%b1%bb%e5%9e%8b">#</a>字符串转换为内置类型</h2>
+<h3 id="strto_bool"><a class="anchor" href="#strto_bool">#</a>str::to_bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">to_bool</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">to_bool</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">to_bool</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</code></pre></div><ul>
+<li>
+<p>此函数将字符串转换为 bool 类型。</p>
+</li>
+<li>
+<p>当 s 等于 &ldquo;0&rdquo; 或 &ldquo;false&rdquo;，返回 false；当 s 等于 &ldquo;1&rdquo; 或 &ldquo;true&rdquo;，返回 true。</p>
+</li>
+<li>
+<p>此函数<strong>转换失败时返回 false，并将 errno 设置为 EINVAL</strong>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> b <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_bool(<span style="color:#d14">&#34;true&#34;</span>);   <span style="color:#998;font-style:italic">// x = true
+</span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_bool(<span style="color:#d14">&#34;false&#34;</span>);  <span style="color:#998;font-style:italic">// x = false
+</span></code></pre></div><h3 id="strto_double"><a class="anchor" href="#strto_double">#</a>str::to_double</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">to_double</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">to_double</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">to_double</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</code></pre></div><ul>
+<li>
+<p>此函数将字符串转换为 double 类型。</p>
+</li>
+<li>
+<p>此函数<strong>转换失败时返回 0，并设置 errno 为 ERANGE 或 EINVAL</strong>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">double</span> x <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_double(<span style="color:#d14">&#34;3.14&#34;</span>);  <span style="color:#998;font-style:italic">// x = 3.14
+</span></code></pre></div><h3 id="strto_int"><a class="anchor" href="#strto_int">#</a>str::to_int</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int32 <span style="color:#900;font-weight:bold">to_int32</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+int32 <span style="color:#900;font-weight:bold">to_int32</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+int32 <span style="color:#900;font-weight:bold">to_int32</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+int64 <span style="color:#900;font-weight:bold">to_int64</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+int64 <span style="color:#900;font-weight:bold">to_int64</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+int64 <span style="color:#900;font-weight:bold">to_int64</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+uint32 <span style="color:#900;font-weight:bold">to_uint32</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+uint32 <span style="color:#900;font-weight:bold">to_uint32</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+uint32 <span style="color:#900;font-weight:bold">to_uint32</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+uint64 <span style="color:#900;font-weight:bold">to_uint64</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+uint64 <span style="color:#900;font-weight:bold">to_uint64</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+uint64 <span style="color:#900;font-weight:bold">to_uint64</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</code></pre></div><ul>
+<li>
+<p>这些函数将字符串转换为整数类型。</p>
+</li>
+<li>
+<p>参数 s 末尾可以带一个单位 <code>k, m, g, t, p</code>，不区分大小写。</p>
+</li>
+<li>
+<p>这些函数<strong>转换失败时返回 0，并设置 errno 为 ERANGE 或 EINVAL</strong>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int32 i32;
+int64 i64;
+uint32 u32;
+uint64 u64;
+
+i32 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int32(<span style="color:#d14">&#34;-23&#34;</span>);  <span style="color:#998;font-style:italic">// -23
+</span><span style="color:#998;font-style:italic"></span>u32 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_uint32(<span style="color:#d14">&#34;4k&#34;</span>);  <span style="color:#998;font-style:italic">// 4096
+</span><span style="color:#998;font-style:italic"></span>i64 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int32(<span style="color:#d14">&#34;8M&#34;</span>);   <span style="color:#998;font-style:italic">// 8 &lt;&lt; 20
+</span><span style="color:#998;font-style:italic"></span>i64 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int64(<span style="color:#d14">&#34;8T&#34;</span>);   <span style="color:#998;font-style:italic">// 8ULL &lt;&lt; 40
+</span><span style="color:#998;font-style:italic"></span>u64 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int64(<span style="color:#d14">&#34;1P&#34;</span>);   <span style="color:#998;font-style:italic">// 1ULL &lt;&lt; 50
+</span><span style="color:#998;font-style:italic"></span>
+i32 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int32(<span style="color:#d14">&#34;8g&#34;</span>);
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> (i32 <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>);
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> (errno <span style="color:#000;font-weight:bold">==</span> ERANGE);
+
+i32 <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>to_int32(<span style="color:#d14">&#34;abx&#34;</span>);
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> (i32 <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>);
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> (errno <span style="color:#000;font-weight:bold">==</span> EINVAL);
+</code></pre></div><h2 id="内置类型转换为字符串"><a class="anchor" href="#%e5%86%85%e7%bd%ae%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2%e4%b8%ba%e5%ad%97%e7%ac%a6%e4%b8%b2">#</a>内置类型转换为字符串</h2>
+<h3 id="strfrom"><a class="anchor" href="#strfrom">#</a>str::from</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+<span style="color:#000;font-weight:bold">inline</span> fastring from(T t);
+</code></pre></div><ul>
+<li>
+<p>此函数将内置类型转换为字符串。</p>
+</li>
+<li>
+<p>T 可以是任意内置类型，如 bool, int, double, void* 等待。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring s;
+s <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>from(<span style="color:#0086b3">true</span>);  <span style="color:#998;font-style:italic">// -&gt; &#34;true&#34;
+</span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>from(<span style="color:#099">23</span>);    <span style="color:#998;font-style:italic">// -&gt; &#34;23&#34;
+</span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> str<span style="color:#000;font-weight:bold">::</span>from(<span style="color:#099">3.14</span>);  <span style="color:#998;font-style:italic">// -&gt; &#34;3.14&#34;
+</span></code></pre></div><h2 id="stl-容器转换成-debug-string"><a class="anchor" href="#stl-%e5%ae%b9%e5%99%a8%e8%bd%ac%e6%8d%a2%e6%88%90-debug-string">#</a>STL 容器转换成 debug string</h2>
+<h3 id="strdbg"><a class="anchor" href="#strdbg">#</a>str::dbg</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> fastring dbg(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;&amp;</span> v);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> fastring dbg(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>set<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;&amp;</span> v);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> fastring dbg(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>unordered_set<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;&amp;</span> v)
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span> fastring dbg(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span>K, V<span style="color:#000;font-weight:bold">&gt;&amp;</span> v);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span> fastring dbg(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>unordered_map<span style="color:#000;font-weight:bold">&lt;</span>K, V<span style="color:#000;font-weight:bold">&gt;&amp;</span> v);
+</code></pre></div><ul>
+<li>
+<p>此函数将常用的容器类型转换成一个 debug 字符串，一般用于打印日志。</p>
+</li>
+<li>
+<p>容器中的字符串类型，两边会加上 <code>&quot;</code>，但不会对字符串内的双引号进行转义。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span> };
+std<span style="color:#000;font-weight:bold">::</span>set<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> s { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span> };
+std<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m { {<span style="color:#099">1</span>, <span style="color:#099">1</span>}, {<span style="color:#099">2</span>, <span style="color:#099">2</span>} };
+str<span style="color:#000;font-weight:bold">::</span>dbg(v);    <span style="color:#998;font-style:italic">// -&gt; &#34;[1,2,3]&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>dbg(s);    <span style="color:#998;font-style:italic">// -&gt; &#34;{1,2,3}&#34;
+</span><span style="color:#998;font-style:italic"></span>str<span style="color:#000;font-weight:bold">::</span>dbg(m);    <span style="color:#998;font-style:italic">// -&gt; &#34;{1:1,2:2}
+</span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/str/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='最后修改者 idealvin | November 6, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>November 6, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/str.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#切分修剪替换连接">切分、修剪、替换、连接</a>
+          <ul>
+            <li><a href="#strsplit">str::split</a></li>
+            <li><a href="#strstrip">str::strip</a></li>
+            <li><a href="#strreplace">str::replace</a></li>
+            <li><a href="#strcat">str::cat</a></li>
+          </ul>
+        </li>
+        <li><a href="#字符串转换为内置类型">字符串转换为内置类型</a>
+          <ul>
+            <li><a href="#strto_bool">str::to_bool</a></li>
+            <li><a href="#strto_double">str::to_double</a></li>
+            <li><a href="#strto_int">str::to_int</a></li>
+          </ul>
+        </li>
+        <li><a href="#内置类型转换为字符串">内置类型转换为字符串</a>
+          <ul>
+            <li><a href="#strfrom">str::from</a></li>
+          </ul>
+        </li>
+        <li><a href="#stl-容器转换成-debug-string">STL 容器转换成 debug string</a>
+          <ul>
+            <li><a href="#strdbg">str::dbg</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

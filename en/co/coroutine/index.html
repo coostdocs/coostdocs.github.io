@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/co.h.
+#Basic concepts  Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Coroutine" />
+<meta property="og:description" content="include: co/co.h.
+#Basic concepts  Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/coroutine/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-10-04T10:55:00+08:00" />
+
+<title>Coroutine | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/coroutine/" title="协程">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class=" active">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Coroutine</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a></li>
+        <li><a href="#coroutine-api">Coroutine API</a>
+          <ul>
+            <li><a href="#coinit">co::init</a></li>
+            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#go">go</a></li>
+            <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
+            <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#conext_scheduler">co::next_scheduler</a></li>
+            <li><a href="#coscheduler_num">co::scheduler_num</a></li>
+            <li><a href="#coscheduler_id">co::scheduler_id</a></li>
+            <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
+            <li><a href="#cosleep">co::sleep</a></li>
+            <li><a href="#costop">co::stop</a></li>
+            <li><a href="#cotimeout">co::timeout</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#coroutineized-socket-api">Coroutineized socket API</a>
+          <ul>
+            <li><a href="#terminology-convention">Terminology convention</a></li>
+            <li><a href="#cosocket">co::socket</a></li>
+            <li><a href="#coaccept">co::accept</a></li>
+            <li><a href="#cobind">co::bind</a></li>
+            <li><a href="#coclose">co::close</a></li>
+            <li><a href="#coconnect">co::connect</a></li>
+            <li><a href="#colisten">co::listen</a></li>
+            <li><a href="#corecv">co::recv</a></li>
+            <li><a href="#corecvn">co::recvn</a></li>
+            <li><a href="#corecvfrom">co::recvfrom</a></li>
+            <li><a href="#cosend">co::send</a></li>
+            <li><a href="#cosendto">co::sendto</a></li>
+            <li><a href="#coshutdown">co::shutdown</a></li>
+            <li><a href="#coerror">co::error</a></li>
+            <li><a href="#costrerror">co::strerror</a></li>
+            <li><a href="#coset_error">co::set_error</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#cogetsockopt">co::getsockopt</a></li>
+            <li><a href="#cosetsockopt">co::setsockopt</a></li>
+            <li><a href="#coset_nonblock">co::set_nonblock</a></li>
+            <li><a href="#coset_reuseaddr">co::set_reuseaddr</a></li>
+            <li><a href="#coset_recv_buffer_size">co::set_recv_buffer_size</a></li>
+            <li><a href="#coset_send_buffer_size">co::set_send_buffer_size</a></li>
+            <li><a href="#coset_tcp_keepalive">co::set_tcp_keepalive</a></li>
+            <li><a href="#coset_tcp_nodelay">co::set_tcp_nodelay</a></li>
+            <li><a href="#coreset_tcp_socket">co::reset_tcp_socket</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#coinit_ip_addr">co::init_ip_addr</a></li>
+            <li><a href="#coip_str">co::ip_str</a></li>
+            <li><a href="#coto_string">co::to_string</a></li>
+            <li><a href="#copeer">co::peer</a></li>
+          </ul>
+        </li>
+        <li><a href="#cochan">co::Chan</a>
+          <ul>
+            <li><a href="#chanchan">Chan::Chan</a></li>
+            <li><a href="#operator">operator&laquo;</a></li>
+            <li><a href="#operator-1">operator&raquo;</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#coevent">co::Event</a>
+          <ul>
+            <li><a href="#eventevent">Event::Event</a></li>
+            <li><a href="#eventsignal">Event::signal</a></li>
+            <li><a href="#eventwait">Event::wait</a></li>
+            <li><a href="#code-example-2">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#cowaitgroup">co::WaitGroup</a>
+          <ul>
+            <li><a href="#waitgroupwaitgroup">WaitGroup::WaitGroup</a></li>
+            <li><a href="#waitgroupadd">WaitGroup::add</a></li>
+            <li><a href="#waitgroupdone">WaitGroup::done</a></li>
+            <li><a href="#waitgroupwait">WaitGroup::wait</a></li>
+            <li><a href="#code-example-3">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#comutex">co::Mutex</a>
+          <ul>
+            <li><a href="#mutexmutex">Mutex::Mutex</a></li>
+            <li><a href="#mutexlock">Mutex::lock</a></li>
+            <li><a href="#mutextry_lock">Mutex::try_lock</a></li>
+            <li><a href="#mutexunlock">Mutex::unlock</a></li>
+          </ul>
+        </li>
+        <li><a href="#comutexguard">co::MutexGuard</a>
+          <ul>
+            <li><a href="#mutexguardmutexguard">MutexGuard::MutexGuard</a></li>
+            <li><a href="#mutexguardmutexguard-1">MutexGuard::~MutexGuard</a></li>
+            <li><a href="#code-example-4">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#copool">co::Pool</a>
+          <ul>
+            <li><a href="#poolpool">Pool::Pool</a></li>
+            <li><a href="#poolclear">Pool::clear</a></li>
+            <li><a href="#poolpop">Pool::pop</a></li>
+            <li><a href="#poolpush">Pool::push</a></li>
+            <li><a href="#poolsize">Pool::size</a></li>
+          </ul>
+        </li>
+        <li><a href="#copoolguard">co::PoolGuard</a>
+          <ul>
+            <li><a href="#poolguardpoolguard">PoolGuard::PoolGuard</a></li>
+            <li><a href="#poolguardpoolguard-1">PoolGuard::~PoolGuard</a></li>
+            <li><a href="#poolguardget">PoolGuard::get</a></li>
+            <li><a href="#poolguardoperator-">PoolGuard::operator-&gt;</a></li>
+            <li><a href="#poolguardoperator">PoolGuard::operator*</a></li>
+            <li><a href="#poolguardoperator-bool">PoolGuard::operator bool</a></li>
+            <li><a href="#poolguardoperator-1">PoolGuard::operator!</a></li>
+            <li><a href="#poolguardoperator-2">PoolGuard::operator==</a></li>
+            <li><a href="#poolguardoperator-3">PoolGuard::operator!=</a></li>
+            <li><a href="#poolguardoperator-4">PoolGuard::operator=</a></li>
+            <li><a href="#poolguardreset">PoolGuard::reset</a></li>
+            <li><a href="#code-example-5">Code example</a></li>
+            <li><a href="#coioevent">co::IoEvent</a></li>
+            <li><a href="#coio_event_t">co::io_event_t</a></li>
+            <li><a href="#ioeventioevent">IoEvent::IoEvent</a></li>
+            <li><a href="#ioeventioevent-1">IoEvent::~IoEvent</a></li>
+            <li><a href="#ioeventwait">IoEvent::wait</a></li>
+            <li><a href="#code-example-6">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#use-third-party-network-libraries-in-coroutine">Use third-party network libraries in coroutine</a>
+          <ul>
+            <li><a href="#coroutineization">Coroutineization</a></li>
+            <li><a href="#system-api-hook">System API hook</a></li>
+          </ul>
+        </li>
+        <li><a href="#network-programming-model-based-on-coroutine">Network programming model based on coroutine</a>
+          <ul>
+            <li><a href="#network-model-for-tcp-server">Network model for TCP server</a></li>
+            <li><a href="#network-model-for-tcp-client">Network model for TCP client</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuration">Configuration</a>
+          <ul>
+            <li><a href="#co_debug_log">co_debug_log</a></li>
+            <li><a href="#co_sched_num">co_sched_num</a></li>
+            <li><a href="#co_stack_size">co_stack_size</a></li>
+            <li><a href="#disable_hook_sleep">disable_hook_sleep</a></li>
+            <li><a href="#hook_log">hook_log</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/co.h">co/co.h</a>.</p>
+<h2 id="basic-concepts"><a class="anchor" href="#basic-concepts">#</a>Basic concepts</h2>
+<ul>
+<li>Coroutines are lightweight scheduling units that run in threads.</li>
+<li>Coroutines are to threads, similar to threads to processes.</li>
+<li>There can be multiple threads in a process and multiple coroutines in a thread.</li>
+<li>The thread where the coroutine runs in is generally called the <strong>scheduling thread</strong>.</li>
+<li>The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine.</li>
+<li>When a coroutine is suspended, the scheduling thread will switch to other coroutines waiting to be executed.</li>
+<li>Switching of coroutines is done in user mode, which is faster than switching between threads.</li>
+</ul>
+<p>Coroutines are very suitable for network programming, and can achieve synchronous programming without asynchronous callbacks, which greatly reduces the programmer&rsquo;s mental burden.</p>
+<p>co implements a <a href="https://github.com/golang/go/">golang</a> style coroutine with the following features:</p>
+<ul>
+<li>Support multi-thread scheduling, the default number of threads is the number of system CPU cores.</li>
+<li>Coroutines in the same thread share several stacks (the default size is 1MB), and the memory usage is low. Test on Linux shows that 10 millions of coroutines only take 2.8G of memory (for reference only).</li>
+<li>Once a coroutine is created, it always runs in the same thread.</li>
+<li>There is a flat relationship between coroutines, and new coroutines can be created from anywhere (including in coroutines).</li>
+</ul>
+<p>The coroutine library is based on <a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a>, <a href="https://man.openbsd.org/kqueue.2">kqueue</a>, <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/io-completion-ports">iocp</a>.</p>
+<p>The relevant code for context switching is taken from <a href="https://github.com/tboox/tbox/">tbox</a> by <a href="https://github.com/waruqi">ruki</a>, and tbox refers to the implementation of <a href="https://www.boost.org/doc/libs/1_70_0/libs/context/doc/html/index.html">boost</a>, thanks here!</p>
+<h2 id="coroutine-api"><a class="anchor" href="#coroutine-api">#</a>Coroutine API</h2>
+<h3 id="coinit"><a class="anchor" href="#coinit">#</a>co::init</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>();
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> config);
+</code></pre></div><ul>
+<li>Added since v2.0.2, used to initialize the coroutine library.</li>
+<li>The first version performs some initialization work inside the coroutine library.</li>
+<li>The second version first calls <code>flag::init(argc, argv)</code> and <code>log::init()</code>, and then calls <code>co::init()</code> to initialize the coroutine library.</li>
+<li>The third version first calls <code>flag::init(config)</code> and <code>log::init()</code>, and then calls <code>co::init()</code> to initialize the coroutine library.</li>
+</ul>
+<h3 id="coexit"><a class="anchor" href="#coexit">#</a>co::exit</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+</code></pre></div><ul>
+<li>
+<p>Added in v2.0.2, stop the coroutine scheduling threads and reclaim system resources.</p>
+</li>
+<li>
+<p>If <code>co::init(argc, argv)</code> or <code>co::init(config)</code> was called before, this function will also call <code>log::exit()</code> to stop the logging thread.</p>
+</li>
+<li>
+<p>It is generally recommended to call this function at the end of the main() function.</p>
+</li>
+<li>
+<p>Code example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+     co<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+     <span style="color:#998;font-style:italic">// user code
+</span><span style="color:#998;font-style:italic"></span>     co<span style="color:#000;font-weight:bold">::</span>exit();
+     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">go</span>(Closure<span style="color:#000;font-weight:bold">*</span> cb);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F, <span style="color:#000;font-weight:bold">typename</span> P<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, P<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F, <span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> P<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, T<span style="color:#000;font-weight:bold">*</span> t, P<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
+</code></pre></div><ul>
+<li>
+<p>This function is used to <strong>create a coroutine</strong>, similar to creating a thread, a coroutine function must be specified.</p>
+</li>
+<li>
+<p>In the first version, the parameter cb points to a Closure object. When the coroutine is started, the <code>run()</code> method of Closure will be called.</p>
+</li>
+<li>
+<p>The 2-4th version, pack the incoming parameters into a Closure, and then call the first version.</p>
+</li>
+<li>
+<p>In the second version, the parameter f is any runnable object, as long as we can call <code>f()</code> or <code>(*f)()</code>.</p>
+</li>
+<li>
+<p>In the third version, the parameter f is any runnable object, as long as we can call <code>f(p)</code>, <code>(*f)(p)</code> or <code>(p-&gt;*f)()</code>.</p>
+</li>
+<li>
+<p>In the fourth version, the parameter f is a method with one parameter in the class T, the parameter t is a pointer to class <code>T</code>, and p is the parameter of f.</p>
+</li>
+<li>
+<p>Creating object of <code>std::function</code> is expensive and should be used as little as possible.</p>
+</li>
+<li>
+<p>Strictly speaking, the go() function just assigns a Closure to a scheduling thread, and the actual creation of the coroutine is done by the scheduling thread. But from the user&rsquo;s point of view, logically it can be considered that go() creates a coroutine.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">go(f);             <span style="color:#998;font-style:italic">// void f();
+</span><span style="color:#998;font-style:italic"></span>go(f, <span style="color:#099">7</span>);          <span style="color:#998;font-style:italic">// void f(int);
+</span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o);     <span style="color:#998;font-style:italic">// void T::f();    T o;
+</span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// void T::f(int); T o;
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#998;font-style:italic">// lambda
+</span><span style="color:#998;font-style:italic"></span>go([](){
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello co&#34;</span>;
+});
+
+<span style="color:#998;font-style:italic">// std::function
+</span><span style="color:#998;font-style:italic"></span>std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>()<span style="color:#000;font-weight:bold">&gt;</span> x(std<span style="color:#000;font-weight:bold">::</span>bind(f, <span style="color:#099">7</span>));
+go(x);
+go(<span style="color:#000;font-weight:bold">&amp;</span>x); <span style="color:#998;font-style:italic">// Ensure that x is alive when the coroutine is running.
+</span></code></pre></div><h3 id="def_main"><a class="anchor" href="#def_main">#</a>DEF_main</h3>
+<p>This macro is used to define the main function and make code in the main function also run in coroutine. DEF_main has already called <code>co::init(argc, argv)</code> for initialization, and users do not need to call it again.</p>
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_main(argc, argv) {
+     go([](){
+         LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span>;
+     });
+     co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
+}
+</code></pre></div><h3 id="coall_schedulers"><a class="anchor" href="#coall_schedulers">#</a>co::all_schedulers</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Scheduler<span style="color:#000;font-weight:bold">*&gt;&amp;</span> all_schedulers();
+</code></pre></div><ul>
+<li>Return a reference to the Scheduler list, one Scheduler corresponds to one scheduling thread.</li>
+</ul>
+<h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">scheduler</span>();
+</code></pre></div><ul>
+<li>Return the scheduler pointer of the current thread. If the current thread is not a scheduling thread, the return value is NULL.</li>
+<li>This function is generally called in a coroutine to get the scheduler where it runs in.</li>
+</ul>
+<h3 id="conext_scheduler"><a class="anchor" href="#conext_scheduler">#</a>co::next_scheduler</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">next_scheduler</span>();
+</code></pre></div><ul>
+<li>
+<p>This function returns the next Scheduler pointer.</p>
+</li>
+<li>
+<p><code>go(...)</code> is actually equivalent to <code>co::next_scheduler()-&gt;go(...)</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// create coroutines in the same thread
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>next_scheduler();
+s<span style="color:#000;font-weight:bold">-&gt;</span>go(f1);
+s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
+</code></pre></div><h3 id="coscheduler_num"><a class="anchor" href="#coscheduler_num">#</a>co::scheduler_num</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">scheduler_num</span>();
+</code></pre></div><ul>
+<li>
+<p>Returns the number of schedulers. This function is usually used to implement some coroutine-safe data structures.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>scheduler_num());
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+    <span style="color:#998;font-style:italic">// get object for the current scheduler
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">auto</span><span style="color:#000;font-weight:bold">&amp;</span> t <span style="color:#000;font-weight:bold">=</span> v[co<span style="color:#000;font-weight:bold">::</span>scheduler_id()];
+}
+
+go(f);
+</code></pre></div><h3 id="coscheduler_id"><a class="anchor" href="#coscheduler_id">#</a>co::scheduler_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">scheduler_id</span>();
+</code></pre></div><ul>
+<li>Returns the scheduler id of the current thread. This value is between 0 and <code>co::scheduler_num()-1</code>. If the current thread is not a scheduling thread, the return value is -1.</li>
+<li>This function is generally called in the coroutine to obtain the id of the scheduler where it runs in.</li>
+</ul>
+<h3 id="cocoroutine_id"><a class="anchor" href="#cocoroutine_id">#</a>co::coroutine_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">coroutine_id</span>();
+</code></pre></div><ul>
+<li>This function returns the id of the current coroutine. Different coroutines have different ids.</li>
+<li>This function is generally called in a coroutine. When called in a non-coroutine, the return value is -1.</li>
+<li>There is a simple linear correspondence between the coroutine id and the scheduler id. Assuming there are 4 schedulers, the ids are 0, 1, 2, 3, and the coroutine ids in these schedulers are:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#099">4</span>k        (<span style="color:#099">0</span>, <span style="color:#099">4</span>, <span style="color:#099">8</span>, ...)
+<span style="color:#099">4</span>k <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>    (<span style="color:#099">1</span>, <span style="color:#099">5</span>, <span style="color:#099">9</span>, ...)
+<span style="color:#099">4</span>k <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">2</span>    (<span style="color:#099">2</span>, <span style="color:#099">6</span>, <span style="color:#099">10</span>, ...)
+<span style="color:#099">4</span>k <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">3</span>    (<span style="color:#099">3</span>, <span style="color:#099">7</span>, <span style="color:#099">11</span>, ...)
+</code></pre></div><h3 id="cosleep"><a class="anchor" href="#cosleep">#</a>co::sleep</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">sleep</span>(uint32 ms);
+</code></pre></div><ul>
+<li>Let the current coroutine sleep for a while, the parameter ms is time in milliseconds.</li>
+<li>This function is generally called in a coroutine, calling in a non-coroutine is equivalent to <code>sleep::ms(ms)</code>.</li>
+</ul>
+<h3 id="costop"><a class="anchor" href="#costop">#</a>co::stop</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop</span>();
+</code></pre></div><ul>
+<li>The same as <code>co::exit()</code>.</li>
+<li>Deprecated since v2.0.2, use <code>co::exit()</code> instead.</li>
+</ul>
+<h3 id="cotimeout"><a class="anchor" href="#cotimeout">#</a>co::timeout</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">timeout</span>();
+</code></pre></div><ul>
+<li>This function checks whether the previous IO operation has timed out. After users call an function like <code>co::recv()</code> with a timeout, they can call this function to determine whether it has timed out.</li>
+<li><strong>This function must be called in the coroutine</strong>.</li>
+</ul>
+<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// print scheduler id and coroutine id every 3 seconds
+</span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;s: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>scheduler_id() <span style="color:#000;font-weight:bold">&lt;&lt;</span><span style="color:#d14">&#34; c: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>coroutine_id();
+        co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+    }
+}
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    log<span style="color:#000;font-weight:bold">::</span>init();
+    FLG_cout <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">true</span>; <span style="color:#998;font-style:italic">// also log to terminal
+</span><span style="color:#998;font-style:italic"></span>
+    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">32</span>; <span style="color:#000;font-weight:bold">++</span>i) go(f);
+
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">1024</span>);
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="coroutineized-socket-api"><a class="anchor" href="#coroutineized-socket-api">#</a>Coroutineized socket API</h2>
+<p>co provides commonly used coroutineized socket APIs to support coroutine-based network programming.</p>
+<p><strong>Most of the APIs are consistent in form with the native socket APIs</strong>, which can reduce the user&rsquo;s learning burden, and users who are familiar with socket programming can easily get started.</p>
+<p>Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block. With these APIs, users can easily implement <strong>high-concurrency and high-performance network programs</strong>.</p>
+<h3 id="terminology-convention"><a class="anchor" href="#terminology-convention">#</a>Terminology convention</h3>
+<p><strong>Blocking</strong></p>
+<p>When describing some socket APIs in co, the term blocking is used, such as accept, recv. The document says that they will block, which means that the current coroutine will block, but the scheduling thread will not (it can switch to other coroutines to run). From the user&rsquo;s point of view, they saw the coroutines which may block. In fact, these APIs use <strong>non-blocking socket</strong> internally, which does not really block, but when there is no data to read on the socket or data cannot be written immediately, the scheduling thread will suspend the current coroutine. When the socket becomes readable or writable, the scheduling thread will awaken the coroutine again and continue the I/O operation.</p>
+<p><strong>non-blocking socket</strong></p>
+<p>The socket API in co must use <strong>non-blocking socket</strong>. On windows, socket must also support <a href="https://support.microsoft.com/en-us/help/181611/socket-overlapped-io-versus-blocking-nonblocking-mode">overlapped I/O</a>, which is supported by default for sockets created with win32 API, users generally no need to worry about it. For narrative convenience, when non-blocking socket is mentioned in the document, it also means that it supports overlapped I/O on windows.</p>
+<h3 id="cosocket"><a class="anchor" href="#cosocket">#</a>co::socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">sock_t <span style="color:#900;font-weight:bold">socket</span>(<span style="color:#458;font-weight:bold">int</span> domain, <span style="color:#458;font-weight:bold">int</span> type, <span style="color:#458;font-weight:bold">int</span> proto);
+sock_t <span style="color:#900;font-weight:bold">tcp_socket</span>(<span style="color:#458;font-weight:bold">int</span> domain<span style="color:#000;font-weight:bold">=</span>AF_INET);
+sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="color:#458;font-weight:bold">int</span> domain<span style="color:#000;font-weight:bold">=</span>AF_INET);
+</code></pre></div><ul>
+<li>Create a socket.</li>
+<li>The form of the first function is exactly the same as the native API. You can use <code>man socket</code> to see the parameter details on linux.</li>
+<li>The second function creates a TCP socket.</li>
+<li>The third function creates a UDP socket.</li>
+<li>The parameter domain is usually AF_INET or AF_INET6, the former means ipv4 and the latter means ipv6.</li>
+<li><strong>These functions return a non-blocking socket</strong>. When an error occurs, the return value is -1.</li>
+</ul>
+<h3 id="coaccept"><a class="anchor" href="#coaccept">#</a>co::accept</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">sock_t <span style="color:#900;font-weight:bold">accept</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen);
+</code></pre></div><ul>
+<li>Receive the client connection on the specified socket, the parameter fd is a non-blocking socket, and the parameters addr and addrlen are used to receive the client&rsquo;s address information. The initial value of <code>*addrlen</code> is the length of the buffer pointed to by addr. If the user does not need the client address information, addr and addrlen should be set to NULL.</li>
+<li>This function <strong>must be called in the coroutine</strong>.</li>
+<li>This function will block until a new connection comes in or an error occurs.</li>
+<li>This function <strong>returns a non-blocking socket</strong> on success, and returns -1 when an error occurs.</li>
+</ul>
+<h3 id="cobind"><a class="anchor" href="#cobind">#</a>co::bind</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">bind</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen);
+</code></pre></div><ul>
+<li>Bind the ip address to the socket, the parameters addr and addrlen are the address information, which is the same as the native API.</li>
+<li>This function returns 0 on success, otherwise returns -1.</li>
+</ul>
+<h3 id="coclose"><a class="anchor" href="#coclose">#</a>co::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">close</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Close the socket.</li>
+<li>In CO v2.0.0 or before, a socket MUST be closed in the same thread that performed the I/O operation. Since v2.0.1, a socket can be closed anywhere.</li>
+<li>When the parameter ms &gt; 0, first call <code>co::sleep(ms)</code> to suspend the current coroutine for a period of time, and then close the socket.</li>
+<li>The <strong>EINTR</strong> signal has been processed internally in this function, and the user does not need to consider it.</li>
+<li>This function returns 0 on success, otherwise it returns -1.</li>
+</ul>
+<h3 id="coconnect"><a class="anchor" href="#coconnect">#</a>co::connect</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">connect</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Create a connection to the specified address on the specified socket, the parameter fd must be non-blocking,  the parameter ms is the timeout period in milliseconds, the default is -1, which will never time out.</li>
+<li>This function <strong>must be called in the coroutine</strong>.</li>
+<li>This function will block until the connection is completed, or timeout or an error occurs.</li>
+<li>This function returns 0 on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+</ul>
+<h3 id="colisten"><a class="anchor" href="#colisten">#</a>co::listen</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">listen</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> backlog<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1024</span>);
+</code></pre></div><ul>
+<li>Listenning on the specified socket.</li>
+<li>This function returns 0 on success, otherwise it returns -1.</li>
+</ul>
+<h3 id="corecv"><a class="anchor" href="#corecv">#</a>co::recv</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data on the specified socket, the parameter fd must be non-blocking, the parameter buf is the buffer to receive the data, the parameter n is the buffer length, and the parameter ms is the timeout period in milliseconds, the default is -1, never time out.</li>
+<li>This function <strong>must be called in the coroutine</strong>.</li>
+<li>On Windows, this function only works with TCP-like stream socket.</li>
+<li>This function will block until any data comes in, or timeout or any error occurs.</li>
+<li>This function returns length of the data received (may be less than n) on success, returns 0 when the peer closes the connection, returns -1 when timeout or an error occurs, and users can call co::timeout() to check whether it has timed out.</li>
+</ul>
+<h3 id="corecvn"><a class="anchor" href="#corecvn">#</a>co::recvn</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Receive data of the specified length on the specified socket, the parameter fd must be non-blocking, the parameter ms is the timeout period in milliseconds, the default is -1, never timeout.</li>
+<li>This function <strong>must be called in the coroutine</strong>.</li>
+<li>This function will block until all n bytes of data are received, or timeout or an error occurs.</li>
+<li>This function returns n on success, returns 0 when the peer closes the connection, and returns -1 when timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+</ul>
+<h3 id="corecvfrom"><a class="anchor" href="#corecvfrom">#</a>co::recvfrom</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvfrom</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> src_addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Similar to recv(), except that the parameters src_addr and addrlen can be used to receive the source address information. The initial value of <code>*addrlen</code> is the length of the buffer pointed to by src_addr. If the user does not need the source address information, addr and addrlen should be set to NULL .</li>
+<li>Generally <strong>it is recommended to use this function to receive UDP data only</strong>, for TCP data, use recv() or recvn() instead.</li>
+</ul>
+<h3 id="cosend"><a class="anchor" href="#cosend">#</a>co::send</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">send</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Send data to the specified socket, the parameter fd must be non-blocking, the parameter ms is the timeout period in milliseconds, the default is -1, which will never time out.</li>
+<li>This function <strong>must be called in the coroutine</strong>.</li>
+<li>On Windows, this function only works with TCP-like stream socket.</li>
+<li>This function will block until all n bytes of data are sent, or timeout or an error occurs.</li>
+<li>This function returns n on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+</ul>
+<h3 id="cosendto"><a class="anchor" href="#cosendto">#</a>co::sendto</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">sendto</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> dst_addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>Send data to the specified address. When dst_addr is NULL and addrlen is 0, it is equivalent to send().</li>
+<li>Generally <strong>it is recommended to use this function to send UDP data only</strong>, for TCP data, use send() instead.</li>
+<li>When fd is a UDP socket, the maximum n is 65507.</li>
+</ul>
+<h3 id="coshutdown"><a class="anchor" href="#coshutdown">#</a>co::shutdown</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">shutdown</span>(sock_t fd, <span style="color:#458;font-weight:bold">char</span> c<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</code></pre></div><ul>
+<li>This function is generally used to half-close the socket. The parameter c is a hint, <code>'r'</code> for read, <code>'w'</code> for write, the default is <code>'b'</code>, which means both reading and writing are closed.</li>
+<li>It is better to call this function in the same thread that performed the I/O operation.</li>
+<li>This function returns 0 on success, otherwise it returns -1.</li>
+</ul>
+<h3 id="coerror"><a class="anchor" href="#coerror">#</a>co::error</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">error</span>();
+</code></pre></div><ul>
+<li>Return the current error code.</li>
+<li>When the socket API in CO returns -1, the user can call this function to get the error code.</li>
+</ul>
+<h3 id="costrerror"><a class="anchor" href="#costrerror">#</a>co::strerror</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>(<span style="color:#458;font-weight:bold">int</span> err);
+<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>();
+</code></pre></div><ul>
+<li>Get the error string corresponding to the error code. It is thread safe.</li>
+<li>The second version gets the description information of the current error, which is equivalent to <code>strerror(co::error())</code>.</li>
+</ul>
+<h3 id="coset_error"><a class="anchor" href="#coset_error">#</a>co::set_error</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_error</span>(<span style="color:#458;font-weight:bold">int</span> err);
+</code></pre></div><ul>
+<li>Set the current error code, users generally do not need to call this function.</li>
+</ul>
+<h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="cogetsockopt"><a class="anchor" href="#cogetsockopt">#</a>co::getsockopt</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">getsockopt</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> lv, <span style="color:#458;font-weight:bold">int</span> opt, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> optval, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> optlen);
+</code></pre></div><ul>
+<li>Get socket option information, which is exactly the same as native API, <strong>man getsockopt</strong> for details.</li>
+</ul>
+<h3 id="cosetsockopt"><a class="anchor" href="#cosetsockopt">#</a>co::setsockopt</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">setsockopt</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> lv, <span style="color:#458;font-weight:bold">int</span> opt, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> optval, <span style="color:#458;font-weight:bold">int</span> optlen);
+</code></pre></div><ul>
+<li>Set the socket option information, which is exactly the same as the native API, <strong>man setsockopt</strong> for details.</li>
+</ul>
+<h3 id="coset_nonblock"><a class="anchor" href="#coset_nonblock">#</a>co::set_nonblock</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_nonblock</span>(sock_t fd);
+</code></pre></div><ul>
+<li>Set <strong>O_NONBLOCK</strong> option for the socket.</li>
+</ul>
+<h3 id="coset_reuseaddr"><a class="anchor" href="#coset_reuseaddr">#</a>co::set_reuseaddr</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_reuseaddr</span>(sock_t fd);
+</code></pre></div><ul>
+<li>Set <strong>SO_REUSEADDR</strong> option for the socket.</li>
+<li>Generally, the listening socket of a server needs to set this option, or the bind() may fail when the server restarts.</li>
+</ul>
+<h3 id="coset_recv_buffer_size"><a class="anchor" href="#coset_recv_buffer_size">#</a>co::set_recv_buffer_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_recv_buffer_size</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
+<li>Set the receiving buffer size of the socket. This function must be called before the socket is connected.</li>
+</ul>
+<h3 id="coset_send_buffer_size"><a class="anchor" href="#coset_send_buffer_size">#</a>co::set_send_buffer_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_send_buffer_size</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
+<li>Set the size of the sending buffer of the socket. This function must be called before the socket is connected.</li>
+</ul>
+<h3 id="coset_tcp_keepalive"><a class="anchor" href="#coset_tcp_keepalive">#</a>co::set_tcp_keepalive</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_tcp_keepalive</span>(sock_t fd);
+</code></pre></div><ul>
+<li>Set <strong>SO_KEEPALIVE</strong> option for the socket.</li>
+</ul>
+<h3 id="coset_tcp_nodelay"><a class="anchor" href="#coset_tcp_nodelay">#</a>co::set_tcp_nodelay</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_tcp_nodelay</span>(sock_t fd);
+</code></pre></div><ul>
+<li>Set <strong>TCP_NODELAY</strong> option for the socket.</li>
+</ul>
+<h3 id="coreset_tcp_socket"><a class="anchor" href="#coreset_tcp_socket">#</a>co::reset_tcp_socket</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">reset_tcp_socket</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Reset a TCP connection, similar to co::close(), but the caller will not enter the TIME_WAIT state.</li>
+<li>Generally, only the server side will call this function to close a client connection without entering the TIME_WAIT state.</li>
+</ul>
+<h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="coinit_ip_addr"><a class="anchor" href="#coinit_ip_addr">#</a>co::init_ip_addr</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">init_ip_addr</span>(<span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">init_ip_addr</span>(<span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in6</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port);
+</code></pre></div><ul>
+<li>
+<p>Initialize the sockaddr structure with ip and port.</p>
+</li>
+<li>
+<p>The first version is used for ipv4 addresses, and the second version is used for ipv6 addresses.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">union</span> {
+    <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span> v4;
+    <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in6</span> v6;
+} addr;
+
+co<span style="color:#000;font-weight:bold">::</span>init_ip_addr(<span style="color:#000;font-weight:bold">&amp;</span>addr.v4, <span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7777</span>);
+co<span style="color:#000;font-weight:bold">::</span>init_ip_addr(<span style="color:#000;font-weight:bold">&amp;</span>addr.v6, <span style="color:#d14">&#34;::&#34;</span>, <span style="color:#099">7777</span>);
+</code></pre></div><h3 id="coip_str"><a class="anchor" href="#coip_str">#</a>co::ip_str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">ip_str</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span><span style="color:#000;font-weight:bold">*</span> addr);
+fastring <span style="color:#900;font-weight:bold">ip_str</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in6</span><span style="color:#000;font-weight:bold">*</span> addr);
+</code></pre></div><ul>
+<li>
+<p>Get the ip string from the sockaddr structure.</p>
+</li>
+<li>
+<p>The first version is used for ipv4 addresses, and the second version is used for ipv6 addresses.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span> addr;
+co<span style="color:#000;font-weight:bold">::</span>init_ip_addr(<span style="color:#000;font-weight:bold">&amp;</span>addr, <span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7777</span>);
+<span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>ip_str(<span style="color:#000;font-weight:bold">&amp;</span>addr); <span style="color:#998;font-style:italic">// s -&gt; &#34;127.0.0.1&#34;
+</span></code></pre></div><h3 id="coto_string"><a class="anchor" href="#coto_string">#</a>co::to_string</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">to_string</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span><span style="color:#000;font-weight:bold">*</span> addr);
+fastring <span style="color:#900;font-weight:bold">to_string</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in6</span><span style="color:#000;font-weight:bold">*</span> addr);
+fastring <span style="color:#900;font-weight:bold">to_string</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen);
+</code></pre></div><ul>
+<li>
+<p>Convert the sockaddr address into a string in the form of <code>&quot;ip:port&quot;</code>.</p>
+</li>
+<li>
+<p>The first version is used for ipv4 addresses, and the second version is used for ipv6 addresses.</p>
+</li>
+<li>
+<p>The third version calls version 1 or version 2 according to addrlen.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">sockaddr_in</span> addr;
+co<span style="color:#000;font-weight:bold">::</span>init_ip_addr(<span style="color:#000;font-weight:bold">&amp;</span>addr, <span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7777</span>);
+<span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>to_string(<span style="color:#000;font-weight:bold">&amp;</span>addr); <span style="color:#998;font-style:italic">// s -&gt; &#34;127.0.0.1:7777&#34;
+</span></code></pre></div><h3 id="copeer"><a class="anchor" href="#copeer">#</a>co::peer</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">peer</span>(sock_t fd);
+</code></pre></div><ul>
+<li>Get the address information of the peer. The return value is a string in the form of <code>&quot;ip:port&quot;</code>.</li>
+</ul>
+<h2 id="cochan"><a class="anchor" href="#cochan">#</a>co::Chan</h2>
+<p><code>co::Chan</code> is a template class, it is similar to channel in golang, which is used to share data between coroutines.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Chan</span>;
+</code></pre></div><ul>
+<li><code>co::Chan</code> is implemented based on memory copy. The template parameter T can be built-in type, pointer type, or structure with <strong>simple memory copy semantics for the copy operation</strong>. In short, T must meet the following condition: for two variables or objects a and b of type T, <strong><code>a = b</code> is equivalent to <code>memcpy(&amp;a, &amp;b, sizeof(T))</code></strong>.</li>
+<li>For type like <code>std::string</code> or STL containers, the copy operation is not a simple memory copy, so it cannot be transferred directly in the channel.</li>
+</ul>
+<h3 id="chanchan"><a class="anchor" href="#chanchan">#</a>Chan::Chan</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">Chan</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>, uint32 ms<span style="color:#000;font-weight:bold">=</span>(uint32)<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+Chan(Chan<span style="color:#000;font-weight:bold">&amp;&amp;</span> c);
+Chan(<span style="color:#000;font-weight:bold">const</span> Chan<span style="color:#000;font-weight:bold">&amp;</span> c);
+</code></pre></div><ul>
+<li>In the first constructor, the parameter cap is the maximum capacity of the internal queue, the default is 1, and the parameter ms is the timeout for read and write operations in milliseconds, and the default is -1, which will never time out.</li>
+<li>The second is the move constructor, and we can put <code>co::Chan</code> into STL containers.</li>
+<li>The third is the copy constructor, which only increases the internal reference count by 1.</li>
+</ul>
+<h3 id="operator"><a class="anchor" href="#operator">#</a>operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Write operation, it must be performed in coroutine.</li>
+<li>This method will block until the write operation is completed or timed out.</li>
+<li><code>co::timeout()</code> can be called to check whether it has timed out.</li>
+</ul>
+<h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator&raquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;&gt;</span>(T<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Read operation, it must be performed in coroutine.</li>
+<li>This method will block until the read operation is completed or timed out.</li>
+<li><code>co::timeout()</code> can be called to check whether it has timed out.</li>
+</ul>
+<h3 id="code-example-1"><a class="anchor" href="#code-example-1">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>Chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch;
+    go([ch]() {ch <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">7</span>; });
+    <span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+    ch <span style="color:#000;font-weight:bold">&gt;&gt;</span> v;
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;v: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> v;
+}
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">g</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>Chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch(<span style="color:#099">32</span>, <span style="color:#099">500</span>);
+    go([ch]() {
+        ch <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">7</span>;
+        <span style="color:#000;font-weight:bold">if</span> (co<span style="color:#000;font-weight:bold">::</span>timeout()) LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;write to channel timeout..&#34;</span>;
+    });
+
+    <span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+    ch <span style="color:#000;font-weight:bold">&gt;&gt;</span> v;
+    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>co<span style="color:#000;font-weight:bold">::</span>timeout()) LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;v: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> v;
+}
+
+DEF_main(argc, argv) {
+    f();
+    g();
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>In the above code, the channel object is on the stack, so we <strong>capture by value</strong> in the lambda and copy the channel to the coroutine.</p>
+<h2 id="coevent"><a class="anchor" href="#coevent">#</a>co::Event</h2>
+<p><code>co::Event</code> is a synchronization mechanism between coroutines. It is similar to <code>SyncEvent</code> in threads. Since co 2.0.1, co::Event can be used in both coroutines and non-coroutines.</p>
+<h3 id="eventevent"><a class="anchor" href="#eventevent">#</a>Event::Event</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Event();
+Event(Event<span style="color:#000;font-weight:bold">&amp;&amp;</span> e);
+Event(<span style="color:#000;font-weight:bold">const</span> Event<span style="color:#000;font-weight:bold">&amp;</span> e);
+</code></pre></div><ul>
+<li>The first is the default constructor.</li>
+<li>The second is the move constructor, which supports putting co::Event into the STL container.</li>
+<li>The third is the copy constructor, which only increases the internal reference count by one.</li>
+</ul>
+<h3 id="eventsignal"><a class="anchor" href="#eventsignal">#</a>Event::signal</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">signal</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Generate a signal, and co::Event turns to synchronized state, all waiting coroutines will be awaken.</li>
+<li>If co::Event currently has no waiting coroutine, the next coroutine that calls the wait() method will return immediately.</li>
+<li>This method can be called anywhere.</li>
+</ul>
+<h3 id="eventwait"><a class="anchor" href="#eventwait">#</a>Event::wait</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">wait</span>() <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">wait</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> ms) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Wait for the synchronization signal. If co::Event is currently unsynchronized, the calling coroutine will enter a waiting state.</li>
+<li>In co 2.0.0 or before, it must be called in coroutine. Since 2.0.1, it can be called anywhere.</li>
+<li>The first version will block until co::Event becomes synchronized.</li>
+<li>The second version will block until co::Event becomes synchronized or timed out. The parameter ms is the timeout period in milliseconds. It returns false when timeout, otherwise returns true.</li>
+</ul>
+<h3 id="code-example-2"><a class="anchor" href="#code-example-2">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>Event ev;
+
+<span style="color:#998;font-style:italic">// capture by value, as data on stack may be overwritten by other coroutines.
+</span><span style="color:#998;font-style:italic"></span>go([ev](){
+    ev.signal();
+});
+
+ev.wait(<span style="color:#099">100</span>);  <span style="color:#998;font-style:italic">// wait for 100 ms
+</span></code></pre></div><h2 id="cowaitgroup"><a class="anchor" href="#cowaitgroup">#</a>co::WaitGroup</h2>
+<p><code>co::WaitGroup</code> is similar to <code>sync.WaitGroup</code> in golang, which can be used to wait for coroutines or threads to exit.</p>
+<h3 id="waitgroupwaitgroup"><a class="anchor" href="#waitgroupwaitgroup">#</a>WaitGroup::WaitGroup</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">WaitGroup();
+WaitGroup(WaitGroup<span style="color:#000;font-weight:bold">&amp;&amp;</span> wg);
+WaitGroup(<span style="color:#000;font-weight:bold">const</span> WaitGroup<span style="color:#000;font-weight:bold">&amp;</span> wg);
+</code></pre></div><ul>
+<li>The first is the default constructor.</li>
+<li>The second is the move constructor, which supports putting co::WaitGroup into the STL container.</li>
+<li>The third is the copy constructor, which only increases the internal reference count by one.</li>
+</ul>
+<h3 id="waitgroupadd"><a class="anchor" href="#waitgroupadd">#</a>WaitGroup::add</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add</span>(uint32 n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Increase the internal counter by n, the default value of n is 1.</li>
+<li>It is thread-safe and can be called anywhere.</li>
+</ul>
+<h3 id="waitgroupdone"><a class="anchor" href="#waitgroupdone">#</a>WaitGroup::done</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">done</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Decrement the internal counter by 1.</li>
+<li>It is thread-safe and can be called anywhere.</li>
+<li>It is usually called at the end of coroutine or thread function.</li>
+</ul>
+<h3 id="waitgroupwait"><a class="anchor" href="#waitgroupwait">#</a>WaitGroup::wait</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">wait</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Wait until the value of the internal counter becomes 0.</li>
+</ul>
+<h3 id="code-example-3"><a class="anchor" href="#code-example-3">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_main(argc, argv) {
+    co<span style="color:#000;font-weight:bold">::</span>WaitGroup wg;
+    wg.add(<span style="color:#099">8</span>);
+
+    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
+        go([wg]() {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;co: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>coroutine_id();
+            wg.done();
+        });
+    }
+
+    wg.wait();
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="comutex"><a class="anchor" href="#comutex">#</a>co::Mutex</h2>
+<p><code>co::Mutex</code> is a mutex lock for coroutines, similar to <code>Mutex</code> for threads, but needs to be used in coroutine environments.</p>
+<h3 id="mutexmutex"><a class="anchor" href="#mutexmutex">#</a>Mutex::Mutex</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Mutex();
+Mutex(Mutex<span style="color:#000;font-weight:bold">&amp;&amp;</span> m);
+Mutex(<span style="color:#000;font-weight:bold">const</span> Mutex<span style="color:#000;font-weight:bold">&amp;</span> m);
+</code></pre></div><ul>
+<li>The first is the default constructor.</li>
+<li>The second is the move constructor. You can put co::Mutex into STL containers.</li>
+<li>The third is the copy constructor, which only increases the internal reference count by one.</li>
+</ul>
+<h3 id="mutexlock"><a class="anchor" href="#mutexlock">#</a>Mutex::lock</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">lock</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Acquire the lock, <strong>must be called in coroutine</strong>.</li>
+<li>It blocks until the lock is acquired.</li>
+</ul>
+<h3 id="mutextry_lock"><a class="anchor" href="#mutextry_lock">#</a>Mutex::try_lock</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">try_lock</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Acquire the lock, will not block. It returns true when the lock is successfully acquired, otherwise it returns false.</li>
+<li>This method can be called anywhere, but it is usually called in coroutine.</li>
+</ul>
+<h3 id="mutexunlock"><a class="anchor" href="#mutexunlock">#</a>Mutex::unlock</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">unlock</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Release the lock, which can be called from anywhere.</li>
+<li>It is usually called in the coroutine that held the lock in a well-designed program.</li>
+</ul>
+<h2 id="comutexguard"><a class="anchor" href="#comutexguard">#</a>co::MutexGuard</h2>
+<h3 id="mutexguardmutexguard"><a class="anchor" href="#mutexguardmutexguard">#</a>MutexGuard::MutexGuard</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">MutexGuard</span>(co<span style="color:#000;font-weight:bold">::</span>Mutex<span style="color:#000;font-weight:bold">&amp;</span> m);
+<span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">MutexGuard</span>(co<span style="color:#000;font-weight:bold">::</span>Mutex<span style="color:#000;font-weight:bold">*</span> m);
+</code></pre></div><ul>
+<li>Constructor, call m.lock() to acquire the lock, the parameter m is a reference or pointer of the <code>co::Mutex</code>.</li>
+</ul>
+<h3 id="mutexguardmutexguard-1"><a class="anchor" href="#mutexguardmutexguard-1">#</a>MutexGuard::~MutexGuard</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>MutexGuard();
+</code></pre></div><ul>
+<li>Destructor, release the lock acquired in the constructor.</li>
+</ul>
+<h3 id="code-example-4"><a class="anchor" href="#code-example-4">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>Mutex mtx;
+<span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f1</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>MutexGuard g(mtx);
+    <span style="color:#000;font-weight:bold">++</span>v;
+}
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f2</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>MutexGuard g(mtx);
+    <span style="color:#000;font-weight:bold">--</span>v;
+}
+
+go(f1);
+go(f2);
+</code></pre></div><h2 id="copool"><a class="anchor" href="#copool">#</a>co::Pool</h2>
+<p><code>co::Pool</code> is a general coroutine pool, which is <strong>coroutine safe</strong>. It stores pointers of type <code>void*</code> internally, which can be used as connection pool, memory pool or cache for other purposes.</p>
+<h3 id="poolpool"><a class="anchor" href="#poolpool">#</a>Pool::Pool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Pool();
+Pool(Pool<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
+Pool(<span style="color:#000;font-weight:bold">const</span> Pool<span style="color:#000;font-weight:bold">&amp;</span> p);
+Pool(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>()<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> ccb, std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> dcb, size_t cap<span style="color:#000;font-weight:bold">=</span>(size_t)<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>
+<p>The first is the default constructor. Compared with the 4th version, ccb and dcb are NULL.</p>
+</li>
+<li>
+<p>The second is the move constructor.</p>
+</li>
+<li>
+<p>The third is the copy constructor, which only increases the internal reference count by one.</p>
+</li>
+<li>
+<p>In the 4th version, the parameter ccb is used to create an element, and dcb is used to destroy an element. The parameter cap specifies the maximum capacity of the pool, and the default is -1 for unlimited.</p>
+</li>
+<li>
+<p>Note that the parameter cap is not the total capacity, but for a single thread. If cap is set to 1024 and there are 8 scheduling threads, the total capacity is 8192. In addition, when dcb is NULL, cap will be ignored. This is because when the number of elements exceeds the maximum capacity, co::Pool needs to call dcb to destroy the extra elements.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">T</span>;
+co<span style="color:#000;font-weight:bold">::</span>Pool p(
+    []() {<span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> T; }, <span style="color:#998;font-style:italic">// ccb
+</span><span style="color:#998;font-style:italic"></span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) {<span style="color:#000;font-weight:bold">delete</span> (T<span style="color:#000;font-weight:bold">*</span>) p;}   <span style="color:#998;font-style:italic">// dcb
+</span><span style="color:#998;font-style:italic"></span>);
+</code></pre></div><h3 id="poolclear"><a class="anchor" href="#poolclear">#</a>Pool::clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Clear all pools in co::Pool, it can be called anywhere.</li>
+<li>If dcb is set, it will be used to destroy the elements in co::Pool.</li>
+</ul>
+<h3 id="poolpop"><a class="anchor" href="#poolpop">#</a>Pool::pop</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">pop</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Pop an element from co::Pool, <strong>it must be called in coroutine</strong>.</li>
+<li>When co::Pool is empty, if ccb is not NULL, call ccb() to create an element, otherwise it will return NULL.</li>
+<li>This method is coroutine safe, and we do not need a lock here.</li>
+</ul>
+<h3 id="poolpush"><a class="anchor" href="#poolpush">#</a>Pool::push</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> e) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>
+<p>Push an element to co::Pool, <strong>it must be called in coroutine</strong>.</p>
+</li>
+<li>
+<p>If e is NULL, it will be ignored.</p>
+</li>
+<li>
+<p>As each thread has its own pool, <strong>push() should be called in the same thread that calls pop()</strong>.</p>
+</li>
+<li>
+<p>If co::Pool has reached the maximum capacity, and dcb is not NULL, <code>dcb(e)</code> will be called to destroy the element.</p>
+</li>
+<li>
+<p>This method is coroutine safe, and we do not need a lock here.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Redis</span>; <span style="color:#998;font-style:italic">// assume class Redis is a connection to the redis server
+</span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>Pool p;
+
+<span style="color:#458;font-weight:bold">void</span> f {
+    Redis<span style="color:#000;font-weight:bold">*</span> rds <span style="color:#000;font-weight:bold">=</span> (Redis<span style="color:#000;font-weight:bold">*</span>) p.pop(); <span style="color:#998;font-style:italic">// pop a redis connection
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">if</span> (rds <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) rds <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> Redis;
+    rds<span style="color:#000;font-weight:bold">-&gt;</span>get(<span style="color:#d14">&#34;xx&#34;</span>);  <span style="color:#998;font-style:italic">// call get() method of redis
+</span><span style="color:#998;font-style:italic"></span>    p.push(rds);     <span style="color:#998;font-style:italic">// push rds back to co::Pool
+</span><span style="color:#998;font-style:italic"></span>}
+
+go(f);
+</code></pre></div><h3 id="poolsize"><a class="anchor" href="#poolsize">#</a>Pool::size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns size of the pool for the current thread.</li>
+<li><strong>It must be called in coroutine.</strong></li>
+</ul>
+<h2 id="copoolguard"><a class="anchor" href="#copoolguard">#</a>co::PoolGuard</h2>
+<p><code>co::PoolGuard</code> pops an element from co::Pool during construction, and puts it back during destruction. At the same time, it also overloads <code>operator-&gt;</code>, so we can use it like a smart pointer.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> D<span style="color:#000;font-weight:bold">=</span>std<span style="color:#000;font-weight:bold">::</span>default_delete<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;&gt;</span>
+<span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">PoolGuard</span>;
+</code></pre></div><ul>
+<li>The parameter T is the actual type pointed to by pointers in co::Pool, and the parameter D is the deleter, which is used to delete a pointer of type <code>T*</code>.</li>
+</ul>
+<h3 id="poolguardpoolguard"><a class="anchor" href="#poolguardpoolguard">#</a>PoolGuard::PoolGuard</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">PoolGuard</span>(co<span style="color:#000;font-weight:bold">::</span>Pool<span style="color:#000;font-weight:bold">&amp;</span> p);
+<span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">PoolGuard</span>(co<span style="color:#000;font-weight:bold">::</span>Pool<span style="color:#000;font-weight:bold">*</span> p);
+</code></pre></div><ul>
+<li>Constructor, pop an element from co::Pool.</li>
+</ul>
+<h3 id="poolguardpoolguard-1"><a class="anchor" href="#poolguardpoolguard-1">#</a>PoolGuard::~PoolGuard</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>PoolGuard();
+</code></pre></div><ul>
+<li>Destructor, push the element back into co::Pool.</li>
+</ul>
+<h3 id="poolguardget"><a class="anchor" href="#poolguardget">#</a>PoolGuard::get</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Get the pointer popped from co::Pool in the constructor.</li>
+</ul>
+<h3 id="poolguardoperator-"><a class="anchor" href="#poolguardoperator-">#</a>PoolGuard::operator-&gt;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Overload <code>operator-&gt;</code>, returns the pointer popped from co::Pool in the constructor.</li>
+</ul>
+<h3 id="poolguardoperator"><a class="anchor" href="#poolguardoperator">#</a>PoolGuard::operator*</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Overload <code>operator*</code>, returns a reference of object of type T.</li>
+</ul>
+<h3 id="poolguardoperator-bool"><a class="anchor" href="#poolguardoperator-bool">#</a>PoolGuard::operator bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Convert co::PoolGuard to bool type, if the internal pointer is not NULL, returns true, otherwise returns false.</li>
+</ul>
+<h3 id="poolguardoperator-1"><a class="anchor" href="#poolguardoperator-1">#</a>PoolGuard::operator!</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Check whether the internal pointer is NULL, return true if it is NULL, otherwise returns false.</li>
+</ul>
+<h3 id="poolguardoperator-2"><a class="anchor" href="#poolguardoperator-2">#</a>PoolGuard::operator==</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Check whether the internal pointer is equal to p.</li>
+</ul>
+<h3 id="poolguardoperator-3"><a class="anchor" href="#poolguardoperator-3">#</a>PoolGuard::operator!=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Check whether the internal pointer is not equal to p.</li>
+</ul>
+<h3 id="poolguardoperator-4"><a class="anchor" href="#poolguardoperator-4">#</a>PoolGuard::operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(T<span style="color:#000;font-weight:bold">*</span> p);
+</code></pre></div><ul>
+<li>Assignment, equivalent to <code>reset(p)</code>.</li>
+</ul>
+<h3 id="poolguardreset"><a class="anchor" href="#poolguardreset">#</a>PoolGuard::reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>(T<span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Reset the internal pointer, and call <code>D()(x)</code> to delete the original pointer.</li>
+</ul>
+<h3 id="code-example-5"><a class="anchor" href="#code-example-5">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Redis</span>; <span style="color:#998;font-style:italic">// assume class Redis is a connection to the redis server
+</span><span style="color:#998;font-style:italic"></span>
+co<span style="color:#000;font-weight:bold">::</span>Pool p(
+    []() {<span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> Redis; }, <span style="color:#998;font-style:italic">// ccb
+</span><span style="color:#998;font-style:italic"></span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) {<span style="color:#000;font-weight:bold">delete</span> (Redis<span style="color:#000;font-weight:bold">*</span>) p;}   <span style="color:#998;font-style:italic">// dcb
+</span><span style="color:#998;font-style:italic"></span>);
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+    co<span style="color:#000;font-weight:bold">::</span>PoolGuard<span style="color:#000;font-weight:bold">&lt;</span>Redis<span style="color:#000;font-weight:bold">&gt;</span> rds(p); <span style="color:#998;font-style:italic">// now rds can be used like a Redis* pointer.
+</span><span style="color:#998;font-style:italic"></span>    rds<span style="color:#000;font-weight:bold">-&gt;</span>get(<span style="color:#d14">&#34;xx&#34;</span>);
+}
+
+go(f);
+</code></pre></div><h3 id="coioevent"><a class="anchor" href="#coioevent">#</a>co::IoEvent</h3>
+<p><code>co::IoEvent</code> is used to <strong>convert non-blocking I/O to synchronous mode</strong>. When users perform an I/O operation on a <strong>non-blocking socket</strong> in <strong>coroutine</strong>, and the socket is unreadable or unwritable, users call the <code>wait()</code> method of co::IoEvent wait for I/O events on the socket, and the coroutine is suspended. When the socket becomes readable or writable, the scheduling thread will resume the coroutine again and continue the I/O operation.</p>
+<p><strong>co 1.x</strong> does not expose the co::IoEvent, as it is only used internally. This class is public in <strong>co 2.0</strong>, which is convenient for users to coroutineize third-party network libraries.</p>
+<h3 id="coio_event_t"><a class="anchor" href="#coio_event_t">#</a>co::io_event_t</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">enum</span> <span style="color:#458;font-weight:bold">io_event_t</span> {
+    ev_read <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>,
+    ev_write <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span>,
+};
+</code></pre></div><ul>
+<li>enum type, which means I/O event type, co::ev_read for read, and co::ev_write for write.</li>
+</ul>
+<h3 id="ioeventioevent"><a class="anchor" href="#ioeventioevent">#</a>IoEvent::IoEvent</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">IoEvent(sock_t fd, io_event_t ev);
+IoEvent(sock_t fd, <span style="color:#458;font-weight:bold">int</span> n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>); <span style="color:#998;font-style:italic">// for windows only
+</span></code></pre></div><ul>
+<li>Constructor, linux and mac platforms only provide the first version, windows platform also provides the second version.</li>
+<li>In the first version, the <strong>parameter fd is a non-blocking socket</strong>, and the parameter ev is an I/O event, which is one of co::ev_read or co::ev_write. Calling the wait() method will wait for the I/O event specified by ev on the socket. When wait() returns successfully, users need to call recv, send or other I/O functions to complete the I/O operation. <strong>On windows, fd must be a TCP socket</strong>(For UDP, it is difficult to simulate the behavior of epoll or kqueue with IOCP).</li>
+<li>The second version is only applicable to windows. Unlike the first version, fd can be a UDP socket, but users must manually call WSARecvFrom, WSASendTo or other functions to post an overlapped I/O operation to IOCP, and then call the wait() method. When wait() returns successfully, it means that IOCP has completed the I/O operation. See details in source code of <a href="https://github.com/idealvin/co/blob/master/include/co/co/io_event.h">co::IoEvent</a>, and implementation of <a href="https://github.com/idealvin/co/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto</a> on windows.</li>
+</ul>
+<h3 id="ioeventioevent-1"><a class="anchor" href="#ioeventioevent-1">#</a>IoEvent::~IoEvent</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>IoEvent();
+</code></pre></div><ul>
+<li>Destructor, remove previously registered I/O events from epoll or kqueue.</li>
+</ul>
+<h3 id="ioeventwait"><a class="anchor" href="#ioeventwait">#</a>IoEvent::wait</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">wait</span>(<span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+</code></pre></div><ul>
+<li>This method waits for I/O events on the socket. The parameter ms is the timeout in milliseconds, the default is -1, which will never time out.</li>
+<li>This method blocks until the I/O event arrives, or timeout or an error occurs.</li>
+<li>This method returns true on success, and returns false when timeout or an error occurs. <code>co::timeout()</code> can be called to check whether it has timed out.</li>
+</ul>
+<h3 id="code-example-6"><a class="anchor" href="#code-example-6">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
+    CHECK(gSched) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
+    co<span style="color:#000;font-weight:bold">::</span>IoEvent ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_read);
+
+    <span style="color:#000;font-weight:bold">do</span> {
+        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> (<span style="color:#458;font-weight:bold">int</span>) CO_RAW_API(recv)(fd, buf, n, <span style="color:#099">0</span>);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">return</span> r;
+
+        <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">==</span> EWOULDBLOCK <span style="color:#000;font-weight:bold">||</span> errno <span style="color:#000;font-weight:bold">==</span> EAGAIN) {
+            <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">!=</span> EINTR) {
+            <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+        }
+    } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
+}
+</code></pre></div><p>The above example is the implementation of <code>co::recv</code>. When the native recv() generates an EWOULDBLOCK or EAGAIN error, use co::IoEvent to wait for the read event. When wait() returns normally, the socket is readable, continue to call the native recv() to complete the read operation .</p>
+<h2 id="use-third-party-network-libraries-in-coroutine"><a class="anchor" href="#use-third-party-network-libraries-in-coroutine">#</a>Use third-party network libraries in coroutine</h2>
+<p>When a third-party network library is used directly in coroutine, it may block the scheduling thread and the scheduling thread will not work normally. There are two ways to solve this problem. The first is to coroutineize third-party libraries, and the second is to hook the system socket APIs.</p>
+<h3 id="coroutineization"><a class="anchor" href="#coroutineization">#</a>Coroutineization</h3>
+<p>Coroutineization requires third-party libraries to provide non-blocking APIs.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(SSL<span style="color:#000;font-weight:bold">*</span> s, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
+    CHECK(co<span style="color:#000;font-weight:bold">::</span>scheduler()) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
+    <span style="color:#458;font-weight:bold">int</span> r, e;
+    <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> SSL_get_fd(s);
+    <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+
+    <span style="color:#000;font-weight:bold">do</span> {
+        ERR_clear_error();
+        r <span style="color:#000;font-weight:bold">=</span> SSL_read(s, buf, n);
+        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> r; <span style="color:#998;font-style:italic">// success
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) {
+            DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;SSL_read return 0, error: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> SSL_get_error(s, <span style="color:#099">0</span>);
+            <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+        }
+ 
+        e <span style="color:#000;font-weight:bold">=</span> SSL_get_error(s, r);
+        <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_READ) {
+            co<span style="color:#000;font-weight:bold">::</span>IoEvent ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_read);
+            <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_WRITE) {
+            co<span style="color:#000;font-weight:bold">::</span>IoEvent ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_write);
+            <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+        } <span style="color:#000;font-weight:bold">else</span> {
+            DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;SSL_read return &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> r <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;, error:&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> e;
+            <span style="color:#000;font-weight:bold">return</span> r;
+        }
+    } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
+}
+</code></pre></div><p>The above is an example of coroutineizing SSL_read in openssl. The whole process is relatively simple. The underlying socket must be non-blocking. When SSL_read generates a <code>SSL_ERROR_WANT_READ</code> error, use co::IoEvent to wait for the read event, and when an <code>SSL_ERROR_WANT_WRITE</code> error occurs, use co::IoEvent to wait for the write event. When wait() returns normally, it means that the socket is readable or writable, continue to call SSL_read to complete the I/O operation.</p>
+<p>At present, CO has successfully coroutineized openssl and libcurl. In theory, all third-party network libraries that provide non-blocking APIs can be coroutineized in a similar way to the above.</p>
+<h3 id="system-api-hook"><a class="anchor" href="#system-api-hook">#</a>System API hook</h3>
+<p>API hook is simply to intercept the system API call. If an API is called in coroutine and a blocking socket is used, the socket is modified to non-blocking mode, and then co::IoEvent or the lower-level interface of CO is used to wait for the I/O event on the socket. When an I/O event arrives, wake up the coroutine to continue the I/O operation.</p>
+<p>Since CO 2.0.1, hook has been supported on Linux, Mac and Windows.</p>
+<p>The advantage of API hook is that, we only need to hook a small number of system socket APIs, and we can use all third-party libraries that provide blocking APIs in coroutine.</p>
+<p>However, coroutineization needs to provide a set of coroutineized APIs for each third-party library, but it has better performance and is safer, and can avoid some problems caused by the complexity of the third-party library.</p>
+<h2 id="network-programming-model-based-on-coroutine"><a class="anchor" href="#network-programming-model-based-on-coroutine">#</a>Network programming model based on coroutine</h2>
+<p>It is easy to write high-concurrency and high-performance network programs with coroutine. Although a coroutine may block, the scheduling thread can quickly switch between a large number of coroutines. Therefore, to achieve high concurrency, we just need to create more coroutines.</p>
+<h3 id="network-model-for-tcp-server"><a class="anchor" href="#network-model-for-tcp-server">#</a>Network model for TCP server</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// recv or send data on the connection
+</span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(<span style="color:#458;font-weight:bold">int</span> fd) {
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        co<span style="color:#000;font-weight:bold">::</span>recv(fd, ...);  <span style="color:#998;font-style:italic">// recv request from client
+</span><span style="color:#998;font-style:italic"></span>        process(...);       <span style="color:#998;font-style:italic">// process the request
+</span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(fd, ...);  <span style="color:#998;font-style:italic">// send response to client
+</span><span style="color:#998;font-style:italic"></span>    }
+}
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">server_fun</span>() {
+    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+        <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>accept(...);
+        <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) go(on_connection, fd);
+    }
+}
+
+go(server_fun);
+</code></pre></div><ul>
+<li>One coroutine for each connection.</li>
+<li>In one coroutine, call <code>co::accept()</code> to accept client connections.</li>
+<li>When a connection is accepted, create a new coroutine to handle the connection.</li>
+<li><code>on_connection()</code> is the coroutine function for handling connections, receiving, processing and sending data are performed in a synchronous manner in the coroutine, and we do not need any asynchronous callback.</li>
+<li>For complete implementation, please refer to <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">Test code in CO</a>.</li>
+</ul>
+<h3 id="network-model-for-tcp-client"><a class="anchor" href="#network-model-for-tcp-client">#</a>Network model for TCP client</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
+    <span style="color:#000;font-weight:bold">while</span> <span style="color:#0086b3">true</span> {
+        <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>connected) co<span style="color:#000;font-weight:bold">::</span>connect(...);  <span style="color:#998;font-style:italic">// connect to the server
+</span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(...);                     <span style="color:#998;font-style:italic">// send request to the server
+</span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>recv(...);                     <span style="color:#998;font-style:italic">// recv response from the server
+</span><span style="color:#998;font-style:italic"></span>        process(...);                      <span style="color:#998;font-style:italic">// process the response
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) co<span style="color:#000;font-weight:bold">::</span>close(...);          <span style="color:#998;font-style:italic">// close the connection
+</span><span style="color:#998;font-style:italic"></span>    }
+}
+
+go(client_fun);
+</code></pre></div><ul>
+<li>
+<p>Connecting, sending, recving and processing data are performed in a synchronous manner in the coroutine.</p>
+</li>
+<li>
+<p>For complete implementation, please refer to <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">Test code in CO</a>.</p>
+</li>
+</ul>
+<p>In actual applications, <strong>co::Pool</strong> is generally used as a connection pool to avoid creating too many connections:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>Pool pool;
+
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
+    <span style="color:#000;font-weight:bold">while</span> <span style="color:#0086b3">true</span> {
+        co<span style="color:#000;font-weight:bold">::</span>PoolGuard<span style="color:#000;font-weight:bold">&lt;</span>Connection<span style="color:#000;font-weight:bold">&gt;</span> conn(pool);  <span style="color:#998;font-style:italic">// get a idle connection from the pool
+</span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>send(...);                       <span style="color:#998;font-style:italic">// send request to the server
+</span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>recv(...);                       <span style="color:#998;font-style:italic">// recv response from the server
+</span><span style="color:#998;font-style:italic"></span>        process(...);                          <span style="color:#998;font-style:italic">// process the response
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) conn<span style="color:#000;font-weight:bold">-&gt;</span>close(...);            <span style="color:#998;font-style:italic">// close the connection
+</span><span style="color:#998;font-style:italic"></span>    }
+}
+
+go(client_fun);
+</code></pre></div><ul>
+<li>co::PoolGuard pops an idle connection from co::Pool during construction, and push it back during destruction.</li>
+</ul>
+<h2 id="configuration"><a class="anchor" href="#configuration">#</a>Configuration</h2>
+<h3 id="co_debug_log"><a class="anchor" href="#co_debug_log">#</a>co_debug_log</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(co_debug_log, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#1 enable debug log for coroutine library&#34;</span>);
+</code></pre></div><ul>
+<li>Print debug logs for coroutine, the default is false.</li>
+</ul>
+<h3 id="co_sched_num"><a class="anchor" href="#co_sched_num">#</a>co_sched_num</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(co_sched_num, os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#d14">&#34;#1 number of coroutine schedulers, default: os::cpunum()&#34;</span>);
+</code></pre></div><ul>
+<li>The number of scheduling threads, the default is the number of system CPU cores. In the current implementation, the largest value is also the number of system CPU cores.</li>
+</ul>
+<h3 id="co_stack_size"><a class="anchor" href="#co_stack_size">#</a>co_stack_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(co_stack_size, <span style="color:#099">1024</span> <span style="color:#000;font-weight:bold">*</span> <span style="color:#099">1024</span>, <span style="color:#d14">&#34;#1 size of the stack shared by coroutines, default: 1M&#34;</span>);
+</code></pre></div><ul>
+<li>The size of the coroutine stack, the default is 1M.</li>
+</ul>
+<h3 id="disable_hook_sleep"><a class="anchor" href="#disable_hook_sleep">#</a>disable_hook_sleep</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(disable_hook_sleep, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#1 disable hook sleep if true&#34;</span>);
+</code></pre></div><ul>
+<li>Disable hook for sleep related APIs, the default is false.</li>
+</ul>
+<h3 id="hook_log"><a class="anchor" href="#hook_log">#</a>hook_log</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(hook_log, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#1 enable log for hook if true&#34;</span>);
+</code></pre></div><ul>
+<li>Print logs for hook, the default is false.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/coroutine/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/10d4fdb40ec891b00d7a399766ad93022312ed01" title='Last modified by idealvin | October 4, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>October 4, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/coroutine.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a></li>
+        <li><a href="#coroutine-api">Coroutine API</a>
+          <ul>
+            <li><a href="#coinit">co::init</a></li>
+            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#go">go</a></li>
+            <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
+            <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#conext_scheduler">co::next_scheduler</a></li>
+            <li><a href="#coscheduler_num">co::scheduler_num</a></li>
+            <li><a href="#coscheduler_id">co::scheduler_id</a></li>
+            <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
+            <li><a href="#cosleep">co::sleep</a></li>
+            <li><a href="#costop">co::stop</a></li>
+            <li><a href="#cotimeout">co::timeout</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#coroutineized-socket-api">Coroutineized socket API</a>
+          <ul>
+            <li><a href="#terminology-convention">Terminology convention</a></li>
+            <li><a href="#cosocket">co::socket</a></li>
+            <li><a href="#coaccept">co::accept</a></li>
+            <li><a href="#cobind">co::bind</a></li>
+            <li><a href="#coclose">co::close</a></li>
+            <li><a href="#coconnect">co::connect</a></li>
+            <li><a href="#colisten">co::listen</a></li>
+            <li><a href="#corecv">co::recv</a></li>
+            <li><a href="#corecvn">co::recvn</a></li>
+            <li><a href="#corecvfrom">co::recvfrom</a></li>
+            <li><a href="#cosend">co::send</a></li>
+            <li><a href="#cosendto">co::sendto</a></li>
+            <li><a href="#coshutdown">co::shutdown</a></li>
+            <li><a href="#coerror">co::error</a></li>
+            <li><a href="#costrerror">co::strerror</a></li>
+            <li><a href="#coset_error">co::set_error</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#cogetsockopt">co::getsockopt</a></li>
+            <li><a href="#cosetsockopt">co::setsockopt</a></li>
+            <li><a href="#coset_nonblock">co::set_nonblock</a></li>
+            <li><a href="#coset_reuseaddr">co::set_reuseaddr</a></li>
+            <li><a href="#coset_recv_buffer_size">co::set_recv_buffer_size</a></li>
+            <li><a href="#coset_send_buffer_size">co::set_send_buffer_size</a></li>
+            <li><a href="#coset_tcp_keepalive">co::set_tcp_keepalive</a></li>
+            <li><a href="#coset_tcp_nodelay">co::set_tcp_nodelay</a></li>
+            <li><a href="#coreset_tcp_socket">co::reset_tcp_socket</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#coinit_ip_addr">co::init_ip_addr</a></li>
+            <li><a href="#coip_str">co::ip_str</a></li>
+            <li><a href="#coto_string">co::to_string</a></li>
+            <li><a href="#copeer">co::peer</a></li>
+          </ul>
+        </li>
+        <li><a href="#cochan">co::Chan</a>
+          <ul>
+            <li><a href="#chanchan">Chan::Chan</a></li>
+            <li><a href="#operator">operator&laquo;</a></li>
+            <li><a href="#operator-1">operator&raquo;</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#coevent">co::Event</a>
+          <ul>
+            <li><a href="#eventevent">Event::Event</a></li>
+            <li><a href="#eventsignal">Event::signal</a></li>
+            <li><a href="#eventwait">Event::wait</a></li>
+            <li><a href="#code-example-2">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#cowaitgroup">co::WaitGroup</a>
+          <ul>
+            <li><a href="#waitgroupwaitgroup">WaitGroup::WaitGroup</a></li>
+            <li><a href="#waitgroupadd">WaitGroup::add</a></li>
+            <li><a href="#waitgroupdone">WaitGroup::done</a></li>
+            <li><a href="#waitgroupwait">WaitGroup::wait</a></li>
+            <li><a href="#code-example-3">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#comutex">co::Mutex</a>
+          <ul>
+            <li><a href="#mutexmutex">Mutex::Mutex</a></li>
+            <li><a href="#mutexlock">Mutex::lock</a></li>
+            <li><a href="#mutextry_lock">Mutex::try_lock</a></li>
+            <li><a href="#mutexunlock">Mutex::unlock</a></li>
+          </ul>
+        </li>
+        <li><a href="#comutexguard">co::MutexGuard</a>
+          <ul>
+            <li><a href="#mutexguardmutexguard">MutexGuard::MutexGuard</a></li>
+            <li><a href="#mutexguardmutexguard-1">MutexGuard::~MutexGuard</a></li>
+            <li><a href="#code-example-4">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#copool">co::Pool</a>
+          <ul>
+            <li><a href="#poolpool">Pool::Pool</a></li>
+            <li><a href="#poolclear">Pool::clear</a></li>
+            <li><a href="#poolpop">Pool::pop</a></li>
+            <li><a href="#poolpush">Pool::push</a></li>
+            <li><a href="#poolsize">Pool::size</a></li>
+          </ul>
+        </li>
+        <li><a href="#copoolguard">co::PoolGuard</a>
+          <ul>
+            <li><a href="#poolguardpoolguard">PoolGuard::PoolGuard</a></li>
+            <li><a href="#poolguardpoolguard-1">PoolGuard::~PoolGuard</a></li>
+            <li><a href="#poolguardget">PoolGuard::get</a></li>
+            <li><a href="#poolguardoperator-">PoolGuard::operator-&gt;</a></li>
+            <li><a href="#poolguardoperator">PoolGuard::operator*</a></li>
+            <li><a href="#poolguardoperator-bool">PoolGuard::operator bool</a></li>
+            <li><a href="#poolguardoperator-1">PoolGuard::operator!</a></li>
+            <li><a href="#poolguardoperator-2">PoolGuard::operator==</a></li>
+            <li><a href="#poolguardoperator-3">PoolGuard::operator!=</a></li>
+            <li><a href="#poolguardoperator-4">PoolGuard::operator=</a></li>
+            <li><a href="#poolguardreset">PoolGuard::reset</a></li>
+            <li><a href="#code-example-5">Code example</a></li>
+            <li><a href="#coioevent">co::IoEvent</a></li>
+            <li><a href="#coio_event_t">co::io_event_t</a></li>
+            <li><a href="#ioeventioevent">IoEvent::IoEvent</a></li>
+            <li><a href="#ioeventioevent-1">IoEvent::~IoEvent</a></li>
+            <li><a href="#ioeventwait">IoEvent::wait</a></li>
+            <li><a href="#code-example-6">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#use-third-party-network-libraries-in-coroutine">Use third-party network libraries in coroutine</a>
+          <ul>
+            <li><a href="#coroutineization">Coroutineization</a></li>
+            <li><a href="#system-api-hook">System API hook</a></li>
+          </ul>
+        </li>
+        <li><a href="#network-programming-model-based-on-coroutine">Network programming model based on coroutine</a>
+          <ul>
+            <li><a href="#network-model-for-tcp-server">Network model for TCP server</a></li>
+            <li><a href="#network-model-for-tcp-client">Network model for TCP client</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuration">Configuration</a>
+          <ul>
+            <li><a href="#co_debug_log">co_debug_log</a></li>
+            <li><a href="#co_sched_num">co_sched_num</a></li>
+            <li><a href="#co_stack_size">co_stack_size</a></li>
+            <li><a href="#disable_hook_sleep">disable_hook_sleep</a></li>
+            <li><a href="#hook_log">hook_log</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

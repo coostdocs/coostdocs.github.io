@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/log.h.
+#Basic introduction co/log is a C&#43;&#43; streaming log library similar to google glog, which prints logs like this:
+LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; co/log divides logs into five levels: debug, info, warning, error, fatal, and provides a series of macros for printing logs of different levels. Printing the fatal level log will terminate the program, and co/log will also print the stack information before the program exits.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="co/log" />
+<meta property="og:description" content="include: co/log.h.
+#Basic introduction co/log is a C&#43;&#43; streaming log library similar to google glog, which prints logs like this:
+LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; co/log divides logs into five levels: debug, info, warning, error, fatal, and provides a series of macros for printing logs of different levels. Printing the fatal level log will terminate the program, and co/log will also print the stack information before the program exits." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/log/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+
+<title>co/log | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/log/" title="日志">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class=" active">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>co/log</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-introduction">Basic introduction</a></li>
+        <li><a href="#initialize-and-close-the-log-system">Initialize and close the log system</a>
+          <ul>
+            <li><a href="#loginit">log::init</a></li>
+            <li><a href="#logexit">log::exit</a></li>
+            <li><a href="#logclose">log::close</a></li>
+            <li><a href="#logset_write_cb">log::set_write_cb</a></li>
+            <li><a href="#logset_single_write_cb">log::set_single_write_cb</a></li>
+          </ul>
+        </li>
+        <li><a href="#printing-logs">Printing logs</a>
+          <ul>
+            <li><a href="#basic-usages">Basic usages</a></li>
+            <li><a href="#condition-log">Condition Log</a></li>
+            <li><a href="#print-log-every-n-entries">Print log every N entries</a></li>
+            <li><a href="#print-the-first-n-logs">Print the first N logs</a></li>
+          </ul>
+        </li>
+        <li><a href="#check-assertion">CHECK Assertion</a></li>
+        <li><a href="#stack-trace">Stack trace</a></li>
+        <li><a href="#configuration">Configuration</a>
+          <ul>
+            <li><a href="#log_dir">log_dir</a></li>
+            <li><a href="#log_file_name">log_file_name</a></li>
+            <li><a href="#min_log_level">min_log_level</a></li>
+            <li><a href="#max_log_size">max_log_size</a></li>
+            <li><a href="#max_log_file_size">max_log_file_size</a></li>
+            <li><a href="#max_log_file_num">max_log_file_num</a></li>
+            <li><a href="#max_log_buffer_size">max_log_buffer_size</a></li>
+            <li><a href="#log_flush_ms">log_flush_ms</a></li>
+            <li><a href="#cout">cout</a></li>
+            <li><a href="#also_log_to_local">also_log_to_local</a></li>
+          </ul>
+        </li>
+        <li><a href="#log-file">Log file</a>
+          <ul>
+            <li><a href="#log-organization">Log Organization</a></li>
+            <li><a href="#log-format">Log format</a></li>
+            <li><a href="#view-logs">View logs</a></li>
+          </ul>
+        </li>
+        <li><a href="#build-and-run-the-colog-test-program">Build and run the co/log test program</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/log.h">co/log.h</a>.</p>
+<h2 id="basic-introduction"><a class="anchor" href="#basic-introduction">#</a>Basic introduction</h2>
+<p><code>co/log</code> is a C++ streaming log library similar to <a href="https://github.com/google/glog">google glog</a>, which prints logs like this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+</code></pre></div><p>co/log divides logs into five levels: debug, info, warning, error, fatal, and provides a series of macros for printing logs of different levels. <strong>Printing the fatal level log will terminate the program</strong>, and co/log will also print the stack information before the program exits.</p>
+<p>co/log uses an asynchronous implementation. The log is first written to the cache, and after a certain amount or more than a certain period of time, the background thread writes all data in the cache to the file at a time. The performance is improved by about 20 to 150 times compared with glog on different platforms. The following table shows the test results of printing 1 million info logs (about 50 bytes each) by a single-thread on different platforms:</p>
+<table>
+<thead>
+<tr>
+<th>log vs glog</th>
+<th>google glog</th>
+<th>co/log</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>win2012 HHD</td>
+<td>1.6MB/s</td>
+<td>180MB/s</td>
+</tr>
+<tr>
+<td>win10 SSD</td>
+<td>3.7MB/s</td>
+<td>560MB/s</td>
+</tr>
+<tr>
+<td>mac SSD</td>
+<td>17MB/s</td>
+<td>450MB/s</td>
+</tr>
+<tr>
+<td>linux SSD</td>
+<td>54MB/s</td>
+<td>1023MB/s</td>
+</tr>
+</tbody>
+</table>
+<h2 id="initialize-and-close-the-log-system"><a class="anchor" href="#initialize-and-close-the-log-system">#</a>Initialize and close the log system</h2>
+<h3 id="loginit"><a class="anchor" href="#loginit">#</a>log::init</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>();
+</code></pre></div><ul>
+<li>
+<p>This function initializes the log library and starts the log thread. It needs to be called once at the beginning of the main function.</p>
+</li>
+<li>
+<p>This function adds multi-thread protection internally, and it is safe to call this function multiple times.</p>
+</li>
+<li>
+<p>co/log depends on <a href="../flag/">co/flag</a>, you need to call <code>flag::init()</code> before calling this function.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    log<span style="color:#000;font-weight:bold">::</span>init();
+}
+</code></pre></div><h3 id="logexit"><a class="anchor" href="#logexit">#</a>log::exit</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+</code></pre></div><ul>
+<li>The above 2 functions are equal, which write logs in the cache to a file and exit the log thread.</li>
+<li>When the program exits normally, co/log will automatically call this function.</li>
+<li>It is safe to call this function multiple times.</li>
+<li>co/log internally captures signals such as <code>SIGINT, SIGTERM, SIGQUIT</code>, and calls this function before the program exits.</li>
+</ul>
+<h3 id="logclose"><a class="anchor" href="#logclose">#</a>log::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</code></pre></div><ul>
+<li>The same as <code>log::exit()</code>.</li>
+</ul>
+<h3 id="logset_write_cb"><a class="anchor" href="#logset_write_cb">#</a>log::set_write_cb</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb);
+</code></pre></div><ul>
+<li>By default, co/log writes logs to a local file. Users can set a callback to write logs to different destinations through this API.</li>
+<li>The callback has 2 parameters, a pointer to the log buffer and its length. The buffer may contain more than one logs.</li>
+<li>Once a callback is set, co/log will stop writing logs to the local file, which can be changed by setting the config item <code>also_log_to_local</code> to true.</li>
+</ul>
+<h3 id="logset_single_write_cb"><a class="anchor" href="#logset_single_write_cb">#</a>log::set_single_write_cb</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_single_write_cb</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb);
+</code></pre></div><ul>
+<li>Similar to <code>log::set_write_cb()</code>, but only writes a single log each time.</li>
+<li>It may be useful when users want to send logs by UDP.</li>
+</ul>
+<h2 id="printing-logs"><a class="anchor" href="#printing-logs">#</a>Printing logs</h2>
+<h3 id="basic-usages"><a class="anchor" href="#basic-usages">#</a>Basic usages</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG  if (FLG_min_log_level &lt;= log::xx::debug)   _DLOG_STREAM
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG   if (FLG_min_log_level &lt;= log::xx::info)     _LOG_STREAM
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG  if (FLG_min_log_level &lt;= log::xx::warning) _WLOG_STREAM
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG  if (FLG_min_log_level &lt;= log::xx::error)   _ELOG_STREAM
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define FLOG  _FLOG_STREAM &lt;&lt; &#34;fatal error! &#34;
+</span></code></pre></div><ul>
+<li>
+<p>The above 5 macros DLOG, LOG, WLOG, ELOG, FLOG are used to print 5 levels of logs respectively, they are <strong>thread safe</strong>.</p>
+</li>
+<li>
+<p>These macros are actually references to <a href="../fastream/">fastream</a>, so any type supported by <code>fastream::operator&lt;&lt;</code> can be printed.</p>
+</li>
+<li>
+<p>These macros will automatically add a &lsquo;\n&rsquo; at the end of each log, and users do not need to manually enter a newline character.</p>
+</li>
+<li>
+<p>The first 4 types will only print the log when the <code>FLG_min_log_level</code> is not greater than the current log level. The user can set FLG_min_log_level to a larger value to disable low-level logs.</p>
+</li>
+<li>
+<p>Print the fatal level log, which means that the program has a fatal error. The log library will print the function call stack information of the current thread and terminate the program.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+WLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+ELOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+FLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is FATAL log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+</code></pre></div><h3 id="condition-log"><a class="anchor" href="#condition-log">#</a>Condition Log</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_IF(cond) if (cond) DLOG
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_IF(cond) if (cond) LOG
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_IF(cond) if (cond) WLOG
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_IF(cond) if (cond) ELOG
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define FLOG_IF(cond) if (cond) FLOG
+</span></code></pre></div><ul>
+<li>
+<p>The above 5 macros accept a conditional parameter cond, and only print the log when cond is true.</p>
+</li>
+<li>
+<p>The parameter cond can be any expression whose value is of type bool.</p>
+</li>
+<li>
+<p>Since the condition is judged in the first place, even if the log of the corresponding level is disabled, these macros will ensure that the cond expression is executed.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
+DLOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+ LOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+WLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+ELOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+FLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+</code></pre></div><h3 id="print-log-every-n-entries"><a class="anchor" href="#print-log-every-n-entries">#</a>Print log every N entries</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
+</span></code></pre></div><ul>
+<li>
+<p>The above macro prints the log once every n entries, internally counted by <a href="../atomic/">atomic operation</a>, which is <strong>thread safe</strong>.</p>
+</li>
+<li>
+<p>The parameter n must be an integer greater than 0, and generally should not exceed the maximum value of the int type.</p>
+</li>
+<li>
+<p>When the parameter n is a power of 2, the log will be printed exactly once every n entries, otherwise there may be very few cases when it is not printed once every n entries.</p>
+</li>
+<li>
+<p>The first log will always be printed.</p>
+</li>
+<li>
+<p>The program will terminate as soon as the fatal log is printed, so FLOG_EVERY_N is not provided.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// Print every 32 items (1,33,65...)
+</span><span style="color:#998;font-style:italic"></span>DLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+LOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+WLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+ELOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+</code></pre></div><h3 id="print-the-first-n-logs"><a class="anchor" href="#print-the-first-n-logs">#</a>Print the first N logs</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
+</span></code></pre></div><ul>
+<li>
+<p>The above macro prints the first n logs, internally counted by <a href="../atomic/">atomic operation</a>, which is <strong>thread safe</strong>.</p>
+</li>
+<li>
+<p>The parameter n is an integer not less than 0 (no log will be printed when it is equal to 0). Generally, it should not exceed the maximum value of the int type.</p>
+</li>
+<li>
+<p>In general, do not use complex expressions for the parameter n.</p>
+</li>
+<li>
+<p>The program will terminate as soon as the fatal log is printed, so FLOG_FIRST_N is not provided.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// print the first 10 logs
+</span><span style="color:#998;font-style:italic"></span>DLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+LOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+WLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+ELOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+</code></pre></div><h2 id="check-assertion"><a class="anchor" href="#check-assertion">#</a>CHECK Assertion</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK(cond) \
+</span><span style="color:#999;font-weight:bold;font-style:italic">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#cond &#34;!&#34;
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NOTNULL(p) \
+</span><span style="color:#999;font-weight:bold;font-style:italic">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#p&#34; mustn&#39;t be NULL! &#34;
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
+</span></code></pre></div><ul>
+<li>
+<p>The above macros can be regarded as an enhanced version of assert, and they will not be cleared in DEBUG mode.</p>
+</li>
+<li>
+<p>These macros are similar to <code>FLOG</code> and can print fatal level logs.</p>
+</li>
+<li>
+<p><code>CHECK</code> asserts that the condition cond is true, and cond can be any expression with a value of type bool.</p>
+</li>
+<li>
+<p><code>CHECK_NOTNULL</code> asserts that the pointer is not NULL.</p>
+</li>
+<li>
+<p><code>CHECK_EQ</code> asserts <code>a == b</code>.</p>
+</li>
+<li>
+<p><code>CHECK_NE</code> asserts <code>a != b</code>.</p>
+</li>
+<li>
+<p><code>CHECK_GE</code> asserts <code>a &gt;= b</code>.</p>
+</li>
+<li>
+<p><code>CHECK_LE</code> asserts <code>a &lt;= b</code>.</p>
+</li>
+<li>
+<p><code>CHECK_GT</code> asserts <code>a &gt; b</code>.</p>
+</li>
+<li>
+<p><code>CHECK_LT</code> asserts <code>a &lt; b</code>.</p>
+</li>
+<li>
+<p>It is generally recommended to use <code>CHECK_XX(a, b)</code> first, they provide more information than <code>CHECK(cond)</code>, and will print out the values of parameters a and b.</p>
+</li>
+<li>
+<p>Types not supported by <code>fastream::operator&lt;&lt;</code>, such as iterator type of STL containers, cannot use the <code>CHECK_XX(a, b)</code> macros.</p>
+</li>
+<li>
+<p>When the assertion fails, the log library first calls <code>log::close()</code>, then prints the function call stack information of the current thread, and then exits the program.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
+CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;
+CHECK_NE(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>; <span style="color:#998;font-style:italic">// s != -1
+</span><span style="color:#998;font-style:italic"></span>CHECK_GE(s, <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;  <span style="color:#998;font-style:italic">// s &gt;= 0
+</span><span style="color:#998;font-style:italic"></span>CHECK_GT(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>; <span style="color:#998;font-style:italic">// s &gt; -1
+</span><span style="color:#998;font-style:italic"></span>
+std<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m;
+<span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">3</span>);
+CHECK(it <span style="color:#000;font-weight:bold">!=</span> m.end()); <span style="color:#998;font-style:italic">// Cannot use CHECK_NE(it, m.end()), the compiler will report an error
+</span></code></pre></div><h2 id="stack-trace"><a class="anchor" href="#stack-trace">#</a>Stack trace</h2>
+<p><code>co/log</code> will print the function call stack when <code>CHECK</code> assertion failed, or an abnormal signal like <code>SIGSEGV</code> was caught. See details below:</p>
+<p><img src="https://idealvin.github.io/images/stack.png" alt="stack" />(<a href="https://asciinema.org/a/435894">https://asciinema.org/a/435894</a>)</p>
+<p>On linux and macosx, <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a> is required, make sure you have installed it on your system. On linux, <code>libbacktrace</code> may have been installed within a newer version of gcc. You may find it in a directory like <code>/usr/lib/gcc/x86_64-linux-gnu/9</code>. Otherwise, you can install it by yourself as follow:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">git clone https://github.com/ianlancetaylor/libbacktrace.git
+<span style="color:#0086b3">cd</span> libbacktrace-master
+./configure
+make -j8
+sudo make install
+</code></pre></div><h2 id="configuration"><a class="anchor" href="#configuration">#</a>Configuration</h2>
+<h3 id="log_dir"><a class="anchor" href="#log_dir">#</a>log_dir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(log_dir, <span style="color:#d14">&#34;logs&#34;</span>, <span style="color:#d14">&#34;#0 log dir, will be created if not exists&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the log directory. The default is the <code>logs</code> directory under the current directory. If it does not exist, it will be created automatically.</li>
+<li>log_dir can be an absolute path or a relative path, and the path separator can be either &lsquo;/&rsquo; or &lsquo;'. It is generally recommended to use &lsquo;/&rsquo;.</li>
+<li>When the program starts, make sure that the current user has sufficient permissions, otherwise the creation of the log directory may fail.</li>
+</ul>
+<h3 id="log_file_name"><a class="anchor" href="#log_file_name">#</a>log_file_name</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(log_file_name, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;#0 name of log file, using exename if empty&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the log file name (without path), the default is empty, use the program name (<code>.exe</code> at the end will be removed), for example, the log file name corresponding to program xx or xx.exe is xx .log.</li>
+<li>If the log file name does not end with <code>.log</code>, co/log automatically adds <code>.log</code> to the end of it.</li>
+</ul>
+<h3 id="min_log_level"><a class="anchor" href="#min_log_level">#</a>min_log_level</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_int32(min_log_level, <span style="color:#099">0</span>, <span style="color:#d14">&#34;#0 write logs at or above this level, 0-4 (debug|info|warning|error|fatal)&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the minimum level of logs to be printed, which can be used to disable low-level logs, the default is 0, and all levels of logs are printed.</li>
+</ul>
+<h3 id="max_log_size"><a class="anchor" href="#max_log_size">#</a>max_log_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_int32(max_log_size, <span style="color:#099">4096</span>, <span style="color:#d14">&#34;#0 max size of a single log&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the maximum size of a single log, the default is 4k. A log will be truncated if its size is larger than this value.</li>
+<li>This value cannot exceed half of <strong>max_log_buffer_size</strong>.</li>
+</ul>
+<h3 id="max_log_file_size"><a class="anchor" href="#max_log_file_size">#</a>max_log_file_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_int64(max_log_file_size, <span style="color:#099">256</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#0 max size of log file, default: 256MB&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the maximum size of a log file. The default is 256M. If this size is exceeded, a new log file will be generated, and the old log file will be renamed.</li>
+</ul>
+<h3 id="max_log_file_num"><a class="anchor" href="#max_log_file_num">#</a>max_log_file_num</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(max_log_file_num, <span style="color:#099">8</span>, <span style="color:#d14">&#34;#0 max number of log files&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the maximum number of log files. The default is 8. If this value is exceeded, old log files will be deleted.</li>
+</ul>
+<h3 id="max_log_buffer_size"><a class="anchor" href="#max_log_buffer_size">#</a>max_log_buffer_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(max_log_buffer_size, <span style="color:#099">32</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#0 max size of log buffer, default: 32MB&#34;</span>);
+</code></pre></div><ul>
+<li>Specify the maximum size of the log cache. The default is 32M. If this value is exceeded, about half of the logs will be lost.</li>
+</ul>
+<h3 id="log_flush_ms"><a class="anchor" href="#log_flush_ms">#</a>log_flush_ms</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(log_flush_ms, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#0 flush the log buffer every n ms&#34;</span>);
+</code></pre></div><ul>
+<li>The time interval for the background thread to flush the log cache to the file, in milliseconds.</li>
+</ul>
+<h3 id="cout"><a class="anchor" href="#cout">#</a>cout</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(cout, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#0 also logging to terminal&#34;</span>);
+</code></pre></div><ul>
+<li>Terminal log switch, the default is false. If true, logs will also be printed to the terminal.</li>
+</ul>
+<h3 id="also_log_to_local"><a class="anchor" href="#also_log_to_local">#</a>also_log_to_local</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(also_log_to_local, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#0 if true, also log to local file when write-cb is set&#34;</span>);
+</code></pre></div><ul>
+<li>If the value is true, also write logs to a local file when a write_cb has been set.</li>
+</ul>
+<h2 id="log-file"><a class="anchor" href="#log-file">#</a>Log file</h2>
+<h3 id="log-organization"><a class="anchor" href="#log-organization">#</a>Log Organization</h3>
+<p>co/log will record all levels of logs in the same file. By default, the program name is used as the log file name. For example, the log file of process xx is xx.log. When the log file reaches the maximum size (FLG_max_log_file_size), co/log will rename the log file and generate a new file. The log directory may contain the following files:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xx.log  xx_1.log  xx_2.log  xx_3.log
+</code></pre></div><p><code>xx.log</code> is always the latest log file. For other files, the smaller the number in the file name, the newer the log. When the number in the file name reaches the maximum number of files (FLG_max_log_file_num), co/log will delete the file.</p>
+<p><code>fatal</code> level logs will be additionally recorded in the <code>xx.fatal</code> file, <strong>co/log will not rename or delete the fatal log file</strong>.</p>
+<h3 id="log-format"><a class="anchor" href="#log-format">#</a>Log format</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">I0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
+D0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:12<span style="color:#000;font-weight:bold">]</span> hello world
+W0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:13<span style="color:#000;font-weight:bold">]</span> hello world
+E0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:14<span style="color:#000;font-weight:bold">]</span> hello world
+F0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:15<span style="color:#000;font-weight:bold">]</span> hello world
+</code></pre></div><ul>
+<li>In the above example, each line corresponds to one log.</li>
+<li>The first letter of each log is the log level, <code>I</code> means info, <code>D</code> means debug, <code>W</code> means warning, <code>E</code> means error, and <code>F</code> means fatal.</li>
+<li>After the level is the time, from month to milliseconds. The year is not printed. The time of the log is not the time when it is generated, but the time when it is written to the cache, as we must ensure that the logs in the log file are strictly sorted by time.</li>
+<li>After the time is the thread id, 1045 above is the thread id.</li>
+<li>The thread id is followed by the file and line number of the log code.</li>
+<li>After the line number is <code>] </code>, that is, a space after <code>]</code>.</li>
+<li>following the <code>] </code>，is the log content by the user.</li>
+</ul>
+<h3 id="view-logs"><a class="anchor" href="#view-logs">#</a>View logs</h3>
+<p>On linux or mac, <code>grep</code>, <code>tail</code> and other commands can be used to view the logs.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">grep ^E xx.log
+tail -F xx.log
+tail -F xx.log | grep ^E
+</code></pre></div><ul>
+<li>The first line uses <code>grep</code> to filter out the error logs in the file, <code>^E</code> means starts with the letter <code>E</code>.</li>
+<li>The second line uses the <code>tail -F</code> command to dynamically track the log file, here we should use the uppercase <code>F</code>, because xx.log may be renamed, and then generate a new xx.log file, <code>-F</code> make sure to follow the latest file by the name.</li>
+<li>In line 3, use <code>tail -F</code> in conjunction with <code>grep</code> to dynamically track the error logs in the log file.</li>
+</ul>
+<h2 id="build-and-run-the-colog-test-program"><a class="anchor" href="#build-and-run-the-colog-test-program">#</a>Build and run the co/log test program</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xmake -b log                    <span style="color:#998;font-style:italic"># build log or log.exe</span>
+xmake r log                     <span style="color:#998;font-style:italic"># run log or log.exe</span>
+xmake r log -cout               <span style="color:#998;font-style:italic"># also log to terminal</span>
+xmake r log -min_log_level<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>    <span style="color:#998;font-style:italic"># 0-4: debug,info,warning,error,fatal</span>
+xmake r log -perf               <span style="color:#998;font-style:italic"># performance test</span>
+</code></pre></div><ul>
+<li>Run <code>xmake -b log</code> in the co root directory to compile <a href="https://github.com/idealvin/co/blob/master/test/log.cc">test/log.cc</a>, and a binary program named log or log.exe will be generated.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/log/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='Last modified by idealvin | November 6, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>November 6, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/log.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-introduction">Basic introduction</a></li>
+        <li><a href="#initialize-and-close-the-log-system">Initialize and close the log system</a>
+          <ul>
+            <li><a href="#loginit">log::init</a></li>
+            <li><a href="#logexit">log::exit</a></li>
+            <li><a href="#logclose">log::close</a></li>
+            <li><a href="#logset_write_cb">log::set_write_cb</a></li>
+            <li><a href="#logset_single_write_cb">log::set_single_write_cb</a></li>
+          </ul>
+        </li>
+        <li><a href="#printing-logs">Printing logs</a>
+          <ul>
+            <li><a href="#basic-usages">Basic usages</a></li>
+            <li><a href="#condition-log">Condition Log</a></li>
+            <li><a href="#print-log-every-n-entries">Print log every N entries</a></li>
+            <li><a href="#print-the-first-n-logs">Print the first N logs</a></li>
+          </ul>
+        </li>
+        <li><a href="#check-assertion">CHECK Assertion</a></li>
+        <li><a href="#stack-trace">Stack trace</a></li>
+        <li><a href="#configuration">Configuration</a>
+          <ul>
+            <li><a href="#log_dir">log_dir</a></li>
+            <li><a href="#log_file_name">log_file_name</a></li>
+            <li><a href="#min_log_level">min_log_level</a></li>
+            <li><a href="#max_log_size">max_log_size</a></li>
+            <li><a href="#max_log_file_size">max_log_file_size</a></li>
+            <li><a href="#max_log_file_num">max_log_file_num</a></li>
+            <li><a href="#max_log_buffer_size">max_log_buffer_size</a></li>
+            <li><a href="#log_flush_ms">log_flush_ms</a></li>
+            <li><a href="#cout">cout</a></li>
+            <li><a href="#also_log_to_local">also_log_to_local</a></li>
+          </ul>
+        </li>
+        <li><a href="#log-file">Log file</a>
+          <ul>
+            <li><a href="#log-organization">Log Organization</a></li>
+            <li><a href="#log-format">Log format</a></li>
+            <li><a href="#view-logs">View logs</a></li>
+          </ul>
+        </li>
+        <li><a href="#build-and-run-the-colog-test-program">Build and run the co/log test program</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

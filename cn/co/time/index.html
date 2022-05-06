@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/time.h.
+#epoch time epoch 是一个特定的时刻 1970-01-01 00:00:00 UTC，epoch time 是从 epoch 时刻开始的时间，它受系统时间影响。
+#epoch::ms int64 ms();  返回自 epoch 到当前时刻的时间，单位为毫秒。  #epoch::us int64 us();  返回自 epoch 到当前时刻的时间，单位为微秒。  #monotonic time monotonic time 是单调递增时间，大多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。
+#now::ms int64 ms();  返回一个单调递增的时间戳，单位为毫秒。 在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::ms()。  #now::us int64 us();   返回一个单调递增的时间戳，单位为微秒。
+  在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::us()。
+  示例
+  int64 beg = now::us(); int64 end = now::us(); LOG &lt;&lt; &#34;time used: &#34; &lt;&lt; (end - beg) &lt;&lt; &#34; us&#34;; #时间字符串(now::str) // fm: 时间输出格式 fastring str(const char* fm=&#34;%Y-%m-%d %H:%M:%S&#34;);   此函数以指定格式返回当前系统时间的字符串形式，它基于 strftime 实现。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="时间" />
+<meta property="og:description" content="include: co/time.h.
+#epoch time epoch 是一个特定的时刻 1970-01-01 00:00:00 UTC，epoch time 是从 epoch 时刻开始的时间，它受系统时间影响。
+#epoch::ms int64 ms();  返回自 epoch 到当前时刻的时间，单位为毫秒。  #epoch::us int64 us();  返回自 epoch 到当前时刻的时间，单位为微秒。  #monotonic time monotonic time 是单调递增时间，大多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。
+#now::ms int64 ms();  返回一个单调递增的时间戳，单位为毫秒。 在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::ms()。  #now::us int64 us();   返回一个单调递增的时间戳，单位为微秒。
+  在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::us()。
+  示例
+  int64 beg = now::us(); int64 end = now::us(); LOG &lt;&lt; &#34;time used: &#34; &lt;&lt; (end - beg) &lt;&lt; &#34; us&#34;; #时间字符串(now::str) // fm: 时间输出格式 fastring str(const char* fm=&#34;%Y-%m-%d %H:%M:%S&#34;);   此函数以指定格式返回当前系统时间的字符串形式，它基于 strftime 实现。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/time/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-02T00:06:00+08:00" />
+
+<title>时间 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/time/" title="Time">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class=" active">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>时间</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#epoch-time">epoch time</a>
+          <ul>
+            <li><a href="#epochms">epoch::ms</a></li>
+            <li><a href="#epochus">epoch::us</a></li>
+          </ul>
+        </li>
+        <li><a href="#monotonic-time">monotonic time</a>
+          <ul>
+            <li><a href="#nowms">now::ms</a></li>
+            <li><a href="#nowus">now::us</a></li>
+          </ul>
+        </li>
+        <li><a href="#时间字符串nowstr">时间字符串(now::str)</a></li>
+        <li><a href="#sleep">sleep</a>
+          <ul>
+            <li><a href="#sleepms">sleep::ms</a></li>
+            <li><a href="#sleepsec">sleep::sec</a></li>
+          </ul>
+        </li>
+        <li><a href="#计时器timer">计时器(Timer)</a>
+          <ul>
+            <li><a href="#timertimer">Timer::Timer</a></li>
+            <li><a href="#timerms">Timer::ms</a></li>
+            <li><a href="#timerus">Timer::us</a></li>
+            <li><a href="#timerrestart">Timer::restart</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/time.h">co/time.h</a>.</p>
+<h2 id="epoch-time"><a class="anchor" href="#epoch-time">#</a>epoch time</h2>
+<p>epoch 是一个特定的时刻 <code>1970-01-01 00:00:00 UTC</code>，epoch time 是从 epoch 时刻开始的时间，它受系统时间影响。</p>
+<h3 id="epochms"><a class="anchor" href="#epochms">#</a>epoch::ms</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">ms</span>();
+</code></pre></div><ul>
+<li>返回自 epoch 到当前时刻的时间，单位为毫秒。</li>
+</ul>
+<h3 id="epochus"><a class="anchor" href="#epochus">#</a>epoch::us</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">us</span>();
+</code></pre></div><ul>
+<li>返回自 epoch 到当前时刻的时间，单位为微秒。</li>
+</ul>
+<h2 id="monotonic-time"><a class="anchor" href="#monotonic-time">#</a>monotonic time</h2>
+<p>monotonic time 是单调递增时间，大多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。</p>
+<h3 id="nowms"><a class="anchor" href="#nowms">#</a>now::ms</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">ms</span>();
+</code></pre></div><ul>
+<li>返回一个单调递增的时间戳，单位为毫秒。</li>
+<li>在 mac 平台，如果系统不支持 <code>CLOCK_MONOTONIC</code>，则使用 <code>epoch::ms()</code>。</li>
+</ul>
+<h3 id="nowus"><a class="anchor" href="#nowus">#</a>now::us</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">us</span>();
+</code></pre></div><ul>
+<li>
+<p>返回一个单调递增的时间戳，单位为微秒。</p>
+</li>
+<li>
+<p>在 mac 平台，如果系统不支持 <code>CLOCK_MONOTONIC</code>，则使用 <code>epoch::us()</code>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 beg <span style="color:#000;font-weight:bold">=</span> now<span style="color:#000;font-weight:bold">::</span>us();
+int64 end <span style="color:#000;font-weight:bold">=</span> now<span style="color:#000;font-weight:bold">::</span>us();
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;time used: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> (end <span style="color:#000;font-weight:bold">-</span> beg) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34; us&#34;</span>;
+</code></pre></div><h2 id="时间字符串nowstr"><a class="anchor" href="#%e6%97%b6%e9%97%b4%e5%ad%97%e7%ac%a6%e4%b8%b2nowstr">#</a>时间字符串(now::str)</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// fm: 时间输出格式
+</span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">str</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> fm<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;%Y-%m-%d %H:%M:%S&#34;</span>);
+</code></pre></div><ul>
+<li>
+<p>此函数以指定格式返回当前系统时间的字符串形式，它基于 <code>strftime</code> 实现。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring s <span style="color:#000;font-weight:bold">=</span> now<span style="color:#000;font-weight:bold">::</span>str();     <span style="color:#998;font-style:italic">// &#34;2021-07-07 17:07:07&#34;
+</span><span style="color:#998;font-style:italic"></span>fastring s <span style="color:#000;font-weight:bold">=</span> now<span style="color:#000;font-weight:bold">::</span>str(<span style="color:#d14">&#34;%Y&#34;</span>); <span style="color:#998;font-style:italic">// &#34;2021&#34;
+</span></code></pre></div><h2 id="sleep"><a class="anchor" href="#sleep">#</a>sleep</h2>
+<p>Linux 平台支持微秒级的 sleep，但 Windows 平台难以实现。因此，<code>co/time.h</code> 中仅提供毫秒、秒级的 sleep。</p>
+<h3 id="sleepms"><a class="anchor" href="#sleepms">#</a>sleep::ms</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ms</span>(uint32 n);
+</code></pre></div><ul>
+<li>sleep 参数 n 指定的一段时间，单位是毫秒。</li>
+</ul>
+<h3 id="sleepsec"><a class="anchor" href="#sleepsec">#</a>sleep::sec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">sec</span>(uint32 n);
+</code></pre></div><ul>
+<li>
+<p>sleep 参数 n 指定的一段时间，单位是秒。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">sleep<span style="color:#000;font-weight:bold">::</span>ms(<span style="color:#099">10</span>); <span style="color:#998;font-style:italic">// sleep for 10 milliseconds
+</span><span style="color:#998;font-style:italic"></span>sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// sleep for 1 second
+</span></code></pre></div><h2 id="计时器timer"><a class="anchor" href="#%e8%ae%a1%e6%97%b6%e5%99%a8timer">#</a>计时器(Timer)</h2>
+<p><code>Timer</code> 类是一个简单的计时器，基于 monotonic time 实现。</p>
+<h3 id="timertimer"><a class="anchor" href="#timertimer">#</a>Timer::Timer</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Timer();
+</code></pre></div><ul>
+<li>构造函数，设置计时器的起始时间，对象创建完，即开始计时。</li>
+</ul>
+<h3 id="timerms"><a class="anchor" href="#timerms">#</a>Timer::ms</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">ms</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回从计时开始到当前的时间，单位为毫秒。</li>
+</ul>
+<h3 id="timerus"><a class="anchor" href="#timerus">#</a>Timer::us</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">int64 <span style="color:#900;font-weight:bold">us</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回从计时开始到当前的时间，单位为微秒。</li>
+</ul>
+<h3 id="timerrestart"><a class="anchor" href="#timerrestart">#</a>Timer::restart</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">restart</span>();
+</code></pre></div><ul>
+<li>
+<p>重置计时器起始时间，即重新开始计时。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Timer t;
+sleep<span style="color:#000;font-weight:bold">::</span>ms(<span style="color:#099">10</span>);
+int64 us <span style="color:#000;font-weight:bold">=</span> t.us();
+
+t.restart();
+sleep<span style="color:#000;font-weight:bold">::</span>ms(<span style="color:#099">20</span>);
+int64 ms <span style="color:#000;font-weight:bold">=</span> t.ms();
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/time/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/0f6eef5e1f89354b56d0da1de637b1fd139726ab" title='最后修改者 idealvin | August 2, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 2, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/time.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#epoch-time">epoch time</a>
+          <ul>
+            <li><a href="#epochms">epoch::ms</a></li>
+            <li><a href="#epochus">epoch::us</a></li>
+          </ul>
+        </li>
+        <li><a href="#monotonic-time">monotonic time</a>
+          <ul>
+            <li><a href="#nowms">now::ms</a></li>
+            <li><a href="#nowus">now::us</a></li>
+          </ul>
+        </li>
+        <li><a href="#时间字符串nowstr">时间字符串(now::str)</a></li>
+        <li><a href="#sleep">sleep</a>
+          <ul>
+            <li><a href="#sleepms">sleep::ms</a></li>
+            <li><a href="#sleepsec">sleep::sec</a></li>
+          </ul>
+        </li>
+        <li><a href="#计时器timer">计时器(Timer)</a>
+          <ul>
+            <li><a href="#timertimer">Timer::Timer</a></li>
+            <li><a href="#timerms">Timer::ms</a></li>
+            <li><a href="#timerus">Timer::us</a></li>
+            <li><a href="#timerrestart">Timer::restart</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

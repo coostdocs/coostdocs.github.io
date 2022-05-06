@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#CO 是什么 CO 是一个优雅、高效的 C&#43;&#43; 基础库，支持 Linux, Windows 与 Mac 等平台，它实现了类似 golang 的协程、基于协程的网络编程框架、命令行参数与配置文件解析库、高性能日志库、单元测试框架、JSON 库等一系列高质量的基础组件。
+CO 在 github 上以 MIT 许可证开源，它使用了部分三方代码，可能有不同的许可证，详情见 LICENSE 文件。为了方便国内用户，gitee 上也会定期同步 github 上的代码。
+#CO 的发展历程 Alvin(idealvin) 自 2013 年开始开发 CO，最初的目的是为了减少 C&#43;&#43; 项目中的三方依赖，同时提高 C&#43;&#43; 的开发效率。从 2015 年开始，Alvin 将 CO 引入实际项目中，供自己与同事使用，大大缩减了项目的开发周期，CO 也得以经受工业项目的检验。
+经过多年的积累、沉淀，到 2019 年，Alvin 又用 C&#43;&#43; 实现了 golang 中的协程机制，并提供了一套基于协程的网络编程框架。CO 协程诞生之初，就被用于嵌入式网络程序开发，并取得了立竿见影的效果。
+截至 2021 年，CO 协程又有了长足的发展，目前在 Linux/Windows/Mac 平台均已支持 hook，并且实现了协程锁、协程同步事件、协程池以及 golang 中的 channel 与 waitgroup，用户可以用 CO 写出 golang 的体验。
+#快速上手 #编译 建议安装 xmake，在 CO 根目录执行如下命令构建所有子项目：">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="简介" />
+<meta property="og:description" content="#CO 是什么 CO 是一个优雅、高效的 C&#43;&#43; 基础库，支持 Linux, Windows 与 Mac 等平台，它实现了类似 golang 的协程、基于协程的网络编程框架、命令行参数与配置文件解析库、高性能日志库、单元测试框架、JSON 库等一系列高质量的基础组件。
+CO 在 github 上以 MIT 许可证开源，它使用了部分三方代码，可能有不同的许可证，详情见 LICENSE 文件。为了方便国内用户，gitee 上也会定期同步 github 上的代码。
+#CO 的发展历程 Alvin(idealvin) 自 2013 年开始开发 CO，最初的目的是为了减少 C&#43;&#43; 项目中的三方依赖，同时提高 C&#43;&#43; 的开发效率。从 2015 年开始，Alvin 将 CO 引入实际项目中，供自己与同事使用，大大缩减了项目的开发周期，CO 也得以经受工业项目的检验。
+经过多年的积累、沉淀，到 2019 年，Alvin 又用 C&#43;&#43; 实现了 golang 中的协程机制，并提供了一套基于协程的网络编程框架。CO 协程诞生之初，就被用于嵌入式网络程序开发，并取得了立竿见影的效果。
+截至 2021 年，CO 协程又有了长足的发展，目前在 Linux/Windows/Mac 平台均已支持 hook，并且实现了协程锁、协程同步事件、协程池以及 golang 中的 channel 与 waitgroup，用户可以用 CO 写出 golang 的体验。
+#快速上手 #编译 建议安装 xmake，在 CO 根目录执行如下命令构建所有子项目：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/about/co/" /><meta property="article:section" content="about" />
+
+<meta property="article:modified_time" content="2021-08-09T17:27:07+08:00" />
+
+<title>简介 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/about/co/" title="Introduction">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class=" active">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>简介</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#co-是什么">CO 是什么</a></li>
+        <li><a href="#co-的发展历程">CO 的发展历程</a></li>
+        <li><a href="#快速上手">快速上手</a>
+          <ul>
+            <li><a href="#编译">编译</a></li>
+            <li><a href="#使用-co-开发-c-项目">使用 CO 开发 C++ 项目</a></li>
+          </ul>
+        </li>
+        <li><a href="#核心组件">核心组件</a>
+          <ul>
+            <li><a href="#coflag">co/flag</a></li>
+            <li><a href="#colog">co/log</a></li>
+            <li><a href="#counitest">co/unitest</a></li>
+            <li><a href="#协程">协程</a>
+              <ul>
+                <li><a href="#创建协程">创建协程</a></li>
+                <li><a href="#channel">channel</a></li>
+                <li><a href="#waitgroup">waitgroup</a></li>
+              </ul>
+            </li>
+            <li><a href="#网络编程">网络编程</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="co-是什么"><a class="anchor" href="#co-%e6%98%af%e4%bb%80%e4%b9%88">#</a>CO 是什么</h2>
+<p>CO 是一个优雅、高效的 C++ 基础库，支持 Linux, Windows 与 Mac 等平台，它实现了类似 golang 的协程、基于协程的网络编程框架、命令行参数与配置文件解析库、高性能日志库、单元测试框架、JSON 库等一系列高质量的基础组件。</p>
+<p>CO 在 <a href="https://github.com/idealvin/co">github</a> 上以 <a href="https://mit-license.org/">MIT</a> 许可证开源，它使用了部分三方代码，可能有不同的许可证，详情见 <a href="https://github.com/idealvin/co/blob/master/LICENSE.md">LICENSE</a> 文件。为了方便国内用户，<a href="https://gitee.com/idealvin/co">gitee</a> 上也会定期同步 github 上的代码。</p>
+<h2 id="co-的发展历程"><a class="anchor" href="#co-%e7%9a%84%e5%8f%91%e5%b1%95%e5%8e%86%e7%a8%8b">#</a>CO 的发展历程</h2>
+<p><a href="https://github.com/idealvin">Alvin(idealvin)</a> 自 2013 年开始开发 CO，最初的目的是为了减少 C++ 项目中的三方依赖，同时提高 C++ 的开发效率。从 2015 年开始，Alvin 将 CO 引入实际项目中，供自己与同事使用，大大缩减了项目的开发周期，CO 也得以经受工业项目的检验。</p>
+<p>经过多年的积累、沉淀，到 2019 年，Alvin 又用 C++ 实现了 golang 中的协程机制，并提供了一套基于协程的网络编程框架。CO 协程诞生之初，就被用于嵌入式网络程序开发，并取得了立竿见影的效果。</p>
+<p>截至 2021 年，CO 协程又有了长足的发展，目前在 Linux/Windows/Mac 平台均已支持 hook，并且实现了协程锁、协程同步事件、协程池以及 golang 中的 channel 与 waitgroup，用户可以用 CO 写出 golang 的体验。</p>
+<h2 id="快速上手"><a class="anchor" href="#%e5%bf%ab%e9%80%9f%e4%b8%8a%e6%89%8b">#</a>快速上手</h2>
+<h3 id="编译"><a class="anchor" href="#%e7%bc%96%e8%af%91">#</a>编译</h3>
+<p>建议安装 <a href="https://github.com/xmake-io/xmake">xmake</a>，在 CO 根目录执行如下命令构建所有子项目：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake -a
+</code></pre></div><p>如果需要使用 http::Client, SSL 或 HTTPS 特性，则可以用下面的命令构建：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake f --with_libcurl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> --with_openssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
+xmake -a
+</code></pre></div><p>xmake 会自动从网络安装 libcurl 与 openssl，视网络情况，这个过程可能会较慢。<code>xmake -a</code> 会构建 <a href="https://github.com/idealvin/co/tree/master/src">libco</a>, <a href="https://github.com/idealvin/co/tree/master/gen">gen</a>, <a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 以及 <a href="https://github.com/idealvin/co/tree/master/test">co/test</a> 下面的所有测试代码。用户可以执行下面的命令，运行 CO 中的测试程序：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest -a
+xmake r flag
+xmake r log -cout
+xmake r co
+</code></pre></div><h3 id="使用-co-开发-c-项目"><a class="anchor" href="#%e4%bd%bf%e7%94%a8-co-%e5%bc%80%e5%8f%91-c-%e9%a1%b9%e7%9b%ae">#</a>使用 CO 开发 C++ 项目</h3>
+<p>最简单的，可以直接包含 <a href="https://github.com/idealvin/co/blob/master/include/co/all.h">co/all.h</a>，使用 CO 中的所有特性。如果担心影响编译速度，也可以只包含需要用到的头文件，如包含 <a href="https://github.com/idealvin/co/blob/master/include/co/co.h">co/co.h</a>，可以使用 co/flag, co/log 以及协程相关的所有特性。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/all.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color:#d14">&#34;&#34;</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    log<span style="color:#000;font-weight:bold">::</span>init();
+
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>上面是一个简单的例子，main 函数前两行分别用于初始化 flag 与 log 库。CO 中的部分组件会用 flag 定义配置项，用 log 打印日志，因此，一般需要在 main 函数开头调用 <code>flag::init()</code> 与 <code>log::init()</code> 进行初始化。</p>
+<p>用户也可以用宏 <code>DEF_main</code> 定义 main 函数：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/all.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color:#d14">&#34;&#34;</span>);
+
+DEF_main(argc, argv) {
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>DEF_main 在内部已经调用了 <code>flag::init()</code> 与 <code>log::init()</code>，用户无需再次调用。另外，DEF_main 会将 main 函数中的代码放到协程中运行，与 golang 保持一致，golang 中的 main 函数也在协程中。CO 中部分协程相关的组件必须在协程中使用，用 CO 开发基于协程的应用程序时，一般建议用 DEF_main 定义 main 函数。</p>
+<h2 id="核心组件"><a class="anchor" href="#%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6">#</a>核心组件</h2>
+<h3 id="coflag"><a class="anchor" href="#coflag">#</a>co/flag</h3>
+<p><a href="../../co/flag/">co/flag</a> 是一个简单易用的命令行参数与配置文件解析库，CO 中的一些组件会用它定义配置项。</p>
+<p>co/flag 为每个配置项提供一个默认值，在没有配置参数的情况下，程序可以按默认配置运行。用户也可以从<strong>命令行或配置文件</strong>传入配置参数，在需要配置文件时，可以执行 <code>./exe -mkconf</code> <strong>自动生成配置文件</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// xx.cc
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool x&#34;</span>);
+DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool y&#34;</span>);
+DEF_uint32(u32, <span style="color:#099">0</span>, <span style="color:#d14">&#34;...&#34;</span>);
+DEF_string(s, <span style="color:#d14">&#34;hello world&#34;</span>, <span style="color:#d14">&#34;string&#34;</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+
+    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;x: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_x;
+    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;y: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_y;
+    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;u32: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_u32;
+    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;|&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s.size();
+
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>上面是一个使用 co/flag 的例子，代码中 <code>DEF_</code> 开头的宏，定义了 4 个配置项，每个配置项相当于一个全局变量，变量名是 <code>FLG_</code> 加配置名。上面的代码编译完后，可以按下面的方式运行：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">./xx                  <span style="color:#998;font-style:italic"># 按默认配置运行</span>
+./xx -xy -s good      <span style="color:#998;font-style:italic"># 单字母命名的 bool flag, 可以一并设置为 true</span>
+./xx -s <span style="color:#d14">&#34;I&#39;m ok&#34;</span>      <span style="color:#998;font-style:italic"># 含空格的字符串</span>
+./xx -u32 8k          <span style="color:#998;font-style:italic"># 整数可以带单位: k,m,g,t,p, 不区分大小写</span>
+
+./xx -mkconf          <span style="color:#998;font-style:italic"># 自动生成配置文件 xx.conf</span>
+./xx xx.conf          <span style="color:#998;font-style:italic"># 从配置文件传入参数</span>
+./xx -config xx.conf  <span style="color:#998;font-style:italic"># 与上同</span>
+</code></pre></div><h3 id="colog"><a class="anchor" href="#colog">#</a>co/log</h3>
+<p><a href="../../co/log/">co/log</a> 是一个高性能的本地日志系统，CO 中的一些组件会用它打印日志。</p>
+<p>co/log 将日志分为 debug, info, warning, error, fatal 5 个级别，<strong>打印 fatal 级别的日志会终止程序的运行</strong>。用户可以像下面这样打印不同级别的日志：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// debug
+</span><span style="color:#998;font-style:italic"></span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;   <span style="color:#998;font-style:italic">// info
+</span><span style="color:#998;font-style:italic"></span>WLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// warning
+</span><span style="color:#998;font-style:italic"></span>ELOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// error
+</span><span style="color:#998;font-style:italic"></span>FLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// fatal
+</span></code></pre></div><p>co/log 还提供了一系列 <code>CHECK</code> 宏，可以视为加强版的 <code>assert</code>，它们在 debug 模式下也不会被清除。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> malloc(<span style="color:#099">32</span>);
+CHECK(p <span style="color:#000;font-weight:bold">!=</span> <span style="color:#0086b3">NULL</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;malloc failed..&#34;</span>;
+CHECK_NE(p, <span style="color:#0086b3">NULL</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;malloc failed..&#34;</span>;
+</code></pre></div><p>CHECK 断言失败时，co/log 会打印函数调用栈信息，然后终止程序的运行。</p>
+<p>co/log 速度非常快，在程序运行稳定后，几乎不需要内存分配操作。下面是一些测试结果，仅供参考：</p>
+<ul>
+<li>
+<p>co/log vs glog (single thread)</p>
+<table>
+<thead>
+<tr>
+<th>platform</th>
+<th>google glog</th>
+<th>co/log</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>win2012 HHD</td>
+<td>1.6MB/s</td>
+<td>180MB/s</td>
+</tr>
+<tr>
+<td>win10 SSD</td>
+<td>3.7MB/s</td>
+<td>560MB/s</td>
+</tr>
+<tr>
+<td>mac SSD</td>
+<td>17MB/s</td>
+<td>450MB/s</td>
+</tr>
+<tr>
+<td>linux SSD</td>
+<td>54MB/s</td>
+<td>1023MB/s</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="https://github.com/idealvin/co/tree/benchmark">co/log vs spdlog</a> (Windows)</p>
+<table>
+<thead>
+<tr>
+<th>threads</th>
+<th>total logs</th>
+<th>co/log time(seconds)</th>
+<th>spdlog time(seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1000000</td>
+<td>0.103619</td>
+<td>0.482525</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1000000</td>
+<td>0.202246</td>
+<td>0.565262</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1000000</td>
+<td>0.330694</td>
+<td>0.722709</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1000000</td>
+<td>0.386760</td>
+<td>1.322471</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="https://github.com/idealvin/co/tree/benchmark">co/log vs spdlog</a> (Linux)</p>
+<table>
+<thead>
+<tr>
+<th>threads</th>
+<th>total logs</th>
+<th>co/log time(seconds)</th>
+<th>spdlog time(seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1000000</td>
+<td>0.096445</td>
+<td>2.006087</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1000000</td>
+<td>0.142160</td>
+<td>3.276006</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1000000</td>
+<td>0.181407</td>
+<td>4.339714</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1000000</td>
+<td>0.303968</td>
+<td>4.700860</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h3 id="counitest"><a class="anchor" href="#counitest">#</a>co/unitest</h3>
+<p><a href="../../co/unitest/">co/unitest</a> 是一个简单易用的单元测试框架，CO 中的很多组件会用它写单元测试代码，为 CO 的稳定性提供了保障。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/os.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#000;font-weight:bold">namespace</span> test {
+    
+DEF_test(os) {
+    DEF_case(homedir) {
+        EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
+    }
+
+    DEF_case(cpunum) {
+        EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
+    }
+}
+    
+} <span style="color:#998;font-style:italic">// namespace test
+</span></code></pre></div><p>上面是一个简单的例子，<code>DEF_test</code> 宏定义了一个测试单元，实际上就是一个函数(类中的方法)。<code>DEF_case</code> 宏定义了测试用例，每个测试用例实际上就是一个代码块。多个测试单元可以放到同一个 C++ 项目中，main 函数一般只需要下面几行：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    unitest<span style="color:#000;font-weight:bold">::</span>run_all_tests();
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 目录下面是 CO 中的单元测试代码，编译后可执行下述命令运行：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest -a   <span style="color:#998;font-style:italic"># 运行所有单元测试用例</span>
+xmake r unitest -os  <span style="color:#998;font-style:italic"># 仅运行 os 单元中的测试用例</span>
+</code></pre></div><h3 id="协程"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b">#</a>协程</h3>
+<p>CO 实现了类似 <a href="https://github.com/golang/go">golang</a> 的协程，它有如下特性：</p>
+<ul>
+<li>多线程调度，默认线程数为系统 CPU 核数。</li>
+<li>共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。</li>
+<li>各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。</li>
+<li>支持系统 API hook (Windows/Linux/Mac)，可以直接在协程中使用三方网络库。</li>
+<li>协程化的 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e5%8c%96%e7%9a%84-socket-api">socket API</a>。</li>
+<li>协程同步事件 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e5%90%8c%e6%ad%a5%e4%ba%8b%e4%bb%b6coevent">co::Event</a>。</li>
+<li>协程锁 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e9%94%81comutex">co::Mutex</a>。</li>
+<li>协程池 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e6%b1%a0copool">co::Pool</a>。</li>
+<li>channel <a href="../../co/coroutine/#channelcochan">co::Chan</a>。</li>
+<li>waitgroup <a href="../../co/coroutine/#waitgroupcowaitgroup">co::WaitGroup</a>。</li>
+</ul>
+<h4 id="创建协程"><a class="anchor" href="#%e5%88%9b%e5%bb%ba%e5%8d%8f%e7%a8%8b">#</a>创建协程</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">go(ku);            <span style="color:#998;font-style:italic">// void ku();
+</span><span style="color:#998;font-style:italic"></span>go(f, <span style="color:#099">7</span>);          <span style="color:#998;font-style:italic">// void f(int);
+</span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o);     <span style="color:#998;font-style:italic">// void T::f(); T o;
+</span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o, <span style="color:#099">7</span>);  <span style="color:#998;font-style:italic">// void T::f(int); T o;
+</span><span style="color:#998;font-style:italic"></span>go([](){
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello go&#34;</span>;
+});
+</code></pre></div><p>上面是用 <code>go()</code> 创建协程的例子，go() 是一个函数，它接受 1 到 3 个参数，第一个参数 <code>f</code> 是任意可调用的对象，这些参数只要满足 <code>f()</code>, <code>(*f)()</code>, <code>f(p)</code>, <code>(*f)(p)</code>, <code>(o-&gt;*f)()</code> 或者 <code>(o-&gt;*f)(p)</code> 能被调用就可以了。</p>
+<p><code>go()</code> 创建的协程会均匀的分配到不同的调度线程中。如果用户想让某些协程运行在同一个线程下，可以用下面的方式创建协程：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>next_scheduler();
+s<span style="color:#000;font-weight:bold">-&gt;</span>go(f1);
+s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
+</code></pre></div><p>如果用户想在所有的调度线程中创建协程，可以用下面的方式：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">auto</span><span style="color:#000;font-weight:bold">&amp;</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>all_schedulers();
+<span style="color:#000;font-weight:bold">for</span> (size_t i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> s.size(); <span style="color:#000;font-weight:bold">++</span>i) {
+    s[i]<span style="color:#000;font-weight:bold">-&gt;</span>go(f);
+}
+</code></pre></div><h4 id="channel"><a class="anchor" href="#channel">#</a>channel</h4>
+<p><a href="../../co/coroutine/#channelcochan">co::Chan</a>，类似于 golang 中的 channel，可用于在协程之间传递数据。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_main(argc, argv) {
+    co<span style="color:#000;font-weight:bold">::</span>Chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch;
+    go([ch]() {
+        ch <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">7</span>;
+    });
+
+    <span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+    ch <span style="color:#000;font-weight:bold">&gt;&gt;</span> v;
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;v: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> v;
+
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><strong>channel 的读写操作必须在协程中进行</strong>，因此上述代码中用 <code>DEF_main</code> 定义 main 函数，让 main 函数中的代码也运行在协程中。</p>
+<p>代码中的 channel 对象在栈上，而 CO 采用的是共享栈实现方式，一个协程栈上的数据可能被其他协程覆盖，<strong>协程间一般不能直接通过栈上的数据通信</strong>，因此代码中的 lambda 采用了<strong>按值捕获</strong>的方式，将 channel 拷贝了一份，传递到新建的协程中。channel 的拷贝操作只是将内部引用计数加 1，几乎不会对性能造成影响。</p>
+<p>创建 channel 时可以像下面这样加上超时时间：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>Chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch(<span style="color:#099">8</span>, <span style="color:#099">1000</span>);
+</code></pre></div><p>channel 读写操作结束后，可以调用 <code>co::timeout()</code> 判断是否超时，这种方式比 golang 中基于 select 的实现方式更简单。</p>
+<p>CO 中的 channel 基于内存拷贝实现，传递的数据类型可以是内置类型、指针类型，或者<strong>拷贝操作具有简单的内存拷贝语义的结构体类型</strong>。像 <code>std::string</code> 或 STL 中的容器类型，拷贝操作不是简单的内存拷贝，一般不能直接在 channel 中传递，详情见 <a href="../../co/coroutine/#channelcochan">co::Chan 参考文档</a>。</p>
+<h4 id="waitgroup"><a class="anchor" href="#waitgroup">#</a>waitgroup</h4>
+<p><a href="../../co/coroutine/#waitgroupcowaitgroup">co::WaitGroup</a>，类似于 golang 中的 <code>sync.WaitGroup</code>，可用于等待协程或线程的退出。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_main(argc, argv) {
+    FLG_cout <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">true</span>;
+
+    co<span style="color:#000;font-weight:bold">::</span>WaitGroup wg;
+    wg.add(<span style="color:#099">8</span>);
+
+    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
+        go([wg]() {
+            LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;co: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>coroutine_id();
+            wg.done();
+        });
+    }
+
+    wg.wait();
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h3 id="网络编程"><a class="anchor" href="#%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">#</a>网络编程</h3>
+<p>CO 提供了一套协程化的 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e5%8c%96%e7%9a%84-socket-api">socket API</a>，它们大部分形式上与原生的 socket API 基本一致，熟悉 socket 编程的用户，可以轻松的用同步的方式写出高性能的网络程序。另外，CO 也实现了更高层的网络编程组件，包括 <a href="../../co/net/tcp/">TCP</a>、<a href="../../co/net/http/">HTTP</a> 以及基于 <a href="../../co/json/">JSON</a> 的 <a href="../../co/net/rpc/">RPC</a> 框架，它们兼容 IPv6，同时支持 SSL，用起来比 socket API 更方便。这里只简单的展示一下 HTTP 的用法，其余的可以查看参考文档。</p>
+<p><strong>静态 web server</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/so.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// Specify the root directory of the web server
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    log<span style="color:#000;font-weight:bold">::</span>init();
+
+    so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
+</span><span style="color:#998;font-style:italic"></span>
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><strong>HTTP server</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Server serv;
+
+serv.on_req(
+    [](<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
+        <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
+            <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
+                res.set_status(<span style="color:#099">200</span>);
+                res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
+            } <span style="color:#000;font-weight:bold">else</span> {
+                res.set_status(<span style="color:#099">404</span>);
+            }
+        } <span style="color:#000;font-weight:bold">else</span> {
+            res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
+</span><span style="color:#998;font-style:italic"></span>        }
+    }
+);
+
+serv.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);                                    <span style="color:#998;font-style:italic">// http
+</span><span style="color:#998;font-style:italic"></span>serv.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>); <span style="color:#998;font-style:italic">// https
+</span></code></pre></div><p><strong>HTTP client</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+    http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;https://github.com&#34;</span>);
+
+    c.get(<span style="color:#d14">&#34;/&#34;</span>);
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;response code: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.response_code();
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body_size();
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
+
+    c.post(<span style="color:#d14">&#34;/hello&#34;</span>, <span style="color:#d14">&#34;data xxx&#34;</span>);
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;response code: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.response_code();
+}
+
+go(f);
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/about/co/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/4a60e17ba65dc6c26412646734470dc1be4ac6e2" title='最后修改者 idealvin | August 9, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 9, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/about/co.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#co-是什么">CO 是什么</a></li>
+        <li><a href="#co-的发展历程">CO 的发展历程</a></li>
+        <li><a href="#快速上手">快速上手</a>
+          <ul>
+            <li><a href="#编译">编译</a></li>
+            <li><a href="#使用-co-开发-c-项目">使用 CO 开发 C++ 项目</a></li>
+          </ul>
+        </li>
+        <li><a href="#核心组件">核心组件</a>
+          <ul>
+            <li><a href="#coflag">co/flag</a></li>
+            <li><a href="#colog">co/log</a></li>
+            <li><a href="#counitest">co/unitest</a></li>
+            <li><a href="#协程">协程</a>
+              <ul>
+                <li><a href="#创建协程">创建协程</a></li>
+                <li><a href="#channel">channel</a></li>
+                <li><a href="#waitgroup">waitgroup</a></li>
+              </ul>
+            </li>
+            <li><a href="#网络编程">网络编程</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

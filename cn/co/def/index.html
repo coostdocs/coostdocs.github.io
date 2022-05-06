@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/def.h.
+#typedefs #定长整数类型 def.h 定义了如下的 8 种整数类型：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
+#macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
+#DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C&#43;&#43; 类中的拷贝构造函数与赋值操作。
+ 示例  class T { public: T(); DISALLOW_COPY_AND_ASSIGN(T); }; #__forceinline __forceinline 是 VS 中的关键字，放在函数定义开头，强制内联函数，linux 与 mac 平台用下面的宏模拟：">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="基本定义" />
+<meta property="og:description" content="include: co/def.h.
+#typedefs #定长整数类型 def.h 定义了如下的 8 种整数类型：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
+#macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
+#DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C&#43;&#43; 类中的拷贝构造函数与赋值操作。
+ 示例  class T { public: T(); DISALLOW_COPY_AND_ASSIGN(T); }; #__forceinline __forceinline 是 VS 中的关键字，放在函数定义开头，强制内联函数，linux 与 mac 平台用下面的宏模拟：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/def/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-09T17:27:07+08:00" />
+
+<title>基本定义 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/def/" title="Basic definitions">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class=" active">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>基本定义</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#typedefs">typedefs</a>
+          <ul>
+            <li><a href="#定长整数类型">定长整数类型</a></li>
+          </ul>
+        </li>
+        <li><a href="#macros">macros</a>
+          <ul>
+            <li><a href="#整型最大最小值">整型最大、最小值</a></li>
+            <li><a href="#disallow_copy_and_assign">DISALLOW_COPY_AND_ASSIGN</a></li>
+            <li><a href="#__forceinline">__forceinline</a></li>
+            <li><a href="#__thread">__thread</a></li>
+            <li><a href="#unlikely">unlikely</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/def.h">co/def.h</a>.</p>
+<h2 id="typedefs"><a class="anchor" href="#typedefs">#</a>typedefs</h2>
+<h3 id="定长整数类型"><a class="anchor" href="#%e5%ae%9a%e9%95%bf%e6%95%b4%e6%95%b0%e7%b1%bb%e5%9e%8b">#</a>定长整数类型</h3>
+<p><code>def.h</code> 定义了如下的 8 种整数类型：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">int8_t</span>  int8;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">int16_t</span> int16;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">int32_t</span> int32;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">int64_t</span> int64;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">uint8_t</span>  uint8;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">uint16_t</span> uint16;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">uint32_t</span> uint32;
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">uint64_t</span> uint64;
+</code></pre></div><p>这些类型在不同平台的长度是一致的，不存在可移植性问题。<a href="https://google.github.io/styleguide/cppguide.html#Integer_Types">Google Code Style</a> 建议除了 int，不要使用 short, long, long long 等内置整数类型。</p>
+<h2 id="macros"><a class="anchor" href="#macros">#</a>macros</h2>
+<h3 id="整型最大最小值"><a class="anchor" href="#%e6%95%b4%e5%9e%8b%e6%9c%80%e5%a4%a7%e6%9c%80%e5%b0%8f%e5%80%bc">#</a>整型最大、最小值</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">MAX_UINT8  MAX_UINT16  MAX_UINT32  MAX_UINT64
+MAX_INT8   MAX_INT16   MAX_INT32   MAX_INT64
+MIN_INT8   MIN_INT16   MIN_INT32   MIN_INT64
+</code></pre></div><p>这些宏分别表示 8 种整数类型的最大、最小值。</p>
+<h3 id="disallow_copy_and_assign"><a class="anchor" href="#disallow_copy_and_assign">#</a>DISALLOW_COPY_AND_ASSIGN</h3>
+<p>这个宏用于禁止 C++ 类中的拷贝构造函数与赋值操作。</p>
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">T</span> {
+  <span style="color:#000;font-weight:bold">public</span><span style="color:#000;font-weight:bold">:</span>
+    T();
+    DISALLOW_COPY_AND_ASSIGN(T);
+};
+</code></pre></div><h3 id="__forceinline"><a class="anchor" href="#__forceinline">#</a>__forceinline</h3>
+<p><a href="https://docs.microsoft.com/en-us/cpp/cpp/inline-functions-cpp?view=vs-2019#inline-__inline-and-__forceinline">__forceinline</a> 是 VS 中的关键字，放在函数定义开头，强制内联函数，linux 与 mac 平台用下面的宏模拟：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define __forceinline __attribute__((always_inline))
+</span></code></pre></div><h3 id="__thread"><a class="anchor" href="#__thread">#</a>__thread</h3>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-4.7.4/gcc/Thread-Local.html">__thread</a> 是 gcc/clang 中的关键字，用于支持 <a href="https://wiki.osdev.org/Thread_Local_Storage">TLS</a>，windows 平台用下面的宏模拟：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define __thread __declspec(thread)
+</span></code></pre></div><ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// get id of the current thread
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">__forceinline</span> <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">gettid</span>() {
+    <span style="color:#000;font-weight:bold">static</span> __thread <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> id <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+    <span style="color:#000;font-weight:bold">if</span> (id <span style="color:#000;font-weight:bold">!=</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> id;
+    <span style="color:#000;font-weight:bold">return</span> id <span style="color:#000;font-weight:bold">=</span> __gettid();
+}
+</code></pre></div><h3 id="unlikely"><a class="anchor" href="#unlikely">#</a>unlikely</h3>
+<p>这个宏用于分支选择优化，仅支持 gcc/clang。</p>
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// 与 if (v == 0) 逻辑上等价，但提示编译器 v == 0 的可能性较小
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (unlikey(v <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>)) {
+    cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;v == 0&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> endl;
+}
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/def/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/4a60e17ba65dc6c26412646734470dc1be4ac6e2" title='最后修改者 idealvin | August 9, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 9, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/def.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#typedefs">typedefs</a>
+          <ul>
+            <li><a href="#定长整数类型">定长整数类型</a></li>
+          </ul>
+        </li>
+        <li><a href="#macros">macros</a>
+          <ul>
+            <li><a href="#整型最大最小值">整型最大、最小值</a></li>
+            <li><a href="#disallow_copy_and_assign">DISALLOW_COPY_AND_ASSIGN</a></li>
+            <li><a href="#__forceinline">__forceinline</a></li>
+            <li><a href="#__thread">__thread</a></li>
+            <li><a href="#unlikely">unlikely</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

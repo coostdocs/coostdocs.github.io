@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/json.h.
+co/json is a JSON library similar to rapidjson. Compared with rapidjson, it has certain performance advantages and is easier to use.
+In the latest version, a JSON is built into a contiguous memory, which greatly reduces memory allocations. The parsing speed has also been significantly improved, which can be twice faster as rapidjson. Since a JSON object is a contiguous piece of memory, it is easy to copy, so reference counting used in earlier versions is removed.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="JSON" />
+<meta property="og:description" content="include: co/json.h.
+co/json is a JSON library similar to rapidjson. Compared with rapidjson, it has certain performance advantages and is easier to use.
+In the latest version, a JSON is built into a contiguous memory, which greatly reduces memory allocations. The parsing speed has also been significantly improved, which can be twice faster as rapidjson. Since a JSON object is a contiguous piece of memory, it is easy to copy, so reference counting used in earlier versions is removed." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/json/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-09T17:27:07+08:00" />
+
+<title>JSON | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/json/" title="JSON">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.1d46b39f069e3a959ed746ad651a153a0fc294ec9580d2877fc983228c8c222c.js" integrity="sha256-HUaznwaeOpWe10atZRoVOg/ClOyVgNKHf8mDIoyMIiw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class=" active">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>JSON</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a>
+          <ul>
+            <li><a href="#json-data-format">JSON data format</a></li>
+            <li><a href="#jsonjson">json::Json</a></li>
+            <li><a href="#jsonvalue">json::Value</a></li>
+          </ul>
+        </li>
+        <li><a href="#jsonjson-json">json::Json (Json)</a>
+          <ul>
+            <li><a href="#jsonjson-1">Json::Json</a></li>
+            <li><a href="#jsonarray">json::array</a></li>
+            <li><a href="#jsonobject">json::object</a></li>
+            <li><a href="#jsonoperator">Json::operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#jsonadd_member">Json::add_member</a></li>
+            <li><a href="#jsonadd_null">Json::add_null</a></li>
+            <li><a href="#jsonadd_array">Json::add_array</a></li>
+            <li><a href="#jsonadd_object">Json::add_object</a></li>
+            <li><a href="#jsonpush_back">Json::push_back</a></li>
+            <li><a href="#jsonpush_null">Json::push_null</a></li>
+            <li><a href="#jsonpush_array">Json::push_array</a></li>
+            <li><a href="#jsonpush_object">Json::push_object</a></li>
+            <li><a href="#jsonstr">Json::str</a></li>
+            <li><a href="#jsonpretty">Json::pretty</a></li>
+            <li><a href="#jsondbg">Json::dbg</a></li>
+            <li><a href="#jsonparse_from">Json::parse_from</a></li>
+            <li><a href="#jsonparse">json::parse</a></li>
+            <li><a href="#code-example">Code example</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#jsonis_null">Json::is_null</a></li>
+            <li><a href="#jsonis_bool">Json::is_bool</a></li>
+            <li><a href="#jsonis_int">Json::is_int</a></li>
+            <li><a href="#jsonis_double">Json::is_double</a></li>
+            <li><a href="#jsonis_string">Json::is_string</a></li>
+            <li><a href="#jsonis_array">Json::is_array</a></li>
+            <li><a href="#jsonis_object">Json::is_object</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#jsonget_bool">Json::get_bool</a></li>
+            <li><a href="#jsonget_int">Json::get_int</a></li>
+            <li><a href="#jsonget_double">Json::get_double</a></li>
+            <li><a href="#jsonget_string">Json::get_string</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#jsonset_null">Json::set_null</a></li>
+            <li><a href="#jsonset_array">Json::set_array</a></li>
+            <li><a href="#jsonset_object">Json::set_object</a></li>
+            <li><a href="#code-example-2">Code example</a></li>
+            <li><a href="#heading-4">———————————</a></li>
+            <li><a href="#jsonoperator-1">Json::operator[]</a></li>
+            <li><a href="#jsonhas_member">Json::has_member</a></li>
+            <li><a href="#jsonsize">Json::size</a></li>
+            <li><a href="#jsonstring_size">Json::string_size</a></li>
+            <li><a href="#jsonarray_size">Json::array_size</a></li>
+            <li><a href="#jsonobject_size">Json::object_size</a></li>
+            <li><a href="#heading-5">———————————</a></li>
+            <li><a href="#jsonbegin">Json::begin</a></li>
+            <li><a href="#jsonend">Json::end</a></li>
+            <li><a href="#jsoniterator">Json::iterator</a>
+              <ul>
+                <li><a href="#iteratoroperator">iterator::operator==</a></li>
+                <li><a href="#iteratoroperator-1">iterator::operator!=</a></li>
+                <li><a href="#iteratoroperator-2">iterator::operator++</a></li>
+                <li><a href="#iteratoroperator-3">iterator::operator*</a></li>
+                <li><a href="#iteratorkey">iterator::key</a></li>
+                <li><a href="#iteratorvalue">iterator::value</a></li>
+              </ul>
+            </li>
+            <li><a href="#traversing-the-json">Traversing the Json</a></li>
+          </ul>
+        </li>
+        <li><a href="#jsonvalue-1">json::Value</a>
+          <ul>
+            <li><a href="#jsonvalueoperator">json::Value::operator=</a></li>
+          </ul>
+        </li>
+        <li><a href="#performance-optimization-suggestions">Performance optimization suggestions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/json.h">co/json.h</a>.</p>
+<p><code>co/json</code> is a JSON library similar to <a href="https://github.com/Tencent/rapidjson">rapidjson</a>. Compared with rapidjson, it has certain performance advantages and is easier to use.</p>
+<p>In the latest version, a JSON is built into a contiguous memory, which greatly reduces memory allocations. The parsing speed has also been significantly improved, which can be twice faster as rapidjson. Since a JSON object is a contiguous piece of memory, it is easy to copy, so reference counting used in earlier versions is removed.</p>
+<h2 id="basic-concepts"><a class="anchor" href="#basic-concepts">#</a>Basic concepts</h2>
+<h3 id="json-data-format"><a class="anchor" href="#json-data-format">#</a>JSON data format</h3>
+<p><a href="https://www.json.org/json-en.html">JSON</a> is a simple data format that supports two data structures:</p>
+<ul>
+<li>A collection consisting of a series of <strong>key/value</strong> pairs. This type of structure is called <strong>object</strong>, which corresponds to struct, map, etc, in programming languages.</li>
+<li>A list composed of a series of <strong>value</strong>, this kind of structure is called <strong>array</strong>, which corresponds to vector, list, etc, in programming languages.</li>
+</ul>
+<p>In the above, the key is a string, and the value is generally called <strong>JSON value</strong>, which can be any of object, array, number, string, bool(false, true), or null. number is an integer or floating-point number, and most implementations will distinguish integers from floating-point numbers.</p>
+<p>object is enclosed by a pair of braces, array is enclosed by a pair of square brackets, they look like this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">{<span style="color:#d14">&#34;a&#34;</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>, <span style="color:#d14">&#34;b&#34;</span><span style="color:#000;font-weight:bold">:</span><span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;s&#34;</span><span style="color:#000;font-weight:bold">:</span><span style="color:#d14">&#34;xxx&#34;</span>}
+[<span style="color:#099">1</span>, <span style="color:#099">3.14</span>, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;xxx&#34;</span>]
+</code></pre></div><p>By definition, object and array can be nested, which can represent complex data structures such as trees.</p>
+<h3 id="jsonjson"><a class="anchor" href="#jsonjson">#</a>json::Json</h3>
+<p>co/json uses the <code>json::Json</code> class to represent JSON. For convenience, the following typedef definition is also given:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">typedef</span> json<span style="color:#000;font-weight:bold">::</span>Json Json;
+</code></pre></div><p>The Json class has only one data member, a pointer, which points to a contiguous memory. In practical applications, Json is generally of object or array type.</p>
+<h3 id="jsonvalue"><a class="anchor" href="#jsonvalue">#</a>json::Value</h3>
+<p>co/json uses the <code>json::Value</code> class to represent JSON value, which can be any of object, array, string, int, double, bool, null.</p>
+<p>The structure of json::Value is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Value</span> {
+    Json<span style="color:#000;font-weight:bold">*</span> _root;
+    uint32 _index;
+};
+</code></pre></div><p>It contains a pointer of the Json class, and an index, which indicates its position in the Json memory block. Users cannot create json::Value objects directly, they can only be created by methods in the Json class.</p>
+<p><strong>json::Value supports almost all operations in the Json class. Therefore, the following documents about the Json class generally also apply to the json::Value class.</strong></p>
+<h2 id="jsonjson-json"><a class="anchor" href="#jsonjson-json">#</a>json::Json (Json)</h2>
+<h3 id="jsonjson-1"><a class="anchor" href="#jsonjson-1">#</a>Json::Json</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json();
+Json(Json<span style="color:#000;font-weight:bold">&amp;&amp;</span> r);
+Json(<span style="color:#000;font-weight:bold">const</span> Json<span style="color:#000;font-weight:bold">&amp;</span> r);
+</code></pre></div><ul>
+<li>The first version is the default constructor, which constructs a null object.</li>
+<li>The second version is the move constructor. The content of the parameter r is transferred to the constructed Json object, and r itself is invalid.</li>
+<li>The third version is the copy constructor, which constructs a Json object through memory copy.</li>
+</ul>
+<h3 id="jsonarray"><a class="anchor" href="#jsonarray">#</a>json::array</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json <span style="color:#900;font-weight:bold">array</span>();
+</code></pre></div><ul>
+<li>This function is in namespace json, it returns an empty array.</li>
+</ul>
+<h3 id="jsonobject"><a class="anchor" href="#jsonobject">#</a>json::object</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json <span style="color:#900;font-weight:bold">object</span>();
+</code></pre></div><ul>
+<li>This function is in namespace json, it returns an empty object.</li>
+</ul>
+<h3 id="jsonoperator"><a class="anchor" href="#jsonoperator">#</a>Json::operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> Json<span style="color:#000;font-weight:bold">&amp;</span> r);
+Json<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(Json<span style="color:#000;font-weight:bold">&amp;&amp;</span> r) <span style="color:#000;font-weight:bold">noexcept</span>;
+</code></pre></div><ul>
+<li>The first version performs a memory copy and overwrites the original content with the content of r.</li>
+<li>The second version directly transfers the content of r, and r itself becomes invalid.</li>
+</ul>
+<h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="jsonadd_member"><a class="anchor" href="#jsonadd_member">#</a>Json::add_member</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">bool</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, int64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, uint32 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, uint64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">double</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> x, size_t n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> x);
+</code></pre></div><ul>
+<li>
+<p>Add key-value pairs to Json of object type (null automatically becomes object after calling this method).</p>
+</li>
+<li>
+<p>The parameter key is a C string ending in <code>'\0'</code>, and the parameter x is the value.</p>
+</li>
+<li>
+<p>The first version adds a value of bool type.</p>
+</li>
+<li>
+<p>Versions 2-5 add a value of integer type.</p>
+</li>
+<li>
+<p>The sixth version adds a value of double type.</p>
+</li>
+<li>
+<p>Versions 7-10 add a value of string type.</p>
+</li>
+<li>
+<p><strong>NOTE</strong>: for performance reasons, it is required that the key cannot contain double quotes, and it is best not to contain any escape characters. I have never seen anyone use it in this way. If so, please let me know and I will consider supporting it.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);    <span style="color:#998;font-style:italic">// r -&gt; {&#34;a&#34;:1}
+</span><span style="color:#998;font-style:italic"></span>r.add_member(<span style="color:#d14">&#34;d&#34;</span>, <span style="color:#099">3.3</span>);  <span style="color:#998;font-style:italic">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3}
+</span><span style="color:#998;font-style:italic"></span>r.add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>); <span style="color:#998;font-style:italic">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3, &#34;s&#34;:&#34;xx&#34;}
+</span></code></pre></div><h3 id="jsonadd_null"><a class="anchor" href="#jsonadd_null">#</a>Json::add_null</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_null</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
+</code></pre></div><ul>
+<li>Add null to an object.</li>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_null(<span style="color:#d14">&#34;x&#34;</span>); <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;: null}
+</span></code></pre></div><h3 id="jsonadd_array"><a class="anchor" href="#jsonadd_array">#</a>Json::add_array</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#900;font-weight:bold">add_array</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>
+<p>Add an empty array to an object.</p>
+</li>
+<li>
+<p>The parameter cap specifies the initial capacity of the added array, and the default is 0. If you know in advance that the size of the array is n, you can directly set cap to n, which can reduce unnecessary memory reallocation and consumption.</p>
+</li>
+<li>
+<p>This method returns a <code>json::Value</code> representing the array added. The user can continue to add elements to the array through the return value.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.add_array(<span style="color:#d14">&#34;xxx&#34;</span>, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: []}
+</span><span style="color:#998;font-style:italic"></span>a.push_back(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>);           <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: [1,2,3]}
+</span></code></pre></div><h3 id="jsonadd_object"><a class="anchor" href="#jsonadd_object">#</a>Json::add_object</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#900;font-weight:bold">add_object</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>
+<p>Add an empty object to an object.</p>
+</li>
+<li>
+<p>The parameter cap specifies the initial capacity of the added object, and the default is 0. If you know the size of the object as n in advance, you can directly set the cap to n, which can reduce unnecessary memory reallocation and consumption.</p>
+</li>
+<li>
+<p>This method returns a <code>json::Value</code> object representing the object added. The user can continue to add elements to the object through the return value.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+<span style="color:#000;font-weight:bold">auto</span> o <span style="color:#000;font-weight:bold">=</span> r.add_object(<span style="color:#d14">&#34;xxx&#34;</span>, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: {}}
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);            <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: {&#34;a&#34;:1}}
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;b&#34;</span>, <span style="color:#099">2</span>);            <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: {&#34;a&#34;:1, &#34;b&#34;:2}}
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;c&#34;</span>, <span style="color:#099">3</span>);            <span style="color:#998;font-style:italic">// r -&gt; {&#34;xxx&#34;: {&#34;a&#34;:1, &#34;b&#34;:2, &#34;c&#34;:3}}
+</span></code></pre></div><h3 id="jsonpush_back"><a class="anchor" href="#jsonpush_back">#</a>Json::push_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#458;font-weight:bold">bool</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(int64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#458;font-weight:bold">int</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(uint32 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(uint64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#458;font-weight:bold">double</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> x, size_t n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> x);
+<span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X, <span style="color:#000;font-weight:bold">typename</span> ...V<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> push_back(X x, V... v);
+</code></pre></div><ul>
+<li>
+<p>Add elements to an array (null automatically becomes an array after calling this method).</p>
+</li>
+<li>
+<p>The first version adds a value of bool type.</p>
+</li>
+<li>
+<p>Versions 2-5 add a value of integer type.</p>
+</li>
+<li>
+<p>The sixth version adds a value of double type.</p>
+</li>
+<li>
+<p>Versions 7-10 add a value of string type.</p>
+</li>
+<li>
+<p>The 11th version accepts any number of parameters, and the parameters must be of the type in version 1-10.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.push_back(<span style="color:#099">1</span>);            <span style="color:#998;font-style:italic">// r -&gt; [1]
+</span><span style="color:#998;font-style:italic"></span>r.push_back(<span style="color:#099">3.3</span>);          <span style="color:#998;font-style:italic">// r -&gt; [1, 3.3]
+</span><span style="color:#998;font-style:italic"></span>r.push_back(<span style="color:#d14">&#34;xx&#34;</span>);         <span style="color:#998;font-style:italic">// r -&gt; [1, 3.3, &#34;xx&#34;]
+</span><span style="color:#998;font-style:italic"></span>
+Json s;
+s.push_back(<span style="color:#099">1</span>, <span style="color:#099">3.3</span>, <span style="color:#d14">&#34;xx&#34;</span>); <span style="color:#998;font-style:italic">// s -&gt; [1, 3.3, &#34;xx&#34;]
+</span></code></pre></div><h3 id="jsonpush_null"><a class="anchor" href="#jsonpush_null">#</a>Json::push_null</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_null</span>();
+</code></pre></div><ul>
+<li>
+<p>Add null to an array.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.push_null(); <span style="color:#998;font-style:italic">// r -&gt; [null]
+</span></code></pre></div><h3 id="jsonpush_array"><a class="anchor" href="#jsonpush_array">#</a>Json::push_array</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#900;font-weight:bold">push_array</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>Add an empty array to an array.</li>
+<li>The parameter cap specifies the initial capacity of the added array, and the default is 0. If you know in advance that the size of the array is n, you can directly set cap to n, which can reduce unnecessary memory reallocation and consumption.</li>
+<li>This method returns a <code>json::Value</code> object representing the array added. The user can continue to add elements to the array through the return value.</li>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.push_array(<span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// r -&gt; [[]]
+</span><span style="color:#998;font-style:italic"></span>a.push_back(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3.3</span>);   <span style="color:#998;font-style:italic">// r -&gt; [[1, 2, 3.3]]
+</span></code></pre></div><h3 id="jsonpush_object"><a class="anchor" href="#jsonpush_object">#</a>Json::push_object</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#900;font-weight:bold">push_object</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
+<li>
+<p>Add an empty object to an array.</p>
+</li>
+<li>
+<p>The parameter cap specifies the initial capacity of the added object, and the default is 0. If you know the size of the object as n in advance, you can directly set the cap to n, which can reduce unnecessary memory reallocation and consumption.</p>
+</li>
+<li>
+<p>This method returns a <code>json::Value</code> object representing the object added. The user can continue to add elements to the object through the return value.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+<span style="color:#000;font-weight:bold">auto</span> o <span style="color:#000;font-weight:bold">=</span> r.push_object(<span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// r -&gt; [{}]
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);      <span style="color:#998;font-style:italic">// r -&gt; [{&#34;a&#34;:1}]
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;b&#34;</span>, <span style="color:#099">2</span>);      <span style="color:#998;font-style:italic">// r -&gt; [{&#34;a&#34;:1, &#34;b&#34;:2}]
+</span><span style="color:#998;font-style:italic"></span>o.add_member(<span style="color:#d14">&#34;c&#34;</span>, <span style="color:#099">3</span>);      <span style="color:#998;font-style:italic">// r -&gt; [{&#34;a&#34;:1, &#34;b&#34;:2, &#34;c&#34;:3}]
+</span></code></pre></div><h3 id="jsonstr"><a class="anchor" href="#jsonstr">#</a>Json::str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> str(fastream<span style="color:#000;font-weight:bold">&amp;</span> fs) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">str</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Convert Json to a string.</li>
+<li>The first version writes the JSON string into a fastream, and the return value is the same as the parameter fs.</li>
+<li>The second version directly returns a JSON string. The parameter cap is the initial capacity of the string, and the default is 256. Setting it to an appropriate value can reduce memory reallocation.</li>
+</ul>
+<h3 id="jsonpretty"><a class="anchor" href="#jsonpretty">#</a>Json::pretty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> pretty(fastream<span style="color:#000;font-weight:bold">&amp;</span> fs) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">pretty</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Like the str(), but convert Json to a more beautiful JSON string.</li>
+</ul>
+<h3 id="jsondbg"><a class="anchor" href="#jsondbg">#</a>Json::dbg</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> dbg(fastream<span style="color:#000;font-weight:bold">&amp;</span> fs) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">dbg</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Convert Json to a debug string, like <code>Json::str()</code>, but will truncate string type to the first 32 bytes if its length exceeds 512 bytes.</li>
+<li>This method is generally used to print logs. In some application scenarios, the Json object may contain a long string, such as the base64 encoding of a picture file. At this time, use <code>Json::dbg()</code> instead of <code>Json::str()</code> to avoid printing too many significant logs.</li>
+</ul>
+<h3 id="jsonparse_from"><a class="anchor" href="#jsonparse_from">#</a>Json::parse_from</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">parse_from</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">parse_from</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">parse_from</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">parse_from</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</code></pre></div><ul>
+<li>Parse Json from a JSON string.</li>
+<li>In the first version, s is not required to end with <code>'\0'</code>.</li>
+<li>When the parsing is successful, it returns true, otherwise it returns false.</li>
+<li>When the parsing fails, the internal state of Json is uncertain. If the user does not check the return value, and use the Json object directly, it may cause undefined behavior.</li>
+<li>It is <strong>recommended to use</strong> <code>json::parse()</code> instead of this method, which always returns a null when parsing failed.</li>
+</ul>
+<h3 id="jsonparse"><a class="anchor" href="#jsonparse">#</a>json::parse</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json <span style="color:#900;font-weight:bold">parse</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+Json <span style="color:#900;font-weight:bold">parse</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+Json <span style="color:#900;font-weight:bold">parse</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+Json <span style="color:#900;font-weight:bold">parse</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</code></pre></div><ul>
+<li>Parse Json from a JSON string.</li>
+<li>This function is not a method in the Json class, but a function defined in <code>namespace json</code>.</li>
+<li>This function returns a Json object, when the parsing failed, it returns null.</li>
+</ul>
+<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.add_array(<span style="color:#d14">&#34;a&#34;</span>);
+a.push_back(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>);
+
+fastring s <span style="color:#000;font-weight:bold">=</span> r.str();          <span style="color:#998;font-style:italic">// s -&gt; &#34;{\&#34;a\&#34;:[1,2,3]}&#34;
+</span><span style="color:#998;font-style:italic"></span>fastring p <span style="color:#000;font-weight:bold">=</span> r.pretty();
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> r.dbg();                <span style="color:#998;font-style:italic">// print json debug string
+</span><span style="color:#998;font-style:italic"></span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;                      <span style="color:#998;font-style:italic">// the same as above, but may be more efficient
+</span><span style="color:#998;font-style:italic"></span>
+Json x;
+x.parse_from(s);
+x.parse_from(p);
+
+s <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;{</span><span style="color:#d14">\&#34;</span><span style="color:#d14">a</span><span style="color:#d14">\&#34;</span><span style="color:#d14">:[1,false,3.14]}&#34;</span>;
+Json v <span style="color:#000;font-weight:bold">=</span> json<span style="color:#000;font-weight:bold">::</span>parse(s);       <span style="color:#998;font-style:italic">// v -&gt; {&#34;a&#34;:[1,false,3.14]}
+</span></code></pre></div><h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="jsonis_null"><a class="anchor" href="#jsonis_null">#</a>Json::is_null</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_null</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is null.</li>
+</ul>
+<h3 id="jsonis_bool"><a class="anchor" href="#jsonis_bool">#</a>Json::is_bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is of type bool.</li>
+</ul>
+<h3 id="jsonis_int"><a class="anchor" href="#jsonis_int">#</a>Json::is_int</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_int</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is an integer type.</li>
+</ul>
+<h3 id="jsonis_double"><a class="anchor" href="#jsonis_double">#</a>Json::is_double</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_double</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is of type double.</li>
+</ul>
+<h3 id="jsonis_string"><a class="anchor" href="#jsonis_string">#</a>Json::is_string</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_string</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is a string type.</li>
+</ul>
+<h3 id="jsonis_array"><a class="anchor" href="#jsonis_array">#</a>Json::is_array</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_array</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is an array type.</li>
+</ul>
+<h3 id="jsonis_object"><a class="anchor" href="#jsonis_object">#</a>Json::is_object</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_object</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether the Json is an object type.</li>
+</ul>
+<h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
+<h3 id="jsonget_bool"><a class="anchor" href="#jsonget_bool">#</a>Json::get_bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">get_bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Get value of bool type. Return false if the Json calling this method is not bool type.</li>
+</ul>
+<h3 id="jsonget_int"><a class="anchor" href="#jsonget_int">#</a>Json::get_int</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">get_int</span>() <span style="color:#000;font-weight:bold">const</span>;
+int32 <span style="color:#900;font-weight:bold">get_int32</span>() <span style="color:#000;font-weight:bold">const</span>;
+int64 <span style="color:#900;font-weight:bold">get_int64</span>() <span style="color:#000;font-weight:bold">const</span>;
+uint32 <span style="color:#900;font-weight:bold">get_uint32</span>() <span style="color:#000;font-weight:bold">const</span>;
+uint64 <span style="color:#900;font-weight:bold">get_uint64</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Get value of integer type. Return 0 if the Json calling these methods is not integer type.</li>
+</ul>
+<h3 id="jsonget_double"><a class="anchor" href="#jsonget_double">#</a>Json::get_double</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">get_double</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Get value of double type. Return 0.0 if the Json object calling this method is not double type.</li>
+</ul>
+<h3 id="jsonget_string"><a class="anchor" href="#jsonget_string">#</a>Json::get_string</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get_string</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Get value of string type. Return empty string if the Json calling this method is not string type.</li>
+<li>This method returns the C string ending with <code>'\0'</code>, and the user can also call the <code>string_size()</code> method to get the length of the string.</li>
+</ul>
+<h3 id="code-example-1"><a class="anchor" href="#code-example-1">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);
+r.add_member(<span style="color:#d14">&#34;d&#34;</span>, <span style="color:#099">3.3</span>);
+r.add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>);
+
+r[<span style="color:#d14">&#34;a&#34;</span>].get_int();    <span style="color:#998;font-style:italic">// 1
+</span><span style="color:#998;font-style:italic"></span>r[<span style="color:#d14">&#34;d&#34;</span>].get_double(); <span style="color:#998;font-style:italic">// 3.3
+</span><span style="color:#998;font-style:italic"></span>r[<span style="color:#d14">&#34;s&#34;</span>].get_string(); <span style="color:#998;font-style:italic">// &#34;xx&#34;
+</span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
+<h3 id="jsonset_null"><a class="anchor" href="#jsonset_null">#</a>Json::set_null</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_null</span>();
+</code></pre></div><ul>
+<li>Set the Json to null.</li>
+</ul>
+<h3 id="jsonset_array"><a class="anchor" href="#jsonset_array">#</a>Json::set_array</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_array</span>();
+</code></pre></div><ul>
+<li>Set the Json to an empty array.</li>
+</ul>
+<h3 id="jsonset_object"><a class="anchor" href="#jsonset_object">#</a>Json::set_object</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_object</span>();
+</code></pre></div><ul>
+<li>Set the Json to an empty object.</li>
+</ul>
+<h3 id="code-example-2"><a class="anchor" href="#code-example-2">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.set_array();  <span style="color:#998;font-style:italic">// r -&gt; []
+</span><span style="color:#998;font-style:italic"></span>r.push_back(<span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// r -&gt; [1]
+</span><span style="color:#998;font-style:italic"></span>r.set_object(); <span style="color:#998;font-style:italic">// r -&gt; {}
+</span><span style="color:#998;font-style:italic"></span>r.set_null();   <span style="color:#998;font-style:italic">// r -&gt; null
+</span></code></pre></div><h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>———————————</h3>
+<h3 id="jsonoperator-1"><a class="anchor" href="#jsonoperator-1">#</a>Json::operator[]</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#000;font-weight:bold">operator</span>[](<span style="color:#458;font-weight:bold">int</span> i) <span style="color:#000;font-weight:bold">const</span>;
+Value <span style="color:#000;font-weight:bold">operator</span>[](uint32 i) <span style="color:#000;font-weight:bold">const</span>;
+Value <span style="color:#000;font-weight:bold">operator</span>[](<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>
+</code></pre></div><ul>
+<li>
+<p>Overload <code>operator[]</code>, get the elements in the Json, and return a <code>json::Value</code>.</p>
+</li>
+<li>
+<p>The first two versions are applicable to array types, the parameter i is the offset of the element in the array, and i must be within the range of the array.</p>
+</li>
+<li>
+<p>The third version is applicable to object types. If the element corresponding to the key does not exist, null is returned.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;x&#34;</span>, <span style="color:#099">1</span>);
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.add_array(<span style="color:#d14">&#34;a&#34;</span>);
+a.push_back(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;:1, &#34;a&#34;:[1,2,3]}
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#000;font-weight:bold">auto</span> x <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;x&#34;</span>];
+x.get_int();      <span style="color:#998;font-style:italic">// 1
+</span><span style="color:#998;font-style:italic"></span>
+a <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;a&#34;</span>];
+a.array_size();   <span style="color:#998;font-style:italic">// 3
+</span><span style="color:#998;font-style:italic"></span>a[<span style="color:#099">0</span>].get_int();   <span style="color:#998;font-style:italic">// 1
+</span><span style="color:#998;font-style:italic"></span>a[<span style="color:#099">1</span>].get_int();   <span style="color:#998;font-style:italic">// 2
+</span></code></pre></div><h3 id="jsonhas_member"><a class="anchor" href="#jsonhas_member">#</a>Json::has_member</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">has_member</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>
+<p>Determine whether there is an element corresponding to key in Json.</p>
+</li>
+<li>
+<p>The Json calling this method must be object or null.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);
+r.has_member(<span style="color:#d14">&#34;a&#34;</span>); <span style="color:#998;font-style:italic">// true
+</span><span style="color:#998;font-style:italic"></span>r.has_member(<span style="color:#d14">&#34;x&#34;</span>); <span style="color:#998;font-style:italic">// false
+</span></code></pre></div><h3 id="jsonsize"><a class="anchor" href="#jsonsize">#</a>Json::size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">uint32 <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>
+<p>If Json is object or array, this method returns the number of elements.</p>
+</li>
+<li>
+<p>If Json is a string type, this method returns the length of the string.</p>
+</li>
+<li>
+<p>For all other types, this method returns 0.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;x&#34;</span>, <span style="color:#099">1</span>);
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.add_array(<span style="color:#d14">&#34;a&#34;</span>);
+a.push_back(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;:1, &#34;a&#34;:[1,2,3]}
+</span><span style="color:#998;font-style:italic"></span>
+r.size();       <span style="color:#998;font-style:italic">// 2
+</span><span style="color:#998;font-style:italic"></span>r[<span style="color:#d14">&#34;x&#34;</span>].size();  <span style="color:#998;font-style:italic">// 0
+</span><span style="color:#998;font-style:italic"></span>r[<span style="color:#d14">&#34;a&#34;</span>].size();  <span style="color:#998;font-style:italic">// 3
+</span></code></pre></div><h3 id="jsonstring_size"><a class="anchor" href="#jsonstring_size">#</a>Json::string_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">uint32 <span style="color:#900;font-weight:bold">string_size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns the length of the string type. Return 0 if the Json calling this method is not string type.</li>
+</ul>
+<h3 id="jsonarray_size"><a class="anchor" href="#jsonarray_size">#</a>Json::array_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">uint32 <span style="color:#900;font-weight:bold">array_size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns the number of elements of array type. Return 0 if the Json calling this method is not array type.</li>
+</ul>
+<h3 id="jsonobject_size"><a class="anchor" href="#jsonobject_size">#</a>Json::object_size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">uint32 <span style="color:#900;font-weight:bold">object_size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns the number of elements of object type. Return 0 if the Json calling this method is not object type.</li>
+</ul>
+<h3 id="heading-5"><a class="anchor" href="#heading-5">#</a>———————————</h3>
+<h3 id="jsonbegin"><a class="anchor" href="#jsonbegin">#</a>Json::begin</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns the beginning iterator.</li>
+<li>The Json calling this method must be array, object or null.</li>
+<li>When the Json is empty, the return value is equal to <code>Json::end()</code>.</li>
+</ul>
+<h3 id="jsonend"><a class="anchor" href="#jsonend">#</a>Json::end</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> iterator<span style="color:#000;font-weight:bold">::</span>End<span style="color:#000;font-weight:bold">&amp;</span> end() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Returns a fake end iterator.</li>
+<li>The return value is actually not an iterator object, but a iterator can be compared with it. If iterator is equal to <code>Json::end()</code>, it means that there is no more element.</li>
+</ul>
+<h3 id="jsoniterator"><a class="anchor" href="#jsoniterator">#</a>Json::iterator</h3>
+<h4 id="iteratoroperator"><a class="anchor" href="#iteratoroperator">#</a>iterator::operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> End<span style="color:#000;font-weight:bold">&amp;</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine whether a iterator is equal to <code>End</code>, End is the fake end iterator.</li>
+</ul>
+<h4 id="iteratoroperator-1"><a class="anchor" href="#iteratoroperator-1">#</a>iterator::operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> End<span style="color:#000;font-weight:bold">&amp;</span>) <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Determine if a iterator is not equal to <code>End</code>, End is the fake end iterator.</li>
+</ul>
+<h4 id="iteratoroperator-2"><a class="anchor" href="#iteratoroperator-2">#</a>iterator::operator++</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">++</span>();
+</code></pre></div><ul>
+<li>The prefix operator++.</li>
+</ul>
+<h4 id="iteratoroperator-3"><a class="anchor" href="#iteratoroperator-3">#</a>iterator::operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>Overload <code>operator*</code>, this method <strong>only applies to iterator of array type</strong>.</li>
+<li>When Json is an array, the iterator points to the elements in the array. This method returns a json::Value that represents the element pointed to by the iterator.</li>
+</ul>
+<h4 id="iteratorkey"><a class="anchor" href="#iteratorkey">#</a>iterator::key</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">key</span>();
+</code></pre></div><ul>
+<li>This method <strong>only applies to iterator of object type</strong>.</li>
+<li>When Json is an object, the iterator points to the key-value pair in the object, and this method returns the key.</li>
+</ul>
+<h4 id="iteratorvalue"><a class="anchor" href="#iteratorvalue">#</a>iterator::value</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Value <span style="color:#900;font-weight:bold">value</span>();
+</code></pre></div><ul>
+<li>This method <strong>only applies to iterator of object type</strong>.</li>
+<li>When Json is an object, the iterator points to the key-value pair in the object, and this method returns the value.</li>
+</ul>
+<h3 id="traversing-the-json"><a class="anchor" href="#traversing-the-json">#</a>Traversing the Json</h3>
+<p>co/json supports traversing a Json of type array or object by iterator:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// {&#34;i&#34;:7, &#34;s&#34;:&#34;xx&#34;, &#34;a&#34;:[123, true, &#34;nice&#34;]}
+</span><span style="color:#998;font-style:italic"></span>Json r;
+r.add_member(<span style="color:#d14">&#34;i&#34;</span>, <span style="color:#099">7</span>);
+r.add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>);
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r.add_array(<span style="color:#d14">&#34;a&#34;</span>);
+a.push_back(<span style="color:#099">123</span>, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;nice&#34;</span>);
+
+<span style="color:#998;font-style:italic">// object
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">for</span> (<span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> r.begin(); it <span style="color:#000;font-weight:bold">!=</span> r.end(); <span style="color:#000;font-weight:bold">++</span>it) {
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> it.key() <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> it.value();
+}
+
+<span style="color:#998;font-style:italic">// array
+</span><span style="color:#998;font-style:italic"></span>a <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;a&#34;</span>];
+<span style="color:#000;font-weight:bold">for</span> (<span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> a.begin(); it <span style="color:#000;font-weight:bold">!=</span> a.end(); <span style="color:#000;font-weight:bold">++</span>it) {
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> (<span style="color:#000;font-weight:bold">*</span>it);
+}
+</code></pre></div><h2 id="jsonvalue-1"><a class="anchor" href="#jsonvalue-1">#</a>json::Value</h2>
+<p>The constructor of <code>json::Value</code> is private, and users cannot create json::Value objects directly.</p>
+<p>json::Value is generally used as an intermediate temporary object, <strong>it supports all methods in the Json class except parse_from()</strong> and <strong>safe_clear()</strong>, and its usage is exactly the same, so I won&rsquo;t repeat it here. In addition, it also supports some assignment operations that the Json does not support.</p>
+<h3 id="jsonvalueoperator"><a class="anchor" href="#jsonvalueoperator">#</a>json::Value::operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#458;font-weight:bold">bool</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(int64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(int32 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(uint32 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(uint64 x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#458;font-weight:bold">double</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> x);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> x);
+</code></pre></div><ul>
+<li>
+<p>Assignment, set value of json::Value to the value specified by the parameter x, and the type of json::Value will also become the corresponding type.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;x&#34;</span>, <span style="color:#099">1</span>);
+
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;x&#34;</span>];
+a <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">3</span>;          <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;: 3}
+</span><span style="color:#998;font-style:italic"></span>a <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;      <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;: false}
+</span><span style="color:#998;font-style:italic"></span>a <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;nice&#34;</span>;     <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;: &#34;nice&#34;}
+</span><span style="color:#998;font-style:italic"></span>r[<span style="color:#d14">&#34;x&#34;</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">3.3</span>;   <span style="color:#998;font-style:italic">// r -&gt; {&#34;x&#34;: 3.3}
+</span></code></pre></div><h2 id="performance-optimization-suggestions"><a class="anchor" href="#performance-optimization-suggestions">#</a>Performance optimization suggestions</h2>
+<p>Some users may add members in the following way:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r[<span style="color:#d14">&#34;a&#34;</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+r[<span style="color:#d14">&#34;s&#34;</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;hello world&#34;</span>;
+</code></pre></div><p>Although the above code works, the efficiency is not very high. The <code>operator[]</code> will first look up the key which may be slow. It is generally recommended to use <strong>add_member()</strong> instead:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);
+r.add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;hello world&#34;</span>);
+</code></pre></div><p>The object type is actually stored in the form of an array, and <code>operator[]</code> will compare with the keys in the array one by one. In occasions where performance is particularly important, it is recommended to cache the result of operator[] instead of calling operator[] multiple times for the same key.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r;
+r.add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>);
+
+<span style="color:#000;font-weight:bold">auto</span> a <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;a&#34;</span>];
+<span style="color:#000;font-weight:bold">if</span> (a.is_int()) LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> a.get_int();
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/json/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/4a60e17ba65dc6c26412646734470dc1be4ac6e2" title='Last modified by idealvin | August 9, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 9, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/json.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-concepts">Basic concepts</a>
+          <ul>
+            <li><a href="#json-data-format">JSON data format</a></li>
+            <li><a href="#jsonjson">json::Json</a></li>
+            <li><a href="#jsonvalue">json::Value</a></li>
+          </ul>
+        </li>
+        <li><a href="#jsonjson-json">json::Json (Json)</a>
+          <ul>
+            <li><a href="#jsonjson-1">Json::Json</a></li>
+            <li><a href="#jsonarray">json::array</a></li>
+            <li><a href="#jsonobject">json::object</a></li>
+            <li><a href="#jsonoperator">Json::operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#jsonadd_member">Json::add_member</a></li>
+            <li><a href="#jsonadd_null">Json::add_null</a></li>
+            <li><a href="#jsonadd_array">Json::add_array</a></li>
+            <li><a href="#jsonadd_object">Json::add_object</a></li>
+            <li><a href="#jsonpush_back">Json::push_back</a></li>
+            <li><a href="#jsonpush_null">Json::push_null</a></li>
+            <li><a href="#jsonpush_array">Json::push_array</a></li>
+            <li><a href="#jsonpush_object">Json::push_object</a></li>
+            <li><a href="#jsonstr">Json::str</a></li>
+            <li><a href="#jsonpretty">Json::pretty</a></li>
+            <li><a href="#jsondbg">Json::dbg</a></li>
+            <li><a href="#jsonparse_from">Json::parse_from</a></li>
+            <li><a href="#jsonparse">json::parse</a></li>
+            <li><a href="#code-example">Code example</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#jsonis_null">Json::is_null</a></li>
+            <li><a href="#jsonis_bool">Json::is_bool</a></li>
+            <li><a href="#jsonis_int">Json::is_int</a></li>
+            <li><a href="#jsonis_double">Json::is_double</a></li>
+            <li><a href="#jsonis_string">Json::is_string</a></li>
+            <li><a href="#jsonis_array">Json::is_array</a></li>
+            <li><a href="#jsonis_object">Json::is_object</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#jsonget_bool">Json::get_bool</a></li>
+            <li><a href="#jsonget_int">Json::get_int</a></li>
+            <li><a href="#jsonget_double">Json::get_double</a></li>
+            <li><a href="#jsonget_string">Json::get_string</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#jsonset_null">Json::set_null</a></li>
+            <li><a href="#jsonset_array">Json::set_array</a></li>
+            <li><a href="#jsonset_object">Json::set_object</a></li>
+            <li><a href="#code-example-2">Code example</a></li>
+            <li><a href="#heading-4">———————————</a></li>
+            <li><a href="#jsonoperator-1">Json::operator[]</a></li>
+            <li><a href="#jsonhas_member">Json::has_member</a></li>
+            <li><a href="#jsonsize">Json::size</a></li>
+            <li><a href="#jsonstring_size">Json::string_size</a></li>
+            <li><a href="#jsonarray_size">Json::array_size</a></li>
+            <li><a href="#jsonobject_size">Json::object_size</a></li>
+            <li><a href="#heading-5">———————————</a></li>
+            <li><a href="#jsonbegin">Json::begin</a></li>
+            <li><a href="#jsonend">Json::end</a></li>
+            <li><a href="#jsoniterator">Json::iterator</a>
+              <ul>
+                <li><a href="#iteratoroperator">iterator::operator==</a></li>
+                <li><a href="#iteratoroperator-1">iterator::operator!=</a></li>
+                <li><a href="#iteratoroperator-2">iterator::operator++</a></li>
+                <li><a href="#iteratoroperator-3">iterator::operator*</a></li>
+                <li><a href="#iteratorkey">iterator::key</a></li>
+                <li><a href="#iteratorvalue">iterator::value</a></li>
+              </ul>
+            </li>
+            <li><a href="#traversing-the-json">Traversing the Json</a></li>
+          </ul>
+        </li>
+        <li><a href="#jsonvalue-1">json::Value</a>
+          <ul>
+            <li><a href="#jsonvalueoperator">json::Value::operator=</a></li>
+          </ul>
+        </li>
+        <li><a href="#performance-optimization-suggestions">Performance optimization suggestions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

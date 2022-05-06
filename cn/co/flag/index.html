@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/flag.h.
+#基本概念 co/flag 是一个类似 google gflags 的命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
+#flag 变量 co/flag 中的宏定义的全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
+DEF_bool(x, false, &#34;xxx&#34;); // bool FLG_x = false; co/flag 支持 7 种类型的 flag 变量：
+bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=true，在配置文件中可以用 x = true，设置一个新的值。
+#command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。为了方便，下面可能将 flag 与 flag 变量统一称为 flag。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="命令行参数与配置文件解析" />
+<meta property="og:description" content="include: co/flag.h.
+#基本概念 co/flag 是一个类似 google gflags 的命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
+#flag 变量 co/flag 中的宏定义的全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
+DEF_bool(x, false, &#34;xxx&#34;); // bool FLG_x = false; co/flag 支持 7 种类型的 flag 变量：
+bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=true，在配置文件中可以用 x = true，设置一个新的值。
+#command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。为了方便，下面可能将 flag 与 flag 变量统一称为 flag。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/flag/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-10-04T10:55:00+08:00" />
+
+<title>命令行参数与配置文件解析 | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/flag/" title="co/flag">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.c8ccd5f7a7183df66cef5acc50ef2f0f3eb0edcbfa617d4ea798bf273b902c08.js" integrity="sha256-yMzV96cYPfZs71rMUO8vDz6w7cv6YX1Op5i/JzuQLAg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>CO 参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/str/" class="">字符串操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class=" active">命令行参数与配置文件解析</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/random/" class="">随机数</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>命令行参数与配置文件解析</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#基本概念">基本概念</a>
+          <ul>
+            <li><a href="#flag-变量">flag 变量</a></li>
+            <li><a href="#command-line-flag">command line flag</a></li>
+          </ul>
+        </li>
+        <li><a href="#初始化flaginit">初始化(flag::init)</a></li>
+        <li><a href="#代码中使用-flag-变量">代码中使用 flag 变量</a>
+          <ul>
+            <li><a href="#定义-flag-变量">定义 flag 变量</a></li>
+            <li><a href="#声明-flag-变量">声明 flag 变量</a></li>
+            <li><a href="#使用-flag-变量">使用 flag 变量</a></li>
+          </ul>
+        </li>
+        <li><a href="#命令行中使用-flag">命令行中使用 flag</a>
+          <ul>
+            <li><a href="#命令行中修改-flag-变量的值">命令行中修改 flag 变量的值</a></li>
+            <li><a href="#查看帮助信息--help">查看帮助信息(&ndash;help)</a></li>
+            <li><a href="#查看-flag-列表--">查看 flag 列表(&ndash;)</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置文件">配置文件</a>
+          <ul>
+            <li><a href="#配置文件格式">配置文件格式</a></li>
+            <li><a href="#自动生成配置文件">自动生成配置文件</a></li>
+            <li><a href="#调整配置文件中配置项的顺序">调整配置文件中配置项的顺序</a></li>
+            <li><a href="#禁止某些配置项生成到配置文件中">禁止某些配置项生成到配置文件中</a></li>
+            <li><a href="#程序启动时指定配置文件">程序启动时指定配置文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#自定义帮助信息">自定义帮助信息</a></li>
+        <li><a href="#让程序在后台运行">让程序在后台运行</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/flag.h">co/flag.h</a>.</p>
+<h2 id="基本概念"><a class="anchor" href="#%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5">#</a>基本概念</h2>
+<p><code>co/flag</code> 是一个类似 <a href="https://github.com/gflags/gflags">google gflags</a> 的命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。</p>
+<h3 id="flag-变量"><a class="anchor" href="#flag-%e5%8f%98%e9%87%8f">#</a>flag 变量</h3>
+<p>co/flag 中的宏定义的全局变量，称为 <strong>flag 变量</strong>。如下面的代码定义了一个 flag 变量，变量名是 <code>FLG_x</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;xxx&#34;</span>); <span style="color:#998;font-style:italic">// bool FLG_x = false;
+</span></code></pre></div><p>co/flag 支持 7 种类型的 flag 变量：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span>, int32, int64, uint32, uint64, <span style="color:#458;font-weight:bold">double</span>, string
+</code></pre></div><p>每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 <code>FLG_x</code>，在命令行中可以用 <code>-x=true</code>，在配置文件中可以用 <code>x = true</code>，设置一个新的值。</p>
+<h3 id="command-line-flag"><a class="anchor" href="#command-line-flag">#</a>command line flag</h3>
+<p>命令行参数中，以 <code>-x=y</code> 的形式出现，其中 <code>x</code> 被称为一个 <strong>command line flag</strong>(以下简称为 flag)。命令行中的 flag <code>x</code> 对应代码中的全局变量 <code>FLG_x</code>，命令行中的 <code>-x=y</code> 就相当于将 <code>FLG_x</code> 的值设置为 <code>y</code>。为了方便，下面可能将 flag 与 flag 变量统一称为 flag。</p>
+<p>co/flag 为了简便易用，设计得非常灵活：</p>
+<ul>
+<li>
+<p><code>-x=y</code> 可以省略前面的 <code>-</code>，简写为 <code>x=y</code>.</p>
+</li>
+<li>
+<p><code>-x=y</code> 也可以写成 <code>-x y</code>.</p>
+</li>
+<li>
+<p><code>x=y</code> 前面可以添加任意数量的 <code>-</code>.</p>
+</li>
+<li>
+<p>bool 类型的 flag，<code>-b=true</code> 可以简写为 <code>-b</code>.</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># b, i, s 都是 flag, xx 不是 flag</span>
+./exe -b -i<span style="color:#000;font-weight:bold">=</span><span style="color:#099">32</span> -s<span style="color:#000;font-weight:bold">=</span>hello xx
+</code></pre></div><h2 id="初始化flaginit"><a class="anchor" href="#%e5%88%9d%e5%a7%8b%e5%8c%96flaginit">#</a>初始化(flag::init)</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> init(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
+std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> init(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</code></pre></div><ul>
+<li>
+<p>前两个 init 函数，解析命令行参数及配置文件，并更新 flag 变量的值。此函数一般需要在 main 函数开头调用一次。大致流程如下：</p>
+<ul>
+<li>对命令行参数进行预处理，此过程中可能会更新 <code>FLG_config</code> 的值。</li>
+<li>如果 <code>FLG_config</code> 非空，解析由它指定的配置文件，更新 flag 变量的值。</li>
+<li>解析其他命令行参数，更新 flag 变量的值。</li>
+<li>若 <code>FLG_mkconf</code> 为 true，则生成配置文件，并退出程序。</li>
+<li>若 <code>FLG_daemon</code> 为 true，则将程序放入后台运行 (仅适用于 linux 平台)。</li>
+<li>遇到任何错误时，输出错误信息，并立即退出程序。</li>
+<li>若未发生任何错误，返回 non-flag 列表。如执行 <code>./exe x y</code> 时，此函数将返回 <code>[&quot;x&quot;, &quot;y&quot;]</code>。</li>
+</ul>
+</li>
+<li>
+<p>最后一个 init 函数，解析配置文件，并更新 flag 变量的值。参数 <code>path</code> 是配置文件的路径。遇到错误时，会输出错误信息，并退出程序。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+}
+</code></pre></div><h2 id="代码中使用-flag-变量"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e4%b8%ad%e4%bd%bf%e7%94%a8-flag-%e5%8f%98%e9%87%8f">#</a>代码中使用 flag 变量</h2>
+<h3 id="定义-flag-变量"><a class="anchor" href="#%e5%ae%9a%e4%b9%89-flag-%e5%8f%98%e9%87%8f">#</a>定义 flag 变量</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_bool(name, value, help)    _DEFINE_FLAG(bool, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_int32(name, value, help)   _DEFINE_FLAG(int32, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_int64(name, value, help)   _DEFINE_FLAG(int64, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_uint32(name, value, help)  _DEFINE_FLAG(uint32, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_uint64(name, value, help)  _DEFINE_FLAG(uint64, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_double(name, value, help)  _DEFINE_FLAG(double, name, value, help)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_string(name, value, help)  _DEFINE_FLAG(string, name, value, help)
+</span></code></pre></div><ul>
+<li>
+<p>上面的 7 个宏，分别用于定义 7 种不同类型的 flag 变量。</p>
+</li>
+<li>
+<p>参数 <code>name</code> 是 flag 名，对应的全局变量名是 <code>FLG_name</code>，参数 <code>value</code> 是默认值，参数 <code>help</code> 是注释信息。</p>
+</li>
+<li>
+<p>flag 变量是全局变量，一般不要在头文件中定义。</p>
+</li>
+<li>
+<p>flag 变量的名字是唯一的，不能定义两个名字相同的 flag 变量。</p>
+</li>
+<li>
+<p>flag 变量一般在命名空间之外定义，否则可能无法使用 FLG_name 访问 flag 变量。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(b, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// bool FLG_b = false;
+</span><span style="color:#998;font-style:italic"></span>DEF_int32(i32, <span style="color:#099">32</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// int32 FLG_i32 = 32;
+</span><span style="color:#998;font-style:italic"></span>DEF_int64(i64, <span style="color:#099">64</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// int64 FLG_i64 = 64;
+</span><span style="color:#998;font-style:italic"></span>DEF_uint32(u32, <span style="color:#099">0</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// uint32 FLG_u32 = 0;
+</span><span style="color:#998;font-style:italic"></span>DEF_uint64(u64, <span style="color:#099">0</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// uint64 FLG_u64 = 0;
+</span><span style="color:#998;font-style:italic"></span>DEF_double(d, <span style="color:#099">2.0</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// double FLG_d = 2.0;
+</span><span style="color:#998;font-style:italic"></span>DEF_string(s, <span style="color:#d14">&#34;x&#34;</span>, <span style="color:#d14">&#34;comments&#34;</span>);  <span style="color:#998;font-style:italic">// fastring FLG_s = &#34;x&#34;;
+</span></code></pre></div><h3 id="声明-flag-变量"><a class="anchor" href="#%e5%a3%b0%e6%98%8e-flag-%e5%8f%98%e9%87%8f">#</a>声明 flag 变量</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_bool(name)    _DECLARE_FLAG(bool, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_int32(name)   _DECLARE_FLAG(int32, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_int64(name)   _DECLARE_FLAG(int64, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_uint32(name)  _DECLARE_FLAG(uint32, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_uint64(name)  _DECLARE_FLAG(uint64, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_double(name)  _DECLARE_FLAG(double, name)
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define DEC_string(name)  _DECLARE_FLAG(string, name)
+</span></code></pre></div><ul>
+<li>
+<p>上面的 7 个宏，分别用于声明 7 种不同类型的 flag 变量。</p>
+</li>
+<li>
+<p>参数 <code>name</code> 是 flag 名，对应的全局变量名是 <code>FLG_name</code>。</p>
+</li>
+<li>
+<p>一个 flag 变量只能定义一次，但可以声明多次，可以在任何需要的地方声明它们。</p>
+</li>
+<li>
+<p>flag 变量一般在命名空间之外声明，否则可能无法使用 FLG_name 访问 flag 变量。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEC_bool(b);      <span style="color:#998;font-style:italic">// extern bool FLG_b;
+</span><span style="color:#998;font-style:italic"></span>DEC_int32(i32);   <span style="color:#998;font-style:italic">// extern int32 FLG_i32;
+</span><span style="color:#998;font-style:italic"></span>DEC_int64(i64);   <span style="color:#998;font-style:italic">// extern int64 FLG_i64;
+</span><span style="color:#998;font-style:italic"></span>DEC_uint32(u32);  <span style="color:#998;font-style:italic">// extern uint32 FLG_u32;
+</span><span style="color:#998;font-style:italic"></span>DEC_uint64(u64);  <span style="color:#998;font-style:italic">// extern uint64 FLG_u64;
+</span><span style="color:#998;font-style:italic"></span>DEC_double(d);    <span style="color:#998;font-style:italic">// extern double FLG_d;
+</span><span style="color:#998;font-style:italic"></span>DEC_string(s);    <span style="color:#998;font-style:italic">// extern fastring FLG_s;
+</span></code></pre></div><h3 id="使用-flag-变量"><a class="anchor" href="#%e4%bd%bf%e7%94%a8-flag-%e5%8f%98%e9%87%8f">#</a>使用 flag 变量</h3>
+<p>定义或声明 flag 变量后，就可以像普通变量一样使用它们：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+DEC_bool(b);
+DEF_string(s, <span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#d14">&#34;xxx&#34;</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    
+    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>FLG_b) std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;b is false&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> std<span style="color:#000;font-weight:bold">::</span>endl;
+    FLG_s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34; world&#34;</span>;
+    std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s <span style="color:#000;font-weight:bold">&lt;&lt;</span> std<span style="color:#000;font-weight:bold">::</span>endl;
+    
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="命令行中使用-flag"><a class="anchor" href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%ad%e4%bd%bf%e7%94%a8-flag">#</a>命令行中使用 flag</h2>
+<h3 id="命令行中修改-flag-变量的值"><a class="anchor" href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%ad%e4%bf%ae%e6%94%b9-flag-%e5%8f%98%e9%87%8f%e7%9a%84%e5%80%bc">#</a>命令行中修改 flag 变量的值</h3>
+<p>假设程序中定义了如下的 flag：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool x&#34;</span>);
+DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool y&#34;</span>);
+DEF_int32(i, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">32</span>, <span style="color:#d14">&#34;int32&#34;</span>);
+DEF_uint64(u, <span style="color:#099">64</span>, <span style="color:#d14">&#34;uint64&#34;</span>);
+DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color:#d14">&#34;string&#34;</span>);
+</code></pre></div><p>程序启动时，可以通过命令行参数修改 flag 变量的值：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># -x=y, x=y, -x y, 三者是等价的</span>
+./xx -i<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8</span> <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">88</span> -s<span style="color:#000;font-weight:bold">=</span>xxx
+./xx -i <span style="color:#099">8</span> -u <span style="color:#099">88</span> -s <span style="color:#d14">&#34;hello world&#34;</span>
+./xx -i8       <span style="color:#998;font-style:italic"># 仅适用于单字母命名的整数类型 flag</span>
+
+<span style="color:#998;font-style:italic"># bool 类型设置为 true 时, 可以略去值</span>
+./xx -x        <span style="color:#998;font-style:italic"># -x=true</span>
+
+<span style="color:#998;font-style:italic"># 多个单字母命名的 bool flag, 可以合并设置为 true</span>
+./xx -xy       <span style="color:#998;font-style:italic"># -x=true -y=true</span>
+
+<span style="color:#998;font-style:italic"># 整数类型的 flag 可以带单位 k, m, g, t, p, 不区分大小写</span>
+./xx -i -4k    <span style="color:#998;font-style:italic"># i=-4096</span>
+
+<span style="color:#998;font-style:italic"># 整数类型的 flag 可以传 8 进制 或 16 进制数</span>
+./xx <span style="color:#008080">i</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">032</span>     <span style="color:#998;font-style:italic"># i=26     8 进制</span>
+./xx <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span>0xff    <span style="color:#998;font-style:italic"># u=255   16 进制</span>
+</code></pre></div><h3 id="查看帮助信息--help"><a class="anchor" href="#%e6%9f%a5%e7%9c%8b%e5%b8%ae%e5%8a%a9%e4%bf%a1%e6%81%af--help">#</a>查看帮助信息(&ndash;help)</h3>
+<p>co/flag 支持用 <code>--help</code> 命令查看程序的帮助信息：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./xx --help
+usage:
+    ./xx --                   print flags info
+    ./xx --help               print this <span style="color:#0086b3">help</span> info
+    ./xx --mkconf             generate config file
+    ./xx --daemon             run as a daemon <span style="color:#000;font-weight:bold">(</span>Linux<span style="color:#000;font-weight:bold">)</span>
+    ./xx xx.conf              run with config file
+    ./xx <span style="color:#008080">config</span><span style="color:#000;font-weight:bold">=</span>xx.conf       run with config file
+    ./xx -x -i<span style="color:#000;font-weight:bold">=</span>8k -s<span style="color:#000;font-weight:bold">=</span>ok       run with commandline flags
+    ./xx -x -i 8k -s ok       run with commandline flags
+    ./xx <span style="color:#008080">x</span><span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> <span style="color:#008080">i</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span> <span style="color:#008080">s</span><span style="color:#000;font-weight:bold">=</span>ok   run with commandline flags
+</code></pre></div><h3 id="查看-flag-列表--"><a class="anchor" href="#%e6%9f%a5%e7%9c%8b-flag-%e5%88%97%e8%a1%a8--">#</a>查看 flag 列表(&ndash;)</h3>
+<p>co/flag 可以用 <code>--</code> 命令，用于查看程序中定义的 flag 列表：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./xx --
+--config: .path of config file
+	 type: string	     default: <span style="color:#d14">&#34;&#34;</span>
+	 from: ../../base/flag.cc
+--mkconf: .generate config file
+	 type: bool	     default: <span style="color:#0086b3">false</span>
+	 from: ../../base/flag.cc
+</code></pre></div><h2 id="配置文件"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>配置文件</h2>
+<h3 id="配置文件格式"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e6%a0%bc%e5%bc%8f">#</a>配置文件格式</h3>
+<p>co/flag 的配置文件格式比较灵活：</p>
+<ul>
+<li>
+<p>一行一个配置项，每个配置项对应一个 flag，形式统一为 <code>x = y</code>，看起来一目了然。</p>
+</li>
+<li>
+<p><code>#</code> 或 <code>//</code> 表示注释，支持行尾注释。</p>
+</li>
+<li>
+<p>引号中的 <code>#</code> 或 <code>//</code>  不是注释。</p>
+</li>
+<li>
+<p>忽略行前、行尾的空白字符，书写更自由，不容易出错。</p>
+</li>
+<li>
+<p><code>=</code> 号前后可以任意添加空白字符，书写更自由。</p>
+</li>
+<li>
+<p>可以用 <code>\</code> 续行，以免一行太长，影响美观。</p>
+</li>
+<li>
+<p>字符串不支持转义，以免产生歧义。</p>
+</li>
+<li>
+<p>字符串可以用双引号、单引号或 3个反引号括起来。</p>
+</li>
+<li>
+<p>配置文件示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">   </span><span style="color:#998;font-style:italic"># config file: xx.conf</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>boo = true               <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># bool 类型</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s =                      <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 空字符串</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = hello \<span style="color:#bbb">
+</span><span style="color:#bbb">         </span>world                <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># s = &#34;helloworld&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = &#34;http://github.com&#34;   # 引号中的<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 与 // 不是注释</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = &#34;I&#39;m ok&#34;             <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 字符串中含有单引号，两端可以用双引号括起来</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = &#39;how are &#34;U&#34;&#39;        <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 字符串中含有双引号，两端可以用单引号括起来</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>s = ```I&#39;m &#34;ok&#34;```       <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 字符串两端也可以用 3 个反引号括起来</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 4k                 <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 4096, 整型可以带单位 k,m,g,t,p, 不区分大小写</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 032                <span style="color:#bbb"> </span><span style="color:#998;font-style:italic">#  8 进制, i32 = 26</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>i32 = 0xff               <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># 16 进制, i32 = 255</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>pi = 3.14159             <span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># double 类型</span><span style="color:#bbb">
+</span></code></pre></div><h3 id="自动生成配置文件"><a class="anchor" href="#%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>自动生成配置文件</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(mkconf, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;.generate config file&#34;</span>);
+</code></pre></div><ul>
+<li><code>mkconf</code> 是 co/flag 内部定义的 flag，它是自动生成配置文件的开关。</li>
+<li>命令行中可以用 <code>-mkconf</code> 自动生成配置文件。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -mkconf            <span style="color:#998;font-style:italic"># 在 xx 所在目录生成 xx.conf</span>
+./xx -mkconf -x <span style="color:#008080">u</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">88</span>    <span style="color:#998;font-style:italic"># 自定义配置项的值</span>
+</code></pre></div><h3 id="调整配置文件中配置项的顺序"><a class="anchor" href="#%e8%b0%83%e6%95%b4%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e4%b8%ad%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%9a%84%e9%a1%ba%e5%ba%8f">#</a>调整配置文件中配置项的顺序</h3>
+<p>自动生成的配置文件中，配置项按 flag 级别、所在文件名、所在代码行数进行排序。如果用户想让某些配置项的排序靠前些，可以将 flag 的级别设成较小的值，反之可以将 flag 级别设成较大的值。</p>
+<p>定义 flag 时可以在注释开头用 <code>#n</code> 指定级别，<strong>n 必须是 0 到 99 之间的整数</strong>，若注释非空，n 后面必须有一个空格。不指定时，默认 flag 级别为 10。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;comments&#34;</span>);     <span style="color:#998;font-style:italic">// 默认级别为 10
+</span><span style="color:#998;font-style:italic"></span>DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#23&#34;</span>);          <span style="color:#998;font-style:italic">// 级别为 23, 注释为空
+</span><span style="color:#998;font-style:italic"></span>DEF_bool(z, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#3 comments&#34;</span>);  <span style="color:#998;font-style:italic">// 级别为 3, 注释非空, 3 后面必须有一个空格
+</span></code></pre></div><h3 id="禁止某些配置项生成到配置文件中"><a class="anchor" href="#%e7%a6%81%e6%ad%a2%e6%9f%90%e4%ba%9b%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%94%9f%e6%88%90%e5%88%b0%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e4%b8%ad">#</a>禁止某些配置项生成到配置文件中</h3>
+<p>注释以 <code>.</code> 开头的 flag，带有<strong>隐藏</strong>属性，不会生成到配置文件中，但用 <code>--</code> 命令可以查看。注释为空的 flag，则是完全不可见的，既不会生成到配置文件中，也不能用 <code>--</code> 命令查看。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;.say something here&#34;</span>);
+DEF_string(s, <span style="color:#d14">&#34;good&#34;</span>, <span style="color:#d14">&#34;&#34;</span>);
+</code></pre></div><h3 id="程序启动时指定配置文件"><a class="anchor" href="#%e7%a8%8b%e5%ba%8f%e5%90%af%e5%8a%a8%e6%97%b6%e6%8c%87%e5%ae%9a%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>程序启动时指定配置文件</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(config, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;.path of config file&#34;</span>);
+</code></pre></div><ul>
+<li><code>config</code> 是 co/flag 内部定义的 flag，表示配置文件的路径。</li>
+<li>命令行中可以用 <code>-config</code> 指定配置文件。</li>
+<li>代码中可以在调用 <code>flag::init()</code> 之前，修改 <code>FLG_config</code> 的值，以指定配置文件。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -config xx.conf
+
+<span style="color:#998;font-style:italic"># 若配置文件名以 .conf 或 config 结尾, 且是命令行的</span>
+<span style="color:#998;font-style:italic"># 第一个 non-flag 参数, 则可省略 -config</span>
+./xx xx.conf
+./xx xx.conf -x
+</code></pre></div><h2 id="自定义帮助信息"><a class="anchor" href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e5%b8%ae%e5%8a%a9%e4%bf%a1%e6%81%af">#</a>自定义帮助信息</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_string(help, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;.help info&#34;</span>);
+</code></pre></div><ul>
+<li>
+<p><code>help</code> 是 co/flag 内部定义的 flag，表示程序的帮助信息，命令行中使用 <code>--help</code> 命令可以查看此信息。</p>
+</li>
+<li>
+<p><code>FLG_help</code> 默认为空，使用 co/flag 内部提供的默认帮助信息。</p>
+</li>
+<li>
+<p>用户想自定义帮助信息时，可以在调用 <code>flag::init()</code> 前，修改 <code>FLG_help</code> 的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+    FLG_help <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;usage:</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+             <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;</span><span style="color:#d14">\t</span><span style="color:#d14">./xx -ip 127.0.0.1 -port 7777</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
+    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><h2 id="让程序在后台运行"><a class="anchor" href="#%e8%ae%a9%e7%a8%8b%e5%ba%8f%e5%9c%a8%e5%90%8e%e5%8f%b0%e8%bf%90%e8%a1%8c">#</a>让程序在后台运行</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(daemon, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#0 run program as a daemon&#34;</span>);
+</code></pre></div><ul>
+<li>
+<p><code>daemon</code> 是 co/flag 内部定义的 flag，若为 true，程序将在后台运行，仅支持 linux 平台。</p>
+</li>
+<li>
+<p>命令行中可以用 <code>-daemon</code> 指定程序以 daemon 形式在后台运行。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./xx -daemon
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/co/flag/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/10d4fdb40ec891b00d7a399766ad93022312ed01" title='最后修改者 idealvin | October 4, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>October 4, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/flag.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#基本概念">基本概念</a>
+          <ul>
+            <li><a href="#flag-变量">flag 变量</a></li>
+            <li><a href="#command-line-flag">command line flag</a></li>
+          </ul>
+        </li>
+        <li><a href="#初始化flaginit">初始化(flag::init)</a></li>
+        <li><a href="#代码中使用-flag-变量">代码中使用 flag 变量</a>
+          <ul>
+            <li><a href="#定义-flag-变量">定义 flag 变量</a></li>
+            <li><a href="#声明-flag-变量">声明 flag 变量</a></li>
+            <li><a href="#使用-flag-变量">使用 flag 变量</a></li>
+          </ul>
+        </li>
+        <li><a href="#命令行中使用-flag">命令行中使用 flag</a>
+          <ul>
+            <li><a href="#命令行中修改-flag-变量的值">命令行中修改 flag 变量的值</a></li>
+            <li><a href="#查看帮助信息--help">查看帮助信息(&ndash;help)</a></li>
+            <li><a href="#查看-flag-列表--">查看 flag 列表(&ndash;)</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置文件">配置文件</a>
+          <ul>
+            <li><a href="#配置文件格式">配置文件格式</a></li>
+            <li><a href="#自动生成配置文件">自动生成配置文件</a></li>
+            <li><a href="#调整配置文件中配置项的顺序">调整配置文件中配置项的顺序</a></li>
+            <li><a href="#禁止某些配置项生成到配置文件中">禁止某些配置项生成到配置文件中</a></li>
+            <li><a href="#程序启动时指定配置文件">程序启动时指定配置文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#自定义帮助信息">自定义帮助信息</a></li>
+        <li><a href="#让程序在后台运行">让程序在后台运行</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
