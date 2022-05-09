@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#Compiler requirementsThe compilers required are as follows:
+ Linux: gcc 4.8&#43; Mac: clang 3.3&#43; Windows: vs2015&#43;  #xmakeCO recommends using xmake as the build tool.
+#Install xmakeFor Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&rsquo;s Installation instructions.
+Xmake disables compiling as root by default on Linux. ruki says it is not safe.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Compiling" />
+<meta property="og:description" content="#Compiler requirementsThe compilers required are as follows:
+ Linux: gcc 4.8&#43; Mac: clang 3.3&#43; Windows: vs2015&#43;  #xmakeCO recommends using xmake as the build tool.
+#Install xmakeFor Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&rsquo;s Installation instructions.
+Xmake disables compiling as root by default on Linux. ruki says it is not safe." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cocoyaxi.github.io/en/co/build/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2021-08-13T19:00:36+08:00" />
+
+<title>Compiling | Documents for CO</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/build/" title="编译">
+<link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.d67625abf6f7d4fc678982b485f6ef17d10c45e849e3deeb612be7868f81a357.js" integrity="sha256-1nYlq/b31PxniYK0hfbvF9EMRehJ497rYSvnho&#43;Bo1c=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for CO</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents for CO</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/str/" class="">String utilities</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">co/flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">co/log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/coroutine/" class="">Coroutine</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/random/" class="">Random number</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/lrumap/" class="">LruMap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class=" active">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Compiling</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#compiler-requirements">Compiler requirements</a></li>
+        <li><a href="#xmake">xmake</a>
+          <ul>
+            <li><a href="#install-xmake">Install xmake</a></li>
+            <li><a href="#build">Build</a></li>
+            <li><a href="#compiling-options">Compiling options</a>
+              <ul>
+                <li><a href="#build-debug-version-of-libco">Build debug version of libco</a></li>
+                <li><a href="#build-dynamic-library">Build dynamic library</a></li>
+                <li><a href="#build-32-bit-libco">Build 32-bit libco</a></li>
+                <li><a href="#set-vs_runtime-on-windows">set vs_runtime on Windows</a></li>
+                <li><a href="#android-and-ios-support">Android and IOS support</a></li>
+              </ul>
+            </li>
+            <li><a href="#build-and-run-unitest-code">Build and run unitest code</a></li>
+            <li><a href="#build-and-run-test-code">Build and run test code</a></li>
+            <li><a href="#build-and-use-gen">Build and use gen</a></li>
+            <li><a href="#install-libco">Install libco</a></li>
+            <li><a href="#install-libco-from-xmake-repo">Install libco from xmake repo</a></li>
+          </ul>
+        </li>
+        <li><a href="#cmake">cmake</a>
+          <ul>
+            <li><a href="#build-libco-by-default">Build libco by default</a></li>
+            <li><a href="#build-all-projects">Build all projects</a></li>
+            <li><a href="#enable-http-and-ssl-features">Enable HTTP and SSL features</a></li>
+            <li><a href="#install-libco-from-vcpkg">Install libco from vcpkg</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="compiler-requirements"><a class="anchor" href="#compiler-requirements">#</a>Compiler requirements</h2>
+<p>The compilers required are as follows:</p>
+<ul>
+<li>Linux: <a href="https://gcc.gnu.org/projects/cxx-status.html#cxx11">gcc 4.8+</a></li>
+<li>Mac: <a href="https://clang.llvm.org/cxx_status.html">clang 3.3+</a></li>
+<li>Windows: <a href="https://visualstudio.microsoft.com/">vs2015+</a></li>
+</ul>
+<h2 id="xmake"><a class="anchor" href="#xmake">#</a>xmake</h2>
+<p>CO recommends using <a href="https://github.com/xmake-io/xmake">xmake</a> as the build tool.</p>
+<h3 id="install-xmake"><a class="anchor" href="#install-xmake">#</a>Install xmake</h3>
+<p>For Windows, mac and debian/ubuntu, you can go directly to the <a href="https://github.com/xmake-io/xmake/releases">release page of xmake</a> to get the installation package. For other systems, please refer to xmake&rsquo;s <a href="https://xmake.io/#/guide/installation">Installation instructions</a>.</p>
+<p>Xmake disables compiling as root by default on Linux. <a href="https://github.com/waruqi">ruki</a> says it is not safe. You can add the following line to <code>~/.bashrc</code> to enable it:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">export</span> XMAKE_ROOT<span style="color:#000;font-weight:bold">=</span>y
+</span></span></code></pre></div><h3 id="build"><a class="anchor" href="#build">#</a>Build</h3>
+<p>Run commands below in the root directory of CO to build libco and other projects:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake -a   <span style="color:#998;font-style:italic"># build all projects (libco, gen, test, unitest)</span>
+</span></span></code></pre></div><p>To enable HTTP and SSL features, build with the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake f --with_libcurl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> --with_openssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
+</span></span><span style="display:flex;"><span>xmake -a
+</span></span></code></pre></div><p>Xmake may install libcurl and openssl from the network, which may be slow.</p>
+<p><code>-a</code> in the command line means to build all projects in CO. If <code>-a</code> is not added, only libco will be built by default. In addition, users may use <code>-v</code> or <code>-vD</code> to print more detailed compiling information:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake -v -a
+</span></span></code></pre></div><h3 id="compiling-options"><a class="anchor" href="#compiling-options">#</a>Compiling options</h3>
+<p>Xmake provides the <code>xmake f</code> command to configure compiling options. Note that <strong>multiple options must be set in a single xmake f command</strong>.</p>
+<h4 id="build-debug-version-of-libco"><a class="anchor" href="#build-debug-version-of-libco">#</a>Build debug version of libco</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -m debug
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><h4 id="build-dynamic-library"><a class="anchor" href="#build-dynamic-library">#</a>Build dynamic library</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -k shared
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><p>Note that dynamic library is not supported on Windows.</p>
+<h4 id="build-32-bit-libco"><a class="anchor" href="#build-32-bit-libco">#</a>Build 32-bit libco</h4>
+<ul>
+<li>Windows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -a x86
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><ul>
+<li>Linux</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -a i386
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><p>The <code>-a</code> in <code>xmake f</code> command means arch. The arch supported by different platforms may be different. Run <code>xmake f --help</code> to see the details.</p>
+<h4 id="set-vs_runtime-on-windows"><a class="anchor" href="#set-vs_runtime-on-windows">#</a>set vs_runtime on Windows</h4>
+<p>On Windows, CO uses the <strong>MT</strong> runtime library by default, and users can use <code>xmake f</code> to configure it:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>xmake f <span style="color:#000;font-weight:bold">--</span>vs_runtime<span style="color:#000;font-weight:bold">=</span>MD
+</span></span><span style="display:flex;"><span>xmake <span style="color:#000;font-weight:bold">-</span>v
+</span></span></code></pre></div><h4 id="android-and-ios-support"><a class="anchor" href="#android-and-ios-support">#</a>Android and IOS support</h4>
+<p>CO can also be built on Android and IOS platforms, see <a href="https://github.com/idealvin/co/actions">Github Actions</a> for details. Since the author has no front-end development experience, it has not been tested on Android and IOS.</p>
+<ul>
+<li>android</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -p android --ndk<span style="color:#000;font-weight:bold">=</span>/path/to/android-ndk-r21
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><ul>
+<li>ios</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake f -p iphoneos
+</span></span><span style="display:flex;"><span>xmake -v
+</span></span></code></pre></div><h3 id="build-and-run-unitest-code"><a class="anchor" href="#build-and-run-unitest-code">#</a>Build and run unitest code</h3>
+<p><a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> contains some unit test code, run the following commands to build and run the test program:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b unitest       <span style="color:#998;font-style:italic"># build unitest</span>
+</span></span><span style="display:flex;"><span>xmake r unitest -a     <span style="color:#998;font-style:italic"># run all unit tests</span>
+</span></span><span style="display:flex;"><span>xmake r unitest -os    <span style="color:#998;font-style:italic"># run unit test: os</span>
+</span></span><span style="display:flex;"><span>xmake r unitest -json  <span style="color:#998;font-style:italic"># run unit test: json</span>
+</span></span></code></pre></div><h3 id="build-and-run-test-code"><a class="anchor" href="#build-and-run-test-code">#</a>Build and run test code</h3>
+<p><a href="https://github.com/idealvin/co/tree/master/test">co/test</a> contains some test code, add <code>xx.cc</code> source file in the co/test directory or its subdirectories, and then run <code>xmake -b xx</code> in the root directory of CO to build it.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b flag      <span style="color:#998;font-style:italic"># compile test/flag.cc</span>
+</span></span><span style="display:flex;"><span>xmake -b log       <span style="color:#998;font-style:italic"># compile test/log.cc</span>
+</span></span><span style="display:flex;"><span>xmake -b json      <span style="color:#998;font-style:italic"># compile test/json.cc</span>
+</span></span><span style="display:flex;"><span>xmake -b rpc       <span style="color:#998;font-style:italic"># compile test/rpc.cc</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xmake r flag -xz   <span style="color:#998;font-style:italic"># test flag library</span>
+</span></span><span style="display:flex;"><span>xmake r log        <span style="color:#998;font-style:italic"># test log library</span>
+</span></span><span style="display:flex;"><span>xmake r log -cout  <span style="color:#998;font-style:italic"># also log to terminal</span>
+</span></span><span style="display:flex;"><span>xmake r log -perf  <span style="color:#998;font-style:italic"># test performance of log library</span>
+</span></span><span style="display:flex;"><span>xmake r json       <span style="color:#998;font-style:italic"># test json</span>
+</span></span><span style="display:flex;"><span>xmake r rpc        <span style="color:#998;font-style:italic"># start rpc server</span>
+</span></span><span style="display:flex;"><span>xmake r rpc -c     <span style="color:#998;font-style:italic"># start rpc client</span>
+</span></span></code></pre></div><h3 id="build-and-use-gen"><a class="anchor" href="#build-and-use-gen">#</a>Build and use gen</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b gen
+</span></span><span style="display:flex;"><span>cp gen /usr/local/bin/
+</span></span><span style="display:flex;"><span>gen hello_world.proto
+</span></span></code></pre></div><p>The proto file format can refer to <a href="https://github.com/idealvin/co/blob/master/test/so/rpc/hello_world.proto">hello_world.proto</a>.</p>
+<h3 id="install-libco"><a class="anchor" href="#install-libco">#</a>Install libco</h3>
+<p>After building libco, you can use the <code>xmake install</code> command to install libco to the specified directory:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake install -o pkg   <span style="color:#998;font-style:italic"># install to pkg</span>
+</span></span><span style="display:flex;"><span>xmake i -o pkg         <span style="color:#998;font-style:italic"># same as above</span>
+</span></span><span style="display:flex;"><span>xmake i -o /usr/local  <span style="color:#998;font-style:italic"># install to /usr/local</span>
+</span></span></code></pre></div><h3 id="install-libco-from-xmake-repo"><a class="anchor" href="#install-libco-from-xmake-repo">#</a>Install libco from xmake repo</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>xrepo install <span style="color:#000;font-weight:bold">-</span>f <span style="color:#d14">&#34;openssl=true,libcurl=true&#34;</span> co
+</span></span></code></pre></div><h2 id="cmake"><a class="anchor" href="#cmake">#</a>cmake</h2>
+<p><a href="https://github.com/izhengfan">izhengfan</a> helped to provide the cmakefile:</p>
+<ul>
+<li>Only build libco by default.</li>
+<li>The library files are in build/lib directory, and the executable files are in build/bin directory.</li>
+<li>You can use <strong>BUILD_ALL</strong> to build all projects.</li>
+<li>You can use <strong>CMAKE_INSTALL_PREFIX</strong> to specify the installation directory.</li>
+</ul>
+<h3 id="build-libco-by-default"><a class="anchor" href="#build-libco-by-default">#</a>Build libco by default</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir build <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> build
+</span></span><span style="display:flex;"><span>cmake ..
+</span></span><span style="display:flex;"><span>make -j8
+</span></span></code></pre></div><h3 id="build-all-projects"><a class="anchor" href="#build-all-projects">#</a>Build all projects</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir build <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> build
+</span></span><span style="display:flex;"><span>cmake .. -DBUILD_ALL<span style="color:#000;font-weight:bold">=</span>ON -DCMAKE_INSTALL_PREFIX<span style="color:#000;font-weight:bold">=</span>/usr/local
+</span></span><span style="display:flex;"><span>make -j8
+</span></span><span style="display:flex;"><span>make install
+</span></span></code></pre></div><h3 id="enable-http-and-ssl-features"><a class="anchor" href="#enable-http-and-ssl-features">#</a>Enable HTTP and SSL features</h3>
+<p>To use HTTP or SSL features, libcurl, zlib, and openssl 1.1.0 or above must be installed.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir build <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> build
+</span></span><span style="display:flex;"><span>cmake .. -DBUILD_ALL<span style="color:#000;font-weight:bold">=</span>ON -DWITH_LIBCURL<span style="color:#000;font-weight:bold">=</span>ON -DWITH_OPENSSL<span style="color:#000;font-weight:bold">=</span>ON
+</span></span><span style="display:flex;"><span>make -j8
+</span></span></code></pre></div><h3 id="install-libco-from-vcpkg"><a class="anchor" href="#install-libco-from-vcpkg">#</a>Install libco from vcpkg</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vcpkg install co:x64-windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># HTTP &amp; SSL support</span>
+</span></span><span style="display:flex;"><span>vcpkg install co<span style="color:#000;font-weight:bold">[</span>libcurl,openssl<span style="color:#000;font-weight:bold">]</span>:x64-windows
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/build/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/5b890db723ee830e7edcd6ce79464e95398eb1e0" title='Last modified by idealvin | August 13, 2021' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 13, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/en/co/build.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#compiler-requirements">Compiler requirements</a></li>
+        <li><a href="#xmake">xmake</a>
+          <ul>
+            <li><a href="#install-xmake">Install xmake</a></li>
+            <li><a href="#build">Build</a></li>
+            <li><a href="#compiling-options">Compiling options</a>
+              <ul>
+                <li><a href="#build-debug-version-of-libco">Build debug version of libco</a></li>
+                <li><a href="#build-dynamic-library">Build dynamic library</a></li>
+                <li><a href="#build-32-bit-libco">Build 32-bit libco</a></li>
+                <li><a href="#set-vs_runtime-on-windows">set vs_runtime on Windows</a></li>
+                <li><a href="#android-and-ios-support">Android and IOS support</a></li>
+              </ul>
+            </li>
+            <li><a href="#build-and-run-unitest-code">Build and run unitest code</a></li>
+            <li><a href="#build-and-run-test-code">Build and run test code</a></li>
+            <li><a href="#build-and-use-gen">Build and use gen</a></li>
+            <li><a href="#install-libco">Install libco</a></li>
+            <li><a href="#install-libco-from-xmake-repo">Install libco from xmake repo</a></li>
+          </ul>
+        </li>
+        <li><a href="#cmake">cmake</a>
+          <ul>
+            <li><a href="#build-libco-by-default">Build libco by default</a></li>
+            <li><a href="#build-all-projects">Build all projects</a></li>
+            <li><a href="#enable-http-and-ssl-features">Enable HTTP and SSL features</a></li>
+            <li><a href="#install-libco-from-vcpkg">Install libco from vcpkg</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
