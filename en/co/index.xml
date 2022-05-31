@@ -12,7 +12,7 @@
       
       <guid>https://cocoyaxi.github.io/en/co/def/</guid>
       <description>include: co/def.h.
-#typedefs#Fixed-length integer typedef.h defines the following 8 types of integers:
+#typedefs #Fixed-length integer type def.h defines the following 8 types of integers:
 typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; These types have the same length on different platforms, and there is no portability problem. Google Code Style recommends not to use built-in integer types such as short, long, long long, etc.</description>
     </item>
     
@@ -23,8 +23,8 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/defer/</guid>
       <description>include: co/defer.h.
-#deferdefer is a macro provided by CO, which is similar to defer in golang.
-#include &amp;#34;co/defer.h&amp;#34;#include &amp;#34;co/time.h&amp;#34;#include &amp;#34;co/log.h&amp;#34;#include &amp;#34;co/json.h&amp;#34; void f(const Json&amp;amp; req, Json&amp;amp; res) {  Timer t;  LOG &amp;lt;&amp;lt; &amp;#34;req: &amp;#34; &amp;lt;&amp;lt; req;  defer(LOG &amp;lt;&amp;lt; &amp;#34;res: &amp;#34; &amp;lt;&amp;lt; res &amp;lt;&amp;lt; &amp;#34;, time elapse: &amp;#34; &amp;lt;&amp;lt; t.us() &amp;lt;&amp;lt; &amp;#34;us&amp;#34;);   // do something here } In the above example, the code in defer will be executed at the end of the function f, thus printing the output and time elapse of the function.</description>
+#defer defer is a macro provided by CO, which is similar to defer in golang.
+#include &amp;#34;co/defer.h&amp;#34;#include &amp;#34;co/time.h&amp;#34;#include &amp;#34;co/log.h&amp;#34;#include &amp;#34;co/json.h&amp;#34; void f(const Json&amp;amp; req, Json&amp;amp; res) { Timer t; LOG &amp;lt;&amp;lt; &amp;#34;req: &amp;#34; &amp;lt;&amp;lt; req; defer(LOG &amp;lt;&amp;lt; &amp;#34;res: &amp;#34; &amp;lt;&amp;lt; res &amp;lt;&amp;lt; &amp;#34;, time elapse: &amp;#34; &amp;lt;&amp;lt; t.us() &amp;lt;&amp;lt; &amp;#34;us&amp;#34;); // do something here } In the above example, the code in defer will be executed at the end of the function f, thus printing the output and time elapse of the function.</description>
     </item>
     
     <item>
@@ -34,10 +34,9 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/atomic/</guid>
       <description>include: co/atomic.h.
-#Arithmetic operations#atomic_inctemplate&amp;lt;typename T&amp;gt; inline T atomic_inc(T* p);   Atomic increment, T is any integer type with a length of 1, 2, 4, 8 bytes, and the parameter p is a pointer of type T.
-  This function performs an increment operation on the integer pointed to by p and returns the result after increment.
-  Example
-  int i = 0; uint64 u = 0; int r = atomic_inc(&amp;amp;i); // i -&amp;gt; 1, r = 1 uint64 x = atomic_inc(&amp;amp;u); // u -&amp;gt; 1, x = 1 #atomic_fetch_inctemplate&amp;lt;typename T&amp;gt; inline T atomic_fetch_inc(T* p);   The same as atomic_inc, but returns the value before increment.</description>
+#Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
+#APIs removed since v3.0  atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;amp;x, 0) instead.  #load &amp;amp; store #atomic_load template&amp;lt;typename T&amp;gt; inline T atomic_load(T* p, memory_order_t mo = mo_seq_cst);   This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.</description>
     </item>
     
     <item>
@@ -47,8 +46,8 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/fastring/</guid>
       <description>include: co/fastring.h.
-#fastringfastring is the string type in co. It implements most of the methods in std::string and also provides some methods that std::string does not support.
-#fastring::fastring1. fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp;amp; s); 6. fastring(size_t n, char c); 7. fastring(char c, size_t n); 8. fastring(const fastring&amp;amp; s); 9. fastring(fastring&amp;amp;&amp;amp; s) noexcept;   The first is the default constructor, which creates an empty fastring without allocating any memory.</description>
+#fastring fastring is the string type in co. It implements most of the methods in std::string and also provides some methods that std::string does not support.
+#fastring::fastring 1. fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp;amp; s); 6. fastring(size_t n, char c); 7. fastring(char c, size_t n); 8. fastring(const fastring&amp;amp; s); 9. fastring(fastring&amp;amp;&amp;amp; s) noexcept;   The first is the default constructor, which creates an empty fastring without allocating any memory.</description>
     </item>
     
     <item>
@@ -58,8 +57,8 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/fastream/</guid>
       <description>include: co/fastream.h.
-#fastreamfastream is used to replace std::ostringstream in the C++ standard library. The performance of std::ostringstream is poor which may be several times slower than snprintf, and fastream is about 10~30 times faster than snprintf on different platforms.
-#fastream::fastreamfastream() noexcept; explicit fastream(size_t cap); fastream(fastream&amp;amp;&amp;amp; s) noexcept;   The first one is the default constructor, which creates an empty fastream object without any memory allocation.
+#fastream fastream is used to replace std::ostringstream in the C++ standard library. The performance of std::ostringstream is poor which may be several times slower than snprintf, and fastream is about 10~30 times faster than snprintf on different platforms.
+#fastream::fastream fastream() noexcept; explicit fastream(size_t cap); fastream(fastream&amp;amp;&amp;amp; s) noexcept;   The first one is the default constructor, which creates an empty fastream object without any memory allocation.
   The second constructor uses the parameter cap to specify the initial capacity of fastream.</description>
     </item>
     
@@ -70,7 +69,7 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/str/</guid>
       <description>include: co/str.h.
-#split, strip, replace,#str::splitstd::vector&amp;lt;fastring&amp;gt; split(const char* s, char c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, char c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const char* s, const char* c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, const char* c, uint32 n=0);   This function splits the string into several substrings, the original string remains unchanged, and returns the split result.
+#split, strip, replace, #str::split std::vector&amp;lt;fastring&amp;gt; split(const char* s, char c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, char c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const char* s, const char* c, uint32 n=0); std::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, const char* c, uint32 n=0);   This function splits the string into several substrings, the original string remains unchanged, and returns the split result.
   Parameter s is a C string or fastring, parameter c is the separator, parameter n is the maximum number of splits, 0 or -1 means unlimited.</description>
     </item>
     
@@ -81,8 +80,8 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/flag/</guid>
       <description>include: co/flag.h.
-#Basic conceptsco/flag is a command line and config file parsing library similar to google gflags. Its principle is very simple, define global variables in code, then parse the command line parameters or config file when the program starts, and update the value of these global variables.
-#flag variableThe global variable defined by macros in co/flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.</description>
+#Basic concepts co/flag is a command line and config file parsing library similar to google gflags. Its principle is very simple, define global variables in code, then parse the command line parameters or config file when the program starts, and update the value of these global variables.
+#flag variable The global variable defined by macros in co/flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.</description>
     </item>
     
     <item>
@@ -92,8 +91,9 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
       
       <guid>https://cocoyaxi.github.io/en/co/log/</guid>
       <description>include: co/log.h.
-#Basic introductionco/log is a C++ streaming log library similar to google glog, which prints logs like this:
-LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; co/log divides logs into five levels: debug, info, warning, error, fatal, and provides a series of macros for printing logs of different levels. Printing the fatal level log will terminate the program, and co/log will also print the stack information before the program exits.</description>
+#Introduction co/log is a C++ streaming log library similar to google glog, which prints logs like this:
+LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log co/log supports two types of logs, level log and topic log (TLOG).
+#Level Log Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.</description>
     </item>
     
     <item>
@@ -103,8 +103,8 @@ LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; co/log d
       
       <guid>https://cocoyaxi.github.io/en/co/unitest/</guid>
       <description>include: co/unitest.h.
-#Basic conceptsco/unitest is a unit testing framework, similar to google gtest, but easier to use.
-#Test Units and Test CasesA test program can be divided into multiple test units according to functions or modules, and there can be multiple test cases under each test unit. For example, a test unit can be defined for a class (or module) in C++, and a test case can be defined for each method in the class (or module).</description>
+#Basic concepts co/unitest is a unit testing framework, similar to google gtest, but easier to use.
+#Test Units and Test Cases A test program can be divided into multiple test units according to functions or modules, and there can be multiple test cases under each test unit. For example, a test unit can be defined for a class (or module) in C++, and a test case can be defined for each method in the class (or module).</description>
     </item>
     
     <item>
@@ -114,8 +114,9 @@ LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; co/log d
       
       <guid>https://cocoyaxi.github.io/en/co/json/</guid>
       <description>include: co/json.h.
-co/json is a JSON library similar to rapidjson. Compared with rapidjson, it has certain performance advantages and is easier to use.
-In the latest version, a JSON is built into a contiguous memory, which greatly reduces memory allocations. The parsing speed has also been significantly improved, which can be twice faster as rapidjson. Since a JSON object is a contiguous piece of memory, it is easy to copy, so reference counting used in earlier versions is removed.</description>
+co/json is a JSON library similar to rapidjson. Compared with rapidjson, it has better performance and is easier to use.
+#Basic concepts JSON is a simple data format that supports two data structures:
+ A collection consisting of a series of key/value pairs. This type of structure is called object, which corresponds to struct, map, etc, in programming languages. A list composed of a series of value, this kind of structure is called array, which corresponds to vector, list, etc, in programming languages.</description>
     </item>
     
     <item>
@@ -125,8 +126,8 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/time/</guid>
       <description>include: co/time.h.
-#epoch timeThe EPOCH is a specific time 1970-01-01 00:00:00 UTC, and the epoch time is the time since the EPOCH.
-#epoch::msint64 ms();  Return milliseconds since EPOCH.  #epoch::usint64 us();  Return microseconds since EPOCH.  #monotonic timeMonotonic time is a monotonic increasing time, it is implemented as the time since last reboot of system on most platforms . It is generally used for timing and is more stable than system time.</description>
+#epoch time The EPOCH is a specific time 1970-01-01 00:00:00 UTC, and the epoch time is the time since the EPOCH.
+#epoch::ms int64 ms();  Return milliseconds since EPOCH.  #epoch::us int64 us();  Return microseconds since EPOCH.  #monotonic time Monotonic time is a monotonic increasing time, it is implemented as the time since last reboot of system on most platforms . It is generally used for timing and is more stable than system time.</description>
     </item>
     
     <item>
@@ -136,8 +137,8 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/thread/</guid>
       <description>include: co/thread.h.
-#ThreadThe Thread class is an encapsulation of the thread. When a Thread object is created, the thread will be started. Once the thread is started, it will run until the thread function exits. The Thread class does not provide a method for forcing terminating the thread (something like pthread_cancel). This type of method is usually unsafe and may cause damage to user data.
-#Thread::Threadexplicit Thread(co::Closure* cb);  template&amp;lt;typename F&amp;gt; explicit Thread(F&amp;amp;&amp;amp; f);  template&amp;lt;typename F, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p);  template&amp;lt;typename F, typename T, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p);   Constructor, the thread will start after the Thread object is created.</description>
+#Thread The Thread class is an encapsulation of the thread. When a Thread object is created, the thread will be started. Once the thread is started, it will run until the thread function exits. The Thread class does not provide a method for forcing terminating the thread (something like pthread_cancel). This type of method is usually unsafe and may cause damage to user data.
+#Thread::Thread explicit Thread(co::Closure* cb); template&amp;lt;typename F&amp;gt; explicit Thread(F&amp;amp;&amp;amp; f); template&amp;lt;typename F, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); template&amp;lt;typename F, typename T, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p);   Constructor, the thread will start after the Thread object is created.</description>
     </item>
     
     <item>
@@ -147,7 +148,7 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/coroutine/</guid>
       <description>include: co/co.h.
-#Basic concepts Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine.</description>
+#Basic concepts  Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine.</description>
     </item>
     
     <item>
@@ -157,8 +158,8 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/tasked/</guid>
       <description>include: co/tasked.h.
-#TaskedThe Tasked class is a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use Tasked to schedule tasks that may block for a long time.
-#Tasked::TaskedTasked(); Tasked(Tasked&amp;amp;&amp;amp; t);  The first version is the default constructor. When the object is created, the scheduling thread will start.</description>
+#Tasked The Tasked class is a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use Tasked to schedule tasks that may block for a long time.
+#Tasked::Tasked Tasked(); Tasked(Tasked&amp;amp;&amp;amp; t);  The first version is the default constructor. When the object is created, the scheduling thread will start.</description>
     </item>
     
     <item>
@@ -168,8 +169,8 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/random/</guid>
       <description>include: co/random.h.
-#RandomThe Random class is a very fast pseudo-random number generator, which can generate integers between 1 and 2G-2 continuously and without repetition.
-#Random::RandomRandom(); explicit Random(uint32_t seed);  The default constructor uses 1 as the seed number, and the second constructor uses the parameter seed as the seed number.  #Random::nextuint32_t next();   Returns the next pseudo-random number, not thread safe. Once the seed number is determined, the random sequence generated by calling next() is completely determined.</description>
+#Random The Random class is a very fast pseudo-random number generator, which can generate integers between 1 and 2G-2 continuously and without repetition.
+#Random::Random Random(); explicit Random(uint32_t seed);  The default constructor uses 1 as the seed number, and the second constructor uses the parameter seed as the seed number.  #Random::next uint32_t next();   Returns the next pseudo-random number, not thread safe. Once the seed number is determined, the random sequence generated by calling next() is completely determined.</description>
     </item>
     
     <item>
@@ -179,8 +180,8 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/lrumap/</guid>
       <description>include: co/lru_map.h.
-#LruMaptemplate &amp;lt;typename K, typename V&amp;gt; class LruMap; LruMap is a map implemented based on the LRU (least recently used) strategy. When the number of elements in the map reaches the upper limit, the least recently used data will be replaced first. It is implemented based on std::list and std::unordered_map, and the internal elements are unordered.
-#LruMap::LruMapLruMap(); explicit LruMap(size_t capacity);  The default constructor uses 1024 as the maximum capacity.</description>
+#LruMap template &amp;lt;typename K, typename V&amp;gt; class LruMap; LruMap is a map implemented based on the LRU (least recently used) strategy. When the number of elements in the map reaches the upper limit, the least recently used data will be replaced first. It is implemented based on std::list and std::unordered_map, and the internal elements are unordered.
+#LruMap::LruMap LruMap(); explicit LruMap(size_t capacity);  The default constructor uses 1024 as the maximum capacity.</description>
     </item>
     
     <item>
@@ -190,7 +191,7 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/hash/</guid>
       <description>include: co/hash.h.
-#Hash#hash32uint32 hash32(const char* s); uint32 hash32(const fastring&amp;amp; s) uint32 hash32(const std::string&amp;amp; s); uint32 hash32(const void* s, size_t n);  This function returns a 32-bit murmur hash value. When s is a pointer, it is generally required to be byte-aligned by sizeof(void*).  #hash64uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp;amp; s); uint64 hash64(const std::string&amp;amp; s);  This function returns a 64-bit murmur hash value.</description>
+#Hash #hash32 uint32 hash32(const void* s, size_t n); uint32 hash32(const char* s); uint32 hash32(const fastring&amp;amp; s) uint32 hash32(const std::string&amp;amp; s);  This function returns a 32-bit murmur hash value. When s is a pointer, it is generally required to be sizeof(void*) byte aligned.  #hash64 uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp;amp; s); uint64 hash64(const std::string&amp;amp; s);  This function returns a 64-bit murmur hash value.</description>
     </item>
     
     <item>
@@ -200,10 +201,10 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       
       <guid>https://cocoyaxi.github.io/en/co/path/</guid>
       <description>include: co/path.h.
-#pathco/path is ported from golang, the path separator must be &#39;/&#39; .
-#path::clean()fastring clean(const fastring&amp;amp; s);   Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.
+#path co/path is ported from golang, the path separator must be &#39;/&#39; .
+#path::clean() fastring clean(const fastring&amp;amp; s);   Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.
   Example
-  path::clean(&amp;#34;./x//y/&amp;#34;); // return &amp;#34;x/y&amp;#34; path::clean(&amp;#34;./x/..&amp;#34;); // return &amp;#34;.&amp;#34; path::clean(&amp;#34;./x/../..&amp;#34;); // return &amp;#34;..&amp;#34; #path::join()fastring join(const fastring&amp;amp; s, const fastring&amp;amp; t); template &amp;lt;typename ...S&amp;gt; fastring join(const S&amp;amp;... s);   The first version concatenates two fastrings into a complete path.</description>
+  path::clean(&amp;#34;./x//y/&amp;#34;); // return &amp;#34;x/y&amp;#34; path::clean(&amp;#34;./x/..&amp;#34;); // return &amp;#34;.&amp;#34; path::clean(&amp;#34;./x/../..&amp;#34;); // return &amp;#34;..&amp;#34; #path::join() fastring join(const fastring&amp;amp; s, const fastring&amp;amp; t); template &amp;lt;typename ...S&amp;gt; fastring join(const S&amp;amp;... s);   The first version concatenates two fastrings into a complete path.</description>
     </item>
     
     <item>
@@ -214,7 +215,7 @@ In the latest version, a JSON is built into a contiguous memory, which greatly r
       <guid>https://cocoyaxi.github.io/en/co/fs/</guid>
       <description>include: co/fs.h.
 co/fs.h implements common file system operations. It is recommended to use &#39;/&#39; uniformly as the path separator on different platforms.
-#Metadata operations#fs::existsbool exists(const char* path); bool exists(const fastring&amp;amp; path); bool exists(const std::string&amp;amp; path);  Check whether the file exists, the parameter path is path of a file or directory.  #fs::fsizeint64 fsize(const char* path); int64 fsize(const fastring&amp;amp; path); int64 fsize(const std::string&amp;amp; path);  Get the file size.</description>
+#Metadata operations #fs::exists bool exists(const char* path); bool exists(const fastring&amp;amp; path); bool exists(const std::string&amp;amp; path);  Check whether the file exists, the parameter path is path of a file or directory.  #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp;amp; path); int64 fsize(const std::string&amp;amp; path);  Get the file size.</description>
     </item>
     
     <item>
@@ -224,7 +225,7 @@ co/fs.h implements common file system operations. It is recommended to use &#39;
       
       <guid>https://cocoyaxi.github.io/en/co/os/</guid>
       <description>include: co/os.h.
-#os#os::cpunumint cpunum();  Returns the number of system CPU cores.  #os::cwdfastring cwd();  Returns path of the current working directory. On windows, \ in the results will be converted to /.  #os::daemonvoid daemon();  Put the current process to run in the background, for linux only.  #os::envfastring env(const char* name); bool env(const char* name, const char* value);  The first version, get value of the system environment variable.</description>
+#os #os::cpunum int cpunum();  Returns the number of system CPU cores.  #os::cwd fastring cwd();  Returns path of the current working directory. On windows, \ in the results will be converted to /.  #os::daemon void daemon();  Put the current process to run in the background, for linux only.  #os::env fastring env(const char* name); bool env(const char* name, const char* value);  The first version, get value of the system environment variable.</description>
     </item>
     
     <item>
@@ -233,9 +234,9 @@ co/fs.h implements common file system operations. It is recommended to use &#39;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://cocoyaxi.github.io/en/co/build/</guid>
-      <description>#Compiler requirementsThe compilers required are as follows:
- Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+  #xmakeCO recommends using xmake as the build tool.
-#Install xmakeFor Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&amp;rsquo;s Installation instructions.
+      <description>#Compiler requirements The compilers required are as follows:
+ Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+  #xmake CO recommends using xmake as the build tool.
+#Install xmake For Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&amp;rsquo;s Installation instructions.
 Xmake disables compiling as root by default on Linux. ruki says it is not safe.</description>
     </item>
     

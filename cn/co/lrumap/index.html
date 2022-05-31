@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/lru_map.h.
-#LruMaptemplate &lt;typename K, typename V&gt; class LruMap; LruMap 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。
-#LruMap::LruMapLruMap(); explicit LruMap(size_t capacity);  默认构造函数使用 1024 作为最大容量。 第二个构造函数以参数 capacity 作为最大容量。  #LruMap::beginiterator begin() const;  返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。  #LruMap::clearvoid clear();  此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。  #LruMap::emptybool empty() const;  此方法判断 LruMap 是否为空。  #LruMap::enditerator end() const;  返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。  #LruMap::erasevoid erase(iterator it); void erase(const key_type&amp; key);  通过 iterator 或 key 删除元素。  #LruMap::finditerator find(const key_type&amp; key)  此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。  #LruMap::inserttemplate &lt;typename Key, typename Val&gt; void insert(Key&amp;&amp; key, Val&amp;&amp; value);  插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。 插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。  #LruMap::sizesize_t size() const;  此方法返回 LruMap 中的元素个数。  #LruMap::swapvoid swap(LruMap&amp; x) noexcept; void swap(LruMap&amp;&amp; x) noexcept;  交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。  #代码示例LruMap&lt;int, int&gt; m(128); // capacity: 128  auto it = m.">
+#LruMap template &lt;typename K, typename V&gt; class LruMap; LruMap 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。
+#LruMap::LruMap LruMap(); explicit LruMap(size_t capacity);  默认构造函数使用 1024 作为最大容量。 第二个构造函数以参数 capacity 作为最大容量。  #LruMap::begin iterator begin() const;  返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。  #LruMap::clear void clear();  此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。  #LruMap::empty bool empty() const;  此方法判断 LruMap 是否为空。  #LruMap::end iterator end() const;  返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。  #LruMap::erase void erase(iterator it); void erase(const key_type&amp; key);  通过 iterator 或 key 删除元素。  #LruMap::find iterator find(const key_type&amp; key)  此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。  #LruMap::insert template &lt;typename Key, typename Val&gt; void insert(Key&amp;&amp; key, Val&amp;&amp; value);  插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。 插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。  #LruMap::size size_t size() const;  此方法返回 LruMap 中的元素个数。  #LruMap::swap void swap(LruMap&amp; x) noexcept; void swap(LruMap&amp;&amp; x) noexcept;  交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。  #代码示例 LruMap&lt;int, int&gt; m(128); // capacity: 128  auto it = m.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="LruMap" />
 <meta property="og:description" content="include: co/lru_map.h.
-#LruMaptemplate &lt;typename K, typename V&gt; class LruMap; LruMap 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。
-#LruMap::LruMapLruMap(); explicit LruMap(size_t capacity);  默认构造函数使用 1024 作为最大容量。 第二个构造函数以参数 capacity 作为最大容量。  #LruMap::beginiterator begin() const;  返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。  #LruMap::clearvoid clear();  此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。  #LruMap::emptybool empty() const;  此方法判断 LruMap 是否为空。  #LruMap::enditerator end() const;  返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。  #LruMap::erasevoid erase(iterator it); void erase(const key_type&amp; key);  通过 iterator 或 key 删除元素。  #LruMap::finditerator find(const key_type&amp; key)  此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。  #LruMap::inserttemplate &lt;typename Key, typename Val&gt; void insert(Key&amp;&amp; key, Val&amp;&amp; value);  插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。 插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。  #LruMap::sizesize_t size() const;  此方法返回 LruMap 中的元素个数。  #LruMap::swapvoid swap(LruMap&amp; x) noexcept; void swap(LruMap&amp;&amp; x) noexcept;  交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。  #代码示例LruMap&lt;int, int&gt; m(128); // capacity: 128  auto it = m." />
+#LruMap template &lt;typename K, typename V&gt; class LruMap; LruMap 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。
+#LruMap::LruMap LruMap(); explicit LruMap(size_t capacity);  默认构造函数使用 1024 作为最大容量。 第二个构造函数以参数 capacity 作为最大容量。  #LruMap::begin iterator begin() const;  返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。  #LruMap::clear void clear();  此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。  #LruMap::empty bool empty() const;  此方法判断 LruMap 是否为空。  #LruMap::end iterator end() const;  返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。  #LruMap::erase void erase(iterator it); void erase(const key_type&amp; key);  通过 iterator 或 key 删除元素。  #LruMap::find iterator find(const key_type&amp; key)  此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。  #LruMap::insert template &lt;typename Key, typename Val&gt; void insert(Key&amp;&amp; key, Val&amp;&amp; value);  插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。 插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。  #LruMap::size size_t size() const;  此方法返回 LruMap 中的元素个数。  #LruMap::swap void swap(LruMap&amp; x) noexcept; void swap(LruMap&amp;&amp; x) noexcept;  交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。  #代码示例 LruMap&lt;int, int&gt; m(128); // capacity: 128  auto it = m." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/lrumap/" /><meta property="article:section" content="co" />
 
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/lrumap/" title="LruMap">
 <link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.00c594d298cdd8ec597b4b6527020e4b2d691ca59adfe6664d0e6be052cce7d2.js" integrity="sha256-AMWU0pjN2OxZe0tlJwIOSy1pHKWa3&#43;ZmTQ5r4FLM59I=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.a24bc098af23465871c623de9309322a5d1e69f6f8482e68e5331329dcfff5d5.js" integrity="sha256-okvAmK8jRlhxxiPekwkyKl0eafb4SC5o5TMTKdz/9dU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -513,7 +513,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
 
 
  
@@ -577,78 +577,78 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/lru_map.h">co/lru_map.h</a>.</p>
 <h2 id="lrumap"><a class="anchor" href="#lrumap">#</a>LruMap</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">LruMap</span>;
-</span></span></code></pre></div><p><code>LruMap</code> 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">LruMap</span>;
+</code></pre></div><p><code>LruMap</code> 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。</p>
 <h3 id="lrumaplrumap"><a class="anchor" href="#lrumaplrumap">#</a>LruMap::LruMap</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LruMap();
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">LruMap</span>(size_t capacity);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">LruMap();
+<span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">LruMap</span>(size_t capacity);
+</code></pre></div><ul>
 <li>默认构造函数使用 1024 作为最大容量。</li>
 <li>第二个构造函数以参数 capacity 作为最大容量。</li>
 </ul>
 <h3 id="lrumapbegin"><a class="anchor" href="#lrumapbegin">#</a>LruMap::begin</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
 <li>返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。</li>
 </ul>
 <h3 id="lrumapclear"><a class="anchor" href="#lrumapclear">#</a>LruMap::clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
+</code></pre></div><ul>
 <li>此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。</li>
 </ul>
 <h3 id="lrumapempty"><a class="anchor" href="#lrumapempty">#</a>LruMap::empty</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
 <li>此方法判断 LruMap 是否为空。</li>
 </ul>
 <h3 id="lrumapend"><a class="anchor" href="#lrumapend">#</a>LruMap::end</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
 <li>返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。</li>
 </ul>
 <h3 id="lrumaperase"><a class="anchor" href="#lrumaperase">#</a>LruMap::erase</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(iterator it);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(iterator it);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key);
+</code></pre></div><ul>
 <li>通过 iterator 或 key 删除元素。</li>
 </ul>
 <h3 id="lrumapfind"><a class="anchor" href="#lrumapfind">#</a>LruMap::find</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator find(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key)
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator find(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key)
+</code></pre></div><ul>
 <li>此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。</li>
 </ul>
 <h3 id="lrumapinsert"><a class="anchor" href="#lrumapinsert">#</a>LruMap::insert</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> Key, <span style="color:#000;font-weight:bold">typename</span> Val<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> insert(Key<span style="color:#000;font-weight:bold">&amp;&amp;</span> key, Val<span style="color:#000;font-weight:bold">&amp;&amp;</span> value);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> Key, <span style="color:#000;font-weight:bold">typename</span> Val<span style="color:#000;font-weight:bold">&gt;</span>
+<span style="color:#458;font-weight:bold">void</span> insert(Key<span style="color:#000;font-weight:bold">&amp;&amp;</span> key, Val<span style="color:#000;font-weight:bold">&amp;&amp;</span> value);
+</code></pre></div><ul>
 <li>插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。</li>
 <li>插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。</li>
 </ul>
 <h3 id="lrumapsize"><a class="anchor" href="#lrumapsize">#</a>LruMap::size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
 <li>此方法返回 LruMap 中的元素个数。</li>
 </ul>
 <h3 id="lrumapswap"><a class="anchor" href="#lrumapswap">#</a>LruMap::swap</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(LruMap<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(LruMap<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(LruMap<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(LruMap<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</code></pre></div><ul>
 <li>交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LruMap<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m(<span style="color:#099">128</span>); <span style="color:#998;font-style:italic">// capacity: 128
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">1</span>);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">if</span> (it <span style="color:#000;font-weight:bold">==</span> m.end()) {
-</span></span><span style="display:flex;"><span>    m.insert(<span style="color:#099">1</span>, <span style="color:#099">23</span>);
-</span></span><span style="display:flex;"><span>} <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>    it<span style="color:#000;font-weight:bold">-&gt;</span>second <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>m.erase(it);         <span style="color:#998;font-style:italic">// erase by iterator
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.erase(it<span style="color:#000;font-weight:bold">-&gt;</span>first);  <span style="color:#998;font-style:italic">// erase by key
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.clear();           <span style="color:#998;font-style:italic">// clear the map
-</span></span></span></code></pre></div></article>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">LruMap<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m(<span style="color:#099">128</span>); <span style="color:#998;font-style:italic">// capacity: 128
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">1</span>);
+<span style="color:#000;font-weight:bold">if</span> (it <span style="color:#000;font-weight:bold">==</span> m.end()) {
+    m.insert(<span style="color:#099">1</span>, <span style="color:#099">23</span>);
+} <span style="color:#000;font-weight:bold">else</span> {
+    it<span style="color:#000;font-weight:bold">-&gt;</span>second <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">23</span>;
+}
+
+m.erase(it);         <span style="color:#998;font-style:italic">// erase by iterator
+</span><span style="color:#998;font-style:italic"></span>m.erase(it<span style="color:#000;font-weight:bold">-&gt;</span>first);  <span style="color:#998;font-style:italic">// erase by key
+</span><span style="color:#998;font-style:italic"></span>m.clear();           <span style="color:#998;font-style:italic">// clear the map
+</span></code></pre></div></article>
  
       
 

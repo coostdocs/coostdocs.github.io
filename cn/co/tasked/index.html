@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/tasked.h.
-#TaskedTasked 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。
-#Tasked::TaskedTasked(); Tasked(Tasked&amp;&amp; t);  第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。 第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。  #Tasked::~Tasked~Tasked();  析构函数，退出任务调度线程。  #Tasked::Ftypedef std::function&lt;void()&gt; F;  任务类型，固定为 std::function&lt;void()&gt; 类型的函数。  #Tasked::run_atvoid run_at(F&amp;&amp; f, int hour, int minute=0, int second=0); void run_at(const F&amp; f, int hour, int minute=0, int second=0);  添加指定时刻运行的任务，f 将在 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。  #Tasked::run_dailyvoid run_daily(F&amp;&amp; f, int hour=0, int minute=0, int second=0); void run_daily(const F&amp; f, int hour=0, int minute=0, int second=0);  添加每天指定时刻运行的周期性任务，f 将在每天的 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。  #Tasked::run_everyvoid run_every(F&amp;&amp; f, int n); void run_every(const F&amp; f, int n);  添加每 n 秒运行一次的周期性任务。  #Tasked::run_invoid run_in(F&amp;&amp; f, int n); void run_in(const F&amp; f, int n);  添加 n 秒后运行一次的任务。  #Tasked::stopvoid stop();  退出任务调度线程，析构函数中会自动调用此方法。 多次调用此方法是安全的。  #代码示例Tasked s; // create and start the scheduler s.">
+#Tasked Tasked 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。
+#Tasked::Tasked Tasked(); Tasked(Tasked&amp;&amp; t);  第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。 第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。  #Tasked::~Tasked ~Tasked();  析构函数，退出任务调度线程。  #Tasked::F typedef std::function&lt;void()&gt; F;  任务类型，固定为 std::function&lt;void()&gt; 类型的函数。  #Tasked::run_at void run_at(F&amp;&amp; f, int hour, int minute=0, int second=0); void run_at(const F&amp; f, int hour, int minute=0, int second=0);  添加指定时刻运行的任务，f 将在 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。  #Tasked::run_daily void run_daily(F&amp;&amp; f, int hour=0, int minute=0, int second=0); void run_daily(const F&amp; f, int hour=0, int minute=0, int second=0);  添加每天指定时刻运行的周期性任务，f 将在每天的 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。  #Tasked::run_every void run_every(F&amp;&amp; f, int n); void run_every(const F&amp; f, int n);  添加每 n 秒运行一次的周期性任务。  #Tasked::run_in void run_in(F&amp;&amp; f, int n); void run_in(const F&amp; f, int n);  添加 n 秒后运行一次的任务。  #Tasked::stop void stop();  退出任务调度线程，析构函数中会自动调用此方法。 多次调用此方法是安全的。  #代码示例 Tasked s; // create and start the scheduler s.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="定时任务" />
 <meta property="og:description" content="include: co/tasked.h.
-#TaskedTasked 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。
-#Tasked::TaskedTasked(); Tasked(Tasked&amp;&amp; t);  第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。 第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。  #Tasked::~Tasked~Tasked();  析构函数，退出任务调度线程。  #Tasked::Ftypedef std::function&lt;void()&gt; F;  任务类型，固定为 std::function&lt;void()&gt; 类型的函数。  #Tasked::run_atvoid run_at(F&amp;&amp; f, int hour, int minute=0, int second=0); void run_at(const F&amp; f, int hour, int minute=0, int second=0);  添加指定时刻运行的任务，f 将在 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。  #Tasked::run_dailyvoid run_daily(F&amp;&amp; f, int hour=0, int minute=0, int second=0); void run_daily(const F&amp; f, int hour=0, int minute=0, int second=0);  添加每天指定时刻运行的周期性任务，f 将在每天的 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。  #Tasked::run_everyvoid run_every(F&amp;&amp; f, int n); void run_every(const F&amp; f, int n);  添加每 n 秒运行一次的周期性任务。  #Tasked::run_invoid run_in(F&amp;&amp; f, int n); void run_in(const F&amp; f, int n);  添加 n 秒后运行一次的任务。  #Tasked::stopvoid stop();  退出任务调度线程，析构函数中会自动调用此方法。 多次调用此方法是安全的。  #代码示例Tasked s; // create and start the scheduler s." />
+#Tasked Tasked 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。
+#Tasked::Tasked Tasked(); Tasked(Tasked&amp;&amp; t);  第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。 第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。  #Tasked::~Tasked ~Tasked();  析构函数，退出任务调度线程。  #Tasked::F typedef std::function&lt;void()&gt; F;  任务类型，固定为 std::function&lt;void()&gt; 类型的函数。  #Tasked::run_at void run_at(F&amp;&amp; f, int hour, int minute=0, int second=0); void run_at(const F&amp; f, int hour, int minute=0, int second=0);  添加指定时刻运行的任务，f 将在 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。  #Tasked::run_daily void run_daily(F&amp;&amp; f, int hour=0, int minute=0, int second=0); void run_daily(const F&amp; f, int hour=0, int minute=0, int second=0);  添加每天指定时刻运行的周期性任务，f 将在每天的 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。  #Tasked::run_every void run_every(F&amp;&amp; f, int n); void run_every(const F&amp; f, int n);  添加每 n 秒运行一次的周期性任务。  #Tasked::run_in void run_in(F&amp;&amp; f, int n); void run_in(const F&amp; f, int n);  添加 n 秒后运行一次的任务。  #Tasked::stop void stop();  退出任务调度线程，析构函数中会自动调用此方法。 多次调用此方法是安全的。  #代码示例 Tasked s; // create and start the scheduler s." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/tasked/" /><meta property="article:section" content="co" />
 
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/tasked/" title="Timed task scheduler">
 <link rel="stylesheet" href="../../../book.min.3805156b94af62087ed8ccedc7a4d16449cb626453feea23d18d8459cc058f06.css" integrity="sha256-OAUVa5SvYgh&#43;2Mztx6TRZEnLYmRT/uoj0Y2EWcwFjwY=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.00c594d298cdd8ec597b4b6527020e4b2d691ca59adfe6664d0e6be052cce7d2.js" integrity="sha256-AMWU0pjN2OxZe0tlJwIOSy1pHKWa3&#43;ZmTQ5r4FLM59I=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.a24bc098af23465871c623de9309322a5d1e69f6f8482e68e5331329dcfff5d5.js" integrity="sha256-okvAmK8jRlhxxiPekwkyKl0eafb4SC5o5TMTKdz/9dU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -513,7 +513,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
 
 
  
@@ -577,64 +577,64 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="tasked"><a class="anchor" href="#tasked">#</a>Tasked</h2>
 <p><code>Tasked</code> 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。</p>
 <h3 id="taskedtasked"><a class="anchor" href="#taskedtasked">#</a>Tasked::Tasked</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Tasked();
-</span></span><span style="display:flex;"><span>Tasked(Tasked<span style="color:#000;font-weight:bold">&amp;&amp;</span> t);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Tasked();
+Tasked(Tasked<span style="color:#000;font-weight:bold">&amp;&amp;</span> t);
+</code></pre></div><ul>
 <li>第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。</li>
 <li>第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。</li>
 </ul>
 <h3 id="taskedtasked-1"><a class="anchor" href="#taskedtasked-1">#</a>Tasked::~Tasked</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>Tasked();
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>Tasked();
+</code></pre></div><ul>
 <li>析构函数，退出任务调度线程。</li>
 </ul>
 <h3 id="taskedf"><a class="anchor" href="#taskedf">#</a>Tasked::F</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">typedef</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>()<span style="color:#000;font-weight:bold">&gt;</span> F;
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">typedef</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>()<span style="color:#000;font-weight:bold">&gt;</span> F;
+</code></pre></div><ul>
 <li>任务类型，固定为 <code>std::function&lt;void()&gt;</code> 类型的函数。</li>
 </ul>
 <h3 id="taskedrun_at"><a class="anchor" href="#taskedrun_at">#</a>Tasked::run_at</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_at</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
 <li>添加指定时刻运行的任务，f 将在 <code>hour:minute:second</code> 时刻运行一次。</li>
 <li>hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。</li>
 </ul>
 <h3 id="taskedrun_daily"><a class="anchor" href="#taskedrun_daily">#</a>Tasked::run_daily</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_daily</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> hour<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> minute<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#458;font-weight:bold">int</span> second<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</code></pre></div><ul>
 <li>添加每天指定时刻运行的周期性任务，f 将在每天的 <code>hour:minute:second</code> 时刻运行一次。</li>
 <li>hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。</li>
 </ul>
 <h3 id="taskedrun_every"><a class="anchor" href="#taskedrun_every">#</a>Tasked::run_every</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_every</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
 <li>添加每 n 秒运行一次的周期性任务。</li>
 </ul>
 <h3 id="taskedrun_in"><a class="anchor" href="#taskedrun_in">#</a>Tasked::run_in</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">run_in</span>(<span style="color:#000;font-weight:bold">const</span> F<span style="color:#000;font-weight:bold">&amp;</span> f, <span style="color:#458;font-weight:bold">int</span> n);
+</code></pre></div><ul>
 <li>添加 n 秒后运行一次的任务。</li>
 </ul>
 <h3 id="taskedstop"><a class="anchor" href="#taskedstop">#</a>Tasked::stop</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop</span>();
-</span></span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop</span>();
+</code></pre></div><ul>
 <li>退出任务调度线程，析构函数中会自动调用此方法。</li>
 <li>多次调用此方法是安全的。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Tasked s;                         <span style="color:#998;font-style:italic">// create and start the scheduler
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_in(f, <span style="color:#099">3</span>);                   <span style="color:#998;font-style:italic">// run f 3 seconds later
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_every(std<span style="color:#000;font-weight:bold">::</span>bind(f, <span style="color:#099">0</span>), <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// run f every 3 seconds
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_at(f, <span style="color:#099">23</span>);                  <span style="color:#998;font-style:italic">// run f once at 23:00:00
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_daily(f);                   <span style="color:#998;font-style:italic">// run f at 00:00:00 every day
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>);               <span style="color:#998;font-style:italic">// run f at 23:00:00 every day
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>, <span style="color:#099">30</span>);           <span style="color:#998;font-style:italic">// run f at 23:30:00 every day
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.stop();                         <span style="color:#998;font-style:italic">// stop the scheduler
-</span></span></span></code></pre></div></article>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Tasked s;                         <span style="color:#998;font-style:italic">// create and start the scheduler
+</span><span style="color:#998;font-style:italic"></span>s.run_in(f, <span style="color:#099">3</span>);                   <span style="color:#998;font-style:italic">// run f 3 seconds later
+</span><span style="color:#998;font-style:italic"></span>s.run_every(std<span style="color:#000;font-weight:bold">::</span>bind(f, <span style="color:#099">0</span>), <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// run f every 3 seconds
+</span><span style="color:#998;font-style:italic"></span>s.run_at(f, <span style="color:#099">23</span>);                  <span style="color:#998;font-style:italic">// run f once at 23:00:00
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f);                   <span style="color:#998;font-style:italic">// run f at 00:00:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>);               <span style="color:#998;font-style:italic">// run f at 23:00:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.run_daily(f, <span style="color:#099">23</span>, <span style="color:#099">30</span>);           <span style="color:#998;font-style:italic">// run f at 23:30:00 every day
+</span><span style="color:#998;font-style:italic"></span>s.stop();                         <span style="color:#998;font-style:italic">// stop the scheduler
+</span></code></pre></div></article>
  
       
 
