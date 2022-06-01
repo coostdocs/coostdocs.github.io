@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/so/rpc.h.
+<meta name="description" content="include: co/rpc.h.
 co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
 #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service void add_service(rpc::Service* s); void add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。  #Server::exit void exit();  v2.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="RPC" />
-<meta property="og:description" content="include: co/so/rpc.h.
+<meta property="og:description" content="include: co/rpc.h.
 co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
 #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service void add_service(rpc::Service* s); void add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。  #Server::exit void exit();  v2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/rpc/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-05-31T20:54:04+08:00" />
+<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
 
 <title>RPC | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@ co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格�
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/rpc/" title="RPC">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.a24bc098af23465871c623de9309322a5d1e69f6f8482e68e5331329dcfff5d5.js" integrity="sha256-okvAmK8jRlhxxiPekwkyKl0eafb4SC5o5TMTKdz/9dU=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.4d791923cc17f3b7107e45be1714ceadd0f9cbf7f96e68abe15d23241dfe6bb6.js" integrity="sha256-TXkZI8wX87cQfkW&#43;FxTOrdD5y/f5bmir4V0jJB3&#43;a7Y=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -604,7 +604,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so/rpc.h">co/so/rpc.h</a>.</p>
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/rpc.h">co/rpc.h</a>.</p>
 <p>co/rpc 是一个类似 <a href="https://github.com/grpc/grpc">grpc</a> 的高性能 RPC 框架，它内部使用 <strong>JSON</strong> 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。</p>
 <h2 id="rpcservice"><a class="anchor" href="#rpcservice">#</a>rpc::Service</h2>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Service</span> {
@@ -871,6 +871,7 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style=
 <li>co::Pool 的 ccb 利用拷贝构造的方式从 proto 复制一个客户端。</li>
 </ul>
 <h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
+<p>co/rpc 使用 <a href="../../flag/">co/flag</a> 定义配置项，下面列出的是 co/rpc 内部定义的 flag。</p>
 <h3 id="rpc_conn_idle_sec"><a class="anchor" href="#rpc_conn_idle_sec">#</a>rpc_conn_idle_sec</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_int32(rpc_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 connection may be closed if no data...&#34;</span>);
 </code></pre></div><ul>
@@ -958,9 +959,9 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style=
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9cd068238b5e1fd16643d58065cfb29e792e2fbe" title='最后修改者 idealvin | May 31, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='最后修改者 idealvin | June 1, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>May 31, 2022</span>
+      <span>June 1, 2022</span>
     </a>
   </div>
 

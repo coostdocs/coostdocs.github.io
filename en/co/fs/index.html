@@ -13,7 +13,7 @@ co/fs.h implements common file system operations. It is recommended to use &#39;
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/fs/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2021-08-02T00:06:00+08:00" />
+<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
 
 <title>File System | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -21,7 +21,7 @@ co/fs.h implements common file system operations. It is recommended to use &#39;
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/fs/" title="文件系统">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.6ae0979c1a8997b6077ca91d74739026e3057139c9f13db6f8b965c2841c332e.js" integrity="sha256-auCXnBqJl7YHfKkddHOQJuMFcTnJ8T22&#43;LllwoQcMy4=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.d70bf7f382726af72bc8a777e54513442fa5c16464cdc4ada404acf72e89dc9a.js" integrity="sha256-1wv384JyavcryKd35UUTRC&#43;lwWRkzcStpASs9y6J3Jo=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -573,7 +573,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#fileseek">file::seek</a></li>
             <li><a href="#filesize">file::size</a></li>
             <li><a href="#filewrite">file::write</a></li>
-            <li><a href="#code-example-1">Code example</a></li>
+            <li><a href="#example">Example</a></li>
           </ul>
         </li>
         <li><a href="#file-stream-fsfstream">File Stream (fs::fstream)</a>
@@ -588,7 +588,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#fstreamoperator">fstream::operator!</a></li>
             <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
             <li><a href="#fstreamreserve">fstream::reserve</a></li>
-            <li><a href="#code-example-2">Code example</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
           </ul>
         </li>
       </ul>
@@ -698,11 +698,11 @@ file(<span style="color:#000;font-weight:bold">const</span> std<span style="colo
 <li>The first version is the default constructor, which creates an empty file object without opening a file.</li>
 <li>The second version is the move constructor.</li>
 <li>Version 3-5, open the specified file, the parameter path is the file path, and the parameter mode is the open mode.</li>
-<li>mode is one of <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'m'</code>, r for read, w for write, a for append, m for modify.</li>
+<li>mode is one of <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'m'</code> or <code>'+'</code>, r for read, w for write, a for append, m for modify, + for both read and write.</li>
 <li>When mode is <code>'r'</code>, the file must exist, otherwise the file is not opened.</li>
-<li>When mode is <code>'w'</code>, the file is automatically created if it does not exist, and the file data is cleared if it already exists.</li>
-<li>When mode is <code>'a'</code>, the file will be created automatically when it does not exist, and the file data will not be cleared if it already exists.</li>
-<li>When mode is <code>'m'</code>, the file will be created automatically if it does not exist, and the file data will not be cleared if the file already exists.</li>
+<li>When mode is <code>'w'</code>, a new file will be created if it does not exist, and the file will be truncated if it already exists.</li>
+<li>When mode is <code>'a'</code>, <code>'m'</code> or <code>'+'</code>, a new file will be created when it does not exist, and the file will not be truncated if it already exists.</li>
+<li><code>'+'</code> was added since v3.0. In this mode, read and write share the file pointer, therefore, you may need call the <a href="#fileseek">seek()</a> method to set the offset before the read or write operation.</li>
 </ul>
 <h3 id="filefile-1"><a class="anchor" href="#filefile-1">#</a>file::~file</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">~</span>file();
@@ -777,20 +777,26 @@ size_t <span style="color:#900;font-weight:bold">write</span>(<span style="color
 <li>This method returns the number of bytes actually written. When the disk space is insufficient or other error occurs, the return value may be less than n.</li>
 <li>This method has already handled <code>EINTR</code> error internally.</li>
 </ul>
-<h3 id="code-example-1"><a class="anchor" href="#code-example-1">#</a>Code example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fs<span style="color:#000;font-weight:bold">::</span>file f; <span style="color:#998;font-style:italic">// empty file
-</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>file f(<span style="color:#d14">&#34;xx&#34;</span>,<span style="color:#d14">&#39;w&#39;</span>);     <span style="color:#998;font-style:italic">// write mode
-</span><span style="color:#998;font-style:italic"></span>f.open(<span style="color:#d14">&#34;xx&#34;</span>,<span style="color:#d14">&#39;m&#39;</span>);         <span style="color:#998;font-style:italic">// reopen with modify mode
+<h3 id="example"><a class="anchor" href="#example">#</a>Example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fs<span style="color:#000;font-weight:bold">::</span>file f;               <span style="color:#998;font-style:italic">// empty file
+</span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>file f(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;w&#39;</span>);    <span style="color:#998;font-style:italic">// write mode
+</span><span style="color:#998;font-style:italic"></span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;m&#39;</span>);        <span style="color:#998;font-style:italic">// reopen with modify mode
 </span><span style="color:#998;font-style:italic"></span>
-f.open(<span style="color:#d14">&#34;xx&#34;</span>,<span style="color:#d14">&#39;r&#39;</span>);         <span style="color:#998;font-style:italic">// read mode
+f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;r&#39;</span>);        <span style="color:#998;font-style:italic">// read mode
 </span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (f) f.read(buf, <span style="color:#099">512</span>);  <span style="color:#998;font-style:italic">// read at most 512 bytes
 </span><span style="color:#998;font-style:italic"></span>fastring s <span style="color:#000;font-weight:bold">=</span> f.read(<span style="color:#099">32</span>);  <span style="color:#998;font-style:italic">// read at most 32 bytes and return fastring
 </span><span style="color:#998;font-style:italic"></span>
-f.open(<span style="color:#d14">&#34;xx&#34;</span>,<span style="color:#d14">&#39;a&#39;</span>);         <span style="color:#998;font-style:italic">// append mode
+f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;a&#39;</span>);        <span style="color:#998;font-style:italic">// append mode
 </span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span>(f) f.write(buf, <span style="color:#099">32</span>);   <span style="color:#998;font-style:italic">// write 32 bytes
 </span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#34;hello&#34;</span>);         <span style="color:#998;font-style:italic">// write a C string
 </span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#39;c&#39;</span>);             <span style="color:#998;font-style:italic">// write a single character
-</span><span style="color:#998;font-style:italic"></span>f.close();                <span style="color:#998;font-style:italic">// close the file
+</span><span style="color:#998;font-style:italic"></span>
+f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;+&#39;</span>);        <span style="color:#998;font-style:italic">// read/write mode
+</span><span style="color:#998;font-style:italic"></span>f.seek(<span style="color:#099">0</span>);                <span style="color:#998;font-style:italic">// seek to beginning before write
+</span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#34;hello&#34;</span>);
+f.seek(<span style="color:#099">0</span>);                <span style="color:#998;font-style:italic">// seek to beginning before read 
+</span><span style="color:#998;font-style:italic"></span>f.read(buf, <span style="color:#099">8</span>);
+f.close();                <span style="color:#998;font-style:italic">// close the file
 </span></code></pre></div><h2 id="file-stream-fsfstream"><a class="anchor" href="#file-stream-fsfstream">#</a>File Stream (fs::fstream)</h2>
 <p><code>fs::file</code> does not support caching, and the performance of writing small files is poor. For this reason, <code>co/fs.h</code> also implements the <code>fs::fstream</code> class that supports caching, it is designed for writing files and does not support read operations.</p>
 <h3 id="fstreamfstream"><a class="anchor" href="#fstreamfstream">#</a>fstream::fstream</h3>
@@ -864,7 +870,7 @@ fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color
 </code></pre></div><ul>
 <li>Adjust the cache capacity, the parameter n is the capacity. If n is less than the previous capacity, the capacity remains unchanged.</li>
 </ul>
-<h3 id="code-example-2"><a class="anchor" href="#code-example-2">#</a>Code example</h3>
+<h3 id="code-example-1"><a class="anchor" href="#code-example-1">#</a>Code example</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fs<span style="color:#000;font-weight:bold">::</span>fstream s;                   <span style="color:#998;font-style:italic">// cache size: 8k
 </span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#099">4096</span>);             <span style="color:#998;font-style:italic">// cache size: 4k
 </span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&#39;a&#39;</span>);       <span style="color:#998;font-style:italic">// append mode, cache size: 8k
@@ -928,9 +934,9 @@ s.open(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/0f6eef5e1f89354b56d0da1de637b1fd139726ab" title='Last modified by idealvin | August 2, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='Last modified by idealvin | June 1, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 2, 2021</span>
+      <span>June 1, 2022</span>
     </a>
   </div>
 
@@ -1032,7 +1038,7 @@ s.open(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&
             <li><a href="#fileseek">file::seek</a></li>
             <li><a href="#filesize">file::size</a></li>
             <li><a href="#filewrite">file::write</a></li>
-            <li><a href="#code-example-1">Code example</a></li>
+            <li><a href="#example">Example</a></li>
           </ul>
         </li>
         <li><a href="#file-stream-fsfstream">File Stream (fs::fstream)</a>
@@ -1047,7 +1053,7 @@ s.open(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&
             <li><a href="#fstreamoperator">fstream::operator!</a></li>
             <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
             <li><a href="#fstreamreserve">fstream::reserve</a></li>
-            <li><a href="#code-example-2">Code example</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
           </ul>
         </li>
       </ul>

@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/so/tcp.h.
+<meta name="description" content="include: co/tcp.h.
 #tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
 #Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。  #Connection::~Connection Connection::~Connection();  析构函数，调用 close() 关闭连接。  #Connection::close int close(int ms = 0);  关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。  #Connection::recv int recv(void* buf, int n, int ms=-1);  接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::recvn int recvn(void* buf, int n, int ms=-1);  接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::reset int reset(int ms = 0)  重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。  #Connection::send int send(const void* buf, int n, int ms=-1);  发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。  #Connection::socket int socket() const;  返回内部的 socket 描述符，连接已关闭时返回 -1。  #Connection::strerror const char* strerror() const;  Connection 中的方法报错时，可以调用此方法查看错误信息。  #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="TCP" />
-<meta property="og:description" content="include: co/so/tcp.h.
+<meta property="og:description" content="include: co/tcp.h.
 #tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
 #Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c);  构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。  #Connection::~Connection Connection::~Connection();  析构函数，调用 close() 关闭连接。  #Connection::close int close(int ms = 0);  关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。  #Connection::recv int recv(void* buf, int n, int ms=-1);  接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::recvn int recvn(void* buf, int n, int ms=-1);  接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。  #Connection::reset int reset(int ms = 0)  重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。  #Connection::send int send(const void* buf, int n, int ms=-1);  发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。  #Connection::socket int socket() const;  返回内部的 socket 描述符，连接已关闭时返回 -1。  #Connection::strerror const char* strerror() const;  Connection 中的方法报错时，可以调用此方法查看错误信息。  #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/tcp/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
 
 <title>TCP | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/tcp/" title="TCP">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.a24bc098af23465871c623de9309322a5d1e69f6f8482e68e5331329dcfff5d5.js" integrity="sha256-okvAmK8jRlhxxiPekwkyKl0eafb4SC5o5TMTKdz/9dU=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.4d791923cc17f3b7107e45be1714ceadd0f9cbf7f96e68abe15d23241dfe6bb6.js" integrity="sha256-TXkZI8wX87cQfkW&#43;FxTOrdD5y/f5bmir4V0jJB3&#43;a7Y=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -598,7 +598,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">co/so/tcp.h</a>.</p>
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/tcp.h">co/tcp.h</a>.</p>
 <h2 id="tcpconnection"><a class="anchor" href="#tcpconnection">#</a>tcp::Connection</h2>
 <p><code>tcp::Connection</code> 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。</p>
 <h3 id="connectionconnection"><a class="anchor" href="#connectionconnection">#</a>Connection::Connection</h3>
@@ -931,9 +931,9 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> tcp<span style=
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='最后修改者 idealvin | November 6, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='最后修改者 idealvin | June 1, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>November 6, 2021</span>
+      <span>June 1, 2022</span>
     </a>
   </div>
 

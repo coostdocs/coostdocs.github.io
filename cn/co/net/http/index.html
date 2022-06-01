@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/so/http.h.
+<meta name="description" content="include: co/http.h.
 #http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
-#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并没有建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const char* body() const;  获取当前 HTTP 请求的响应体，返回一个指针，用户需要用 body_size() 方法获取它的长度。  #Client::body_size size_t body_size() const;  返回当前 HTTP 请求的响应体长度。  #Client::close void close();  关闭 HTTP 连接，需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const char* header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。">
+#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并不会立即建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const fastring&amp; body() const;  获取当前 HTTP 请求的响应体。  #Client::close void close();  关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const fastring&amp; header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="HTTP" />
-<meta property="og:description" content="include: co/so/http.h.
+<meta property="og:description" content="include: co/http.h.
 #http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
-#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并没有建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const char* body() const;  获取当前 HTTP 请求的响应体，返回一个指针，用户需要用 body_size() 方法获取它的长度。  #Client::body_size size_t body_size() const;  返回当前 HTTP 请求的响应体长度。  #Client::close void close();  关闭 HTTP 连接，需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const char* header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。" />
+#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并不会立即建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const fastring&amp; body() const;  获取当前 HTTP 请求的响应体。  #Client::close void close();  关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const fastring&amp; header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/http/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-05-06T11:54:40+08:00" />
+<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
 
 <title>HTTP | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/http/" title="HTTP">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.a24bc098af23465871c623de9309322a5d1e69f6f8482e68e5331329dcfff5d5.js" integrity="sha256-okvAmK8jRlhxxiPekwkyKl0eafb4SC5o5TMTKdz/9dU=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.4d791923cc17f3b7107e45be1714ceadd0f9cbf7f96e68abe15d23241dfe6bb6.js" integrity="sha256-TXkZI8wX87cQfkW&#43;FxTOrdD5y/f5bmir4V0jJB3&#43;a7Y=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -552,7 +552,6 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#clientclient-1">Client::~Client</a></li>
             <li><a href="#clientadd_header">Client::add_header</a></li>
             <li><a href="#clientbody">Client::body</a></li>
-            <li><a href="#clientbody_size">Client::body_size</a></li>
             <li><a href="#clientclose">Client::close</a></li>
             <li><a href="#clientdel">Client::del</a></li>
             <li><a href="#clienteasy_handle">Client::easy_handle</a></li>
@@ -563,7 +562,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#clientpost">Client::post</a></li>
             <li><a href="#clientput">Client::put</a></li>
             <li><a href="#clientremove_header">Client::remove_header</a></li>
+            <li><a href="#clientreset">Client::reset</a></li>
             <li><a href="#clientresponse_code">Client::response_code</a></li>
+            <li><a href="#clientstatus">Client::status</a></li>
             <li><a href="#clientstrerror">Client::strerror</a></li>
             <li><a href="#代码示例">代码示例</a></li>
           </ul>
@@ -573,9 +574,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#reqreq">Req::Req</a></li>
             <li><a href="#reqbody">Req::body</a></li>
             <li><a href="#reqbody_size">Req::body_size</a></li>
-            <li><a href="#reqclear">Req::clear</a></li>
             <li><a href="#reqheader">Req::header</a></li>
             <li><a href="#reqis_method_xxx">Req::is_method_xxx</a></li>
+            <li><a href="#reqmethod">Req::method</a></li>
             <li><a href="#requrl">Req::url</a></li>
             <li><a href="#reqversion">Req::version</a></li>
           </ul>
@@ -584,12 +585,8 @@ https://github.com/alex-shpak/hugo-book
           <ul>
             <li><a href="#resres">Res::Res</a></li>
             <li><a href="#resadd_header">Res::add_header</a></li>
-            <li><a href="#resbody_size">Res::body_size</a></li>
-            <li><a href="#resclear">Res::clear</a></li>
             <li><a href="#resset_body">Res::set_body</a></li>
             <li><a href="#resset_status">Res::set_status</a></li>
-            <li><a href="#resset_version">Res::set_version</a></li>
-            <li><a href="#resstr">Res::str</a></li>
           </ul>
         </li>
         <li><a href="#httpserver">http::Server</a>
@@ -629,7 +626,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so/http.h">co/so/http.h</a>.</p>
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/http.h">co/http.h</a>.</p>
 <h2 id="httpclient"><a class="anchor" href="#httpclient">#</a>http::Client</h2>
 <p><code>http::Client</code> 是基于协程的 http 客户端，它基于 <a href="https://curl.se/libcurl/">libcurl</a> 实现。</p>
 <h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
@@ -643,7 +640,7 @@ https://github.com/alex-shpak/hugo-book
 <li>&ldquo;http://[::1]:8888&rdquo;</li>
 </ul>
 </li>
-<li>http::Client 对象创建时，并没有建立连接。</li>
+<li>http::Client 对象创建时，并不会立即建立连接。</li>
 </ul>
 <h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client<span style="color:#000;font-weight:bold">::~</span>Client();
@@ -658,20 +655,15 @@ https://github.com/alex-shpak/hugo-book
 <li>第 2 个版本中，参数 val 是整数，内部自动转换成字符串。</li>
 </ul>
 <h3 id="clientbody"><a class="anchor" href="#clientbody">#</a>Client::body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">body</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> body() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取当前 HTTP 请求的响应体，返回一个指针，用户需要用 <code>body_size()</code> 方法获取它的长度。</li>
-</ul>
-<h3 id="clientbody_size"><a class="anchor" href="#clientbody_size">#</a>Client::body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">body_size</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
-<li>返回当前 HTTP 请求的响应体长度。</li>
+<li>获取当前 HTTP 请求的响应体。</li>
 </ul>
 <h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
 </code></pre></div><ul>
-<li>关闭 HTTP 连接，需要在协程中调用此方法。</li>
-<li><strong>调用此方法后，http::Client 对象就不能再用了</strong>。</li>
+<li>关闭 HTTP 连接，一般需要在协程中调用此方法。</li>
+<li>调用此方法后，http::Client 对象就不能再用了，直到用户调用 <a href="#clientreset">reset()</a> 方法重置 server url。</li>
 </ul>
 <h3 id="clientdel"><a class="anchor" href="#clientdel">#</a>Client::del</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
@@ -702,13 +694,13 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h3 id="clientheader"><a class="anchor" href="#clientheader">#</a>Client::header</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
-<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>() <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> header() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>
 <p>第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。</p>
 </li>
 <li>
-<p>第 2 个版本获取当前 HTTP 响应的整个 header 部分。</p>
+<p>第 2 个版本获取当前 HTTP 响应的整个 header 部分(包括起始行)。</p>
 </li>
 <li>
 <p>示例</p>
@@ -746,17 +738,21 @@ c.get(<span style="color:#d14">&#34;/&#34;</span>);
 <li>参数 s 是 HTTP 请求的 body 数据，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。</li>
 </ul>
 <h3 id="clientput"><a class="anchor" href="#clientput">#</a>Client::put</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
 </code></pre></div><ul>
-<li>HTTP <strong>PUT</strong> 请求，必须在协程中调用。</li>
+<li>HTTP <strong>PUT</strong> 请求，用于上传文件到服务器，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
-<li>参数 s 是 HTTP 请求的 body 数据，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。</li>
+<li>参数 path 是需要上传的文件路径。</li>
 </ul>
 <h3 id="clientremove_header"><a class="anchor" href="#clientremove_header">#</a>Client::remove_header</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
 </code></pre></div><ul>
 <li>删除之前添加的 HTTP header。调用 add_header() 方法添加的头部会存在于后续所有 HTTP 请求中，如果用户不想在后续请求中带上某些 header，可以用此方法显示删除。</li>
+</ul>
+<h3 id="clientreset"><a class="anchor" href="#clientreset">#</a>Client::reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
+</code></pre></div><ul>
+<li>重置 server url，关于 url 的规范详见 <a href="#clientclient">Client::Client</a>。</li>
 </ul>
 <h3 id="clientresponse_code"><a class="anchor" href="#clientresponse_code">#</a>Client::response_code</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">response_code</span>() <span style="color:#000;font-weight:bold">const</span>;
@@ -765,9 +761,13 @@ c.get(<span style="color:#d14">&#34;/&#34;</span>);
 <li>正常情况下返回值是 100 到 511 之间的值。</li>
 <li>若 HTTP 请求没有发送出去，或者没有收到服务端的响应，此方法返回 0，用户可以用 strerror() 方法获取错误信息。</li>
 </ul>
+<h3 id="clientstatus"><a class="anchor" href="#clientstatus">#</a>Client::status</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">status</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>与 <a href="#clientresponse_code">response_code()</a> 等价，返回当前 HTTP 请求的响应吗。</li>
+</ul>
 <h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
-
 </code></pre></div><ul>
 <li>获取当前 HTTP 请求的错误信息。</li>
 </ul>
@@ -777,14 +777,14 @@ c.get(<span style="color:#d14">&#34;/&#34;</span>);
     <span style="color:#458;font-weight:bold">int</span> r;
     
     c.get(<span style="color:#d14">&#34;/&#34;</span>);
-    r <span style="color:#000;font-weight:bold">=</span> c.response_code();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;response code: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;
+    r <span style="color:#000;font-weight:bold">=</span> c.status();
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;staus: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;
     LOG_IF(r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.strerror();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body_size();
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
 
     c.get(<span style="color:#d14">&#34;/idealvin/co&#34;</span>);
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body_size();
+    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
 
@@ -802,17 +802,12 @@ go(f);
 <h3 id="reqbody"><a class="anchor" href="#reqbody">#</a>Req::body</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">body</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取 HTTP 请求中的 body 数据，返回一个指针，用户需要调用 body_size() 方法获取它的长度。</li>
+<li>获取 HTTP 请求中的 body 数据，返回一个指针，用户需要调用 <a href="#reqbody_size">body_size()</a> 方法获取它的长度。</li>
 </ul>
 <h3 id="reqbody_size"><a class="anchor" href="#reqbody_size">#</a>Req::body_size</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">body_size</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>返回 HTTP 请求 body 的长度。</li>
-</ul>
-<h3 id="reqclear"><a class="anchor" href="#reqclear">#</a>Req::clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
-</code></pre></div><ul>
-<li>清空 http::Req 对象，清空后用户可以继续使用。</li>
 </ul>
 <h3 id="reqheader"><a class="anchor" href="#reqheader">#</a>Req::header</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>;
@@ -828,6 +823,11 @@ go(f);
 <span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_options</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>判断 HTTP 请求的方法类型。</li>
+</ul>
+<h3 id="reqmethod"><a class="anchor" href="#reqmethod">#</a>Req::method</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Method <span style="color:#900;font-weight:bold">method</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回 HTTP 请求方法，返回值是 <code>kGet, kHead, kPost, kPut, kDelete, kOptions</code> 中的一种。</li>
 </ul>
 <h3 id="requrl"><a class="anchor" href="#requrl">#</a>Req::url</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> url() <span style="color:#000;font-weight:bold">const</span>;
@@ -848,22 +848,14 @@ go(f);
 </ul>
 <h3 id="resadd_header"><a class="anchor" href="#resadd_header">#</a>Res::add_header</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
 </code></pre></div><ul>
 <li>添加 HTTP header。</li>
-</ul>
-<h3 id="resbody_size"><a class="anchor" href="#resbody_size">#</a>Res::body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t body_size() <span style="color:#000;font-weight:bold">const</span>
-</code></pre></div><ul>
-<li>返回 HTTP 响应 body 的长度。</li>
-</ul>
-<h3 id="resclear"><a class="anchor" href="#resclear">#</a>Res::clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
-</code></pre></div><ul>
-<li>清空 http::Res 对象，清空后用户可以继续使用。</li>
 </ul>
 <h3 id="resset_body"><a class="anchor" href="#resset_body">#</a>Res::set_body</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
 <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
 </code></pre></div><ul>
 <li>设置 HTTP 响应的 body 部分。</li>
 <li>参数 s 是 body 数据，参数 n 是 s 的长度，第 2 个版本中 s 以 <code>'\0'</code> 结尾。</li>
@@ -872,17 +864,6 @@ go(f);
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_status</span>(<span style="color:#458;font-weight:bold">int</span> status);
 </code></pre></div><ul>
 <li>设置 HTTP 响应码，这个值一般是 100 到 511 之间的值。</li>
-</ul>
-<h3 id="resset_version"><a class="anchor" href="#resset_version">#</a>Res::set_version</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_version</span>(Version v);
-</code></pre></div><ul>
-<li>设置 HTTP 响应中的 HTTP 版本，默认使用 HTTP/1.1。</li>
-<li>用户一般不需要调用此方法。</li>
-</ul>
-<h3 id="resstr"><a class="anchor" href="#resstr">#</a>Res::str</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">str</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
-<li>将 HTTP 响应转化成字符串形式，该字符串可以发送到网络上。</li>
 </ul>
 <h2 id="httpserver"><a class="anchor" href="#httpserver">#</a>http::Server</h2>
 <p><code>http::Server</code> 是基于协程的 HTTP 服务器，它支持 HTTPS，使用 HTTPS 需要安装 openssl。</p>
@@ -895,9 +876,9 @@ go(f);
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_req</span>(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
 <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
 </code></pre></div><ul>
-<li>设置处理客户端 HTTP 请求的回调函数。</li>
+<li>设置处理客户端 HTTP 请求的 callback。</li>
 <li>第 2 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</li>
-<li>服务端接收到 HTTP 请求时，会调用此方法设置的回调函数，处理该请求。</li>
+<li>服务端接收到 HTTP 请求时，会调用此方法设置的 callback，处理该请求。</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
@@ -937,7 +918,7 @@ s.on_req(
 <span style="color:#998;font-style:italic">// start as a https server
 </span><span style="color:#998;font-style:italic"></span>s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7777</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>);
 </code></pre></div><p><code>co/test</code> 提供了一个简单的 <a href="https://github.com/idealvin/co/blob/master/test/so/http_serv.cc">demo</a>，用户可以按下述方式编译运行:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake -b http_serv
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xmake -b http_serv
 xmake r http_serv
 </code></pre></div><p>启动 http server 后，可以在浏览器的地址栏中输入 <code>127.0.0.1/hello</code> 看结果。</p>
 <h2 id="静态-web-server-soeasy"><a class="anchor" href="#%e9%9d%99%e6%80%81-web-server-soeasy">#</a>静态 web server (so::easy)</h2>
@@ -961,20 +942,19 @@ xmake r http_serv
 </li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/so.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// root dir of web server
 </span><span style="color:#998;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
 
     so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
 </span><span style="color:#998;font-style:italic"></span>
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
+<p>co/http 使用 <a href="../../flag/">co/flag</a> 定义配置项，下面列出的是 co/http 内部定义的 flag。</p>
 <h3 id="http_conn_timeout"><a class="anchor" href="#http_conn_timeout">#</a>http_conn_timeout</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_conn_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 connect timeout in ms for http client&#34;</span>);
 </code></pre></div><ul>
@@ -1073,9 +1053,9 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/555e66687e46481819aa429babfb832ba704eed3" title='最后修改者 idealvin | May 6, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='最后修改者 idealvin | June 1, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>May 6, 2022</span>
+      <span>June 1, 2022</span>
     </a>
   </div>
 
@@ -1156,7 +1136,6 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
             <li><a href="#clientclient-1">Client::~Client</a></li>
             <li><a href="#clientadd_header">Client::add_header</a></li>
             <li><a href="#clientbody">Client::body</a></li>
-            <li><a href="#clientbody_size">Client::body_size</a></li>
             <li><a href="#clientclose">Client::close</a></li>
             <li><a href="#clientdel">Client::del</a></li>
             <li><a href="#clienteasy_handle">Client::easy_handle</a></li>
@@ -1167,7 +1146,9 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
             <li><a href="#clientpost">Client::post</a></li>
             <li><a href="#clientput">Client::put</a></li>
             <li><a href="#clientremove_header">Client::remove_header</a></li>
+            <li><a href="#clientreset">Client::reset</a></li>
             <li><a href="#clientresponse_code">Client::response_code</a></li>
+            <li><a href="#clientstatus">Client::status</a></li>
             <li><a href="#clientstrerror">Client::strerror</a></li>
             <li><a href="#代码示例">代码示例</a></li>
           </ul>
@@ -1177,9 +1158,9 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
             <li><a href="#reqreq">Req::Req</a></li>
             <li><a href="#reqbody">Req::body</a></li>
             <li><a href="#reqbody_size">Req::body_size</a></li>
-            <li><a href="#reqclear">Req::clear</a></li>
             <li><a href="#reqheader">Req::header</a></li>
             <li><a href="#reqis_method_xxx">Req::is_method_xxx</a></li>
+            <li><a href="#reqmethod">Req::method</a></li>
             <li><a href="#requrl">Req::url</a></li>
             <li><a href="#reqversion">Req::version</a></li>
           </ul>
@@ -1188,12 +1169,8 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
           <ul>
             <li><a href="#resres">Res::Res</a></li>
             <li><a href="#resadd_header">Res::add_header</a></li>
-            <li><a href="#resbody_size">Res::body_size</a></li>
-            <li><a href="#resclear">Res::clear</a></li>
             <li><a href="#resset_body">Res::set_body</a></li>
             <li><a href="#resset_status">Res::set_status</a></li>
-            <li><a href="#resset_version">Res::set_version</a></li>
-            <li><a href="#resstr">Res::str</a></li>
           </ul>
         </li>
         <li><a href="#httpserver">http::Server</a>

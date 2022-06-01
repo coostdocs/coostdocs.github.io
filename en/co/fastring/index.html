@@ -13,7 +13,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/fastring/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2021-11-06T13:25:24+08:00" />
+<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
 
 <title>fastring | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/fastring/" title="字符串(fastring)">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.6ae0979c1a8997b6077ca91d74739026e3057139c9f13db6f8b965c2841c332e.js" integrity="sha256-auCXnBqJl7YHfKkddHOQJuMFcTnJ8T22&#43;LllwoQcMy4=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.d70bf7f382726af72bc8a777e54513442fa5c16464cdc4ada404acf72e89dc9a.js" integrity="sha256-1wv384JyavcryKd35UUTRC&#43;lwWRkzcStpASs9y6J3Jo=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -888,22 +888,26 @@ s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&
 </span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;xx&#34;</span>; <span style="color:#998;font-style:italic">// s -&gt; &#34;cxx&#34;
 </span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
 <h3 id="fastringfind"><a class="anchor" href="#fastringfind">#</a>fastring::find</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">find</span>(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
-size_t <span style="color:#900;font-weight:bold">find</span>(<span style="color:#458;font-weight:bold">char</span> c, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
-size_t <span style="color:#900;font-weight:bold">find</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
-size_t <span style="color:#900;font-weight:bold">find</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#099">1.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#099">2.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#099">3.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c, size_t pos, size_t len) <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#099">4.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+<span style="color:#099">5.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>
-<p>The first version searches for the character c starting from position 0.</p>
+<p>1, searches for character c starting from position 0.</p>
 </li>
 <li>
-<p>The second version looks for the character c starting at position pos.</p>
+<p>2, searches for character c starting at position pos.</p>
 </li>
 <li>
-<p>The third version starts from position 0 to find the substring s, which is implemented internally based on <code>strstr()</code>, and does not apply to fastring containing &lsquo;\0&rsquo;.</p>
+<p>3, added in v3.0, searches for character c in range <code>[pos, pos + len)</code>.</p>
 </li>
 <li>
-<p>The fourth version is like the third but searchs from position pos.</p>
+<p>4, starts from position 0 to find the substring s, which is implemented internally based on <code>strstr()</code>, and does not apply to fastring containing &lsquo;\0&rsquo;.</p>
+</li>
+<li>
+<p>5, like the 4th, but searchs from position pos.</p>
 </li>
 <li>
 <p>This method returns the position of the character or substring when the search succeeds, otherwise it returns <code>fastring::npos</code>.</p>
@@ -1409,9 +1413,9 @@ std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#0
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ff899f97de4ff0f07bef467c8ad01934bb2f0eb9" title='Last modified by idealvin | November 6, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='Last modified by idealvin | June 1, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>November 6, 2021</span>
+      <span>June 1, 2022</span>
     </a>
   </div>
 
