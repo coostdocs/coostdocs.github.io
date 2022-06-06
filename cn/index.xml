@@ -224,9 +224,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
 co 协程库实现的是一种类似 golang 的协程，有如下特性：
  支持多线程调度，默认线程数为系统 CPU 核数。 共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。 协程创建后，始终在同一个线程中运行，而不会切换到其他线程。 各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。  co 协程库在 linux, mac, windows 等平台，分别基于 epoll, kqueue, iocp 实现。
 co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 则参考了 boost 的实现，在此表示感谢！
-#协程 API #co::init 弃用,只需要flag::init();
-#co::exit 弃用，不再需要主动调用。
-#go void go(Closure* cb); template&amp;lt;typename F&amp;gt; void go(F&amp;amp;&amp;amp; f); template&amp;lt;typename F, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); template&amp;lt;typename F, typename T, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p);   此函数用于创建协程，与创建线程类似，需要指定一个协程函数。</description>
+#协程 API #v3.0 删除的 API  co::init, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 flag::init(argc, argv)。 co::exit, v3.</description>
     </item>
     
     <item>

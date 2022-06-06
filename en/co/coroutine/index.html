@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2021-10-04T10:55:00+08:00" />
+<meta property="article:modified_time" content="2022-06-06T21:05:57+08:00" />
 
 <title>Coroutine | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/coroutine/" title="协程">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.d70bf7f382726af72bc8a777e54513442fa5c16464cdc4ada404acf72e89dc9a.js" integrity="sha256-1wv384JyavcryKd35UUTRC&#43;lwWRkzcStpASs9y6J3Jo=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.8eb94eee8858a2b3bd574853da15048734194c1e10816191e59c515ae9817ed5.js" integrity="sha256-jrlO7ohYorO9V0hT2hUEhzQZTB4QgWGR5ZxRWumBftU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -547,8 +547,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#basic-concepts">Basic concepts</a></li>
         <li><a href="#coroutine-api">Coroutine API</a>
           <ul>
-            <li><a href="#coinit">co::init</a></li>
-            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
             <li><a href="#coall_schedulers">co::all_schedulers</a></li>
@@ -558,7 +557,6 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
             <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
             <li><a href="#cosleep">co::sleep</a></li>
-            <li><a href="#costop">co::stop</a></li>
             <li><a href="#cotimeout">co::timeout</a></li>
             <li><a href="#code-example">Code example</a></li>
           </ul>
@@ -580,7 +578,6 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#coshutdown">co::shutdown</a></li>
             <li><a href="#coerror">co::error</a></li>
             <li><a href="#costrerror">co::strerror</a></li>
-            <li><a href="#coset_error">co::set_error</a></li>
             <li><a href="#heading">———————————</a></li>
             <li><a href="#cogetsockopt">co::getsockopt</a></li>
             <li><a href="#cosetsockopt">co::setsockopt</a></li>
@@ -726,41 +723,19 @@ https://github.com/alex-shpak/hugo-book
 <p>The coroutine library is based on <a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a>, <a href="https://man.openbsd.org/kqueue.2">kqueue</a>, <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/io-completion-ports">iocp</a>.</p>
 <p>The relevant code for context switching is taken from <a href="https://github.com/tboox/tbox/">tbox</a> by <a href="https://github.com/waruqi">ruki</a>, and tbox refers to the implementation of <a href="https://www.boost.org/doc/libs/1_70_0/libs/context/doc/html/index.html">boost</a>, thanks here!</p>
 <h2 id="coroutine-api"><a class="anchor" href="#coroutine-api">#</a>Coroutine API</h2>
-<h3 id="coinit"><a class="anchor" href="#coinit">#</a>co::init</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>();
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">init</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> config);
-</code></pre></div><ul>
-<li>Added since v2.0.2, used to initialize the coroutine library.</li>
-<li>The first version performs some initialization work inside the coroutine library.</li>
-<li>The second version first calls <code>flag::init(argc, argv)</code> and <code>log::init()</code>, and then calls <code>co::init()</code> to initialize the coroutine library.</li>
-<li>The third version first calls <code>flag::init(config)</code> and <code>log::init()</code>, and then calls <code>co::init()</code> to initialize the coroutine library.</li>
-</ul>
-<h3 id="coexit"><a class="anchor" href="#coexit">#</a>co::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
-</code></pre></div><ul>
+<h3 id="apis-removed-in-v30"><a class="anchor" href="#apis-removed-in-v30">#</a>APIs removed in v3.0</h3>
+<ul>
 <li>
-<p>Added in v2.0.2, stop the coroutine scheduling threads and reclaim system resources.</p>
+<p><strong>co::init</strong>, removed in v3.0, starting from co 3.0, we only need to call <code>flag::init(argc, argv)</code> at the beginning of the main function.</p>
 </li>
 <li>
-<p>If <code>co::init(argc, argv)</code> or <code>co::init(config)</code> was called before, this function will also call <code>log::exit()</code> to stop the logging thread.</p>
+<p><strong>co::exit</strong>, removed in v3.0.</p>
 </li>
 <li>
-<p>It is generally recommended to call this function at the end of the main() function.</p>
-</li>
-<li>
-<p>Code example</p>
+<p><strong>co::stop</strong>, removed in v3.0.</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-     co<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-     <span style="color:#998;font-style:italic">// user code
-</span><span style="color:#998;font-style:italic"></span>     co<span style="color:#000;font-weight:bold">::</span>exit();
-     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-}
-</code></pre></div><h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
+<h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">go</span>(Closure<span style="color:#000;font-weight:bold">*</span> cb);
 <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f);
 <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F, <span style="color:#000;font-weight:bold">typename</span> P<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, P<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
@@ -888,12 +863,6 @@ go(f);
 <li>Let the current coroutine sleep for a while, the parameter ms is time in milliseconds.</li>
 <li>This function is generally called in a coroutine, calling in a non-coroutine is equivalent to <code>sleep::ms(ms)</code>.</li>
 </ul>
-<h3 id="costop"><a class="anchor" href="#costop">#</a>co::stop</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop</span>();
-</code></pre></div><ul>
-<li>The same as <code>co::exit()</code>.</li>
-<li>Deprecated since v2.0.2, use <code>co::exit()</code> instead.</li>
-</ul>
 <h3 id="cotimeout"><a class="anchor" href="#cotimeout">#</a>co::timeout</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">timeout</span>();
 </code></pre></div><ul>
@@ -911,7 +880,6 @@ go(f);
 
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
     FLG_cout <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">true</span>; <span style="color:#998;font-style:italic">// also log to terminal
 </span><span style="color:#998;font-style:italic"></span>
     <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">32</span>; <span style="color:#000;font-weight:bold">++</span>i) go(f);
@@ -938,7 +906,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>The second function creates a TCP socket.</li>
 <li>The third function creates a UDP socket.</li>
 <li>The parameter domain is usually AF_INET or AF_INET6, the former means ipv4 and the latter means ipv6.</li>
-<li><strong>These functions return a non-blocking socket</strong>. When an error occurs, the return value is -1.</li>
+<li><strong>These functions return a non-blocking socket</strong>. When an error occurs, the return value is -1, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="coaccept"><a class="anchor" href="#coaccept">#</a>co::accept</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">sock_t <span style="color:#900;font-weight:bold">accept</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen);
@@ -946,13 +914,13 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>Receive the client connection on the specified socket, the parameter fd is a non-blocking socket, and the parameters addr and addrlen are used to receive the client&rsquo;s address information. The initial value of <code>*addrlen</code> is the length of the buffer pointed to by addr. If the user does not need the client address information, addr and addrlen should be set to NULL.</li>
 <li>This function <strong>must be called in the coroutine</strong>.</li>
 <li>This function will block until a new connection comes in or an error occurs.</li>
-<li>This function <strong>returns a non-blocking socket</strong> on success, and returns -1 when an error occurs.</li>
+<li>This function <strong>returns a non-blocking socket</strong> on success, and returns -1 when an error occurs, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="cobind"><a class="anchor" href="#cobind">#</a>co::bind</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">bind</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen);
 </code></pre></div><ul>
 <li>Bind the ip address to the socket, the parameters addr and addrlen are the address information, which is the same as the native API.</li>
-<li>This function returns 0 on success, otherwise returns -1.</li>
+<li>This function returns 0 on success, otherwise returns -1, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="coclose"><a class="anchor" href="#coclose">#</a>co::close</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">close</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
@@ -961,7 +929,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>In CO v2.0.0 or before, a socket MUST be closed in the same thread that performed the I/O operation. Since v2.0.1, a socket can be closed anywhere.</li>
 <li>When the parameter ms &gt; 0, first call <code>co::sleep(ms)</code> to suspend the current coroutine for a period of time, and then close the socket.</li>
 <li>The <strong>EINTR</strong> signal has been processed internally in this function, and the user does not need to consider it.</li>
-<li>This function returns 0 on success, otherwise it returns -1.</li>
+<li>This function returns 0 on success, otherwise it returns -1, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="coconnect"><a class="anchor" href="#coconnect">#</a>co::connect</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">connect</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -969,13 +937,13 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>Create a connection to the specified address on the specified socket, the parameter fd must be non-blocking,  the parameter ms is the timeout period in milliseconds, the default is -1, which will never time out.</li>
 <li>This function <strong>must be called in the coroutine</strong>.</li>
 <li>This function will block until the connection is completed, or timeout or an error occurs.</li>
-<li>This function returns 0 on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+<li>This function returns 0 on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="colisten"><a class="anchor" href="#colisten">#</a>co::listen</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">listen</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> backlog<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1024</span>);
 </code></pre></div><ul>
 <li>Listenning on the specified socket.</li>
-<li>This function returns 0 on success, otherwise it returns -1.</li>
+<li>This function returns 0 on success, otherwise it returns -1, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="corecv"><a class="anchor" href="#corecv">#</a>co::recv</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -984,7 +952,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>This function <strong>must be called in the coroutine</strong>.</li>
 <li>On Windows, this function only works with TCP-like stream socket.</li>
 <li>This function will block until any data comes in, or timeout or any error occurs.</li>
-<li>This function returns length of the data received (may be less than n) on success, returns 0 when the peer closes the connection, returns -1 when timeout or an error occurs, and users can call co::timeout() to check whether it has timed out.</li>
+<li>This function returns length of the data received (may be less than n) on success, returns 0 when the peer closes the connection, returns -1 when timeout or an error occurs, and users can call co::timeout() to check whether it has timed out, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="corecvn"><a class="anchor" href="#corecvn">#</a>co::recvn</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -992,7 +960,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>Receive data of the specified length on the specified socket, the parameter fd must be non-blocking, the parameter ms is the timeout period in milliseconds, the default is -1, never timeout.</li>
 <li>This function <strong>must be called in the coroutine</strong>.</li>
 <li>This function will block until all n bytes of data are received, or timeout or an error occurs.</li>
-<li>This function returns n on success, returns 0 when the peer closes the connection, and returns -1 when timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+<li>This function returns n on success, returns 0 when the peer closes the connection, and returns -1 when timeout or an error occurs. The user can call co::timeout() to check whether it has timed out, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="corecvfrom"><a class="anchor" href="#corecvfrom">#</a>co::recvfrom</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvfrom</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> src_addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -1007,7 +975,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>This function <strong>must be called in the coroutine</strong>.</li>
 <li>On Windows, this function only works with TCP-like stream socket.</li>
 <li>This function will block until all n bytes of data are sent, or timeout or an error occurs.</li>
-<li>This function returns n on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out.</li>
+<li>This function returns n on success, and returns -1 on timeout or an error occurs. The user can call co::timeout() to check whether it has timed out, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="cosendto"><a class="anchor" href="#cosendto">#</a>co::sendto</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">sendto</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> dst_addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -1021,10 +989,10 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 </code></pre></div><ul>
 <li>This function is generally used to half-close the socket. The parameter c is a hint, <code>'r'</code> for read, <code>'w'</code> for write, the default is <code>'b'</code>, which means both reading and writing are closed.</li>
 <li>It is better to call this function in the same thread that performed the I/O operation.</li>
-<li>This function returns 0 on success, otherwise it returns -1.</li>
+<li>This function returns 0 on success, otherwise it returns -1, and <code>co::error()</code>, <code>co::strerror()</code> can be called to get the error message.</li>
 </ul>
 <h3 id="coerror"><a class="anchor" href="#coerror">#</a>co::error</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">error</span>();
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&amp;</span> error();
 </code></pre></div><ul>
 <li>Return the current error code.</li>
 <li>When the socket API in CO returns -1, the user can call this function to get the error code.</li>
@@ -1035,11 +1003,6 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 </code></pre></div><ul>
 <li>Get the error string corresponding to the error code. It is thread safe.</li>
 <li>The second version gets the description information of the current error, which is equivalent to <code>strerror(co::error())</code>.</li>
-</ul>
-<h3 id="coset_error"><a class="anchor" href="#coset_error">#</a>co::set_error</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_error</span>(<span style="color:#458;font-weight:bold">int</span> err);
-</code></pre></div><ul>
-<li>Set the current error code, users generally do not need to call this function.</li>
 </ul>
 <h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
 <h3 id="cogetsockopt"><a class="anchor" href="#cogetsockopt">#</a>co::getsockopt</h3>
@@ -1744,9 +1707,9 @@ go(client_fun);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/10d4fdb40ec891b00d7a399766ad93022312ed01" title='Last modified by idealvin | October 4, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ca688933885ec1f208eeceb96b94fa030e0f7a4f" title='Last modified by idealvin | June 6, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>October 4, 2021</span>
+      <span>June 6, 2022</span>
     </a>
   </div>
 
@@ -1824,8 +1787,7 @@ go(client_fun);
         <li><a href="#basic-concepts">Basic concepts</a></li>
         <li><a href="#coroutine-api">Coroutine API</a>
           <ul>
-            <li><a href="#coinit">co::init</a></li>
-            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
             <li><a href="#coall_schedulers">co::all_schedulers</a></li>
@@ -1835,7 +1797,6 @@ go(client_fun);
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
             <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
             <li><a href="#cosleep">co::sleep</a></li>
-            <li><a href="#costop">co::stop</a></li>
             <li><a href="#cotimeout">co::timeout</a></li>
             <li><a href="#code-example">Code example</a></li>
           </ul>
@@ -1857,7 +1818,6 @@ go(client_fun);
             <li><a href="#coshutdown">co::shutdown</a></li>
             <li><a href="#coerror">co::error</a></li>
             <li><a href="#costrerror">co::strerror</a></li>
-            <li><a href="#coset_error">co::set_error</a></li>
             <li><a href="#heading">———————————</a></li>
             <li><a href="#cogetsockopt">co::getsockopt</a></li>
             <li><a href="#cosetsockopt">co::setsockopt</a></li>

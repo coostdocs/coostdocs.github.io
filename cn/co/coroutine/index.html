@@ -8,22 +8,18 @@
 co 协程库实现的是一种类似 golang 的协程，有如下特性：
  支持多线程调度，默认线程数为系统 CPU 核数。 共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。 协程创建后，始终在同一个线程中运行，而不会切换到其他线程。 各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。  co 协程库在 linux, mac, windows 等平台，分别基于 epoll, kqueue, iocp 实现。
 co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 则参考了 boost 的实现，在此表示感谢！
-#协程 API #co::init 弃用,只需要flag::init();
-#co::exit 弃用，不再需要主动调用。
-#go void go(Closure* cb); template&lt;typename F&gt; void go(F&amp;&amp; f); template&lt;typename F, typename P&gt; void go(F&amp;&amp; f, P&amp;&amp; p); template&lt;typename F, typename T, typename P&gt; void go(F&amp;&amp; f, T* t, P&amp;&amp; p);   此函数用于创建协程，与创建线程类似，需要指定一个协程函数。">
+#协程 API #v3.0 删除的 API  co::init, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 flag::init(argc, argv)。 co::exit, v3.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="协程" />
 <meta property="og:description" content="include: co/co.h.
 #基本概念  协程是运行于线程中的轻量级调度单位。 协程之于线程，类似于线程之于进程。 一个进程中可以存在多个线程，一个线程中可以存在多个协程。 协程所在的线程一般被称为调度线程。 协程发生 io 阻塞或调用 sleep 等操作时，调度线程会挂起此协程。 协程挂起时，调度线程会切换到其他等待中的协程运行。 协程的切换是在用户态进行的，比线程间的切换更快。  协程非常适合写网络程序，可以实现同步的编程方式，不需要异步回调，大大减轻了程序员的思想负担。
 co 协程库实现的是一种类似 golang 的协程，有如下特性：
  支持多线程调度，默认线程数为系统 CPU 核数。 共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。 协程创建后，始终在同一个线程中运行，而不会切换到其他线程。 各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。  co 协程库在 linux, mac, windows 等平台，分别基于 epoll, kqueue, iocp 实现。
 co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 则参考了 boost 的实现，在此表示感谢！
-#协程 API #co::init 弃用,只需要flag::init();
-#co::exit 弃用，不再需要主动调用。
-#go void go(Closure* cb); template&lt;typename F&gt; void go(F&amp;&amp; f); template&lt;typename F, typename P&gt; void go(F&amp;&amp; f, P&amp;&amp; p); template&lt;typename F, typename T, typename P&gt; void go(F&amp;&amp; f, T* t, P&amp;&amp; p);   此函数用于创建协程，与创建线程类似，需要指定一个协程函数。" />
+#协程 API #v3.0 删除的 API  co::init, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 flag::init(argc, argv)。 co::exit, v3." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-05-10T18:27:51+08:00" />
+<meta property="article:modified_time" content="2022-06-06T21:05:57+08:00" />
 
 <title>协程 | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -31,7 +27,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/coroutine/" title="Coroutine">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.4d791923cc17f3b7107e45be1714ceadd0f9cbf7f96e68abe15d23241dfe6bb6.js" integrity="sha256-TXkZI8wX87cQfkW&#43;FxTOrdD5y/f5bmir4V0jJB3&#43;a7Y=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.6a147fd96c98c8f9950149ccea69c6d09da7037cc382dc3a0194cdaae0420ae8.js" integrity="sha256-ahR/2WyYyPmVAUnM6mnG0J2nA3zDgtw6AZTNquBCCug=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -559,8 +555,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#基本概念">基本概念</a></li>
         <li><a href="#协程-api">协程 API</a>
           <ul>
-            <li><a href="#coinit">co::init</a></li>
-            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
             <li><a href="#coall_schedulers">co::all_schedulers</a></li>
@@ -570,7 +565,6 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
             <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
             <li><a href="#cosleep">co::sleep</a></li>
-            <li><a href="#costop">co::stop</a></li>
             <li><a href="#cotimeout">co::timeout</a></li>
             <li><a href="#代码示例">代码示例</a></li>
           </ul>
@@ -592,7 +586,6 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#coshutdown">co::shutdown</a></li>
             <li><a href="#coerror">co::error</a></li>
             <li><a href="#costrerror">co::strerror</a></li>
-            <li><a href="#coset_error">co::set_error</a></li>
             <li><a href="#heading">———————————</a></li>
             <li><a href="#cogetsockopt">co::getsockopt</a></li>
             <li><a href="#cosetsockopt">co::setsockopt</a></li>
@@ -741,10 +734,12 @@ https://github.com/alex-shpak/hugo-book
 <p>co 协程库在 linux, mac, windows 等平台，分别基于 <a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a>, <a href="https://man.openbsd.org/kqueue.2">kqueue</a>, <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">iocp</a> 实现。</p>
 <p>co 协程库中 context 切换相关的代码，取自 <a href="https://github.com/waruqi">ruki</a> 的 <a href="https://github.com/tboox/tbox/">tbox</a>，而 tbox 则参考了 <a href="https://www.boost.org/doc/libs/1_70_0/libs/context/doc/html/index.html">boost</a> 的实现，在此表示感谢！</p>
 <h2 id="协程-api"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b-api">#</a>协程 API</h2>
-<h3 id="coinit"><a class="anchor" href="#coinit">#</a><del>co::init</del></h3>
-<p>弃用,只需要flag::init();</p>
-<h3 id="coexit"><a class="anchor" href="#coexit">#</a><del>co::exit</del></h3>
-<p>弃用，不再需要主动调用。</p>
+<h3 id="v30-删除的-api"><a class="anchor" href="#v30-%e5%88%a0%e9%99%a4%e7%9a%84-api">#</a>v3.0 删除的 API</h3>
+<ul>
+<li><strong>co::init</strong>, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 <code>flag::init(argc, argv)</code>。</li>
+<li><strong>co::exit</strong>, v3.0 移除。</li>
+<li><strong>co::stop</strong>, v3.0 移除。</li>
+</ul>
 <h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">go</span>(Closure<span style="color:#000;font-weight:bold">*</span> cb);
 <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f);
@@ -873,8 +868,6 @@ go(f);
 <li>让当前协程睡一会儿，参数 ms 是时间，单位是毫秒。</li>
 <li>此函数一般在协程中调用，在非协程中调用相当于 <code>sleep::ms(ms)</code>。</li>
 </ul>
-<h3 id="costop"><a class="anchor" href="#costop">#</a><del>co::stop</del></h3>
-<p>已弃用，无需主动调用。</p>
 <h3 id="cotimeout"><a class="anchor" href="#cotimeout">#</a>co::timeout</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">timeout</span>();
 </code></pre></div><ul>
@@ -892,7 +885,6 @@ go(f);
 
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-   
     FLG_cout <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">true</span>; <span style="color:#998;font-style:italic">// also log to terminal
 </span><span style="color:#998;font-style:italic"></span>
     <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; <span style="color:#000;font-weight:bold">++</span>i) go(f);
@@ -919,7 +911,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>第 2 个函数创建一个 TCP socket。</li>
 <li>第 3 个函数创建一个 UDP socket。</li>
 <li>参数 domain 一般是 AF_INET 或 AF_INET6，前者表示 ipv4，后者表示 ipv6。</li>
-<li><strong>这些函数返回一个 non-blocking socket</strong>。发生错误时，返回值是 -1。</li>
+<li><strong>这些函数返回一个 non-blocking socket</strong>。发生错误时，返回值是 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="coaccept"><a class="anchor" href="#coaccept">#</a>co::accept</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">sock_t <span style="color:#900;font-weight:bold">accept</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen);
@@ -927,13 +919,13 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>在指定 socket 上接收客户端连接，参数 fd 是之前调用 listen() 监听的 non-blocking socket，参数 addr 与 addrlen 用于接收客户端的地址信息，<code>*addrlen</code> 的初始值是 addr 所指向 buffer 的长度。如果用户不需要客户端地址信息，可以将 addr 与 addrlen 设置为 NULL。</li>
 <li>此函数<strong>必须在协程中调用</strong>。</li>
 <li>此函数会阻塞，直到有新的连接进来，或者发生错误。</li>
-<li>此函数成功时<strong>返回一个 non-blocking socket</strong>，发生错误时返回 -1。</li>
+<li>此函数成功时<strong>返回一个 non-blocking socket</strong>，发生错误时返回 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="cobind"><a class="anchor" href="#cobind">#</a>co::bind</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">bind</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen);
 </code></pre></div><ul>
 <li>给 socket 绑定 ip 地址，参数 addr 与 addrlen 是地址信息，与原生 API 相同。</li>
-<li>此函数成功时返回 0，否则返回 -1。</li>
+<li>此函数成功时返回 0，否则返回 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="coclose"><a class="anchor" href="#coclose">#</a>co::close</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">close</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
@@ -942,7 +934,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>在 2.0.0 及之前的版本中，此函数必须在进行 I/O 操作的线程中调用。从 2.0.1 版本开始，此函数可以在协程或非协程中调用。</li>
 <li>参数 ms &gt; 0 时，先调用 <code>co::sleep(ms)</code> 将当前协程挂起一段时间，再关闭 socket。一般只在 server 端设置 &gt; 0 的参数，可以在一定程度上缓解非法的网络攻击。</li>
 <li>此函数内部已经处理了 <code>EINTR</code> 信号，用户无需考虑。</li>
-<li>此函数成功时返回 0，否则返回 -1。</li>
+<li>此函数成功时返回 0，否则返回 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="coconnect"><a class="anchor" href="#coconnect">#</a>co::connect</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">connect</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -950,13 +942,13 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>在指定 socket 上创建到指定地址的连接，参数 fd 必须是 non-blocking 的，参数 addr 与 addrlen 是地址信息，参数 ms 是超时时间，单位为毫秒，默认为 -1，永不超时。</li>
 <li>此函数<strong>必须在协程中调用</strong>。</li>
 <li>此函数会阻塞，直到连接完成，或者超时、发生错误。</li>
-<li>此函数成功时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 判断是否超时。</li>
+<li>此函数成功时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 判断是否超时，调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="colisten"><a class="anchor" href="#colisten">#</a>co::listen</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">listen</span>(sock_t fd, <span style="color:#458;font-weight:bold">int</span> backlog<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1024</span>);
 </code></pre></div><ul>
 <li>监听指定的 socket，参数 fd 是已经调用 bind() 绑定 ip 及端口的 socket。</li>
-<li>此函数成功时返回 0，否则返回 -1。</li>
+<li>此函数成功时返回 0，否则返回 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="corecv"><a class="anchor" href="#corecv">#</a>co::recv</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -965,7 +957,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>此函数<strong>必须在协程中调用</strong>。</li>
 <li>在 Windows 平台，此函数只适用于 TCP 等 stream 类型的 socket。</li>
 <li>此函数会阻塞，直到有数据进来，或者超时、发生错误。</li>
-<li>此函数成功时返回接收的数据长度(可能小于 n)，对端关闭连接时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 判断是否超时。</li>
+<li>此函数成功时返回接收的数据长度(可能小于 n)，对端关闭连接时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 判断是否超时，调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="corecvn"><a class="anchor" href="#corecvn">#</a>co::recvn</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvn</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -973,7 +965,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>在指定 socket 上接收指定长度的数据，参数 fd 必须是 non-blocking 的，参数 buf 是用于接收数据的 buffer，参数 n 是要接收数据的长度，参数 ms 是超时时间，单位为毫秒，默认为 -1，永不超时。</li>
 <li>此函数<strong>必须在协程中调用</strong>。</li>
 <li>此函数会阻塞，直到 n 字节的数据全部接收完，或者超时、发生错误。</li>
-<li>此函数成功时返回 n，对端关闭连接时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 检查是否超时。</li>
+<li>此函数成功时返回 n，对端关闭连接时返回 0，超时或发生错误返回 -1，用户可以调用 co::timeout() 检查是否超时，调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="corecvfrom"><a class="anchor" href="#corecvfrom">#</a>co::recvfrom</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recvfrom</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> src_addr, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -988,7 +980,7 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 <li>此函数<strong>必须在协程中调用</strong>。</li>
 <li>在 Windows 平台，此函数只适用于 TCP 等 stream 类型的 socket。</li>
 <li>此函数会阻塞，直到 n 字节的数据全部发送完，或者超时、发生错误。</li>
-<li>此函数成功时返回 n，超时或发生错误返回 -1，用户可以调用 co::timeout() 检查是否超时。</li>
+<li>此函数成功时返回 n，超时或发生错误返回 -1，用户可以调用 co::timeout() 检查是否超时，调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="cosendto"><a class="anchor" href="#cosendto">#</a>co::sendto</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">sendto</span>(sock_t fd, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> dst_addr, <span style="color:#458;font-weight:bold">int</span> addrlen, <span style="color:#458;font-weight:bold">int</span> ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
@@ -1002,10 +994,10 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 </code></pre></div><ul>
 <li>此函数一般用于半关闭 socket，参数 c 为 <code>'r'</code> 时表示关闭读，为 <code>'w'</code> 时表示关闭写，默认为 <code>'b'</code>，关闭读与写。</li>
 <li>一般建议在进行 IO 操作的线程中调用此函数。</li>
-<li>此函数成功时返回 0，否则返回 -1。</li>
+<li>此函数成功时返回 0，否则返回 -1，可以调用 <code>co::error()</code>, <code>co::strerror()</code> 获取错误信息。</li>
 </ul>
 <h3 id="coerror"><a class="anchor" href="#coerror">#</a>co::error</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">error</span>();
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&amp;</span> error();
 </code></pre></div><ul>
 <li>返回当前的错误码。</li>
 <li>CO 中的 socket API 返回 -1 时，可以调用此函数获取错误码。</li>
@@ -1016,11 +1008,6 @@ sock_t <span style="color:#900;font-weight:bold">udp_socket</span>(<span style="
 </code></pre></div><ul>
 <li>获取错误码对应的描述信息。此函数是线程安全的。</li>
 <li>第 2 个版本获取当前错误的描述信息，等价于 <code>strerror(co::error())</code>。</li>
-</ul>
-<h3 id="coset_error"><a class="anchor" href="#coset_error">#</a>co::set_error</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_error</span>(<span style="color:#458;font-weight:bold">int</span> err);
-</code></pre></div><ul>
-<li>设置当前的错误码，用户一般不需要调用此方法。</li>
 </ul>
 <h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
 <h3 id="cogetsockopt"><a class="anchor" href="#cogetsockopt">#</a>co::getsockopt</h3>
@@ -1733,9 +1720,9 @@ go(client_fun);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9a97a744eae91fca30ca7f71e9d7582261750ae7" title='最后修改者 494145471@qq.com | May 10, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ca688933885ec1f208eeceb96b94fa030e0f7a4f" title='最后修改者 idealvin | June 6, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>May 10, 2022</span>
+      <span>June 6, 2022</span>
     </a>
   </div>
 
@@ -1813,8 +1800,7 @@ go(client_fun);
         <li><a href="#基本概念">基本概念</a></li>
         <li><a href="#协程-api">协程 API</a>
           <ul>
-            <li><a href="#coinit">co::init</a></li>
-            <li><a href="#coexit">co::exit</a></li>
+            <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
             <li><a href="#coall_schedulers">co::all_schedulers</a></li>
@@ -1824,7 +1810,6 @@ go(client_fun);
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
             <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
             <li><a href="#cosleep">co::sleep</a></li>
-            <li><a href="#costop">co::stop</a></li>
             <li><a href="#cotimeout">co::timeout</a></li>
             <li><a href="#代码示例">代码示例</a></li>
           </ul>
@@ -1846,7 +1831,6 @@ go(client_fun);
             <li><a href="#coshutdown">co::shutdown</a></li>
             <li><a href="#coerror">co::error</a></li>
             <li><a href="#costrerror">co::strerror</a></li>
-            <li><a href="#coset_error">co::set_error</a></li>
             <li><a href="#heading">———————————</a></li>
             <li><a href="#cogetsockopt">co::getsockopt</a></li>
             <li><a href="#cosetsockopt">co::setsockopt</a></li>
