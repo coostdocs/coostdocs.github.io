@@ -19,7 +19,7 @@ CO 在 github 上以 MIT 许可证开源，它使用了部分三方代码，可�
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/about/co/" /><meta property="article:section" content="about" />
 
-<meta property="article:modified_time" content="2021-08-09T17:27:07+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>简介 | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -27,7 +27,7 @@ CO 在 github 上以 MIT 许可证开源，它使用了部分三方代码，可�
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/about/co/" title="Introduction">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.6a147fd96c98c8f9950149ccea69c6d09da7037cc382dc3a0194cdaae0420ae8.js" integrity="sha256-ahR/2WyYyPmVAUnM6mnG0J2nA3zDgtw6AZTNquBCCug=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.76c23ca65cfe2f3fee8d0fd6be70c433144dcf14581e2e3b17def6d3b9dda8b4.js" integrity="sha256-dsI8plz&#43;Lz/ujQ/WvnDEMxRNzxRYHi47F97207ndqLQ=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -604,7 +604,7 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake f --with_libcurl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> --with_openssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
 xmake -a
 </code></pre></div><p>xmake 会自动从网络安装 libcurl 与 openssl，视网络情况，这个过程可能会较慢。<code>xmake -a</code> 会构建 <a href="https://github.com/idealvin/co/tree/master/src">libco</a>, <a href="https://github.com/idealvin/co/tree/master/gen">gen</a>, <a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 以及 <a href="https://github.com/idealvin/co/tree/master/test">co/test</a> 下面的所有测试代码。用户可以执行下面的命令，运行 CO 中的测试程序：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest -a
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest
 xmake r flag
 xmake r log -cout
 xmake r co
@@ -616,12 +616,10 @@ DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color
 
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
-
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
-</code></pre></div><p>上面是一个简单的例子，main 函数前两行分别用于初始化 flag 与 log 库。CO 中的部分组件会用 flag 定义配置项，用 log 打印日志，因此，一般需要在 main 函数开头调用 <code>flag::init()</code> 与 <code>log::init()</code> 进行初始化。</p>
+</code></pre></div><p>上面是一个简单的例子，main 函数第一行用于解析命令行参数及配置文件。CO 中的部分组件会用 flag 定义配置项，因此，一般需要在 main 函数开头调用 <code>flag::init()</code> 进行初始化。</p>
 <p>用户也可以用宏 <code>DEF_main</code> 定义 main 函数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/all.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
@@ -631,14 +629,14 @@ DEF_main(argc, argv) {
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
-</code></pre></div><p>DEF_main 在内部已经调用了 <code>flag::init()</code> 与 <code>log::init()</code>，用户无需再次调用。另外，DEF_main 会将 main 函数中的代码放到协程中运行，与 golang 保持一致，golang 中的 main 函数也在协程中。CO 中部分协程相关的组件必须在协程中使用，用 CO 开发基于协程的应用程序时，一般建议用 DEF_main 定义 main 函数。</p>
+</code></pre></div><p>DEF_main 在内部已经调用了 <code>flag::init()</code> 用户无需再次调用。另外，DEF_main 会将 main 函数中的代码放到协程中运行，与 golang 保持一致，golang 中的 main 函数也在协程中。CO 中部分协程相关的组件必须在协程中使用，用 CO 开发基于协程的应用程序时，一般建议用 DEF_main 定义 main 函数。</p>
 <h2 id="核心组件"><a class="anchor" href="#%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6">#</a>核心组件</h2>
 <h3 id="coflag"><a class="anchor" href="#coflag">#</a>co/flag</h3>
 <p><a href="../../co/flag/">co/flag</a> 是一个简单易用的命令行参数与配置文件解析库，CO 中的一些组件会用它定义配置项。</p>
 <p>co/flag 为每个配置项提供一个默认值，在没有配置参数的情况下，程序可以按默认配置运行。用户也可以从<strong>命令行或配置文件</strong>传入配置参数，在需要配置文件时，可以执行 <code>./exe -mkconf</code> <strong>自动生成配置文件</strong>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// xx.cc
 </span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool x&#34;</span>);
 DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool y&#34;</span>);
@@ -899,18 +897,14 @@ DEF_main(argc, argv) {
 <p>CO 提供了一套协程化的 <a href="../../co/coroutine/#%e5%8d%8f%e7%a8%8b%e5%8c%96%e7%9a%84-socket-api">socket API</a>，它们大部分形式上与原生的 socket API 基本一致，熟悉 socket 编程的用户，可以轻松的用同步的方式写出高性能的网络程序。另外，CO 也实现了更高层的网络编程组件，包括 <a href="../../co/net/tcp/">TCP</a>、<a href="../../co/net/http/">HTTP</a> 以及基于 <a href="../../co/json/">JSON</a> 的 <a href="../../co/net/rpc/">RPC</a> 框架，它们兼容 IPv6，同时支持 SSL，用起来比 socket API 更方便。这里只简单的展示一下 HTTP 的用法，其余的可以查看参考文档。</p>
 <p><strong>静态 web server</strong></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/so.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// Specify the root directory of the web server
 </span><span style="color:#998;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
-
     so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span><span style="color:#998;font-style:italic"></span>
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p><strong>HTTP server</strong></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Server serv;
@@ -999,9 +993,9 @@ go(f);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/4a60e17ba65dc6c26412646734470dc1be4ac6e2" title='最后修改者 idealvin | August 9, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='最后修改者 idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 9, 2021</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 

@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/rpc.h.
 co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
-#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service void add_service(rpc::Service* s); void add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。  #Server::exit void exit();  v2.">
+#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service Server&amp; add_service(rpc::Service* s); Server&amp; add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。 从 v3.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="RPC" />
 <meta property="og:description" content="include: co/rpc.h.
 co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
-#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service void add_service(rpc::Service* s); void add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。  #Server::exit void exit();  v2." />
+#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; };  接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。  #rpc::Server #Server::Server Server();  默认构造函数，用户不需要关心。  #Server::add_service Server&amp; add_service(rpc::Service* s); Server&amp; add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s);  添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。  #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 );  启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。 从 v3." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/rpc/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>RPC | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@ co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格�
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/rpc/" title="RPC">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.6a147fd96c98c8f9950149ccea69c6d09da7037cc382dc3a0194cdaae0420ae8.js" integrity="sha256-ahR/2WyYyPmVAUnM6mnG0J2nA3zDgtw6AZTNquBCCug=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.76c23ca65cfe2f3fee8d0fd6be70c433144dcf14581e2e3b17def6d3b9dda8b4.js" integrity="sha256-dsI8plz&#43;Lz/ujQ/WvnDEMxRNzxRYHi47F97207ndqLQ=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -629,8 +629,8 @@ https://github.com/alex-shpak/hugo-book
 <li>默认构造函数，用户不需要关心。</li>
 </ul>
 <h3 id="serveradd_service"><a class="anchor" href="#serveradd_service">#</a>Server::add_service</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_service</span>(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_service</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
+Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
 </code></pre></div><ul>
 <li>添加 service，参数 s 必须是用 operator new 动态创建的。</li>
 <li>用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。</li>
@@ -646,13 +646,14 @@ https://github.com/alex-shpak/hugo-book
 <li>参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。</li>
 <li>参数 url 是 HTTP 服务的 url，必须以 <code>/</code> 开头。</li>
 <li>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</li>
+<li>从 v3.0 开始，server 启动后就不再依赖于 <code>rpc::Server</code> 对象。</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
 </code></pre></div><ul>
 <li>v2.0.3 新增。</li>
 <li>退出 RPC server，关闭 listening socket，不再接收新的连接。</li>
-<li>此方法不会关闭之前已经建立的连接。</li>
+<li>从 v3.0 开始，RPC server 退出后，之前已经建立的连接将在未来被重置。</li>
 </ul>
 <h2 id="rpc-server-示例"><a class="anchor" href="#rpc-server-%e7%a4%ba%e4%be%8b">#</a>RPC server 示例</h2>
 <h3 id="定义-proto-文件"><a class="anchor" href="#%e5%ae%9a%e4%b9%89-proto-%e6%96%87%e4%bb%b6">#</a>定义 proto 文件</h3>
@@ -959,9 +960,9 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style=
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='最后修改者 idealvin | June 1, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='最后修改者 idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 1, 2022</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 

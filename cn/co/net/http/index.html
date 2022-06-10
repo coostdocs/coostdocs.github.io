@@ -13,7 +13,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/http/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>HTTP | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/http/" title="HTTP">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.6a147fd96c98c8f9950149ccea69c6d09da7037cc382dc3a0194cdaae0420ae8.js" integrity="sha256-ahR/2WyYyPmVAUnM6mnG0J2nA3zDgtw6AZTNquBCCug=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.76c23ca65cfe2f3fee8d0fd6be70c433144dcf14581e2e3b17def6d3b9dda8b4.js" integrity="sha256-dsI8plz&#43;Lz/ujQ/WvnDEMxRNzxRYHi47F97207ndqLQ=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -873,11 +873,14 @@ go(f);
 <li>默认构造函数，用户无需关心。</li>
 </ul>
 <h3 id="serveron_req"><a class="anchor" href="#serveron_req">#</a>Server::on_req</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_req</span>(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
-<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#458;font-weight:bold">void</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
+Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f)
+
+<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
 </code></pre></div><ul>
 <li>设置处理客户端 HTTP 请求的 callback。</li>
-<li>第 2 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</li>
+<li>第 3 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</li>
 <li>服务端接收到 HTTP 请求时，会调用此方法设置的 callback，处理该请求。</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
@@ -886,13 +889,14 @@ go(f);
 </code></pre></div><ul>
 <li>启动 HTTP server，此方法不会阻塞当前线程。</li>
 <li>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</li>
+<li>从 v3.0 开始，server 启动后就不再依赖于 <code>http::Server</code> 对象。</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
 </code></pre></div><ul>
 <li>v2.0.3 新增。</li>
 <li>退出 HTTP server，关闭 listening socket，不再接收新的连接。</li>
-<li>此方法不会关闭之前已经建立的连接。</li>
+<li>从 v3.0 开始，HTTP server 退出后，之前已经建立的连接将在未来被重置。</li>
 </ul>
 <h3 id="代码示例-1"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1">#</a>代码示例</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Server s;
@@ -948,10 +952,8 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
 </span><span style="color:#998;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-
     so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span><span style="color:#998;font-style:italic"></span>
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
 <p>co/http 使用 <a href="../../flag/">co/flag</a> 定义配置项，下面列出的是 co/http 内部定义的 flag。</p>
@@ -1053,9 +1055,9 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='最后修改者 idealvin | June 1, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='最后修改者 idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 1, 2022</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 

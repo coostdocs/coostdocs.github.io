@@ -13,7 +13,7 @@ co/rpc is a high-performance RPC framework similar to grpc, it uses JSON as the 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/net/rpc/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>RPC | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@ co/rpc is a high-performance RPC framework similar to grpc, it uses JSON as the 
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/net/rpc/" title="RPC">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.8eb94eee8858a2b3bd574853da15048734194c1e10816191e59c515ae9817ed5.js" integrity="sha256-jrlO7ohYorO9V0hT2hUEhzQZTB4QgWGR5ZxRWumBftU=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.65656a62af971388f8ce6610e04cd0f69373e085d31a6b4778ec4c414c5341f5.js" integrity="sha256-ZWVqYq&#43;XE4j4zmYQ4EzQ9pNz4IXTGmtHeOxMQUxTQfU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -629,8 +629,8 @@ https://github.com/alex-shpak/hugo-book
 <li>The default constructor, users do not need to care.</li>
 </ul>
 <h3 id="serveradd_service"><a class="anchor" href="#serveradd_service">#</a>Server::add_service</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_service</span>(Service<span style="color:#000;font-weight:bold">*</span> s);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_service</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
+Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
 </code></pre></div><ul>
 <li>Add a service, the parameter s must be dynamically created with operator new.</li>
 <li>Users can call this method multiple times to add multiple services, and <strong>different services must have different names</strong>.</li>
@@ -646,13 +646,14 @@ https://github.com/alex-shpak/hugo-book
 <li>The parameter ip is the server ip, which can be an IPv4 or IPv6 address, and the parameter port is the server port.</li>
 <li>The parameter url is the url of the HTTP service, and must start with <code>/</code>.</li>
 <li>The parameter <strong>key</strong> is path of a <strong>PEM</strong>file which stores the SSL private key, and the parameter <strong>ca</strong> is path of a PEM file which stores the SSL certificate. They are NULL by default, and SSL is disabled.</li>
+<li>Starting from v3.0, the server no longer depends on the <code>rpc::Server</code> object after startup.</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
 </code></pre></div><ul>
 <li>Added since v2.0.2.</li>
 <li>Exit the RPC server, close the listening socket, and no longer receive new connections.</li>
-<li>This method will not close the connections that has been established before.</li>
+<li>Since v3.0, after the RPC server exits, previously established connections will be reset in the future.</li>
 </ul>
 <h2 id="rpc-server-example"><a class="anchor" href="#rpc-server-example">#</a>RPC server example</h2>
 <h3 id="define-a-proto-file"><a class="anchor" href="#define-a-proto-file">#</a>Define a proto file</h3>
@@ -957,9 +958,9 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style=
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='Last modified by idealvin | June 1, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='Last modified by idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 1, 2022</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 

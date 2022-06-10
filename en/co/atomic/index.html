@@ -6,16 +6,16 @@
 <meta name="description" content="include: co/atomic.h.
 #Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
 enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
-#APIs removed since v3.0  atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead.  #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(T* p, memory_order_t mo = mo_seq_cst);   This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.">
+#APIs removed since v3.0  atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead.  #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst);   This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Atomic Operations" />
 <meta property="og:description" content="include: co/atomic.h.
 #Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
 enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
-#APIs removed since v3.0  atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead.  #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(T* p, memory_order_t mo = mo_seq_cst);   This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes." />
+#APIs removed since v3.0  atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead.  #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst);   This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/atomic/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-05-31T20:54:04+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>Atomic Operations | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -23,7 +23,7 @@ enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/atomic/" title="原子操作">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.8eb94eee8858a2b3bd574853da15048734194c1e10816191e59c515ae9817ed5.js" integrity="sha256-jrlO7ohYorO9V0hT2hUEhzQZTB4QgWGR5ZxRWumBftU=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.65656a62af971388f8ce6610e04cd0f69373e085d31a6b4778ec4c414c5341f5.js" integrity="sha256-ZWVqYq&#43;XE4j4zmYQ4EzQ9pNz4IXTGmtHeOxMQUxTQfU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -620,7 +620,7 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="load--store"><a class="anchor" href="#load--store">#</a>load &amp; store</h2>
 <h3 id="atomic_load"><a class="anchor" href="#atomic_load">#</a>atomic_load</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
-<span style="color:#000;font-weight:bold">inline</span> T atomic_load(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+<span style="color:#000;font-weight:bold">inline</span> T atomic_load(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
 </code></pre></div><ul>
 <li>
 <p>This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.</p>
@@ -1005,9 +1005,9 @@ uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9cd068238b5e1fd16643d58065cfb29e792e2fbe" title='Last modified by idealvin | May 31, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='Last modified by idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>May 31, 2022</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 

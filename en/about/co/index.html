@@ -11,7 +11,7 @@ CO is an open source project on github under the MIT license. It contains code f
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/about/co/" /><meta property="article:section" content="about" />
 
-<meta property="article:modified_time" content="2021-08-09T17:31:09+08:00" />
+<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
 <title>Introduction | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -19,7 +19,7 @@ CO is an open source project on github under the MIT license. It contains code f
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/about/co/" title="简介">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.8eb94eee8858a2b3bd574853da15048734194c1e10816191e59c515ae9817ed5.js" integrity="sha256-jrlO7ohYorO9V0hT2hUEhzQZTB4QgWGR5ZxRWumBftU=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.65656a62af971388f8ce6610e04cd0f69373e085d31a6b4778ec4c414c5341f5.js" integrity="sha256-ZWVqYq&#43;XE4j4zmYQ4EzQ9pNz4IXTGmtHeOxMQUxTQfU=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -596,7 +596,7 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake f --with_libcurl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> --with_openssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
 xmake -a
 </code></pre></div><p>Xmake will automatically install libcurl and openssl from the network. Depending on the network, this process may be slow. <code>xmake -a</code> will build <a href="https://github.com/idealvin/co/tree/master/src">libco</a>, <a href="https://github.com/idealvin/co/tree/master/gen">gen</a>, <a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> and <a href="https://github.com/idealvin/co/tree/master/test">co/test</a>. Users can run test programs in CO with the following commands:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest -a
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake r unitest
 xmake r flag
 xmake r log -cout
 xmake r co
@@ -608,12 +608,10 @@ DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color
 
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
-
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
-</code></pre></div><p>The above is a simple example. The first two lines of the main function are used to initialize the flag and log libraries. Some components in CO use co/flag to define config items and use co/log to print logs. Therefore, it is generally necessary to call <code>flag::init()</code> and <code>log::init()</code> at the beginning of the main function for initialization.</p>
+</code></pre></div><p>The above is a simple example. The first line of the main function is used to parse the command-line flags and the config file. Some components in CO use co/flag to define config items. Therefore, it is generally necessary to call <code>flag::init()</code> at the beginning of the main function for initialization.</p>
 <p>Users can also use the macro <code>DEF_main</code> to define the main function:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/all.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
@@ -623,14 +621,14 @@ DEF_main(argc, argv) {
     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
-</code></pre></div><p>DEF_main has already called <code>flag::init()</code> and <code>log::init()</code> internally, and users do not need to call them again. In addition, DEF_main makes code in the main function also run in coroutine, which is consistent with golang. Some coroutine-related components in CO must be used in coroutine. When CO is used to develop coroutine-based applications, it is recommended to define the main function with DEF_main.</p>
+</code></pre></div><p>DEF_main has already called <code>flag::init()</code> internally, and users do not need to call it again. In addition, DEF_main makes code in the main function also run in coroutine, which is consistent with golang. Some coroutine-related components in CO must be used in coroutine. When CO is used to develop coroutine-based applications, it is recommended to define the main function with DEF_main.</p>
 <h2 id="core-features"><a class="anchor" href="#core-features">#</a>Core features</h2>
 <h3 id="coflag"><a class="anchor" href="#coflag">#</a>co/flag</h3>
 <p><a href="../../co/flag/">co/flag</a> is a simple and easy-to-use command line and config file parsing library. Some components in CO use it to define config items.</p>
 <p>co/flag provides a default value for each config item. Without config parameters, the program can run with the default config. Users can also pass in config parameters from <strong>command line or config file</strong>. When a config file is needed, users can run <code>./exe -mkconf</code> to <strong>generate a config file</strong>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// xx.cc
 </span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool x&#34;</span>);
 DEF_bool(y, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;bool y&#34;</span>);
@@ -891,18 +889,14 @@ DEF_main(argc, argv) {
 <p>CO provides a set of coroutineized <a href="../../co/coroutine/#coroutineized-socket-api">socket APIs</a>, most of them are consistent with the native socket APIs in form. In addition, CO has also implemented higher-level network programming components, including <a href="../../co/net/tcp/">TCP</a>, <a href="../../co/net/http/">HTTP</a> and <a href="../../co/net/rpc/">RPC</a> framework based on <a href="../../co/json/">JSON</a>, they are IPv6-compatible and support SSL at the same time, which is more convenient than socket APIs. Here is just a brief demonstration of the usage of HTTP, and the rest can be viewed in the documents.</p>
 <p><strong>Static web server</strong></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/so.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// Specify the root directory of the web server
 </span><span style="color:#998;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    log<span style="color:#000;font-weight:bold">::</span>init();
-
     so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span><span style="color:#998;font-style:italic"></span>
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p><strong>HTTP server</strong></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Server serv;
@@ -991,9 +985,9 @@ go(f);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/578cf219521454e11b51410c259734ff609cafde" title='Last modified by idealvin | August 9, 2021' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='Last modified by idealvin | June 10, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 9, 2021</span>
+      <span>June 10, 2022</span>
     </a>
   </div>
 
