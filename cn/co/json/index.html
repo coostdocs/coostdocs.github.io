@@ -21,7 +21,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/json/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-12T00:04:14+08:00" />
+<meta property="article:modified_time" content="2022-06-13T13:21:23+08:00" />
 
 <title>JSON | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -29,7 +29,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/json/" title="JSON">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.09eea2b09764b35fa9b84df972fd322b47087e0687dc6cb86675a295d0433528.js" integrity="sha256-Ce6isJdks1&#43;puE35cv0yK0cIfgaH3Gy4ZnWildBDNSg=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.6458c9630eb21680454d65123cd283cfd9e01125fc724c217edcf04a56fc0fe6.js" integrity="sha256-ZFjJYw6yFoBFTWUSPNKDz9ngESX8ckwhftzwSlb8D&#43;Y=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -575,6 +575,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#jsonas_int">Json::as_int</a></li>
             <li><a href="#jsonas_double">Json::as_double</a></li>
             <li><a href="#jsonas_string">Json::as_string</a></li>
+            <li><a href="#jsonas_c_str">Json::as_c_str</a></li>
             <li><a href="#jsonget">Json::get</a></li>
             <li><a href="#jsonset">Json::set</a></li>
             <li><a href="#代码示例">代码示例</a></li>
@@ -786,25 +787,38 @@ y <span style="color:#000;font-weight:bold">=</span> x;       <span style="color
 <h3 id="jsonas_bool"><a class="anchor" href="#jsonas_bool">#</a>Json::as_bool</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">as_bool</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取 bool 类型的值，若调用此方法的 Json 对象不是 bool 类型，返回值为 false。</li>
+<li>获取 bool 类型的值。</li>
+<li>对于 int 或 double 类型，若值为 0，返回 false，否则返回 true。</li>
+<li>对于 string 类型，若值为 <code>&quot;true&quot;</code> 或 <code>&quot;1&quot;</code>，返回 true，否则返回 false。</li>
+<li>对于其他非 bool 类型，返回 false。</li>
 </ul>
 <h3 id="jsonas_int"><a class="anchor" href="#jsonas_int">#</a>Json::as_int</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">as_int</span>() <span style="color:#000;font-weight:bold">const</span>;
 int32 <span style="color:#900;font-weight:bold">as_int32</span>() <span style="color:#000;font-weight:bold">const</span>;
 int64 <span style="color:#900;font-weight:bold">as_int64</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取整数类型的值，若调用这些方法的 Json 对象不是整数类型，返回值为 0。</li>
+<li>获取整数类型的值。</li>
+<li>对于 bool, double 或 string 类型，结果自动转换为整数类型。</li>
+<li>对于其他非整数类型，返回 0。</li>
 </ul>
 <h3 id="jsonas_double"><a class="anchor" href="#jsonas_double">#</a>Json::as_double</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">as_double</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取 double 类型的值，若调用此方法的 Json 对象不是 double 类型，返回值是 0。</li>
+<li>获取 double 类型的值。</li>
+<li>对于 bool, int 或 string 类型，结果自动转换为 double 类型。</li>
+<li>对于其他非 double 类型，返回 0。</li>
 </ul>
 <h3 id="jsonas_string"><a class="anchor" href="#jsonas_string">#</a>Json::as_string</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">as_string</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastring <span style="color:#900;font-weight:bold">as_string</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
-<li>获取字符串类型的值，若调用此方法的 Json 对象不是字符串类型，返回值是空字符串。</li>
-<li>此方法返回 <code>'\0'</code> 结尾的 C 字符串，用户还可以调用 <code>string_size()</code> 方法获取字符串的长度。</li>
+<li>获取字符串类型的值，返回 fastring。</li>
+<li>对于非 string 类型，此方法等价于 <a href="#jsonstr">Json::str()</a>，结果将自动转换为 string 类型。</li>
+</ul>
+<h3 id="jsonas_c_str"><a class="anchor" href="#jsonas_c_str">#</a>Json::as_c_str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">as_c_str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</code></pre></div><ul>
+<li>返回 <code>\0</code> 结尾的 C 风格字符串，可以用 <a href="#jsonstring_size">string_size()</a> 获取其长度，一般用于对性能要求较高的地方。</li>
+<li>对于非 string 类型，返回空字符串。</li>
 </ul>
 <h3 id="jsonget"><a class="anchor" href="#jsonget">#</a>Json::get</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#099">1.</span> Json<span style="color:#000;font-weight:bold">&amp;</span> get(uint32 i) <span style="color:#000;font-weight:bold">const</span>;
@@ -836,12 +850,13 @@ int64 <span style="color:#900;font-weight:bold">as_int64</span>() <span style="c
     { <span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">7</span> },
     { <span style="color:#d14">&#34;b&#34;</span>, <span style="color:#0086b3">false</span> },
     { <span style="color:#d14">&#34;c&#34;</span>, { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span> } },
-    { <span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span> },
+    { <span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;23&#34;</span> },
 };
 
 r.get(<span style="color:#d14">&#34;a&#34;</span>).as_int();    <span style="color:#998;font-style:italic">// 7
 </span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;b&#34;</span>).as_bool();   <span style="color:#998;font-style:italic">// false
-</span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;s&#34;</span>).as_string(); <span style="color:#998;font-style:italic">// &#34;xx&#34;
+</span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;s&#34;</span>).as_string(); <span style="color:#998;font-style:italic">// &#34;23&#34;
+</span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;s&#34;</span>).as_int();    <span style="color:#998;font-style:italic">// 23
 </span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;c&#34;</span>, <span style="color:#099">0</span>).as_int(); <span style="color:#998;font-style:italic">// 1
 </span><span style="color:#998;font-style:italic"></span>r.get(<span style="color:#d14">&#34;c&#34;</span>, <span style="color:#099">1</span>).as_int(); <span style="color:#998;font-style:italic">// 2
 </span><span style="color:#998;font-style:italic"></span>
@@ -1108,8 +1123,7 @@ Json v <span style="color:#000;font-weight:bold">=</span> json<span style="color
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>返回指向 Json 对象的 beginning iterator。</li>
-<li>调用此方法的 Json 对象必须是 array, object 或 null。</li>
-<li>当 Json 对象为空时，此方法返回值等于 <code>Json::end()</code>。</li>
+<li>若调用此方法的 Json 对象不是 array 或 object 类型，返回值等于 <a href="#jsonend">Json::end()</a>。</li>
 </ul>
 <h3 id="jsonend"><a class="anchor" href="#jsonend">#</a>Json::end</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> iterator<span style="color:#000;font-weight:bold">::</span>End<span style="color:#000;font-weight:bold">&amp;</span> end() <span style="color:#000;font-weight:bold">const</span>;
@@ -1184,11 +1198,10 @@ r.add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d1
     {<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>},
     {<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;hello world&#34;</span>},
 };
-</code></pre></div><p>object 类型内部实际上是以数组的形式存储的，<code>operator[]</code> 会与数组中的 key 一一比较，可能较慢。在特别注重性能的场合，建议将 operator[] 的结果缓存起来，不要对同一个 key 多次调用 operator[] 操作。</p>
+</code></pre></div><p>对于只读操作，建议用 <a href="#jsonget">get()</a> 取代 <code>operator[]</code>，前者无副作用。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json r <span style="color:#000;font-weight:bold">=</span> {{<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">1</span>}};
-Json<span style="color:#000;font-weight:bold">&amp;</span> a <span style="color:#000;font-weight:bold">=</span> r[<span style="color:#d14">&#34;a&#34;</span>];
-<span style="color:#000;font-weight:bold">if</span> (a.is_int()) LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> a.get_int();
-</code></pre></div></article>
+r.get(<span style="color:#d14">&#34;a&#34;</span>).as_int(); <span style="color:#998;font-style:italic">// 1
+</span></code></pre></div></article>
  
       
 
@@ -1240,9 +1253,9 @@ Json<span style="color:#000;font-weight:bold">&amp;</span> a <span style="color:
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/371bc0334889d9874007a48484d9613756143fd3" title='最后修改者 idealvin | June 12, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/e0b632bcaced4e2d73cd918c523c59f70191bc70" title='最后修改者 idealvin | June 13, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 12, 2022</span>
+      <span>June 13, 2022</span>
     </a>
   </div>
 
@@ -1338,6 +1351,7 @@ Json<span style="color:#000;font-weight:bold">&amp;</span> a <span style="color:
             <li><a href="#jsonas_int">Json::as_int</a></li>
             <li><a href="#jsonas_double">Json::as_double</a></li>
             <li><a href="#jsonas_string">Json::as_string</a></li>
+            <li><a href="#jsonas_c_str">Json::as_c_str</a></li>
             <li><a href="#jsonget">Json::get</a></li>
             <li><a href="#jsonset">Json::set</a></li>
             <li><a href="#代码示例">代码示例</a></li>
