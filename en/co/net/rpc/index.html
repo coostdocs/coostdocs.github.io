@@ -13,7 +13,7 @@ co/rpc is a high-performance RPC framework similar to grpc, it uses JSON as the 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/net/rpc/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
+<meta property="article:modified_time" content="2022-06-20T00:09:09+08:00" />
 
 <title>RPC | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@ co/rpc is a high-performance RPC framework similar to grpc, it uses JSON as the 
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/net/rpc/" title="RPC">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.786133c88f8184da4a3a9b2e6332f7b62b886a3baccaf2807b2e7fa752d77dd9.js" integrity="sha256-eGEzyI&#43;BhNpKOpsuYzL3tiuIajusyvKAey5/p1LXfdk=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.25df99a28e4ccd3d0d5d8cc94c1f0880f0fdd9ec56b2f3dc30ec8c708d3d8a1f.js" integrity="sha256-Jd&#43;Zoo5MzT0NXYzJTB8IgPD92exWsvPcMOyMcI09ih8=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -753,17 +753,13 @@ gen *.proto              <span style="color:#998;font-style:italic"># Batch gene
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
     flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
 
-    rpc<span style="color:#000;font-weight:bold">::</span>Server s;
-    s.add_service(<span style="color:#000;font-weight:bold">new</span> xx<span style="color:#000;font-weight:bold">::</span>HelloWorldImpl);
+    rpc<span style="color:#000;font-weight:bold">::</span>Server()
+        .add_service(<span style="color:#000;font-weight:bold">new</span> xx<span style="color:#000;font-weight:bold">::</span>HelloWorldImpl)
+        .start(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;/xx&#34;</span>);
 
-    <span style="color:#998;font-style:italic">// without ssl
-</span><span style="color:#998;font-style:italic"></span>    s.start(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;/xx&#34;</span>);
-
-    <span style="color:#998;font-style:italic">// with ssl
-</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//s.start(&#34;127.0.0.1&#34;, 7788, &#34;/xx&#34;, &#34;privkey.pem&#34;, &#34;certificate.pem&#34;);
-</span><span style="color:#998;font-style:italic"></span>
     <span style="color:#000;font-weight:bold">for</span> (;;) sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">80000</span>);
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
 }
 </code></pre></div><ul>
 <li>Before starting the server, we must call add_service() to add the service.</li>
@@ -958,9 +954,9 @@ proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style=
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='Last modified by idealvin | June 10, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/e83601042d880b32791ad00dd93e7d93596082e7" title='Last modified by idealvin | June 20, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 10, 2022</span>
+      <span>June 20, 2022</span>
     </a>
   </div>
 

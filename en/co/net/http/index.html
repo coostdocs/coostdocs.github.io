@@ -13,7 +13,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/net/http/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
+<meta property="article:modified_time" content="2022-06-20T00:07:56+08:00" />
 
 <title>HTTP | Documents for CO</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/net/http/" title="HTTP">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.786133c88f8184da4a3a9b2e6332f7b62b886a3baccaf2807b2e7fa752d77dd9.js" integrity="sha256-eGEzyI&#43;BhNpKOpsuYzL3tiuIajusyvKAey5/p1LXfdk=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.25df99a28e4ccd3d0d5d8cc94c1f0880f0fdd9ec56b2f3dc30ec8c708d3d8a1f.js" integrity="sha256-Jd&#43;Zoo5MzT0NXYzJTB8IgPD92exWsvPcMOyMcI09ih8=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -895,28 +895,26 @@ Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style=
 <li>Since v3.0, after the HTTP server exits, previously established connections will be reset in the future.</li>
 </ul>
 <h3 id="example-1"><a class="anchor" href="#example-1">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Server s
-
-s.on_req(
-    [](<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
-        <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
-            <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
-                res.set_status(<span style="color:#099">200</span>);
-                res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
-            } <span style="color:#000;font-weight:bold">else</span> {
-                res.set_status(<span style="color:#099">404</span>);
-            }
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">cb</span>(<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
+    <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
+        <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
+            res.set_status(<span style="color:#099">200</span>);
+            res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
         } <span style="color:#000;font-weight:bold">else</span> {
-            res.set_status(<span style="color:#099">405</span>);
+            res.set_status(<span style="color:#099">404</span>);
         }
-    }
+    } <span style="color:#000;font-weight:bold">else</span> {
+        res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
+</span><span style="color:#998;font-style:italic"></span>    }
+}
+
+<span style="color:#998;font-style:italic">// http
+</span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);
+
+<span style="color:#998;font-style:italic">// https
+</span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(
+    <span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>
 );
-
-<span style="color:#998;font-style:italic">// start as a http server
-</span><span style="color:#998;font-style:italic"></span>s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7777</span>);
-
-<span style="color:#998;font-style:italic">// start as a https server
-</span><span style="color:#998;font-style:italic"></span>s.start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">7777</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>);
 </code></pre></div><p>There is a simple http::Server demo in co/test, the user can build and run it like this:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">xmake -b http_serv
 xmake r http_serv
@@ -1054,9 +1052,9 @@ DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/3c0a73aa09b5a887a0bd3af3340f10fb6199ba91" title='Last modified by idealvin | June 10, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/79759df7f87b829bd018d57e8d6a25de9363b0bc" title='Last modified by idealvin | June 20, 2022' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 10, 2022</span>
+      <span>June 20, 2022</span>
     </a>
   </div>
 
