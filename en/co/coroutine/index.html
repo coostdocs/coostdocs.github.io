@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-06T21:05:57+08:00" />
+<meta property="article:modified_time" content="2022-06-19T22:21:45+08:00" />
 
 <title>Coroutine | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/coroutine/" title="协程">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.2b79474094367723f9d391e5d6e41668457fe4ab60052caa762e0a5f28016a92.js" integrity="sha256-K3lHQJQ2dyP505Hl1uQWaEV/5KtgBSyqdi4KXygBapI=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.786133c88f8184da4a3a9b2e6332f7b62b886a3baccaf2807b2e7fa752d77dd9.js" integrity="sha256-eGEzyI&#43;BhNpKOpsuYzL3tiuIajusyvKAey5/p1LXfdk=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -550,8 +550,8 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
-            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
             <li><a href="#coscheduler_num">co::scheduler_num</a></li>
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
@@ -734,6 +734,9 @@ https://github.com/alex-shpak/hugo-book
 <li>
 <p><strong>co::stop</strong>, removed in v3.0.</p>
 </li>
+<li>
+<p><strong>co::all_schedulers</strong>, renamed to <a href="#coschedulers">co::schedulers</a> in v3.0.</p>
+</li>
 </ul>
 <h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">go</span>(Closure<span style="color:#000;font-weight:bold">*</span> cb);
@@ -794,16 +797,16 @@ go(<span style="color:#000;font-weight:bold">&amp;</span>x); <span style="color:
      });
      co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
 }
-</code></pre></div><h3 id="coall_schedulers"><a class="anchor" href="#coall_schedulers">#</a>co::all_schedulers</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Scheduler<span style="color:#000;font-weight:bold">*&gt;&amp;</span> all_schedulers();
-</code></pre></div><ul>
-<li>Return a reference to the Scheduler list, one Scheduler corresponds to one scheduling thread.</li>
-</ul>
-<h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
+</code></pre></div><h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">scheduler</span>();
 </code></pre></div><ul>
 <li>Return the scheduler pointer of the current thread. If the current thread is not a scheduling thread, the return value is NULL.</li>
 <li>This function is generally called in a coroutine to get the scheduler where it runs in.</li>
+</ul>
+<h3 id="coschedulers"><a class="anchor" href="#coschedulers">#</a>co::schedulers</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Scheduler<span style="color:#000;font-weight:bold">*&gt;&amp;</span> schedulers();
+</code></pre></div><ul>
+<li>Return a reference to the Scheduler list, one Scheduler corresponds to one scheduling thread.</li>
 </ul>
 <h3 id="conext_scheduler"><a class="anchor" href="#conext_scheduler">#</a>co::next_scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">next_scheduler</span>();
@@ -832,7 +835,7 @@ s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>scheduler_num());
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>scheduler_num());
 
 <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
     <span style="color:#998;font-style:italic">// get object for the current scheduler
@@ -1707,9 +1710,9 @@ go(client_fun);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ca688933885ec1f208eeceb96b94fa030e0f7a4f" title='Last modified by idealvin | June 6, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/336e5df335ac33a6525561409b11c74ae7b566d1" title='Last modified by idealvin | June 19, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 6, 2022</span>
+      <span>June 19, 2022</span>
     </a>
   </div>
 
@@ -1790,8 +1793,8 @@ go(client_fun);
             <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
-            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
             <li><a href="#coscheduler_num">co::scheduler_num</a></li>
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>

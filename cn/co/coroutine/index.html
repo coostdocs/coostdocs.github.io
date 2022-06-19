@@ -19,7 +19,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-06T21:05:57+08:00" />
+<meta property="article:modified_time" content="2022-06-19T22:21:45+08:00" />
 
 <title>协程 | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -27,7 +27,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/coroutine/" title="Coroutine">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.7cbe342287e6ec2eac09b589547b84eb029de42f9f1a6614140a6217da91c47a.js" integrity="sha256-fL40Iofm7C6sCbWJVHuE6wKd5C&#43;fGmYUFApiF9qRxHo=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.06ca2b7a349b8d1d4dd62bcf93371b87c43b95dad02b7bfc89efb98cd69ea3fb.js" integrity="sha256-BsorejSbjR1N1ivPkzcbh8Q7ldrQK3v8ie&#43;5jNaeo/s=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -558,8 +558,8 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
-            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
             <li><a href="#coscheduler_num">co::scheduler_num</a></li>
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
@@ -739,6 +739,7 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>co::init</strong>, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 <code>flag::init(argc, argv)</code>。</li>
 <li><strong>co::exit</strong>, v3.0 移除。</li>
 <li><strong>co::stop</strong>, v3.0 移除。</li>
+<li><strong>co::all_schedulers</strong>, v3.0 重命名为 <a href="#coschedulers">co::schedulers</a>。</li>
 </ul>
 <h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">go</span>(Closure<span style="color:#000;font-weight:bold">*</span> cb);
@@ -799,16 +800,16 @@ go(<span style="color:#000;font-weight:bold">&amp;</span>x); <span style="color:
     });
     co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
 }
-</code></pre></div><h3 id="coall_schedulers"><a class="anchor" href="#coall_schedulers">#</a>co::all_schedulers</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Scheduler<span style="color:#000;font-weight:bold">*&gt;&amp;</span> all_schedulers();
-</code></pre></div><ul>
-<li>返回 Scheduler 列表的引用，一个 Scheduler 对应一个调度线程。</li>
-</ul>
-<h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
+</code></pre></div><h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">scheduler</span>();
 </code></pre></div><ul>
 <li>返回当前线程的 scheduler 指针，如果当前线程不是调度线程，返回值是 NULL。</li>
 <li>此函数一般在协程中调用，用于获取当前协程所在的 scheduler。</li>
+</ul>
+<h3 id="coschedulers"><a class="anchor" href="#coschedulers">#</a>co::schedulers</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Scheduler<span style="color:#000;font-weight:bold">*&gt;&amp;</span> schedulers();
+</code></pre></div><ul>
+<li>返回 Scheduler 列表的引用，一个 Scheduler 对应一个调度线程。</li>
 </ul>
 <h3 id="conext_scheduler"><a class="anchor" href="#conext_scheduler">#</a>co::next_scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">next_scheduler</span>();
@@ -837,7 +838,7 @@ s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">std<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>scheduler_num());
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>scheduler_num());
 
 <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
     <span style="color:#998;font-style:italic">// get object for the current scheduler
@@ -1720,9 +1721,9 @@ go(client_fun);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/ca688933885ec1f208eeceb96b94fa030e0f7a4f" title='最后修改者 idealvin | June 6, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/336e5df335ac33a6525561409b11c74ae7b566d1" title='最后修改者 idealvin | June 19, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 6, 2022</span>
+      <span>June 19, 2022</span>
     </a>
   </div>
 
@@ -1803,8 +1804,8 @@ go(client_fun);
             <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
-            <li><a href="#coall_schedulers">co::all_schedulers</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
+            <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
             <li><a href="#coscheduler_num">co::scheduler_num</a></li>
             <li><a href="#coscheduler_id">co::scheduler_id</a></li>
