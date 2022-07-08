@@ -21,7 +21,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/cn/co/json/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-19T10:41:31+08:00" />
+<meta property="article:modified_time" content="2022-07-08T21:07:09+08:00" />
 
 <title>JSON | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -29,7 +29,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
   <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/json/" title="JSON">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.a30ac2919a830f73c673141b418109adc55280455206882df0786a4d74812b1d.js" integrity="sha256-owrCkZqDD3PGcxQbQYEJrcVSgEVSBogt8HhqTXSBKx0=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.6671e90c2218ef8f42941384fba7f98c121f52b53923cf7aee44604941ec976e.js" integrity="sha256-ZnHpDCIY749ClBOE&#43;6f5jBIfUrU5I8967kRgSUHsl24=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -1064,26 +1064,27 @@ r.size();      <span style="color:#998;font-style:italic">// 3
 </ul>
 <h3 id="heading-5"><a class="anchor" href="#heading-5">#</a>———————————</h3>
 <h3 id="jsonstr"><a class="anchor" href="#jsonstr">#</a>Json::str</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> str(fastream<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring<span style="color:#000;font-weight:bold">&amp;</span> str(fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring <span style="color:#900;font-weight:bold">str</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> str(fastream<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring<span style="color:#000;font-weight:bold">&amp;</span> str(fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">str</span>(<span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>将 Json 对象转换成字符串。</li>
 <li>第 1 个版本将 JSON 字符串追加到 fastream 中，返回值与参数 s 相同。</li>
 <li>第 2 个版本将 JSON 字符串追加到 fastring 中，返回值与参数 s 相同。</li>
-<li>第 3 个版本直接返回 JSON 字符串，参数 cap 是字符串初始容量，默认为 256，设置为合适的值可以减少内存重分配。</li>
+<li>第 3 个版本直接返回 JSON 字符串。</li>
+<li>参数 <code>mdp</code> 是 <code>max decimal places</code> 的缩写，表示最多保留多少位小数。</li>
 </ul>
 <h3 id="jsonpretty"><a class="anchor" href="#jsonpretty">#</a>Json::pretty</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> pretty(fastream<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring<span style="color:#000;font-weight:bold">&amp;</span> pretty(fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring <span style="color:#900;font-weight:bold">pretty</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> pretty(fastream<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring<span style="color:#000;font-weight:bold">&amp;</span> pretty(fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">pretty</span>(<span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>将 Json 对象转换成更漂亮的 JSON 字符串，除了结果好看点，其他与 <code>Json::str()</code> 一样。</li>
 </ul>
 <h3 id="jsondbg"><a class="anchor" href="#jsondbg">#</a>Json::dbg</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> dbg(fastream<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring<span style="color:#000;font-weight:bold">&amp;</span> dbg(fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
-fastring <span style="color:#900;font-weight:bold">dbg</span>(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">256</span>) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream<span style="color:#000;font-weight:bold">&amp;</span> dbg(fastream<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring<span style="color:#000;font-weight:bold">&amp;</span> dbg(fastring<span style="color:#000;font-weight:bold">&amp;</span> s, <span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
+fastring <span style="color:#900;font-weight:bold">dbg</span>(<span style="color:#458;font-weight:bold">int</span> mdp<span style="color:#000;font-weight:bold">=</span><span style="color:#099">16</span>) <span style="color:#000;font-weight:bold">const</span>;
 </code></pre></div><ul>
 <li>将 Json 对象转换成 debug 字符串，当 string 类型的值长度超过 512 字节时，截断取前 32 字节，其他与 <code>Json::str()</code> 一样。</li>
 <li>此方法一般用于打印日志。有些应用场景中，Json 对象可能包含较长的 string，如一个图片文件的 base64 编码，这个时候用 <code>Json::dbg()</code> 取代 <code>Json::str()</code> 方法，可以避免打印过多无意义的日志。</li>
@@ -1259,9 +1260,9 @@ r.get(<span style="color:#d14">&#34;a&#34;</span>).as_int(); <span style="color:
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/1f2516984b2208efbd8f9df0a232dbc686841b55" title='最后修改者 idealvin | June 19, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/f1262ae4d67a445ae774884679c06b7217d90c81" title='最后修改者 idealvin | July 8, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 19, 2022</span>
+      <span>July 8, 2022</span>
     </a>
   </div>
 

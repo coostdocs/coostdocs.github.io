@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cocoyaxi.github.io/en/co/fastream/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-06-01T21:49:46+08:00" />
+<meta property="article:modified_time" content="2022-07-08T21:07:09+08:00" />
 
 <title>fastream | Documents for CO</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -23,7 +23,7 @@
   <link rel="alternate" hreflang="cn" href="https://cocoyaxi.github.io/cn/co/fastream/" title="字符流(fastream)">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.25df99a28e4ccd3d0d5d8cc94c1f0880f0fdd9ec56b2f3dc30ec8c708d3d8a1f.js" integrity="sha256-Jd&#43;Zoo5MzT0NXYzJTB8IgPD92exWsvPcMOyMcI09ih8=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.86e030b7b012924977f15d9de1fcb16d109e1299866d6eefb97a74ab38105099.js" integrity="sha256-huAwt7ASkkl38V2d4fyxbRCeEpmGbW7vuXp0qzgQUJk=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -577,6 +577,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#fastreamswap">fastream::swap</a></li>
             <li><a href="#heading-4">———————————</a></li>
             <li><a href="#interoperability-with-fastring">Interoperability with fastring</a></li>
+            <li><a href="#precision-control-of-floating-point-numbers">Precision control of floating point numbers</a></li>
           </ul>
         </li>
       </ul>
@@ -898,7 +899,21 @@ f((fastream<span style="color:#000;font-weight:bold">&amp;</span>)x);
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream s;
 s.append(<span style="color:#d14">&#34;hello&#34;</span>);
 ((fastring<span style="color:#000;font-weight:bold">&amp;</span>)s).append(s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);
-</code></pre></div></article>
+</code></pre></div><h3 id="precision-control-of-floating-point-numbers"><a class="anchor" href="#precision-control-of-floating-point-numbers">#</a>Precision control of floating point numbers</h3>
+<p>For floating-point numbers, the <code>operator&lt;&lt;</code> operators of <code>fastream</code> and <code>fastring</code> retain up to 6 decimal places by default. You can set the maximum number of decimal places through the <code>maxdp()</code> method or the <code>co::maxdp</code> operator:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">fastream s;
+s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.14159</span>; <span style="color:#998;font-style:italic">// &#34;3.14159&#34;
+</span><span style="color:#998;font-style:italic"></span>
+s.clear();
+s.maxdp(<span style="color:#099">3</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.14159</span>; <span style="color:#998;font-style:italic">// &#34;3.141&#34;
+</span><span style="color:#998;font-style:italic"></span>
+s.clear();
+s <span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>maxdp(<span style="color:#099">2</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.14159</span>; <span style="color:#998;font-style:italic">// &#34;3.14&#34;
+</span></code></pre></div><p>Since co/log is implemented based on <code>fastream</code>, the above method can also be used in logging:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">double</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">3.14159</span>;
+LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>maxdp(<span style="color:#099">3</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> x <span style="color:#000;font-weight:bold">&lt;&lt;</span> co<span style="color:#000;font-weight:bold">::</span>maxdp(<span style="color:#099">2</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> x;
+</code></pre></div><p><code>maxdp</code> is only valid in the current statement, and expires after the statement ends.</p>
+</article>
  
       
 
@@ -950,9 +965,9 @@ s.append(<span style="color:#d14">&#34;hello&#34;</span>);
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/073b0c9ad35eca55d41bbec1a278a6cb87f1aa36" title='Last modified by idealvin | June 1, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/f1262ae4d67a445ae774884679c06b7217d90c81" title='Last modified by idealvin | July 8, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>June 1, 2022</span>
+      <span>July 8, 2022</span>
     </a>
   </div>
 
@@ -1056,6 +1071,7 @@ s.append(<span style="color:#d14">&#34;hello&#34;</span>);
             <li><a href="#fastreamswap">fastream::swap</a></li>
             <li><a href="#heading-4">———————————</a></li>
             <li><a href="#interoperability-with-fastring">Interoperability with fastring</a></li>
+            <li><a href="#precision-control-of-floating-point-numbers">Precision control of floating point numbers</a></li>
           </ul>
         </li>
       </ul>
