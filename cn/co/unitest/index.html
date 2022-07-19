@@ -7,27 +7,27 @@
 #基本概念 co/unitest 是一个单元测试框架，与 google gtest 类似，但更简单易用。
 #测试单元与测试用例 一个测试程序可以按功能或模块划分为多个测试单元，每个测试单元下面可以有多个测试用例。如可以给 C&#43;&#43; 中的一个类(或模块)定义一个测试单元，类(或模块)中的每个方法定义一个测试用例。
 在 co/unitest 中，定义一个测试单元时，会生成一个类，类中有一个 run() 方法，所有的测试用例代码都在 run() 方法里面。co/unitest 几乎屏蔽了所有的细节，用户看不到类，甚至看不到 run() 方法，可以完全专注于写测试代码：
-DEF_test(test_name) { DEF_case(a) { // write test code here  } DEF_case(b) { // write test code here  } } 上面的 DEF_test 实际上就是实现了类中的 run() 方法，DEF_case 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。
-#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ 	... \ void _UTest_##_name_::run()  DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 run()，需要用户完成 run() 方法的函数体。  #DEF_case #define DEF_case(name) _current_case.">
+DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // write test code here } } 上面的 DEF_test 实际上就是实现了类中的 run() 方法，DEF_case 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。
+#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ ... \ void _UTest_##_name_::run() DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 run()，需要用户完成 run() 方法的函数体。 #DEF_case #define DEF_case(name) _current_case.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="单元测试框架" />
 <meta property="og:description" content="include: co/unitest.h.
 #基本概念 co/unitest 是一个单元测试框架，与 google gtest 类似，但更简单易用。
 #测试单元与测试用例 一个测试程序可以按功能或模块划分为多个测试单元，每个测试单元下面可以有多个测试用例。如可以给 C&#43;&#43; 中的一个类(或模块)定义一个测试单元，类(或模块)中的每个方法定义一个测试用例。
 在 co/unitest 中，定义一个测试单元时，会生成一个类，类中有一个 run() 方法，所有的测试用例代码都在 run() 方法里面。co/unitest 几乎屏蔽了所有的细节，用户看不到类，甚至看不到 run() 方法，可以完全专注于写测试代码：
-DEF_test(test_name) { DEF_case(a) { // write test code here  } DEF_case(b) { // write test code here  } } 上面的 DEF_test 实际上就是实现了类中的 run() 方法，DEF_case 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。
-#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ 	... \ void _UTest_##_name_::run()  DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 run()，需要用户完成 run() 方法的函数体。  #DEF_case #define DEF_case(name) _current_case." />
+DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // write test code here } } 上面的 DEF_test 实际上就是实现了类中的 run() 方法，DEF_case 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。
+#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ ... \ void _UTest_##_name_::run() DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 run()，需要用户完成 run() 方法的函数体。 #DEF_case #define DEF_case(name) _current_case." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/unitest/" /><meta property="article:section" content="co" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/unitest/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2022-06-10T23:01:22+08:00" />
 
-<title>单元测试框架 | Documents for CO</title>
+<title>单元测试框架 | Docs for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
-  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/unitest/" title="Unitest">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/unitest/" title="Unitest">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.6671e90c2218ef8f42941384fba7f98c121f52b53923cf7aee44604941ec976e.js" integrity="sha256-ZnHpDCIY749ClBOE&#43;6f5jBIfUrU5I8967kRgSUHsl24=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.a5ac721474d64625074756d9b1ca6d1d62b302b77fffc0192e7920316b89275a.js" integrity="sha256-paxyFHTWRiUHR1bZscptHWKzArd//8AZLnkgMWuJJ1o=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -49,7 +49,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a href="../../../cn/"><span>Documents for CO</span>
+  <a href="../../../cn/"><span>Docs for Coost</span>
   </a>
 </h2>
 
@@ -519,7 +519,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
 
 
  
@@ -595,29 +595,29 @@ https://github.com/alex-shpak/hugo-book
 <h3 id="测试单元与测试用例"><a class="anchor" href="#%e6%b5%8b%e8%af%95%e5%8d%95%e5%85%83%e4%b8%8e%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>测试单元与测试用例</h3>
 <p>一个测试程序可以按功能或模块划分为多个测试单元，每个测试单元下面可以有多个测试用例。如可以给 C++ 中的一个类(或模块)定义一个测试单元，类(或模块)中的每个方法定义一个测试用例。</p>
 <p>在 co/unitest 中，定义一个测试单元时，会生成一个类，类中有一个 <code>run()</code> 方法，所有的测试用例代码都在 run() 方法里面。co/unitest 几乎屏蔽了所有的细节，用户看不到类，甚至看不到 run() 方法，可以完全专注于写测试代码：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_test(test_name) {
-    DEF_case(a) {
-        <span style="color:#998;font-style:italic">// write test code here
-</span><span style="color:#998;font-style:italic"></span>    }
-    
-    DEF_case(b) {
-        <span style="color:#998;font-style:italic">// write test code here
-</span><span style="color:#998;font-style:italic"></span>    }
-}
-</code></pre></div><p>上面的 <code>DEF_test</code> 实际上就是实现了类中的 run() 方法，<code>DEF_case</code> 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_test(test_name) {
+</span></span><span style="display:flex;"><span>    DEF_case(a) {
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic">// write test code here
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    DEF_case(b) {
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic">// write test code here
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>上面的 <code>DEF_test</code> 实际上就是实现了类中的 run() 方法，<code>DEF_case</code> 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。</p>
 <h3 id="def_test"><a class="anchor" href="#def_test">#</a>DEF_test</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_test(_name_) \
-</span><span style="color:#999;font-weight:bold;font-style:italic">    DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ 
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>	... <span style="color:#a61717;background-color:#e3d2d2">\</span> 
-    <span style="color:#458;font-weight:bold">void</span> _UTest_<span style="color:#a61717;background-color:#e3d2d2">##</span>_name_<span style="color:#000;font-weight:bold">::</span>run()
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_test(_name_) \
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    DEF_bool(_name_, false, &#34;enable this test if true.&#34;); \ 
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>	... <span style="color:#a61717;background-color:#e3d2d2">\</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> _UTest_<span style="color:#a61717;background-color:#e3d2d2">##</span>_name_<span style="color:#000;font-weight:bold">::</span>run()
+</span></span></code></pre></div><ul>
 <li><code>DEF_test</code> 宏用于定义测试单元，参数 <code>_name_</code> 是测试单元的名字。</li>
 <li>宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 <code>DEF_test(os)</code> 定义了一个测试单元 os，命令行参数中可以用 <code>-os</code> 指定运行 os 中的测试代码</li>
 <li>宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 <code>run()</code>，需要用户完成 run() 方法的函数体。</li>
 </ul>
 <h3 id="def_case"><a class="anchor" href="#def_case">#</a>DEF_case</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_case(name) _current_case.reset(new unitest::Case(#name));
-</span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_case(name) _current_case.reset(new unitest::Case(#name));
+</span></span></span></code></pre></div><ul>
 <li><code>DEF_case</code> 宏用于定义测试单元中的测试用例，参数 name 是测试用例的名字，它必须在 <code>DEF_test</code> 定义的 run() 方法内部使用。</li>
 <li>测试单元名必须可以作为类名或变量名的一部分，测试用例名则没有这个限制，如 <code>DEF_case(sched.Copool)</code> 也是合理的。</li>
 <li>这个宏创建一个新的 <code>unitest::Case</code> 对象，即测试用例，然后将它设成当前测试用例，用户需要在宏后面完成该测试用例的代码。DEF_case 宏后面的代码，直到下一个 DEF_case 出现为止，都是该测试用例的测试代码。</li>
@@ -625,14 +625,14 @@ https://github.com/alex-shpak/hugo-book
 <li>DEF_test 中也可以不包含任何 DEF_case，这种情况下，co/unitest 会创建一个默认的测试用例。</li>
 </ul>
 <h3 id="expect-断言"><a class="anchor" href="#expect-%e6%96%ad%e8%a8%80">#</a>EXPECT 断言</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT(x) ...
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_EQ(x, y) EXPECT_OP(x, y, ==, &#34;EQ&#34;)
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_NE(x, y) EXPECT_OP(x, y, !=, &#34;NE&#34;)
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GE(x, y) EXPECT_OP(x, y, &gt;=, &#34;GE&#34;)
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LE(x, y) EXPECT_OP(x, y, &lt;=, &#34;LE&#34;)
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GT(x, y) EXPECT_OP(x, y, &gt;, &#34;GT&#34;)
-</span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LT(x, y) EXPECT_OP(x, y, &lt;, &#34;LT&#34;)
-</span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT(x) ...
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_EQ(x, y) EXPECT_OP(x, y, ==, &#34;EQ&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_NE(x, y) EXPECT_OP(x, y, !=, &#34;NE&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GE(x, y) EXPECT_OP(x, y, &gt;=, &#34;GE&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LE(x, y) EXPECT_OP(x, y, &lt;=, &#34;LE&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GT(x, y) EXPECT_OP(x, y, &gt;, &#34;GT&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LT(x, y) EXPECT_OP(x, y, &lt;, &#34;LT&#34;)
+</span></span></span></code></pre></div><ul>
 <li><code>EXPECT</code> 断言 <code>x</code> 为真，x 可以是值为 bool 类型的任意表达式。</li>
 <li><code>EXPECT_EQ</code> 断言 <code>x == y</code>，表达式 x 与 y 确保各计算一次。</li>
 <li><code>EXPECT_NE</code> 断言 <code>x != y</code>，表达式 x 与 y 确保各计算一次。</li>
@@ -644,70 +644,70 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="编写测试代码"><a class="anchor" href="#%e7%bc%96%e5%86%99%e6%b5%8b%e8%af%95%e4%bb%a3%e7%a0%81">#</a>编写测试代码</h2>
 <h3 id="测试代码示例"><a class="anchor" href="#%e6%b5%8b%e8%af%95%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>测试代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#998;font-style:italic">// os.cc
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/os.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#000;font-weight:bold">namespace</span> test {
-    
-DEF_test(os) {
-    DEF_case(homedir) {
-        EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
-    }
-
-    DEF_case(pid) {
-        EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
-    }
-
-    DEF_case(cpunum) {
-        EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
-    }
-}
-    
-} <span style="color:#998;font-style:italic">// namespace test
-</span></code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// os.cc
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/os.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">namespace</span> test {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>DEF_test(os) {
+</span></span><span style="display:flex;"><span>    DEF_case(homedir) {
+</span></span><span style="display:flex;"><span>        EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    DEF_case(pid) {
+</span></span><span style="display:flex;"><span>        EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    DEF_case(cpunum) {
+</span></span><span style="display:flex;"><span>        EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>} <span style="color:#998;font-style:italic">// namespace test
+</span></span></span></code></pre></div><ul>
 <li>上面的代码定义了一个名为 os 的测试单元，os 有 3 个测试用例。</li>
 <li>运行测试程序时，可在命令行参数中用 <code>-os</code> 启用此单元测试。</li>
 <li>不同测试单元的代码一般会放到不同的 .cc 源文件中。</li>
 <li>用户可以将测试代码放到 namespace 中，如果有需要的话。</li>
 </ul>
 <h3 id="默认测试用例"><a class="anchor" href="#%e9%bb%98%e8%ae%a4%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>默认测试用例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_test(os) {
-    EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
-    EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
-    EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
-}
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_test(os) {
+</span></span><span style="display:flex;"><span>    EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span>    EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
 <li>上面的代码中，不包含任何 DEF_case，co/unitest 会创建一个名为 &ldquo;default&rdquo; 的默认测试用例。</li>
 <li>较复杂的测试代码，一般不建议使用默认测试用例，最好划分成不同的 case，代码看起来更清晰些。</li>
 </ul>
 <h3 id="main-函数"><a class="anchor" href="#main-%e5%87%bd%e6%95%b0">#</a>main() 函数</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    unitest<span style="color:#000;font-weight:bold">::</span>run_all_tests();
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-}
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+</span></span><span style="display:flex;"><span>    unitest<span style="color:#000;font-weight:bold">::</span>run_all_tests();
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
 <li>在 main 函数中调用 <code>co/unitest</code> 提供的 <code>run_all_tests()</code> 方法，即可开始运行测试代码。</li>
 <li>调用 <code>run_all_tests()</code> 之前，必须先调用 <code>flag::init()</code> 方法解析命令行参数。</li>
 </ul>
 <h2 id="构建及运行测试程序"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c%e6%b5%8b%e8%af%95%e7%a8%8b%e5%ba%8f">#</a>构建及运行测试程序</h2>
 <h3 id="编译-co-自带的-unitest-代码"><a class="anchor" href="#%e7%bc%96%e8%af%91-co-%e8%87%aa%e5%b8%a6%e7%9a%84-unitest-%e4%bb%a3%e7%a0%81">#</a>编译 co 自带的 unitest 代码</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xmake -b unitest
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b unitest
+</span></span></code></pre></div><ul>
 <li>在 co 根目录执行上述命令，即可编译 <a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 目录下的单元测试代码，并生成 <code>unitest</code> 二进制程序。</li>
 </ul>
 <h3 id="运行所有的测试用例"><a class="anchor" href="#%e8%bf%90%e8%a1%8c%e6%89%80%e6%9c%89%e7%9a%84%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>运行所有的测试用例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xmake r unitest
-</code></pre></div><h3 id="运行指定测试单元中的测试用例"><a class="anchor" href="#%e8%bf%90%e8%a1%8c%e6%8c%87%e5%ae%9a%e6%b5%8b%e8%af%95%e5%8d%95%e5%85%83%e4%b8%ad%e7%9a%84%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>运行指定测试单元中的测试用例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 仅运行 os 测试单元中的测试用例</span>
-xmake r unitest -os
-
-<span style="color:#998;font-style:italic"># 运行 os 与 json 测试单元中的测试用例</span>
-xmake r unitest -os -json
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake r unitest
+</span></span></code></pre></div><h3 id="运行指定测试单元中的测试用例"><a class="anchor" href="#%e8%bf%90%e8%a1%8c%e6%8c%87%e5%ae%9a%e6%b5%8b%e8%af%95%e5%8d%95%e5%85%83%e4%b8%ad%e7%9a%84%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>运行指定测试单元中的测试用例</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 仅运行 os 测试单元中的测试用例</span>
+</span></span><span style="display:flex;"><span>xmake r unitest -os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 运行 os 与 json 测试单元中的测试用例</span>
+</span></span><span style="display:flex;"><span>xmake r unitest -os -json
+</span></span></code></pre></div><ul>
 <li>默认所有的测试单元都是禁止运行的，需要用相应的开关启用测试代码。</li>
 </ul>
 <h3 id="测试结果示例"><a class="anchor" href="#%e6%b5%8b%e8%af%95%e7%bb%93%e6%9e%9c%e7%a4%ba%e4%be%8b">#</a>测试结果示例</h3>

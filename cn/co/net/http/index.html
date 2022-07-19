@@ -5,23 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/http.h.
 #http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
-#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并不会立即建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const fastring&amp; body() const;  获取当前 HTTP 请求的响应体。  #Client::close void close();  关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const fastring&amp; header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。">
+#Client::Client explicit Client(const char* serv_url); 构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的： &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo; http::Client 对象创建时，并不会立即建立连接。 #Client::~Client Client::~Client(); 析构函数，关闭连接，释放 libcurl 相关资源。 #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); 添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。 #Client::body const fastring&amp; body() const; 获取当前 HTTP 请求的响应体。 #Client::close void close(); 关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。 #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url); HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。 #Client::easy_handle void* easy_handle() const; 返回 libcurl 的 easy handle。 #Client::get void get(const char* url); HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 #Client::head void head(const char* url); HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 #Client::header const char* header(const char* key); const fastring&amp; header() const; 第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="HTTP" />
 <meta property="og:description" content="include: co/http.h.
 #http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
-#Client::Client explicit Client(const char* serv_url);  构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的：  &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo;   http::Client 对象创建时，并不会立即建立连接。  #Client::~Client Client::~Client();  析构函数，关闭连接，释放 libcurl 相关资源。  #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val);  添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。  #Client::body const fastring&amp; body() const;  获取当前 HTTP 请求的响应体。  #Client::close void close();  关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。  #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url);  HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。  #Client::easy_handle void* easy_handle() const;  返回 libcurl 的 easy handle。  #Client::get void get(const char* url);  HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::head void head(const char* url);  HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。  #Client::header const char* header(const char* key); const fastring&amp; header() const;   第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。" />
+#Client::Client explicit Client(const char* serv_url); 构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的： &ldquo;github.com&rdquo; &ldquo;https://github.com&rdquo; &ldquo;http://127.0.0.1:7788&rdquo; &ldquo;http://[::1]:8888&rdquo; http::Client 对象创建时，并不会立即建立连接。 #Client::~Client Client::~Client(); 析构函数，关闭连接，释放 libcurl 相关资源。 #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); 添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。 #Client::body const fastring&amp; body() const; 获取当前 HTTP 请求的响应体。 #Client::close void close(); 关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。 #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url); HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。 #Client::easy_handle void* easy_handle() const; 返回 libcurl 的 easy handle。 #Client::get void get(const char* url); HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 #Client::head void head(const char* url); HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 #Client::header const char* header(const char* key); const fastring&amp; header() const; 第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://cocoyaxi.github.io/cn/co/net/http/" /><meta property="article:section" content="co" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/net/http/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2022-06-20T00:07:56+08:00" />
 
-<title>HTTP | Documents for CO</title>
+<title>HTTP | Docs for Coost</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
-  <link rel="alternate" hreflang="en" href="https://cocoyaxi.github.io/en/co/net/http/" title="HTTP">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/net/http/" title="HTTP">
 <link rel="stylesheet" href="../../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.6671e90c2218ef8f42941384fba7f98c121f52b53923cf7aee44604941ec976e.js" integrity="sha256-ZnHpDCIY749ClBOE&#43;6f5jBIfUrU5I8967kRgSUHsl24=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.a5ac721474d64625074756d9b1ca6d1d62b302b77fffc0192e7920316b89275a.js" integrity="sha256-paxyFHTWRiUHR1bZscptHWKzArd//8AZLnkgMWuJJ1o=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -43,7 +43,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a href="../../../../cn/"><span>Documents for CO</span>
+  <a href="../../../../cn/"><span>Docs for Coost</span>
   </a>
 </h2>
 
@@ -513,7 +513,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
 
 
  
@@ -630,8 +630,8 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="httpclient"><a class="anchor" href="#httpclient">#</a>http::Client</h2>
 <p><code>http::Client</code> 是基于协程的 http 客户端，它基于 <a href="https://curl.se/libcurl/">libcurl</a> 实现。</p>
 <h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">Client</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">Client</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
+</span></span></code></pre></div><ul>
 <li>构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 <code>protocol://host:port</code>，下面的 server url 都是合理的：
 <ul>
 <li>&ldquo;github.com&rdquo;</li>
@@ -643,59 +643,59 @@ https://github.com/alex-shpak/hugo-book
 <li>http::Client 对象创建时，并不会立即建立连接。</li>
 </ul>
 <h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Client<span style="color:#000;font-weight:bold">::~</span>Client();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Client<span style="color:#000;font-weight:bold">::~</span>Client();
+</span></span></code></pre></div><ul>
 <li>析构函数，关闭连接，释放 libcurl 相关资源。</li>
 </ul>
 <h3 id="clientadd_header"><a class="anchor" href="#clientadd_header">#</a>Client::add_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
+</span></span></code></pre></div><ul>
 <li>添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。</li>
 <li>第 2 个版本中，参数 val 是整数，内部自动转换成字符串。</li>
 </ul>
 <h3 id="clientbody"><a class="anchor" href="#clientbody">#</a>Client::body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> body() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> body() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>获取当前 HTTP 请求的响应体。</li>
 </ul>
 <h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</span></span></code></pre></div><ul>
 <li>关闭 HTTP 连接，一般需要在协程中调用此方法。</li>
 <li>调用此方法后，http::Client 对象就不能再用了，直到用户调用 <a href="#clientreset">reset()</a> 方法重置 server url。</li>
 </ul>
 <h3 id="clientdel"><a class="anchor" href="#clientdel">#</a>Client::del</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+</span></span></code></pre></div><ul>
 <li>HTTP <strong>DELETE</strong> 请求，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
 <li>前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。</li>
 <li>第 3 个版本适用于不带 body 的 DELETE 请求。</li>
 </ul>
 <h3 id="clienteasy_handle"><a class="anchor" href="#clienteasy_handle">#</a>Client::easy_handle</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">easy_handle</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">easy_handle</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>返回 libcurl 的 easy handle。</li>
 </ul>
 <h3 id="clientget"><a class="anchor" href="#clientget">#</a>Client::get</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">get</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">get</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+</span></span></code></pre></div><ul>
 <li>HTTP <strong>GET</strong> 请求，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
 </ul>
 <h3 id="clienthead"><a class="anchor" href="#clienthead">#</a>Client::head</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">head</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">head</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+</span></span></code></pre></div><ul>
 <li>HTTP <strong>HEAD</strong> 请求，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
 </ul>
 <h3 id="clientheader"><a class="anchor" href="#clientheader">#</a>Client::header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
-<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> header() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> header() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>
 <p>第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。</p>
 </li>
@@ -706,12 +706,12 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;xx.com&#34;</span>);
-c.get(<span style="color:#d14">&#34;/&#34;</span>);
-<span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
-</code></pre></div><h3 id="clientperform"><a class="anchor" href="#clientperform">#</a>Client::perform</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">perform</span>();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;xx.com&#34;</span>);
+</span></span><span style="display:flex;"><span>c.get(<span style="color:#d14">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
+</span></span></code></pre></div><h3 id="clientperform"><a class="anchor" href="#clientperform">#</a>Client::perform</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">perform</span>();
+</span></span></code></pre></div><ul>
 <li>
 <p>执行 HTTP 请求，get, post 等方法实际上都是基于此方法实现。</p>
 </li>
@@ -722,211 +722,211 @@ c.get(<span style="color:#d14">&#34;/&#34;</span>);
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> Client<span style="color:#000;font-weight:bold">::</span>post(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> data, size_t size) {
-    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POST, <span style="color:#099">1L</span>);
-    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_URL, make_url(url));
-    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDS, data);
-    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDSIZE, (<span style="color:#458;font-weight:bold">long</span>)size);
-    <span style="color:#000;font-weight:bold">this</span><span style="color:#000;font-weight:bold">-&gt;</span>perform();
-}
-</code></pre></div><h3 id="clientpost"><a class="anchor" href="#clientpost">#</a>Client::post</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> Client<span style="color:#000;font-weight:bold">::</span>post(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> data, size_t size) {
+</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POST, <span style="color:#099">1L</span>);
+</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_URL, make_url(url));
+</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDS, data);
+</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDSIZE, (<span style="color:#458;font-weight:bold">long</span>)size);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">this</span><span style="color:#000;font-weight:bold">-&gt;</span>perform();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="clientpost"><a class="anchor" href="#clientpost">#</a>Client::post</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span></code></pre></div><ul>
 <li>HTTP <strong>POST</strong> 请求，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
 <li>参数 s 是 HTTP 请求的 body 数据，n 是 s 的长度，第 2 个版本 s 以 &lsquo;\0&rsquo; 结尾。</li>
 </ul>
 <h3 id="clientput"><a class="anchor" href="#clientput">#</a>Client::put</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span></code></pre></div><ul>
 <li>HTTP <strong>PUT</strong> 请求，用于上传文件到服务器，必须在协程中调用。</li>
 <li>参数 url 必须是 <code>'/'</code> 开头的字符串。</li>
 <li>参数 path 是需要上传的文件路径。</li>
 </ul>
 <h3 id="clientremove_header"><a class="anchor" href="#clientremove_header">#</a>Client::remove_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
+</span></span></code></pre></div><ul>
 <li>删除之前添加的 HTTP header。调用 add_header() 方法添加的头部会存在于后续所有 HTTP 请求中，如果用户不想在后续请求中带上某些 header，可以用此方法显示删除。</li>
 </ul>
 <h3 id="clientreset"><a class="anchor" href="#clientreset">#</a>Client::reset</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
+</span></span></code></pre></div><ul>
 <li>重置 server url，关于 url 的规范详见 <a href="#clientclient">Client::Client</a>。</li>
 </ul>
 <h3 id="clientresponse_code"><a class="anchor" href="#clientresponse_code">#</a>Client::response_code</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">response_code</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">response_code</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>获取当前 HTTP 请求的响应码。</li>
 <li>正常情况下返回值是 100 到 511 之间的值。</li>
 <li>若 HTTP 请求没有发送出去，或者没有收到服务端的响应，此方法返回 0，用户可以用 strerror() 方法获取错误信息。</li>
 </ul>
 <h3 id="clientstatus"><a class="anchor" href="#clientstatus">#</a>Client::status</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">status</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">status</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>与 <a href="#clientresponse_code">response_code()</a> 等价，返回当前 HTTP 请求的响应吗。</li>
 </ul>
 <h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>获取当前 HTTP 请求的错误信息。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-    http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;https://github.com&#34;</span>);
-    <span style="color:#458;font-weight:bold">int</span> r;
-    
-    c.get(<span style="color:#d14">&#34;/&#34;</span>);
-    r <span style="color:#000;font-weight:bold">=</span> c.status();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;staus: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;
-    LOG_IF(r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.strerror();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
-
-    c.get(<span style="color:#d14">&#34;/idealvin/co&#34;</span>);
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
-    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
-
-    c.close();
-}
-
-go(f);
-</code></pre></div><h2 id="httpreq"><a class="anchor" href="#httpreq">#</a>http::Req</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+</span></span><span style="display:flex;"><span>    http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;https://github.com&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> r;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    c.get(<span style="color:#d14">&#34;/&#34;</span>);
+</span></span><span style="display:flex;"><span>    r <span style="color:#000;font-weight:bold">=</span> c.status();
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;staus: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;
+</span></span><span style="display:flex;"><span>    LOG_IF(r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.strerror();
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    c.get(<span style="color:#d14">&#34;/idealvin/co&#34;</span>);
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    c.close();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>go(f);
+</span></span></code></pre></div><h2 id="httpreq"><a class="anchor" href="#httpreq">#</a>http::Req</h2>
 <p><code>http::Req</code> 类是对 HTTP 请求的封装，用于实现 http::Server。</p>
 <h3 id="reqreq"><a class="anchor" href="#reqreq">#</a>Req::Req</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Req() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Req() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
+</span></span></code></pre></div><ul>
 <li>默认构造函数。</li>
 </ul>
 <h3 id="reqbody"><a class="anchor" href="#reqbody">#</a>Req::body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">body</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">body</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>获取 HTTP 请求中的 body 数据，返回一个指针，用户需要调用 <a href="#reqbody_size">body_size()</a> 方法获取它的长度。</li>
 </ul>
 <h3 id="reqbody_size"><a class="anchor" href="#reqbody_size">#</a>Req::body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">size_t <span style="color:#900;font-weight:bold">body_size</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">body_size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>返回 HTTP 请求 body 的长度。</li>
 </ul>
 <h3 id="reqheader"><a class="anchor" href="#reqheader">#</a>Req::header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>获取 HTTP header 的值，header 不存在时，返回一个空字符串。</li>
 </ul>
 <h3 id="reqis_method_xxx"><a class="anchor" href="#reqis_method_xxx">#</a>Req::is_method_xxx</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_get</span>() <span style="color:#000;font-weight:bold">const</span>;
-<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_head</span>() <span style="color:#000;font-weight:bold">const</span>;
-<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_post</span>() <span style="color:#000;font-weight:bold">const</span>;
-<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_put</span>() <span style="color:#000;font-weight:bold">const</span>;
-<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_delete</span>() <span style="color:#000;font-weight:bold">const</span>;
-<span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_options</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_get</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_head</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_post</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_put</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_delete</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_options</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>判断 HTTP 请求的方法类型。</li>
 </ul>
 <h3 id="reqmethod"><a class="anchor" href="#reqmethod">#</a>Req::method</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Method <span style="color:#900;font-weight:bold">method</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Method <span style="color:#900;font-weight:bold">method</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>返回 HTTP 请求方法，返回值是 <code>kGet, kHead, kPost, kPut, kDelete, kOptions</code> 中的一种。</li>
 </ul>
 <h3 id="requrl"><a class="anchor" href="#requrl">#</a>Req::url</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> url() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> url() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>返回 HTTP 请求中的 url 的引用，这个值是 HTTP 请求 start line 中的一部分。</li>
 </ul>
 <h3 id="reqversion"><a class="anchor" href="#reqversion">#</a>Req::version</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Version <span style="color:#900;font-weight:bold">version</span>() <span style="color:#000;font-weight:bold">const</span>;
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Version <span style="color:#900;font-weight:bold">version</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
 <li>返回 HTTP 请求中的 HTTP 版本，返回值是 http::kHTTP10 或 http::kHTTP11 中的一种，目前不支持 HTTP/2.0。</li>
 </ul>
 <h2 id="httpres"><a class="anchor" href="#httpres">#</a>http::Res</h2>
 <p><code>http::Res</code> 类是对 HTTP 响应的封装，用于实现 http::Server。</p>
 <h3 id="resres"><a class="anchor" href="#resres">#</a>Res::Res</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Res();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Res();
+</span></span></code></pre></div><ul>
 <li>默认构造函数。</li>
 </ul>
 <h3 id="resadd_header"><a class="anchor" href="#resadd_header">#</a>Res::add_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
+</span></span></code></pre></div><ul>
 <li>添加 HTTP header。</li>
 </ul>
 <h3 id="resset_body"><a class="anchor" href="#resset_body">#</a>Res::set_body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
 <li>设置 HTTP 响应的 body 部分。</li>
 <li>参数 s 是 body 数据，参数 n 是 s 的长度，第 2 个版本中 s 以 <code>'\0'</code> 结尾。</li>
 </ul>
 <h3 id="resset_status"><a class="anchor" href="#resset_status">#</a>Res::set_status</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_status</span>(<span style="color:#458;font-weight:bold">int</span> status);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_status</span>(<span style="color:#458;font-weight:bold">int</span> status);
+</span></span></code></pre></div><ul>
 <li>设置 HTTP 响应码，这个值一般是 100 到 511 之间的值。</li>
 </ul>
 <h2 id="httpserver"><a class="anchor" href="#httpserver">#</a>http::Server</h2>
 <p><code>http::Server</code> 是基于协程的 HTTP 服务器，它支持 HTTPS，使用 HTTPS 需要安装 openssl。</p>
 <h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server();
+</span></span></code></pre></div><ul>
 <li>默认构造函数，用户无需关心。</li>
 </ul>
 <h3 id="serveron_req"><a class="anchor" href="#serveron_req">#</a>Server::on_req</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
-Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f)
-
-<span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
-Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
+</span></span><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
+</span></span></code></pre></div><ul>
 <li>设置处理客户端 HTTP 请求的 callback。</li>
 <li>第 3 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</li>
 <li>服务端接收到 HTTP 请求时，会调用此方法设置的 callback，处理该请求。</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
+</span></span></code></pre></div><ul>
 <li>启动 HTTP server，此方法不会阻塞当前线程。</li>
 <li>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</li>
 <li>从 v3.0 开始，server 启动后就不再依赖于 <code>http::Server</code> 对象。</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+</span></span></code></pre></div><ul>
 <li>v2.0.3 新增。</li>
 <li>退出 HTTP server，关闭 listening socket，不再接收新的连接。</li>
 <li>从 v3.0 开始，HTTP server 退出后，之前已经建立的连接将在未来被重置。</li>
 </ul>
 <h3 id="代码示例-1"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">cb</span>(<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
-    <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
-        <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
-            res.set_status(<span style="color:#099">200</span>);
-            res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
-        } <span style="color:#000;font-weight:bold">else</span> {
-            res.set_status(<span style="color:#099">404</span>);
-        }
-    } <span style="color:#000;font-weight:bold">else</span> {
-        res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
-</span><span style="color:#998;font-style:italic"></span>    }
-}
-
-<span style="color:#998;font-style:italic">// http
-</span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);
-
-<span style="color:#998;font-style:italic">// https
-</span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(
-    <span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>
-);
-</code></pre></div><p><code>co/test</code> 提供了一个简单的 <a href="https://github.com/idealvin/co/blob/master/test/so/http_serv.cc">demo</a>，用户可以按下述方式编译运行:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">xmake -b http_serv
-xmake r http_serv
-</code></pre></div><p>启动 http server 后，可以在浏览器的地址栏中输入 <code>127.0.0.1/hello</code> 看结果。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">cb</span>(<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
+</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">200</span>);
+</span></span><span style="display:flex;"><span>            res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">404</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>        res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// http
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// https
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(
+</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p><code>co/test</code> 提供了一个简单的 <a href="https://github.com/idealvin/co/blob/master/test/so/http_serv.cc">demo</a>，用户可以按下述方式编译运行:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b http_serv
+</span></span><span style="display:flex;"><span>xmake r http_serv
+</span></span></code></pre></div><p>启动 http server 后，可以在浏览器的地址栏中输入 <code>127.0.0.1/hello</code> 看结果。</p>
 <h2 id="静态-web-server-soeasy"><a class="anchor" href="#%e9%9d%99%e6%80%81-web-server-soeasy">#</a>静态 web server (so::easy)</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;.&#34;</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
-<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;.&#34;</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
+</span></span></code></pre></div><ul>
 <li>
 <p>启动一个静态 web server，参数 root_dir 是 web server 的根目录。</p>
 </li>
@@ -943,62 +943,62 @@ xmake r http_serv
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// root dir of web server
-</span><span style="color:#998;font-style:italic"></span>
-<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
-    so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-}
-</code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// root dir of web server
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+</span></span><span style="display:flex;"><span>    so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
 <p>co/http 使用 <a href="../../flag/">co/flag</a> 定义配置项，下面列出的是 co/http 内部定义的 flag。</p>
 <h3 id="http_conn_timeout"><a class="anchor" href="#http_conn_timeout">#</a>http_conn_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_conn_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 connect timeout in ms for http client&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_conn_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 connect timeout in ms for http client&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Client 的连接超时时间，单位为毫秒。</li>
 </ul>
 <h3 id="http_timeout"><a class="anchor" href="#http_timeout">#</a>http_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send or recv timeout in ms for http client&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send or recv timeout in ms for http client&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Client 接收、发送数据的超时时间 (libcurl 内部并不区分接收与发送超时时间)，单位为毫秒。</li>
 </ul>
 <h3 id="http_recv_timeout"><a class="anchor" href="#http_recv_timeout">#</a>http_recv_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_recv_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 recv timeout in ms for http server&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_recv_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 recv timeout in ms for http server&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 接收超时时间，单位为毫秒。</li>
 </ul>
 <h3 id="http_send_timeout"><a class="anchor" href="#http_send_timeout">#</a>http_send_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_send_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send timeout in ms for http server&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_send_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send timeout in ms for http server&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 发送超时时间，单位为毫秒。</li>
 </ul>
 <h3 id="http_conn_idle_sec"><a class="anchor" href="#http_conn_idle_sec">#</a>http_conn_idle_sec</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 http server may close the con...&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 http server may close the con...&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 保持空闲连接的超时时间，单位为秒，server 在此时间内，若未收到客户端的数据，则可能会关闭该连接。</li>
 </ul>
 <h3 id="http_log"><a class="anchor" href="#http_log">#</a>http_log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_bool(http_log, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;#2 enable http server log if true&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(http_log, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;#2 enable http server log if true&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 是否打印日志，默认为 true。</li>
 <li>http::Server 中的日志会打印 HTTP 请求或响应的头部。</li>
 </ul>
 <h3 id="http_max_idle_conn"><a class="anchor" href="#http_max_idle_conn">#</a>http_max_idle_conn</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_max_idle_conn, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#2 max idle connections for http server&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_idle_conn, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#2 max idle connections for http server&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 最大空闲连接数，超过此数量时，会关闭部分空闲连接。</li>
 </ul>
 <h3 id="http_max_body_size"><a class="anchor" href="#http_max_body_size">#</a>http_max_body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_max_body_size, <span style="color:#099">8</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#2 max size of http body, default: 8M&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_body_size, <span style="color:#099">8</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#2 max size of http body, default: 8M&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 支持的最大 body 长度，默认为 8M。</li>
 </ul>
 <h3 id="http_max_header_size"><a class="anchor" href="#http_max_header_size">#</a>http_max_header_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">DEF_uint32(http_max_header_size, <span style="color:#099">4096</span>, <span style="color:#d14">&#34;#2 max size of http header&#34;</span>);
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_header_size, <span style="color:#099">4096</span>, <span style="color:#d14">&#34;#2 max size of http header&#34;</span>);
+</span></span></code></pre></div><ul>
 <li>http::Server 支持的最大 HTTP 头部(整个头部)长度，默认为 4k。</li>
 </ul>
 </article>
