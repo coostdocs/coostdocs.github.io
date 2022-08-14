@@ -19,7 +19,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-08-14T10:00:21+08:00" />
+<meta property="article:modified_time" content="2022-08-14T17:23:52+08:00" />
 
 <title>协程 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -27,7 +27,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/coroutine/" title="Coroutine">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.65ff9629d49ad598ee5798074b1e9646d4aeb391572e95490c80a7638e6886c2.js" integrity="sha256-Zf&#43;WKdSa1ZjuV5gHSx6WRtSus5FXLpVJDICnY45ohsI=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.765f471d26de6729564055c5bde5488c06427a4c8c1e50289c421b88ccbfefb5.js" integrity="sha256-dl9HHSbeZylWQFXFveVIjAZCekyMHlAonEIbiMy/77U=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -558,6 +558,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
             <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
@@ -800,7 +803,25 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
+</span></span></code></pre></div><h3 id="cocoroutine"><a class="anchor" href="#cocoroutine">#</a>co::coroutine</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">coroutine</span>();
+</span></span></code></pre></div><ul>
+<li>返回当前的 coroutine 指针，若在非协程中调用此函数，则返回值是 NULL。</li>
+<li>此函数的返回值，可作为 <a href="#coresume">co::resume()</a> 的参数，用于唤醒协程。</li>
+</ul>
+<h3 id="coresume"><a class="anchor" href="#coresume">#</a>co::resume</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resume</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p);
+</span></span></code></pre></div><ul>
+<li>唤醒指定的协程，参数 <code>p</code> 是 <a href="#cocoroutine">co::coroutine()</a> 的返回值。</li>
+<li>此函数是线程安全的，可在任意地方调用。</li>
+</ul>
+<h3 id="coyield"><a class="anchor" href="#coyield">#</a>co::yield</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">yield</span>();
+</span></span></code></pre></div><ul>
+<li>挂起当前协程，必须在协程中调用。</li>
+<li>此函数配合 <a href="#cocoroutine">co::coroutine()</a> 与 <a href="#coresume">co::resume()</a>，可以手动控制协程的调度，详情参考 <a href="https://github.com/idealvin/coost/blob/master/test/yield.cc">test/yield.cc</a>。</li>
+</ul>
+<h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">scheduler</span>();
 </span></span></code></pre></div><ul>
 <li>返回当前线程的 scheduler 指针，如果当前线程不是调度线程，返回值是 NULL。</li>
@@ -1723,7 +1744,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/f28e41e2bba12e0acdbbb6476cb4ab973dacc648" title='最后修改者 idealvin | August 14, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/8f91caf0a938c19fe549b8d0fdd1771a2d67c525" title='最后修改者 idealvin | August 14, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
       <span>August 14, 2022</span>
     </a>
@@ -1806,6 +1827,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
             <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>

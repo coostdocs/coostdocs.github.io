@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-08-14T10:00:21+08:00" />
+<meta property="article:modified_time" content="2022-08-14T17:23:52+08:00" />
 
 <title>Coroutine | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/coroutine/" title="协程">
 <link rel="stylesheet" href="../../../book.min.0608a3570dae40fa4b3de520d6a873cc9855bb4cb5001c4b16e95a226b84aff8.css" integrity="sha256-BgijVw2uQPpLPeUg1qhzzJhVu0y1ABxLFulaImuEr/g=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.ad19bb358d87c9f483dcc45b1a95b26dfd21cac6da569ba83429c3eb14116a47.js" integrity="sha256-rRm7NY2HyfSD3MRbGpWybf0hysbaVpuoNCnD6xQRakc=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.b69c1cb528c525b6ec91a6b3fabc25e400a1d7287f91107616e45c71b3abd1c2.js" integrity="sha256-tpwctSjFJbbskaaz&#43;rwl5ACh1yh/kRB2FuRccbOr0cI=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -550,6 +550,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
             <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
@@ -797,7 +800,25 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>     });
 </span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
+</span></span></code></pre></div><h3 id="cocoroutine"><a class="anchor" href="#cocoroutine">#</a>co::coroutine</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">coroutine</span>();
+</span></span></code></pre></div><ul>
+<li>Get the current coroutine pointer. If it is not called in coroutine, the return value is NULL.</li>
+<li>The return value of this function can be passed to <a href="#coresume">co::resume()</a> to wake up the coroutine.</li>
+</ul>
+<h3 id="coresume"><a class="anchor" href="#coresume">#</a>co::resume</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resume</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p);
+</span></span></code></pre></div><ul>
+<li>Wake up the specified coroutine, the parameter <code>p</code> is the return value of <a href="#cocoroutine">co::coroutine()</a>.</li>
+<li>This function is thread-safe and can be called anywhere.</li>
+</ul>
+<h3 id="coyield"><a class="anchor" href="#coyield">#</a>co::yield</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">yield</span>();
+</span></span></code></pre></div><ul>
+<li>Suspend the current coroutine, must be called in a coroutine.</li>
+<li>This function can be used with <a href="#cocoroutine">co::coroutine()</a> and <a href="#coresume">co::resume()</a> to manually control the scheduling of coroutines. See <a href="https://github.com/idealvin/coost/blob/master/test/yield.cc">test/yield.cc</a> for details.</li>
+</ul>
+<h3 id="coscheduler"><a class="anchor" href="#coscheduler">#</a>co::scheduler</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Scheduler<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">scheduler</span>();
 </span></span></code></pre></div><ul>
 <li>Return the scheduler pointer of the current thread. If the current thread is not a scheduling thread, the return value is NULL.</li>
@@ -1712,7 +1733,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/f28e41e2bba12e0acdbbb6476cb4ab973dacc648" title='Last modified by idealvin | August 14, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/8f91caf0a938c19fe549b8d0fdd1771a2d67c525" title='Last modified by idealvin | August 14, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
       <span>August 14, 2022</span>
     </a>
@@ -1795,6 +1816,9 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
             <li><a href="#go">go</a></li>
             <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
             <li><a href="#coscheduler">co::scheduler</a></li>
             <li><a href="#coschedulers">co::schedulers</a></li>
             <li><a href="#conext_scheduler">co::next_scheduler</a></li>
