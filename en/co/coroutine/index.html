@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-08-14T17:23:52+08:00" />
+<meta property="article:modified_time" content="2022-10-08T20:31:26+08:00" />
 
 <title>Coroutine | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -704,7 +704,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/co.h">co/co.h</a>.</p>
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
 <h2 id="basic-concepts"><a class="anchor" href="#basic-concepts">#</a>Basic concepts</h2>
 <ul>
 <li>Coroutines are lightweight scheduling units that run in threads.</li>
@@ -1521,7 +1521,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span></code></pre></div><ul>
 <li>Constructor, linux and mac platforms only provide the first version, windows platform also provides the second version.</li>
 <li>In the first version, the <strong>parameter fd is a non-blocking socket</strong>, and the parameter ev is an I/O event, which is one of co::ev_read or co::ev_write. Calling the wait() method will wait for the I/O event specified by ev on the socket. When wait() returns successfully, users need to call recv, send or other I/O functions to complete the I/O operation. <strong>On windows, fd must be a TCP socket</strong>(For UDP, it is difficult to simulate the behavior of epoll or kqueue with IOCP).</li>
-<li>The second version is only applicable to windows. Unlike the first version, fd can be a UDP socket, but users must manually call WSARecvFrom, WSASendTo or other functions to post an overlapped I/O operation to IOCP, and then call the wait() method. When wait() returns successfully, it means that IOCP has completed the I/O operation. See details in source code of <a href="https://github.com/idealvin/co/blob/master/include/co/co/io_event.h">co::IoEvent</a>, and implementation of <a href="https://github.com/idealvin/co/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto</a> on windows.</li>
+<li>The second version is only applicable to windows. Unlike the first version, fd can be a UDP socket, but users must manually call WSARecvFrom, WSASendTo or other functions to post an overlapped I/O operation to IOCP, and then call the wait() method. When wait() returns successfully, it means that IOCP has completed the I/O operation. See details in source code of <a href="https://github.com/idealvin/coost/blob/master/include/co/co/io_event.h">co::IoEvent</a>, and implementation of <a href="https://github.com/idealvin/coost/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto</a> on windows.</li>
 </ul>
 <h3 id="ioeventioevent-1"><a class="anchor" href="#ioeventioevent-1">#</a>IoEvent::~IoEvent</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>IoEvent();
@@ -1616,7 +1616,7 @@ https://github.com/alex-shpak/hugo-book
 <li>In one coroutine, call <code>co::accept()</code> to accept client connections.</li>
 <li>When a connection is accepted, create a new coroutine to handle the connection.</li>
 <li><code>on_connection()</code> is the coroutine function for handling connections, receiving, processing and sending data are performed in a synchronous manner in the coroutine, and we do not need any asynchronous callback.</li>
-<li>For complete implementation, please refer to <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">Test code in CO</a>.</li>
+<li>For complete implementation, please refer to <a href="https://github.com/idealvin/coost/blob/master/test/so/tcp2.cc">Test code in CO</a>.</li>
 </ul>
 <h3 id="network-model-for-tcp-client"><a class="anchor" href="#network-model-for-tcp-client">#</a>Network model for TCP client</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
@@ -1635,7 +1635,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Connecting, sending, recving and processing data are performed in a synchronous manner in the coroutine.</p>
 </li>
 <li>
-<p>For complete implementation, please refer to <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">Test code in CO</a>.</p>
+<p>For complete implementation, please refer to <a href="https://github.com/idealvin/coost/blob/master/test/so/tcp2.cc">Test code in CO</a>.</p>
 </li>
 </ul>
 <p>In actual applications, <strong>co::Pool</strong> is generally used as a connection pool to avoid creating too many connections:</p>
@@ -1733,9 +1733,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/8f91caf0a938c19fe549b8d0fdd1771a2d67c525" title='Last modified by idealvin | August 14, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9d78b93ef945a4034fb52cf51ffcb5aba7f50ad1" title='Last modified by idealvin | October 8, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 14, 2022</span>
+      <span>October 8, 2022</span>
     </a>
   </div>
 

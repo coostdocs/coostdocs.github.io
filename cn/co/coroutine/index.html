@@ -19,7 +19,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/coroutine/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-08-14T17:23:52+08:00" />
+<meta property="article:modified_time" content="2022-10-08T20:31:26+08:00" />
 
 <title>协程 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -27,7 +27,7 @@ co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/coroutine/" title="Coroutine">
 <link rel="stylesheet" href="../../../book.min.34012a023bb86e99e9c5d444ca11c3e38625a1b8f226bf07e2360827bb149b14.css" integrity="sha256-NAEqAju4bpnpxdREyhHD44YlobjyJr8H4jYIJ7sUmxQ=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.f2f8f9cac63bf8044b0a1ec22aaecb38a4f829ded1cce9ae4558d3741a7849f5.js" integrity="sha256-8vj5ysY7&#43;ARLCh7CKq7LOKT4Kd7RzOmuRVjTdBp4SfU=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.5b7c06f80dd8db8250427a71c09e355bde6659aec24f906ad307b215cf93ed99.js" integrity="sha256-W3wG&#43;A3Y24JQQnpxwJ41W95mWa7CT5Bq0weyFc&#43;T7Zk=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -746,7 +746,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/co.h">co/co.h</a>.</p>
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
 <h2 id="基本概念"><a class="anchor" href="#%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5">#</a>基本概念</h2>
 <ul>
 <li>协程是运行于线程中的轻量级调度单位。</li>
@@ -1566,7 +1566,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span></code></pre></div><ul>
 <li>构造函数，linux 与 mac 平台只提供第 1 个版本，windows 平台还提供第 2 个版本。</li>
 <li>第 1 个版本中，<strong>参数 fd 是一个 non-blocking socket</strong>，参数 ev 是 I/O 事件类型，只能是 co::ev_read 或 co::ev_write 中的一种。调用 wait() 方法会在 socket 上等待 ev 指定的 I/O 事件，wait() 成功返回时，需要用户调用 recv, send 等函数完成 I/O 操作。<strong>在 windows 平台，fd 必须是 TCP socket</strong>(对于 UDP，很难用 IOCP 模拟 epoll 或 kqueue 的行为)。</li>
-<li>第 2 个版本仅适用于 windows，与第 1 个版本不同，fd 可以是 UDP socket，但用户需要手动调用 WSARecvFrom, WSASendTo 等函数向 IOCP 发送 overlapped I/O 请求，然后调用 wait() 方法，当 wait() 成功返回时，表示 IOCP 已经帮用户完成了 I/O 操作。具体的用法此处不详述，代码中有详细的注释，建议直接参考 <a href="https://github.com/idealvin/co/blob/master/include/co/co/io_event.h">co::IoEvent 的源码</a>，以及 windows 上 <a href="https://github.com/idealvin/co/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto 的实现</a>。</li>
+<li>第 2 个版本仅适用于 windows，与第 1 个版本不同，fd 可以是 UDP socket，但用户需要手动调用 WSARecvFrom, WSASendTo 等函数向 IOCP 发送 overlapped I/O 请求，然后调用 wait() 方法，当 wait() 成功返回时，表示 IOCP 已经帮用户完成了 I/O 操作。具体的用法此处不详述，代码中有详细的注释，建议直接参考 <a href="https://github.com/idealvin/coost/blob/master/include/co/co/io_event.h">co::IoEvent 的源码</a>，以及 windows 上 <a href="https://github.com/idealvin/coost/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto 的实现</a>。</li>
 </ul>
 <h3 id="ioeventioevent-1"><a class="anchor" href="#ioeventioevent-1">#</a>IoEvent::~IoEvent</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>IoEvent();
@@ -1662,7 +1662,7 @@ https://github.com/alex-shpak/hugo-book
 <li>在一个协程中，调用 <code>co::accept()</code> 接受客户端连接。</li>
 <li>有连接到来时，创建一个新的协程，在协程中处理连接上的数据。</li>
 <li><code>on_connection()</code> 是处理连接的协程函数，接收、处理与发送数据，在该协程中以完全同步的方式进行，不需要任何异步回调。</li>
-<li>完整的实现可以参考 <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">co 中的测试代码</a>。</li>
+<li>完整的实现可以参考 <a href="https://github.com/idealvin/coost/blob/master/test/so/tcp2.cc">co 中的测试代码</a>。</li>
 </ul>
 <h3 id="客户端网络模型"><a class="anchor" href="#%e5%ae%a2%e6%88%b7%e7%ab%af%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b">#</a>客户端网络模型</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
@@ -1678,7 +1678,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>go(client_fun);
 </span></span></code></pre></div><ul>
 <li>建立连接，发送、接收、处理数据，在协程中以完全同步的方式进行。</li>
-<li>完整的实现可以参考 <a href="https://github.com/idealvin/co/blob/master/test/so/tcp2.cc">co 中的测试代码</a>。</li>
+<li>完整的实现可以参考 <a href="https://github.com/idealvin/coost/blob/master/test/so/tcp2.cc">co 中的测试代码</a>。</li>
 </ul>
 <p>实际应用中，一般使用 <strong>co::Pool</strong> 作为连接池，以避免创建过多的连接：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>Pool pool;
@@ -1775,9 +1775,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/8f91caf0a938c19fe549b8d0fdd1771a2d67c525" title='最后修改者 idealvin | August 14, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9d78b93ef945a4034fb52cf51ffcb5aba7f50ad1" title='最后修改者 idealvin | October 8, 2022' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 14, 2022</span>
+      <span>October 8, 2022</span>
     </a>
   </div>
 
