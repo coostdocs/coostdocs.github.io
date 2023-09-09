@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/fs.h.
+The fs module implements common file system operations. It is recommended to use / uniformly as the path separator on different platforms.
+#Metadata operations #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path); Check whether the file exists, the parameter path is the path of a file or directory. #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path); Get the file size.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="File System" />
+<meta property="og:description" content="include: co/fs.h.
+The fs module implements common file system operations. It is recommended to use / uniformly as the path separator on different platforms.
+#Metadata operations #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path); Check whether the file exists, the parameter path is the path of a file or directory. #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path); Get the file size." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/other/fs/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>File System | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/fs/" title="文件系统">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle" checked />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class=" active">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>File System</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#metadata-operations">Metadata operations</a>
+          <ul>
+            <li><a href="#fsexists">fs::exists</a></li>
+            <li><a href="#fsfsize">fs::fsize</a></li>
+            <li><a href="#fsisdir">fs::isdir</a></li>
+            <li><a href="#fsmtime">fs::mtime</a></li>
+            <li><a href="#fsmkdir">fs::mkdir</a></li>
+            <li><a href="#fsremove">fs::remove</a></li>
+            <li><a href="#fsrename">fs::rename</a></li>
+            <li><a href="#fssymlink">fs::symlink</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsfile">fs::file</a>
+          <ul>
+            <li><a href="#filefile">file::file</a></li>
+            <li><a href="#filefile-1">file::~file</a></li>
+            <li><a href="#fileclose">file::close</a></li>
+            <li><a href="#fileexists">file::exists</a></li>
+            <li><a href="#fileopen">file::open</a></li>
+            <li><a href="#fileoperator-bool">file::operator bool</a></li>
+            <li><a href="#fileoperator">file::operator!</a></li>
+            <li><a href="#filepath">file::path</a></li>
+            <li><a href="#fileread">file::read</a></li>
+            <li><a href="#fileseek">file::seek</a></li>
+            <li><a href="#filesize">file::size</a></li>
+            <li><a href="#filewrite">file::write</a></li>
+            <li><a href="#example">Example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsfstream">fs::fstream</a>
+          <ul>
+            <li><a href="#fstreamfstream">fstream::fstream</a></li>
+            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
+            <li><a href="#fstreamappend">fstream::append</a></li>
+            <li><a href="#fstreamclose">fstream::close</a></li>
+            <li><a href="#fstreamflush">fstream::flush</a></li>
+            <li><a href="#fstreamopen">fstream::open</a></li>
+            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
+            <li><a href="#fstreamoperator">fstream::operator!</a></li>
+            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
+            <li><a href="#fstreamreserve">fstream::reserve</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsdir">fs::dir</a>
+          <ul>
+            <li><a href="#dirdir">dir::dir</a></li>
+            <li><a href="#dirdir-1">dir::~dir</a></li>
+            <li><a href="#dirall">dir::all</a></li>
+            <li><a href="#dirbegin">dir::begin</a></li>
+            <li><a href="#dirclose">dir::close</a></li>
+            <li><a href="#dirend">dir::end</a></li>
+            <li><a href="#diriterator">dir::iterator</a>
+              <ul>
+                <li><a href="#operator">operator*</a></li>
+                <li><a href="#operator-1">operator++</a></li>
+                <li><a href="#operator-2">operator==</a></li>
+                <li><a href="#operator-3">operator!=</a></li>
+              </ul>
+            </li>
+            <li><a href="#diropen">dir::open</a></li>
+            <li><a href="#dirpath">dir::path</a></li>
+            <li><a href="#code-example-2">code example</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/fs.h">co/fs.h</a>.</p>
+<p>The <strong>fs</strong> module implements common file system operations. It is recommended to use <code>/</code> uniformly as the path separator on different platforms.</p>
+<h2 id="metadata-operations"><a class="anchor" href="#metadata-operations">#</a>Metadata operations</h2>
+<h3 id="fsexists"><a class="anchor" href="#fsexists">#</a>fs::exists</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>Check whether the file exists, the parameter <code>path</code> is the path of a file or directory.</li>
+</ul>
+<h3 id="fsfsize"><a class="anchor" href="#fsfsize">#</a>fs::fsize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">fsize</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>Get the file size. -1 will be returned if the file does not exist.</li>
+</ul>
+<h3 id="fsisdir"><a class="anchor" href="#fsisdir">#</a>fs::isdir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">isdir</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>Check whether the file is a directory, if <code>path</code> exists and is a directory, it returns true, otherwise it returns false.</li>
+</ul>
+<h3 id="fsmtime"><a class="anchor" href="#fsmtime">#</a>fs::mtime</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">mtime</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>Get the modification time of the file, return -1 when the file does not exist.</li>
+</ul>
+<h3 id="fsmkdir"><a class="anchor" href="#fsmkdir">#</a>fs::mkdir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">mkdir</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> p<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span></code></pre></div><ul>
+<li>Create a directory, the parameter <code>p</code> indicates whether to create the entire path.</li>
+<li>The parameter <code>p</code> is false by default, and the directory will be created only when the parent directory exists. When <code>p</code> is true, it is equivalent to <code>mkdir -p</code>, and the parent directory will be created first if it does not exist.</li>
+</ul>
+<h3 id="fsremove"><a class="anchor" href="#fsremove">#</a>fs::remove</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">remove</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">bool</span> rf<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span></code></pre></div><ul>
+<li>Delete a file or directory.</li>
+<li>When <code>path</code> is a directory, the parameter <code>rf</code> indicates whether to force deletion, the default is false, and only delete empty directory. If <code>rf</code> is true, it is equivalent to <code>rm -rf</code>, non-empty directory will also be deleted.</li>
+<li>When <code>path</code> is a file, the parameter <code>rf</code> will be ignored.</li>
+</ul>
+<h3 id="fsrename"><a class="anchor" href="#fsrename">#</a>fs::rename</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> from, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> from, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> to);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">rename</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> from, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> to);
+</span></span></code></pre></div><ul>
+<li>Rename the file or directory, the parameter <code>from</code> is the original path, and the parameter <code>to</code> is the new path.</li>
+<li>When <code>to</code> is a directory, windows requires <code>to</code> and <code>from</code> to be under the same drive.</li>
+<li>For details, please refer to <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefilea">win32/MoveFile</a>, <a href="https://www.man7.org/linux/man-pages/man2/rename.2.html">linux/rename</a>.</li>
+</ul>
+<h3 id="fssymlink"><a class="anchor" href="#fssymlink">#</a>fs::symlink</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> dst, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> lnk);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> dst, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> lnk);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">symlink</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> dst, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> lnk);
+</span></span></code></pre></div><ul>
+<li>Create a soft link, the parameter <code>dst</code> is the path of the target file or directory, and the parameter <code>lnk</code> is the path of the soft link.</li>
+<li>This function first calls <code>fs::remove(lnk)</code> to delete the old soft link, and then create a new one.</li>
+<li>On windows, this function requires admin permission.</li>
+</ul>
+<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>exists(path); <span style="color:#998;font-style:italic">// Determine whether the file exists
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>isdir(path);  <span style="color:#998;font-style:italic">// Determine whether the file is a directory
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>int64 x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>mtime(path); <span style="color:#998;font-style:italic">// Get the modification time of the file
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>int64 x <span style="color:#000;font-weight:bold">=</span> fs<span style="color:#000;font-weight:bold">::</span>fsize(path); <span style="color:#998;font-style:italic">// Get the size of the file
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>mkdir(<span style="color:#d14">&#34;a/b&#34;</span>);          <span style="color:#998;font-style:italic">// mkdir a/b
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>mkdir(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#0086b3">true</span>);    <span style="color:#998;font-style:italic">// mkdir -p a/b
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;x/x.txt&#34;</span>);     <span style="color:#998;font-style:italic">// rm x/x.txt
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;a/b&#34;</span>);         <span style="color:#998;font-style:italic">// rmdir a/b
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>remove(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#0086b3">true</span>);   <span style="color:#998;font-style:italic">// rm -rf a/b
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>rename(<span style="color:#d14">&#34;a/b&#34;</span>, <span style="color:#d14">&#34;a/c&#34;</span>);  <span style="color:#998;font-style:italic">// mv a/b a/c
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>symlink(<span style="color:#d14">&#34;/usr&#34;</span>, <span style="color:#d14">&#34;x&#34;</span>);  <span style="color:#998;font-style:italic">// ln -s /usr x
+</span></span></span></code></pre></div><h2 id="fsfile"><a class="anchor" href="#fsfile">#</a>fs::file</h2>
+<p>The <strong>fs::file</strong> class implements the basic read and write operations of files. Unlike <code>fread</code> and <code>fwrite</code>, it has no cache, but reads and writes files directly.</p>
+<h3 id="filefile"><a class="anchor" href="#filefile">#</a>file::file</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> file();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> file(file<span style="color:#000;font-weight:bold">&amp;&amp;</span> f);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> file(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> file(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> file(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span></code></pre></div><ul>
+<li>1, the default constructor, which creates an empty file object without opening a file.</li>
+<li>2, the move constructor.</li>
+<li>3-5, open the file specified by <code>path</code>, and the parameter <code>mode</code> is the open mode.</li>
+<li><code>mode</code> is one of <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'m'</code> or <code>'+'</code>, r for read, w for write, a for append, m for modify, + for both read and write.</li>
+<li>When mode is <code>'r'</code>, the file must exist, otherwise the file is not opened.</li>
+<li>When mode is <code>'w'</code>, a new file will be created if it does not exist, and the file will be truncated if it already exists.</li>
+<li>When mode is <code>'a'</code>, <code>'m'</code> or <code>'+'</code>, a new file will be created when it does not exist, and the file will not be truncated if it already exists.</li>
+<li><code>'+'</code> was added since v3.0. In this mode, read and write share the file pointer, therefore, you may need call the <a href="#fileseek">seek()</a> method to set the offset before the read or write operation.</li>
+</ul>
+<h3 id="filefile-1"><a class="anchor" href="#filefile-1">#</a>file::~file</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>file();
+</span></span></code></pre></div><ul>
+<li>Destructor, close the previously opened file and release related resources.</li>
+</ul>
+<h3 id="fileclose"><a class="anchor" href="#fileclose">#</a>file::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</span></span></code></pre></div><ul>
+<li>Close the file, this method will be automatically called in the destructor.</li>
+<li>It is safe to call this method multiple times.</li>
+</ul>
+<h3 id="fileexists"><a class="anchor" href="#fileexists">#</a>file::exists</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">exists</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the file exists.</li>
+<li>The file may be deleted by other processes. This method can be used to determine whether the previously opened file still exists.</li>
+</ul>
+<h3 id="fileopen"><a class="anchor" href="#fileopen">#</a>file::open</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span></code></pre></div><ul>
+<li>This method opens the specified file, <code>mode</code> is the open mode, see the description in <a href="#filefile">Constructor</a>.</li>
+<li>This method will close the previously opened file before opening a new file.</li>
+</ul>
+<h3 id="fileoperator-bool"><a class="anchor" href="#fileoperator-bool">#</a>file::operator bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Convert <code>fs::file</code> to bool type, return true when the file is successfully opened, otherwise return false.</li>
+</ul>
+<h3 id="fileoperator"><a class="anchor" href="#fileoperator">#</a>file::operator!</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>It returns true when the file is not opened, otherwise it returns false.</li>
+</ul>
+<h3 id="filepath"><a class="anchor" href="#filepath">#</a>file::path</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">path</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Return path of the file.</li>
+<li>If the file object is not associated with any file, return empty string <code>&quot;&quot;</code>.</li>
+</ul>
+<h3 id="fileread"><a class="anchor" href="#fileread">#</a>file::read</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t read(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fastring read(size_t n);
+</span></span></code></pre></div><ul>
+<li>1, reads data into the specified buffer, <code>n</code> is the number of bytes to be read, and returns the number of bytes actually read.</li>
+<li>2, similar to the first one, but returns a fastring, where <code>n</code> is the number of bytes to be read.</li>
+<li>The actual bytes read may be less than <code>n</code>, when it reaches the end of the file or an error occurs.</li>
+</ul>
+<h3 id="fileseek"><a class="anchor" href="#fileseek">#</a>file::seek</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">seek</span>(int64 off, <span style="color:#458;font-weight:bold">int</span> whence<span style="color:#000;font-weight:bold">=</span>seek_beg);
+</span></span></code></pre></div><ul>
+<li>Set the current position of the file pointer, the parameter <code>off</code> is the offset position, and the parameter <code>whence</code> is the starting position, which can be one of <code>file::seek_beg</code>, <code>file::seek_cur</code>, <code>file::seek_end</code>.</li>
+<li>This method is not valid for files opened with mode <code>'a'</code>.</li>
+</ul>
+<h3 id="filesize"><a class="anchor" href="#filesize">#</a>file::size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>int64 <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns size of the file. When the file is not opened, return -1.</li>
+</ul>
+<h3 id="filewrite"><a class="anchor" href="#filewrite">#</a>file::write</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t write(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t write(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t write(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t write(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> size_t write(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>1, writes <code>n</code> bytes.</li>
+<li>2-4, write a string.</li>
+<li>5, writes a single character.</li>
+<li>This method returns the number of bytes actually written. When the disk space is insufficient or other error occurs, the return value may be less than <code>n</code>.</li>
+<li>This method has already handled <code>EINTR</code> error internally.</li>
+</ul>
+<h3 id="example"><a class="anchor" href="#example">#</a>Example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>file f;               <span style="color:#998;font-style:italic">// empty file
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>file f(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;w&#39;</span>);    <span style="color:#998;font-style:italic">// write mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;m&#39;</span>);        <span style="color:#998;font-style:italic">// reopen with modify mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;r&#39;</span>);        <span style="color:#998;font-style:italic">// read mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (f) f.read(buf, <span style="color:#099">512</span>);  <span style="color:#998;font-style:italic">// read at most 512 bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring s <span style="color:#000;font-weight:bold">=</span> f.read(<span style="color:#099">32</span>);  <span style="color:#998;font-style:italic">// read at most 32 bytes and return fastring
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;a&#39;</span>);        <span style="color:#998;font-style:italic">// append mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span>(f) f.write(buf, <span style="color:#099">32</span>);   <span style="color:#998;font-style:italic">// write 32 bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#34;hello&#34;</span>);         <span style="color:#998;font-style:italic">// write a C string
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#39;c&#39;</span>);             <span style="color:#998;font-style:italic">// write a single character
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>f.open(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#d14">&#39;+&#39;</span>);        <span style="color:#998;font-style:italic">// read/write mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.seek(<span style="color:#099">0</span>);                <span style="color:#998;font-style:italic">// seek to beginning before write
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.write(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>f.seek(<span style="color:#099">0</span>);                <span style="color:#998;font-style:italic">// seek to beginning before read 
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>f.read(buf, <span style="color:#099">8</span>);
+</span></span><span style="display:flex;"><span>f.close();                <span style="color:#998;font-style:italic">// close the file
+</span></span></span></code></pre></div><h2 id="fsfstream"><a class="anchor" href="#fsfstream">#</a>fs::fstream</h2>
+<p><a href="#fsfile">fs::file</a> does not support caching, and the performance of writing small files is poor. So coost implements the <strong>fs::fstream</strong> class which supports caching, it is designed for writing files and does not support read operations.</p>
+<h3 id="fstreamfstream"><a class="anchor" href="#fstreamfstream">#</a>fstream::fstream</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fstream();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fstream(fstream<span style="color:#000;font-weight:bold">&amp;&amp;</span> fs);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> <span style="color:#000;font-weight:bold">explicit</span> fstream(size_t cap);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> fstream(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> fstream(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> fstream(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode, size_t cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8192</span>);
+</span></span></code></pre></div><ul>
+<li>1, the default constructor, and the internal cache size is 8k.</li>
+<li>2, the move constructor.</li>
+<li>3, specify the size of the cache to <code>cap</code>.</li>
+<li>4-6, open the specified file, <code>cap</code> is the cache size, and the default is 8k.</li>
+<li>The parameter <code>mode</code> is one of <code>'w'</code> or <code>'a'</code>, and the read mode is not supported.</li>
+<li>When mode is <code>'w'</code>, the file is automatically created when it does not exist, and the file data is cleared if it already exists.</li>
+<li>When mode is <code>'a'</code>, the file will be created automatically if it does not exist, and the file data will not be cleared if it already exists.</li>
+</ul>
+<h3 id="fstreamfstream-1"><a class="anchor" href="#fstreamfstream-1">#</a>fstream::~fstream</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>fstream();
+</span></span></code></pre></div><ul>
+<li>Destructor, close the file, release related resources.</li>
+</ul>
+<h3 id="fstreamappend"><a class="anchor" href="#fstreamappend">#</a>fstream::append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fstream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span></code></pre></div><ul>
+<li>Append <code>n</code> bytes to the file.</li>
+</ul>
+<h3 id="fstreamclose"><a class="anchor" href="#fstreamclose">#</a>fstream::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</span></span></code></pre></div><ul>
+<li>Close the file, this method will be automatically called in the destructor.</li>
+<li>It is safe to call this method multiple times.</li>
+</ul>
+<h3 id="fstreamflush"><a class="anchor" href="#fstreamflush">#</a>fstream::flush</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">flush</span>();
+</span></span></code></pre></div><ul>
+<li>Write data in the cache to the file.</li>
+</ul>
+<h3 id="fstreamopen"><a class="anchor" href="#fstreamopen">#</a>fstream::open</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path, <span style="color:#458;font-weight:bold">char</span> mode);
+</span></span></code></pre></div><ul>
+<li>Open the specified file.</li>
+<li>This method will close the previously opened file before opening a new file.</li>
+</ul>
+<h3 id="fstreamoperator-bool"><a class="anchor" href="#fstreamoperator-bool">#</a>fstream::operator bool</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Convert <code>fs::fstream</code> to bool type, return true when the file is successfully opened, otherwise return false.</li>
+</ul>
+<h3 id="fstreamoperator"><a class="anchor" href="#fstreamoperator">#</a>fstream::operator!</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>It returns true when the file is not opened, otherwise it returns false.</li>
+</ul>
+<h3 id="fstreamoperator-1"><a class="anchor" href="#fstreamoperator-1">#</a>fstream::operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> fstream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(T v);
+</span></span></code></pre></div><ul>
+<li>1-3, the parameter <code>s</code> is a string type.</li>
+<li>4, the parameter <code>s</code> is a fastream.</li>
+<li>5, <code>T</code> can be any built-in type, such as bool, char, int, double, etc.</li>
+</ul>
+<h3 id="fstreamreserve"><a class="anchor" href="#fstreamreserve">#</a>fstream::reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>Adjust the cache capacity, the parameter <code>n</code> is the capacity. If <code>n</code> is less than the previous capacity, the capacity remains unchanged.</li>
+</ul>
+<h3 id="code-example-1"><a class="anchor" href="#code-example-1">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>fstream s;                   <span style="color:#998;font-style:italic">// cache size: 8k
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#099">4096</span>);             <span style="color:#998;font-style:italic">// cache size: 4k
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&#39;a&#39;</span>);       <span style="color:#998;font-style:italic">// append mode, cache size: 8k
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fs<span style="color:#000;font-weight:bold">::</span>fstream s(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&#39;w&#39;</span>, <span style="color:#099">4096</span>); <span style="color:#998;font-style:italic">// write mode, cache size: 4k
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.reserve(<span style="color:#099">8192</span>);                 <span style="color:#998;font-style:italic">// make cache size at least 8k
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.open(<span style="color:#d14">&#34;path&#34;</span>,<span style="color:#d14">&#39;a&#39;</span>);              <span style="color:#998;font-style:italic">// open with append mode
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">if</span> (s) s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>; <span style="color:#998;font-style:italic">// operator&lt;&lt;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#099">5</span>);            <span style="color:#998;font-style:italic">// append
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.flush();                       <span style="color:#998;font-style:italic">// flush data in cache to file
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.close();                       <span style="color:#998;font-style:italic">// close the file
+</span></span></span></code></pre></div><h2 id="fsdir"><a class="anchor" href="#fsdir">#</a>fs::dir</h2>
+<p>The <strong>fs::dir</strong> class is added in v3.0.1, which is used to read directories.</p>
+<h3 id="dirdir"><a class="anchor" href="#dirdir">#</a>dir::dir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> dir();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> dir(dir<span style="color:#000;font-weight:bold">&amp;&amp;</span> d);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> <span style="color:#000;font-weight:bold">explicit</span> dir(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> <span style="color:#000;font-weight:bold">explicit</span> dir(<span style="color:#000;font-weight:bold">const</span> fasting<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> <span style="color:#000;font-weight:bold">explicit</span> dir(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>1, the default constructor, creates an empty dir object and does not open any directory.</li>
+<li>2, the move constructor.</li>
+<li>3-5, open the directory specified by <code>path</code>.</li>
+</ul>
+<h3 id="dirdir-1"><a class="anchor" href="#dirdir-1">#</a>dir::~dir</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>dir();
+</span></span></code></pre></div><ul>
+<li>Destructor, close the opened directory and release related resources.</li>
+</ul>
+<h3 id="dirall"><a class="anchor" href="#dirall">#</a>dir::all</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> all() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Read all items in the directory, <code>.</code> and <code>..</code> will be ignored.</li>
+</ul>
+<h3 id="dirbegin"><a class="anchor" href="#dirbegin">#</a>dir::begin</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the begin iterator.</li>
+</ul>
+<h3 id="dirclose"><a class="anchor" href="#dirclose">#</a>dir::close</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+</span></span></code></pre></div><ul>
+<li>Close the directory, it is automatically called in the destructor.</li>
+<li>It is safe to call this method multiple times.</li>
+</ul>
+<h3 id="dirend"><a class="anchor" href="#dirend">#</a>dir::end</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the end iterator.</li>
+</ul>
+<h3 id="diriterator"><a class="anchor" href="#diriterator">#</a>dir::iterator</h3>
+<p>The <code>dir::iterator</code> class is used to iterate through the directories opened in the dir object.</p>
+<h4 id="operator"><a class="anchor" href="#operator">#</a>operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fasting <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the file or directory name corresponding to the iterator.</li>
+</ul>
+<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator++</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">++</span>();
+</span></span></code></pre></div><ul>
+<li>Overload prefixed <code>++</code> operations.</li>
+</ul>
+<h4 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> iterator<span style="color:#000;font-weight:bold">&amp;</span> it) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Tests whether two iterators are equal.</li>
+</ul>
+<h4 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> iterator<span style="color:#000;font-weight:bold">&amp;</span> it) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Tests whether two iterators are not equal.</li>
+</ul>
+<h3 id="diropen"><a class="anchor" href="#diropen">#</a>dir::open</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> fasting<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">open</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> path);
+</span></span></code></pre></div><ul>
+<li>Open the directory specified by <code>path</code>, and close the previously opened directory before opening a new directory.</li>
+</ul>
+<h3 id="dirpath"><a class="anchor" href="#dirpath">#</a>dir::path</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">path</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns path of the directory. If the dir object is not associated with any directory, return empty string <code>&quot;&quot;</code> .</li>
+</ul>
+<h3 id="code-example-2"><a class="anchor" href="#code-example-2">#</a>code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fs<span style="color:#000;font-weight:bold">::</span>dir d(<span style="color:#d14">&#34;xx&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> v <span style="color:#000;font-weight:bold">=</span> d.all(); <span style="color:#998;font-style:italic">// read all subitems
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>d.open(<span style="color:#d14">&#34;abc&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">for</span> (<span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> d.begin(); it <span style="color:#000;font-weight:bold">!=</span> d.end(); <span style="color:#000;font-weight:bold">++</span>it) {
+</span></span><span style="display:flex;"><span>     cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#000;font-weight:bold">*</span>it <span style="color:#000;font-weight:bold">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/other/fs/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/other/fs.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#metadata-operations">Metadata operations</a>
+          <ul>
+            <li><a href="#fsexists">fs::exists</a></li>
+            <li><a href="#fsfsize">fs::fsize</a></li>
+            <li><a href="#fsisdir">fs::isdir</a></li>
+            <li><a href="#fsmtime">fs::mtime</a></li>
+            <li><a href="#fsmkdir">fs::mkdir</a></li>
+            <li><a href="#fsremove">fs::remove</a></li>
+            <li><a href="#fsrename">fs::rename</a></li>
+            <li><a href="#fssymlink">fs::symlink</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsfile">fs::file</a>
+          <ul>
+            <li><a href="#filefile">file::file</a></li>
+            <li><a href="#filefile-1">file::~file</a></li>
+            <li><a href="#fileclose">file::close</a></li>
+            <li><a href="#fileexists">file::exists</a></li>
+            <li><a href="#fileopen">file::open</a></li>
+            <li><a href="#fileoperator-bool">file::operator bool</a></li>
+            <li><a href="#fileoperator">file::operator!</a></li>
+            <li><a href="#filepath">file::path</a></li>
+            <li><a href="#fileread">file::read</a></li>
+            <li><a href="#fileseek">file::seek</a></li>
+            <li><a href="#filesize">file::size</a></li>
+            <li><a href="#filewrite">file::write</a></li>
+            <li><a href="#example">Example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsfstream">fs::fstream</a>
+          <ul>
+            <li><a href="#fstreamfstream">fstream::fstream</a></li>
+            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
+            <li><a href="#fstreamappend">fstream::append</a></li>
+            <li><a href="#fstreamclose">fstream::close</a></li>
+            <li><a href="#fstreamflush">fstream::flush</a></li>
+            <li><a href="#fstreamopen">fstream::open</a></li>
+            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
+            <li><a href="#fstreamoperator">fstream::operator!</a></li>
+            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
+            <li><a href="#fstreamreserve">fstream::reserve</a></li>
+            <li><a href="#code-example-1">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#fsdir">fs::dir</a>
+          <ul>
+            <li><a href="#dirdir">dir::dir</a></li>
+            <li><a href="#dirdir-1">dir::~dir</a></li>
+            <li><a href="#dirall">dir::all</a></li>
+            <li><a href="#dirbegin">dir::begin</a></li>
+            <li><a href="#dirclose">dir::close</a></li>
+            <li><a href="#dirend">dir::end</a></li>
+            <li><a href="#diriterator">dir::iterator</a>
+              <ul>
+                <li><a href="#operator">operator*</a></li>
+                <li><a href="#operator-1">operator++</a></li>
+                <li><a href="#operator-2">operator==</a></li>
+                <li><a href="#operator-3">operator!=</a></li>
+              </ul>
+            </li>
+            <li><a href="#diropen">dir::open</a></li>
+            <li><a href="#dirpath">dir::path</a></li>
+            <li><a href="#code-example-2">code example</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

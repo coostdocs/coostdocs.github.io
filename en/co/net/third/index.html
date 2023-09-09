@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#Use third-party network libraries in coroutines There are two ways to use third-party network libraries in coroutines:
+Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost. Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with co::io_event. #System API hook API hook simply intercepts system API requests.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Use third-party network libraries" />
+<meta property="og:description" content="#Use third-party network libraries in coroutines There are two ways to use third-party network libraries in coroutines:
+Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost. Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with co::io_event. #System API hook API hook simply intercepts system API requests." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/net/third/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>Use third-party network libraries | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/net/third/" title="使用三方网络库">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle" checked />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class=" active">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Use third-party network libraries</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#use-third-party-network-libraries-in-coroutines">Use third-party network libraries in coroutines</a>
+          <ul>
+            <li><a href="#system-api-hook">System API hook</a></li>
+            <li><a href="#using-non-blocking-apis">Using non-blocking APIs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="use-third-party-network-libraries-in-coroutines"><a class="anchor" href="#use-third-party-network-libraries-in-coroutines">#</a>Use third-party network libraries in coroutines</h2>
+<p>There are two ways to use third-party network libraries in coroutines:</p>
+<ul>
+<li>Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost.</li>
+<li>Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with <a href="../../concurrency/coroutine/io_event/">co::io_event</a>.</li>
+</ul>
+<h3 id="system-api-hook"><a class="anchor" href="#system-api-hook">#</a>System API hook</h3>
+<p>API hook simply intercepts system API requests. If the request is in coroutine and uses a blocking socket, modify the socket to non-blocking mode. When the socket is unreadable or unwritable, use <code>co::io_event</code> or the lower-level APIs in coost to wait for the I/O event. When the I/O event arrives, wake up the coroutine and call the system&rsquo;s native socket API to complete the I/O operation.</p>
+<h3 id="using-non-blocking-apis"><a class="anchor" href="#using-non-blocking-apis">#</a>Using non-blocking APIs</h3>
+<p>The following is the <code>recv</code> method implemented based on openssl&rsquo;s non-blocking API:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(S<span style="color:#000;font-weight:bold">*</span> s, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
+</span></span><span style="display:flex;"><span>     CHECK(co<span style="color:#000;font-weight:bold">::</span>sched()) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
+</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> r, e;
+</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> SSL_get_fd((SSL<span style="color:#000;font-weight:bold">*</span>)s);
+</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">do</span> {
+</span></span><span style="display:flex;"><span>         ERR_clear_error();
+</span></span><span style="display:flex;"><span>         r <span style="color:#000;font-weight:bold">=</span> SSL_read((SSL<span style="color:#000;font-weight:bold">*</span>)s, buf, n);
+</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> r; <span style="color:#998;font-style:italic">// success
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>         <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>         e <span style="color:#000;font-weight:bold">=</span> SSL_get_error((SSL<span style="color:#000;font-weight:bold">*</span>)s, r);
+</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_READ) {
+</span></span><span style="display:flex;"><span>             co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_read);
+</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>         } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_WRITE) {
+</span></span><span style="display:flex;"><span>             co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_write);
+</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>         } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">return</span> r;
+</span></span><span style="display:flex;"><span>         }
+</span></span><span style="display:flex;"><span>     } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The whole process is relatively simple. The underlying socket must be <strong>non-blocking</strong>. When <code>SSL_read</code> generates <code>SSL_ERROR_WANT_READ</code> error, use <code>co::io_event</code> to wait for the read event. When <code>SSL_ERROR_WANT_WRITE</code> error occurs, use <code>co:: io_event</code> to wait for the write event, when <code>wait()</code> returns normally, it means the socket is readable or writable, continue to call <code>SSL_read</code> to complete the I/O operation.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/net/third/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/net/third.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#use-third-party-network-libraries-in-coroutines">Use third-party network libraries in coroutines</a>
+          <ul>
+            <li><a href="#system-api-hook">System API hook</a></li>
+            <li><a href="#using-non-blocking-apis">Using non-blocking APIs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/thread.h.
+#Thread Coost v3.0.1 removed the header file co/thread.h, and removed the global class Thread and Mutex, which are nearly the same as std::thread and std::mutex in C&#43;&#43;11. Users can use the std version directly. #co::thread_id uint32 thread_id(); Returns the id value of the current thread. #co::sync_event Coost v3.0.1 removed the global SyncEvent, please use co::sync_event instead. #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); Constructor, parameter manual_reset indicates whether to manually reset the event to unsynced state, parameter signaled indicates whether the initial state is synced.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Thread" />
+<meta property="og:description" content="include: co/thread.h.
+#Thread Coost v3.0.1 removed the header file co/thread.h, and removed the global class Thread and Mutex, which are nearly the same as std::thread and std::mutex in C&#43;&#43;11. Users can use the std version directly. #co::thread_id uint32 thread_id(); Returns the id value of the current thread. #co::sync_event Coost v3.0.1 removed the global SyncEvent, please use co::sync_event instead. #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); Constructor, parameter manual_reset indicates whether to manually reset the event to unsynced state, parameter signaled indicates whether the initial state is synced." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/concurrency/thread/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>Thread | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/concurrency/thread/" title="线程">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class=" active">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Thread</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#thread">Thread</a>
+          <ul>
+            <li><a href="#cothread_id">co::thread_id</a></li>
+            <li><a href="#cosync_event">co::sync_event</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#sync_eventreset">sync_event::reset</a></li>
+                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
+                <li><a href="#sync_eventwait">sync_event::wait</a></li>
+                <li><a href="#code-example">Code Example</a></li>
+              </ul>
+            </li>
+            <li><a href="#cotls">co::tls</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#tlsget">tls::get</a></li>
+                <li><a href="#tlsset">tls::set</a></li>
+                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
+                <li><a href="#tlsoperator">tls::operator*</a></li>
+                <li><a href="#operator">operator==</a></li>
+                <li><a href="#operator-1">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/thread.h</a>.</p>
+<h2 id="thread"><a class="anchor" href="#thread">#</a>Thread</h2>
+<blockquote class="book-hint warning">
+  Coost v3.0.1 removed the header file <code>co/thread.h</code>, and removed the global class <code>Thread</code> and <code>Mutex</code>, which are nearly the same as <code>std::thread</code> and <code>std::mutex</code> in C++11. Users can use the std version directly.
+</blockquote>
+
+<h3 id="cothread_id"><a class="anchor" href="#cothread_id">#</a>co::thread_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>uint32 <span style="color:#900;font-weight:bold">thread_id</span>();
+</span></span></code></pre></div><ul>
+<li>Returns the id value of the current thread.</li>
+</ul>
+<h3 id="cosync_event"><a class="anchor" href="#cosync_event">#</a>co::sync_event</h3>
+<blockquote class="book-hint warning">
+  Coost v3.0.1 removed the global <code>SyncEvent</code>, please use <code>co::sync_event</code> instead.
+</blockquote>
+
+<h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">sync_event</span>(<span style="color:#458;font-weight:bold">bool</span> manual_reset<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>, <span style="color:#458;font-weight:bold">bool</span> signaled<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span></code></pre></div><ul>
+<li>Constructor, parameter <code>manual_reset</code> indicates whether to manually reset the event to unsynced state, parameter <code>signaled</code> indicates whether the initial state is synced.</li>
+</ul>
+<h4 id="sync_eventreset"><a class="anchor" href="#sync_eventreset">#</a>sync_event::reset</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>Reset the event to unsynced state.</li>
+<li>When <code>manual_reset</code> is true in the constructor, users need manually call this method after calling <a href="#sync_eventwait">wait()</a> to set the event to unsynced state.</li>
+</ul>
+<h4 id="sync_eventsignal"><a class="anchor" href="#sync_eventsignal">#</a>sync_event::signal</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">signal</span>();
+</span></span></code></pre></div><ul>
+<li>Generates a sync signal, set the event to synced state.</li>
+</ul>
+<h4 id="sync_eventwait"><a class="anchor" href="#sync_eventwait">#</a>sync_event::wait</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> wait();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">bool</span> wait(uint32 ms);
+</span></span></code></pre></div><ul>
+<li>1, wait until the event becomes synced.</li>
+<li>2, wait until the event becomes synced or timed out. The parameter <code>ms</code> specifies the timeout in milliseconds. Returns true if the event becomes synced, false otherwise.</li>
+<li>When <code>manual_reset</code> is false in the constructor, <a href="#sync_eventwait">wait()</a> will automatically set the event to unsynced state.</li>
+</ul>
+<h4 id="code-example"><a class="anchor" href="#code-example">#</a>Code Example</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> manual_reset <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>sync_event ev(manual_reset);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f1</span>() {
+</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(<span style="color:#099">1000</span>)) {
+</span></span><span style="display:flex;"><span>         LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: timedout..&#34;</span>;
+</span></span><span style="display:flex;"><span>     } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>         LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: event signaled..&#34;</span>;
+</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (manual_reset) ev.reset();
+</span></span><span style="display:flex;"><span>     }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f2</span>() {
+</span></span><span style="display:flex;"><span>     LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f2: send a signal..&#34;</span>;
+</span></span><span style="display:flex;"><span>     ev.signal();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>     std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f1).detach();
+</span></span><span style="display:flex;"><span>     std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f2).detach();
+</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="cotls"><a class="anchor" href="#cotls">#</a>co::tls</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">tls</span>;
+</span></span></code></pre></div><p><code>co::tls</code> wraps the system&rsquo;s <strong>thread local</strong> interface.</p>
+<blockquote class="book-hint warning">
+  <code>thread_ptr</code> was removed in v3.0.1, and <code>co::tls</code> was provided instead.
+</blockquote>
+
+<h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>tls();
+</span></span></code></pre></div><ul>
+<li>The constructor, allocate system resources and initialize.</li>
+</ul>
+<h4 id="tlsget"><a class="anchor" href="#tlsget">#</a>tls::get</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Return the pointer value owned by the current thread.</li>
+</ul>
+<h4 id="tlsset"><a class="anchor" href="#tlsset">#</a>tls::set</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set</span>(T<span style="color:#000;font-weight:bold">*</span> p);
+</span></span></code></pre></div><ul>
+<li>Set the pointer value owned by the current thread.</li>
+</ul>
+<h4 id="tlsoperator-"><a class="anchor" href="#tlsoperator-">#</a>tls::operator-&gt;</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the pointer value owned by the current thread.</li>
+</ul>
+<h4 id="tlsoperator"><a class="anchor" href="#tlsoperator">#</a>tls::operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns a reference to the object pointed to by the pointer owned by the current thread.</li>
+</ul>
+<h4 id="operator"><a class="anchor" href="#operator">#</a>operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Check whether the pointer owned by the current thread is equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Check whether the pointer owned by the current thread is not equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns true if the pointer owned by the current thread is not NULL, false otherwise.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/concurrency/thread/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/concurrency/thread.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#thread">Thread</a>
+          <ul>
+            <li><a href="#cothread_id">co::thread_id</a></li>
+            <li><a href="#cosync_event">co::sync_event</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#sync_eventreset">sync_event::reset</a></li>
+                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
+                <li><a href="#sync_eventwait">sync_event::wait</a></li>
+                <li><a href="#code-example">Code Example</a></li>
+              </ul>
+            </li>
+            <li><a href="#cotls">co::tls</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#tlsget">tls::get</a></li>
+                <li><a href="#tlsset">tls::set</a></li>
+                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
+                <li><a href="#tlsoperator">tls::operator*</a></li>
+                <li><a href="#operator">operator==</a></li>
+                <li><a href="#operator-1">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

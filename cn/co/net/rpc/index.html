@@ -4,24 +4,24 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/rpc.h.
-co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
-#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; 接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。 #rpc::Server #Server::Server Server(); 默认构造函数，用户不需要关心。 #Server::add_service Server&amp; add_service(rpc::Service* s); Server&amp; add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s); 添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。 #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 ); 启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。 从 v3.">
+coost 实现了一个基于协程的 RPC 框架，它内部使用 JSON 格式传输数据，与使用 protobuf 等二进制协议的 RPC 框架相比，它更加灵活，用起来更方便。
+从 v3.0 开始，RPC 框架同时也支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 RPC 服务。 #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; 接口类，它表示一个 RPC service，一个 RPC server 中可以包含多个 service。 方法 name() 返回 service 名，methods() 返回所有的 RPC 接口及其业务处理函数。 用户不需要关心此类。 #rpc::Server #Server::Server Server(); 默认构造函数，用户不需要关心。 #Server::add_service 1.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="RPC" />
 <meta property="og:description" content="include: co/rpc.h.
-co/rpc 是一个类似 grpc 的高性能 RPC 框架，它内部使用 JSON 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。
-#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; 接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。 name() 返回 service 名，如 &ldquo;HelloWorld&rdquo;。 methods() 返回该 Service 类提供的所有 RPC 方法。 #rpc::Server #Server::Server Server(); 默认构造函数，用户不需要关心。 #Server::add_service Server&amp; add_service(rpc::Service* s); Server&amp; add_service(const std::shared_ptr&lt;rpc::Service&gt;&amp; s); 添加 service，参数 s 必须是用 operator new 动态创建的。 用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。 #Server::start void start( const char* ip, int port, const char* url=&#39;/&#39;, const char* key=0, const char* ca=0 ); 启动 RPC server，此方法不会阻塞当前线程。 参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。 参数 url 是 HTTP 服务的 url，必须以 / 开头。 参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。 从 v3." />
+coost 实现了一个基于协程的 RPC 框架，它内部使用 JSON 格式传输数据，与使用 protobuf 等二进制协议的 RPC 框架相比，它更加灵活，用起来更方便。
+从 v3.0 开始，RPC 框架同时也支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 RPC 服务。 #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; 接口类，它表示一个 RPC service，一个 RPC server 中可以包含多个 service。 方法 name() 返回 service 名，methods() 返回所有的 RPC 接口及其业务处理函数。 用户不需要关心此类。 #rpc::Server #Server::Server Server(); 默认构造函数，用户不需要关心。 #Server::add_service 1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/net/rpc/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-10-08T20:31:26+08:00" />
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
 <title>RPC | Documents for Coost</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/net/rpc/" title="RPC">
-<link rel="stylesheet" href="../../../../book.min.34012a023bb86e99e9c5d444ca11c3e38625a1b8f226bf07e2360827bb149b14.css" integrity="sha256-NAEqAju4bpnpxdREyhHD44YlobjyJr8H4jYIJ7sUmxQ=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.a15a5444aaacaf4689e3d4441e4b3a1a51f384942efed6c32ea1208b99042786.js" integrity="sha256-oVpURKqsr0aJ49REHks6GlHzhJQu/tbDLqEgi5kEJ4Y=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -135,7 +135,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <span>CO 参考文档</span>
+    <span>参考文档</span>
   
 
           
@@ -161,7 +161,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/defer/" class="">defer</a>
+    <a href="../../../../cn/co/god/" class="">面向玄学</a>
   
 
         </li>
@@ -174,7 +174,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/atomic/" class="">原子操作</a>
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
   
 
         </li>
@@ -187,46 +187,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/fastring/" class="">字符串(fastring)</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/co/fastream/" class="">字符流(fastream)</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/co/str/" class="">字符串操作</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+    <a href="../../../../cn/co/flag/" class="">配置</a>
   
 
         </li>
@@ -252,7 +213,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/unitest/" class="">单元测试框架</a>
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
   
 
         </li>
@@ -278,7 +252,23 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/time/" class="">时间</a>
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
   
 
         </li>
@@ -291,7 +281,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/thread/" class="">线程</a>
+    <a href="../../../../cn/co/concurrency/thread/" class="">线程</a>
   
 
         </li>
@@ -304,8 +294,138 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/coroutine/" class="">协程</a>
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
   
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
 
         </li>
       
@@ -334,6 +454,45 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
   
 
         </li>
@@ -390,7 +549,23 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/tasked/" class="">定时任务</a>
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
   
 
         </li>
@@ -403,7 +578,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/random/" class="">随机数</a>
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
   
 
         </li>
@@ -416,7 +591,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/lrumap/" class="">LruMap</a>
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
   
 
         </li>
@@ -429,7 +604,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/hash/" class="">Hash</a>
+    <a href="../../../../cn/co/other/fastring/" class="">fastring</a>
   
 
         </li>
@@ -442,7 +617,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/path/" class="">文件路径(path)</a>
+    <a href="../../../../cn/co/other/fastream/" class="">fastream</a>
   
 
         </li>
@@ -455,7 +630,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/fs/" class="">文件系统</a>
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
   
 
         </li>
@@ -468,7 +643,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/os/" class="">操作系统</a>
+    <a href="../../../../cn/co/other/str/" class="">string utility</a>
   
 
         </li>
@@ -481,7 +656,85 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/build/" class="">编译</a>
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
   
 
         </li>
@@ -499,20 +752,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <span>markdown文档示例</span>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/demo/demo/" class="">markdown模板文档</a>
+    <a href="../../../../cn/co/build/" class="">编译</a>
   
 
         </li>
@@ -607,7 +847,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#rpc-client-示例">RPC client 示例</a>
           <ul>
             <li><a href="#直接使用-rpcclient">直接使用 rpc::Client</a></li>
-            <li><a href="#使用连接池-copool">使用连接池 co::Pool</a></li>
+            <li><a href="#使用连接池-copool">使用连接池 co::pool</a></li>
           </ul>
         </li>
         <li><a href="#配置项">配置项</a>
@@ -636,7 +876,11 @@ https://github.com/alex-shpak/hugo-book
       
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/rpc.h">co/rpc.h</a>.</p>
-<p>co/rpc 是一个类似 <a href="https://github.com/grpc/grpc">grpc</a> 的高性能 RPC 框架，它内部使用 <strong>JSON</strong> 格式传输数据，而不是 protobuf 等二进制协议。从 v3.0 开始，co/rpc 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 rpc 服务。</p>
+<p>coost 实现了一个基于协程的 RPC 框架，它内部使用 <strong>JSON</strong> 格式传输数据，与使用 protobuf 等二进制协议的 RPC 框架相比，它更加灵活，用起来更方便。</p>
+<blockquote class="book-hint info">
+  从 v3.0 开始，RPC 框架同时也支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 RPC 服务。
+</blockquote>
+
 <h2 id="rpcservice"><a class="anchor" href="#rpcservice">#</a>rpc::Service</h2>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Service</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">public</span><span style="color:#000;font-weight:bold">:</span>
@@ -649,9 +893,9 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, Fun<span style="color:#000;font-weight:bold">&gt;&amp;</span> methods() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><ul>
-<li>接口类，它表示一个 service，一个 RPC server 中可以包含多个 service。</li>
-<li><code>name()</code> 返回 service 名，如 &ldquo;HelloWorld&rdquo;。</li>
-<li><code>methods()</code> 返回该 Service 类提供的所有 RPC 方法。</li>
+<li>接口类，它表示一个 RPC service，一个 RPC server 中可以包含多个 service。</li>
+<li>方法 <code>name()</code> 返回 service 名，<code>methods()</code> 返回所有的 RPC 接口及其业务处理函数。</li>
+<li>用户不需要关心此类。</li>
 </ul>
 <h2 id="rpcserver"><a class="anchor" href="#rpcserver">#</a>rpc::Server</h2>
 <h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
@@ -660,21 +904,21 @@ https://github.com/alex-shpak/hugo-book
 <li>默认构造函数，用户不需要关心。</li>
 </ul>
 <h3 id="serveradd_service"><a class="anchor" href="#serveradd_service">#</a>Server::add_service</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
 </span></span></code></pre></div><ul>
-<li>添加 service，参数 s 必须是用 operator new 动态创建的。</li>
+<li>添加 service，1 中参数 s 必须是用 operator new 动态创建的。</li>
 <li>用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port,
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;/&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;/&#34;</span>,
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
 </span></span><span style="display:flex;"><span>);
 </span></span></code></pre></div><ul>
 <li>启动 RPC server，此方法不会阻塞当前线程。</li>
-<li>参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。</li>
+<li>参数 ip 是服务 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务端口。</li>
 <li>参数 url 是 HTTP 服务的 url，必须以 <code>/</code> 开头。</li>
 <li>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</li>
 <li>从 v3.0 开始，server 启动后就不再依赖于 <code>rpc::Server</code> 对象。</li>
@@ -688,28 +932,29 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="rpc-server-示例"><a class="anchor" href="#rpc-server-%e7%a4%ba%e4%be%8b">#</a>RPC server 示例</h2>
 <h3 id="定义-proto-文件"><a class="anchor" href="#%e5%ae%9a%e4%b9%89-proto-%e6%96%87%e4%bb%b6">#</a>定义 proto 文件</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// hello_world.proto
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>package xx
+<p>下面是一个简单的 proto 文件 hello_world.proto:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>package xx
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>service HelloWorld {
-</span></span><span style="display:flex;"><span>    hello,
-</span></span><span style="display:flex;"><span>    world,
+</span></span><span style="display:flex;"><span>    hello
+</span></span><span style="display:flex;"><span>    world
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ul>
-<li>上面是一个简单的 proto 文件，<code>//</code> 表示注释。</li>
-<li><strong>package xx</strong> 指定包名，在 C++ 中表示将代码生成到命名空间 xx 中，可以用 package xx.yy.zz 生成嵌套命名空间。</li>
-<li><strong>service HelloWorld</strong> 定义一个继承 rpc::Service 的 service 类，它的名字是 <code>&quot;HelloWorld&quot;</code>。该 service 提供 hello, world 两个 RPC 方法。</li>
-<li>可以看到，co/rpc 的 proto 文件比 protobuf 简单得多。由于 <strong>RPC 请求及响应都是 JSON，不需要定义各种结构体</strong>。</li>
-<li>一个 proto 文件只能定义一个 service。proto 文件中，在 service 定义后面的内容都会被忽略。</li>
+<li><strong>package</strong> 定义包名，在 C++ 中对应为 namespace。</li>
+<li><strong>service</strong> 定义一个 RPC service，该 service 提供 hello, world 两个方法。</li>
+<li>由于 RPC 请求及响应都是 JSON，不需要在协议文件中定义结构体。</li>
+<li>一个 proto 文件中最多只能定义一个 service。</li>
 </ul>
+<blockquote class="book-hint info">
+  v3.0.1 基于 flex 与 <a href="https://invisible-island.net/byacc/">byacc</a> 重写了 <a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> 工具，proto 语法上除了支持 service 定义，还支持结构体的定义，具体用法可以参考 <a href="https://github.com/idealvin/coost/tree/master/test/j2s">j2s</a>。
+</blockquote>
+
 <h3 id="生成-service-代码"><a class="anchor" href="#%e7%94%9f%e6%88%90-service-%e4%bb%a3%e7%a0%81">#</a>生成 service 代码</h3>
-<p><a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> 是 co 提供的 RPC 代码生成器，它可以生成 service 相关代码。</p>
+<p><a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> 是 coost 提供的代码生成工具，它可以生成 service 相关代码。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b gen             <span style="color:#998;font-style:italic"># 构建 gen</span>
 </span></span><span style="display:flex;"><span>cp gen /usr/local/bin    <span style="color:#998;font-style:italic"># 将 gen 放到 /usr/local/bin 目录</span>
 </span></span><span style="display:flex;"><span>gen hello_world.proto    <span style="color:#998;font-style:italic"># 生成代码</span>
-</span></span><span style="display:flex;"><span>gen *.proto              <span style="color:#998;font-style:italic"># 批量生成</span>
-</span></span></code></pre></div><p>hello_world.proto 协议文件，会生成如下的 hello_world.h：</p>
+</span></span></code></pre></div><p>生成的文件 hello_world.h 如下:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// Autogenerated.
 </span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// DO NOT EDIT. All changes will be undone.
 </span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#pragma once
@@ -749,7 +994,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>} <span style="color:#998;font-style:italic">// xx
 </span></span></span></code></pre></div><ul>
-<li>可以看到，HelloWorld 类继承于 rpc::Service，它已经实现了 rpc::Service 中的 name() 与 methods() 方法。</li>
+<li>可以看到，HelloWorld 类继承于 <a href="#rpcservice">rpc::Service</a>，它已经实现了 <code>rpc::Service</code> 类中的 <code>name()</code> 与 <code>methods()</code> 方法。</li>
 <li>用户只需要继承 HelloWorld 类，实现 hello 与 world 两个方法即可。</li>
 </ul>
 <h3 id="业务实现"><a class="anchor" href="#%e4%b8%9a%e5%8a%a1%e5%ae%9e%e7%8e%b0">#</a>业务实现</h3>
@@ -783,7 +1028,7 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h3 id="启动-rpc-server"><a class="anchor" href="#%e5%90%af%e5%8a%a8-rpc-server">#</a>启动 RPC server</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>init(argc, argv);
+</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    rpc<span style="color:#000;font-weight:bold">::</span>Server()
 </span></span><span style="display:flex;"><span>        .add_service(<span style="color:#000;font-weight:bold">new</span> xx<span style="color:#000;font-weight:bold">::</span>HelloWorldImpl)
@@ -793,34 +1038,33 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ul>
-<li>启动 server 前，需要先调用 add_service() 添加 service。</li>
-<li><code>start()</code> 方法不会阻塞当前线程，因此需要写一个 for 循环，防止 main 函数直接退出。</li>
+<li>先调 <a href="#serveradd_service">add_service()</a> 添加 service，再调用 <a href="#serverstart">start()</a> 启动 server。</li>
 </ul>
+<blockquote class="book-hint info">
+  <code>start()</code> 方法不会阻塞当前线程，因此需要写一个 for 循环，防止 main 函数退出。
+</blockquote>
+
 <h3 id="用-curl-调用-rpc-服务"><a class="anchor" href="#%e7%94%a8-curl-%e8%b0%83%e7%94%a8-rpc-%e6%9c%8d%e5%8a%a1">#</a>用 curl 调用 RPC 服务</h3>
-<p>在 v3.0 版本中，co/rpc 支持 HTTP 协议，因此可以用 <code>curl</code> 命令调用 RPC 服务：</p>
+<p>在 v3.0 版本中，RPC 框架支持 HTTP 协议，因此可以用 <code>curl</code> 命令调用 RPC 服务：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://127.0.0.1:7788/xx --request POST --data <span style="color:#d14">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
 </span></span><span style="display:flex;"><span>curl http://127.0.0.1:7788/xx --request POST --data <span style="color:#d14">&#39;{&#34;api&#34;:&#34;HelloWorld.hello&#34;}&#39;</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>上面用 curl 给 RPC 服务发送 POST 请求，参数为 JSON 字符串，需要提供一个 <code>&quot;api&quot;</code> 字段，指明调用的 RPC 方法。</p>
-</li>
-<li>
-<p><code>&quot;ping&quot;</code> 是 RPC 框架内置的方法，一般用于测试或发送心跳。</p>
-</li>
-<li>
-<p>url 中 <code>/xx</code> 要与 RPC server 启动时指定的 url 保持一致。</p>
-</li>
+<li>上面用 curl 给 RPC 服务发送 POST 请求，参数为 JSON 字符串，需要提供一个 <code>api</code> 字段，指明调用的 RPC 方法。</li>
+<li><code>&quot;ping&quot;</code> 是 RPC 框架内置的方法，一般用于测试或发送心跳。</li>
+<li>url 中 <code>/xx</code> 要与 RPC server 启动时指定的 url 保持一致。</li>
 </ul>
 <h2 id="rpcclient"><a class="anchor" href="#rpcclient">#</a>rpc::Client</h2>
 <h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Client(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#458;font-weight:bold">bool</span> use_ssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
-</span></span><span style="display:flex;"><span>Client(<span style="color:#000;font-weight:bold">const</span> Client<span style="color:#000;font-weight:bold">&amp;</span> c);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> Client(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#458;font-weight:bold">bool</span> use_ssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> Client(<span style="color:#000;font-weight:bold">const</span> Client<span style="color:#000;font-weight:bold">&amp;</span> c);
 </span></span></code></pre></div><ul>
-<li>构造函数。</li>
-<li>第一个版本中，参数 ip 是服务器的 ip，可以是域名、IPv4 或 IPv6 地址；参数 port 是服务器端口；参数 use_ssl 表示是否启用 SSL 传输，默认为 false，不启用 SSL。</li>
-<li>第二个版本是拷贝构造函数。</li>
-<li><strong>rpc::Client 构建时，并没有立即建立连接</strong>。</li>
+<li>1, 参数 ip 可以是域名、IPv4 或 IPv6 地址；参数 port 是服务端口；参数 use_ssl 表示是否启用 SSL 传输，默认为 false。</li>
+<li>2, 拷贝构造函数。</li>
 </ul>
+<blockquote class="book-hint info">
+  <code>rpc::Client</code> 构建时，并不会立即建立连接。
+</blockquote>
+
 <h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Client<span style="color:#000;font-weight:bold">::~</span>Client();
 </span></span></code></pre></div><ul>
@@ -843,7 +1087,7 @@ https://github.com/alex-shpak/hugo-book
 <h3 id="clientping"><a class="anchor" href="#clientping">#</a>Client::ping</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ping</span>();
 </span></span></code></pre></div><ul>
-<li>给 rpc::Server 发送 <code>ping</code> 请求，一般用于测试或发送心跳。</li>
+<li>给 RPC server 发送 <code>ping</code> 请求，一般用于测试或发送心跳。</li>
 </ul>
 <h2 id="rpc-client-示例"><a class="anchor" href="#rpc-client-%e7%a4%ba%e4%be%8b">#</a>RPC client 示例</h2>
 <h3 id="直接使用-rpcclient"><a class="anchor" href="#%e7%9b%b4%e6%8e%a5%e4%bd%bf%e7%94%a8-rpcclient">#</a>直接使用 rpc::Client</h3>
@@ -854,10 +1098,10 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    rpc<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, FLG_use_ssl);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> FLG_n; <span style="color:#000;font-weight:bold">++</span>i) {
-</span></span><span style="display:flex;"><span>        Json req <span style="color:#000;font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>Json req <span style="color:#000;font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>            {<span style="color:#d14">&#34;api&#34;</span>, <span style="color:#d14">&#34;HelloWorld.hello&#34;</span>}
 </span></span><span style="display:flex;"><span>        };
-</span></span><span style="display:flex;"><span>        Json res;
+</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>Json res;
 </span></span><span style="display:flex;"><span>        c.call(req, res);
 </span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">1000</span>);
 </span></span><span style="display:flex;"><span>    }
@@ -869,17 +1113,17 @@ https://github.com/alex-shpak/hugo-book
 </span></span></code></pre></div><ul>
 <li>上面的例子中，client 每隔 1 秒向服务端发送一个 RPC 请求。</li>
 </ul>
-<h3 id="使用连接池-copool"><a class="anchor" href="#%e4%bd%bf%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0-copool">#</a>使用连接池 co::Pool</h3>
-<p>当客户端需要建立大量连接时，可以用 <code>co::Pool</code> 管理这些连接。</p>
+<h3 id="使用连接池-copool"><a class="anchor" href="#%e4%bd%bf%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0-copool">#</a>使用连接池 co::pool</h3>
+<p>当客户端需要建立大量连接时，可以用 <a href="../../concurrency/coroutine/pool/">co::pool</a> 管理这些连接。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>unique_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> proto;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>Pool pool(
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool pool(
 </span></span><span style="display:flex;"><span>    []() { <span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> rpc<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#000;font-weight:bold">*</span>proto); },
 </span></span><span style="display:flex;"><span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) { <span style="color:#000;font-weight:bold">delete</span> (rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">*</span>) p; }
 </span></span><span style="display:flex;"><span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>PoolGuard<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> c(pool);
+</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>pool_guard<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> c(pool);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
 </span></span><span style="display:flex;"><span>        c<span style="color:#000;font-weight:bold">-&gt;</span>ping();
@@ -893,12 +1137,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    go(client_fun);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ul>
-<li>上面的例子，使用 co::Pool 保存客户端，多个协程可以共享这些客户端。</li>
-<li>co::PoolGuard 创建时自动从 co::Pool 中取出一个空闲的客户端，析构时自动将该客户端放回 co::Pool。</li>
-<li>co::Pool 的 ccb 利用拷贝构造的方式从 proto 复制一个客户端。</li>
+<li>上面的例子，使用 co::pool 保存客户端，多个协程可以共享这些客户端。</li>
+<li>co::pool 的 ccb 使用拷贝构造的方式从 proto 复制一个客户端连接。</li>
 </ul>
 <h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
-<p>co/rpc 使用 <a href="../../flag/">co/flag</a> 定义配置项，下面列出的是 co/rpc 内部定义的 flag。</p>
+<p>coost 使用 <a href="../../flag/">co.flag</a> 定义了 RPC 相关的配置项。</p>
 <h3 id="rpc_conn_idle_sec"><a class="anchor" href="#rpc_conn_idle_sec">#</a>rpc_conn_idle_sec</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 connection may be closed if no data...&#34;</span>);
 </span></span></code></pre></div><ul>
@@ -986,16 +1229,16 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9d78b93ef945a4034fb52cf51ffcb5aba7f50ad1" title='最后修改者 idealvin | October 8, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>October 8, 2022</span>
+      <span>September 9, 2023</span>
     </a>
   </div>
 
 
 
   <div class="book-edit">
-    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/net/rpc.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/net/rpc.md" target="_blank" rel="noopener">
       <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>
@@ -1093,7 +1336,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#rpc-client-示例">RPC client 示例</a>
           <ul>
             <li><a href="#直接使用-rpcclient">直接使用 rpc::Client</a></li>
-            <li><a href="#使用连接池-copool">使用连接池 co::Pool</a></li>
+            <li><a href="#使用连接池-copool">使用连接池 co::pool</a></li>
           </ul>
         </li>
         <li><a href="#配置项">配置项</a>

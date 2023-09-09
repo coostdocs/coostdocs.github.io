@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/fastring.h.
+#fastring fastring 是 coost 提供的字符串类型，它实现了 std::string 中的大部分方法，同时也提供了一些 std::string 没有的方法。
+#constructor 1. constexpr fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp; s); 6. fastring(size_t n, char c); 7. fastring(char c, size_t n); 8. fastring(const fastring&amp; s); 9. fastring(fastring&amp;&amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastring 对象，不会分配任何内存。
+2, 创建一个空的 fastring 对象，但用参数 cap 指定初始容量，即预分配 cap 字节的内存。
+3, 用给定的字节序列创建 fastring 对象，参数 n 是序列长度。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="fastring" />
+<meta property="og:description" content="include: co/fastring.h.
+#fastring fastring 是 coost 提供的字符串类型，它实现了 std::string 中的大部分方法，同时也提供了一些 std::string 没有的方法。
+#constructor 1. constexpr fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp; s); 6. fastring(size_t n, char c); 7. fastring(char c, size_t n); 8. fastring(const fastring&amp; s); 9. fastring(fastring&amp;&amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastring 对象，不会分配任何内存。
+2, 创建一个空的 fastring 对象，但用参数 cap 指定初始容量，即预分配 cap 字节的内存。
+3, 用给定的字节序列创建 fastring 对象，参数 n 是序列长度。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/other/fastring/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>fastring | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/fastring/" title="fastring">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle" checked />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastring/" class=" active">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>fastring</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastring">fastring</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#assign">assign</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#shrink">shrink</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+            <li><a href="#operator-3">operator+=</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#pop_back">pop_back</a></li>
+            <li><a href="#heading-4">———————————</a></li>
+            <li><a href="#compare">compare</a></li>
+            <li><a href="#contains">contains</a></li>
+            <li><a href="#find">find</a></li>
+            <li><a href="#ifind">ifind</a></li>
+            <li><a href="#rfind">rfind</a></li>
+            <li><a href="#find_first_of">find_first_of</a></li>
+            <li><a href="#find_first_not_of">find_first_not_of</a></li>
+            <li><a href="#find_last_of">find_last_of</a></li>
+            <li><a href="#find_last_not_of">find_last_not_of</a></li>
+            <li><a href="#npos">npos</a></li>
+            <li><a href="#substr">substr</a></li>
+            <li><a href="#heading-5">———————————</a></li>
+            <li><a href="#starts_with">starts_with</a></li>
+            <li><a href="#ends_with">ends_with</a></li>
+            <li><a href="#match">match</a></li>
+            <li><a href="#remove_prefix">remove_prefix</a></li>
+            <li><a href="#remove_suffix">remove_suffix</a></li>
+            <li><a href="#heading-6">———————————</a></li>
+            <li><a href="#replace">replace</a></li>
+            <li><a href="#strip">strip</a></li>
+            <li><a href="#trim">trim</a></li>
+            <li><a href="#tolower">tolower</a></li>
+            <li><a href="#toupper">toupper</a></li>
+            <li><a href="#lower">lower</a></li>
+            <li><a href="#upper">upper</a></li>
+          </ul>
+        </li>
+        <li><a href="#global-functions">global functions</a>
+          <ul>
+            <li><a href="#operator-4">operator+</a></li>
+            <li><a href="#operator-5">operator==</a></li>
+            <li><a href="#operator-6">operator!=</a></li>
+            <li><a href="#operator-7">operator&lt;</a></li>
+            <li><a href="#operator-8">operator&gt;</a></li>
+            <li><a href="#operator-9">operator&lt;=</a></li>
+            <li><a href="#operator-10">operator&gt;=</a></li>
+            <li><a href="#operator-11">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/fastring.h">co/fastring.h</a>.</p>
+<h2 id="fastring"><a class="anchor" href="#fastring">#</a>fastring</h2>
+<p><strong>fastring</strong> 是 coost 提供的字符串类型，它实现了 std::string 中的大部分方法，同时也提供了一些 std::string 没有的方法。</p>
+<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span>  <span style="color:#000;font-weight:bold">constexpr</span> fastring() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span>  <span style="color:#000;font-weight:bold">explicit</span> fastring(size_t cap);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span>  fastring(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span>  fastring(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span>  fastring(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span>  fastring(size_t n, <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span>  fastring(<span style="color:#458;font-weight:bold">char</span> c, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">8.</span>  fastring(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">9.</span>  fastring(fastring<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>1, 默认构造函数，创建一个空的 fastring 对象，不会分配任何内存。</p>
+</li>
+<li>
+<p>2, 创建一个空的 fastring 对象，但用参数 cap 指定初始容量，即预分配 cap 字节的内存。</p>
+</li>
+<li>
+<p>3, 用给定的字节序列创建 fastring 对象，参数 n 是序列长度。</p>
+</li>
+<li>
+<p>4, 用 C 风格的字符串创建 fastring 对象，s 必须是 &lsquo;\0&rsquo; 结尾的字符串。</p>
+</li>
+<li>
+<p>5, 用 std::string 创建一个 fastring 对象。</p>
+</li>
+<li>
+<p>6-7, 将 fastring 对象初始化为 n 个字符 c 构成的字符串。</p>
+</li>
+<li>
+<p>8, 拷贝构造函数，内部会进行内存拷贝。</p>
+</li>
+<li>
+<p>9, 移动构造函数，不会进行内存拷贝。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;                <span style="color:#998;font-style:italic">// 空字符串，无内存分配
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">32</span>);            <span style="color:#998;font-style:italic">// 空字符串，预分配内存(容量为32)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);       <span style="color:#998;font-style:italic">// 初始化 s 为 &#34;hello&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// 初始化 s 为 &#34;hel&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">88</span>, <span style="color:#d14">&#39;x&#39;</span>);       <span style="color:#998;font-style:italic">// 初始化 s 为 88 个 &#39;x&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#39;x&#39;</span>, <span style="color:#099">88</span>);       <span style="color:#998;font-style:italic">// 初始化 s 为 88 个 &#39;x&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">t</span>(s);             <span style="color:#998;font-style:italic">// 拷贝构造
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring <span style="color:#900;font-weight:bold">x</span>(std<span style="color:#000;font-weight:bold">::</span>move(s));  <span style="color:#998;font-style:italic">// 移动构造，s 自身变成空字符串
+</span></span></span></code></pre></div><h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(fastring<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>1, 用 &lsquo;\0&rsquo; 结尾的字符串进行赋值，s 可以是进行赋值操作的 fastring 的一部分。</p>
+</li>
+<li>
+<p>2, 用 std::string 进行赋值。</p>
+</li>
+<li>
+<p>3, 拷贝赋值操作。</p>
+</li>
+<li>
+<p>4, 移动赋值操作，s 自身会变成空字符串。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>fastring t;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;hello&#34;</span>;           <span style="color:#998;font-style:italic">// s -&gt; &#34;hello&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> s;                 <span style="color:#998;font-style:italic">// nothing will be done
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">2</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;llo&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>string(<span style="color:#d14">&#34;x&#34;</span>);  <span style="color:#998;font-style:italic">// s -&gt; &#34;x&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>t <span style="color:#000;font-weight:bold">=</span> s;                 <span style="color:#998;font-style:italic">// t -&gt; &#34;x&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>t <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>move(s);      <span style="color:#998;font-style:italic">// t -&gt; &#34;x&#34;, s -&gt; &#34;&#34;
+</span></span></span></code></pre></div><h3 id="assign"><a class="anchor" href="#assign">#</a>assign</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> assign(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> S<span style="color:#000;font-weight:bold">&gt;</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> assign(S<span style="color:#000;font-weight:bold">&amp;&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>对 fastring 进行赋值，v3.0.1 新增。</li>
+<li>1 中 n 是字节序列的长度，2 与 <a href="#operator">operator=</a> 等价。</li>
+</ul>
+<h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="back"><a class="anchor" href="#back">#</a>back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 中最后一个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 fastring 为空，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.back();   <span style="color:#998;font-style:italic">// c = &#39;o&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.back() <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;      <span style="color:#998;font-style:italic">// s -&gt; &#34;hellx&#34;
+</span></span></span></code></pre></div><h3 id="front"><a class="anchor" href="#front">#</a>front</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 中第一个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 fastring 为空，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.front();  <span style="color:#998;font-style:italic">// c = &#39;h&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.front() <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;xello&#34;
+</span></span></span></code></pre></div><h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator[]</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 中第 n 个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 n 超出合理的范围，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">1</span>];       <span style="color:#998;font-style:italic">// c = &#39;e&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s[<span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;          <span style="color:#998;font-style:italic">// s -&gt; &#34;hxllo&#34;
+</span></span></span></code></pre></div><h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="capacity"><a class="anchor" href="#capacity">#</a>capacity</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">capacity</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 的容量。</li>
+</ul>
+<h3 id="c_str"><a class="anchor" href="#c_str">#</a>c_str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">c_str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法获取等效的 C 字符串。</li>
+<li>此方法在 fastring 末尾加上一个 &lsquo;\0&rsquo;，它不会改变 fastring 的 size 及内容，但有可能导致内部重新分配内存。</li>
+</ul>
+<h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">data</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法与 <a href="#c_str">c_str()</a> 类似，但不保证字符串以 &lsquo;\0&rsquo; 结尾。</li>
+</ul>
+<h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法判断 fastring 是否为空。</li>
+</ul>
+<h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 的长度。</li>
+</ul>
+<h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
+<h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> clear();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span> clear(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>此方法仅将 fastring 的 size 置为 0，capacity 保持不变。</li>
+<li>2 与 1 类似，只是 size 置为 0 前会用字符 c 填充内部内存。</li>
+</ul>
+<blockquote class="book-hint info">
+  2 是 v3.0.1 新增，可用于清除内存中的敏感信息。
+</blockquote>
+
+<h3 id="ensure"><a class="anchor" href="#ensure">#</a>ensure</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ensure</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>此方法确保 fastring 剩余的内存能容纳至少 n 个字符。</li>
+</ul>
+<h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>此方法调整 fastring 的容量，确保容量至少是 n。</li>
+<li>当 n 小于原来的容量时，则保持容量不变。</li>
+</ul>
+<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>v2.0.3 新增。清空 fastring 并释放内存。</li>
+</ul>
+<h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resize</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法将 fastring 的 size 设置为 n。</p>
+</li>
+<li>
+<p>当 n 大于原来的 size 时，此操作将 size 扩大到 n，但不会用 &lsquo;\0&rsquo; 填充扩展的部分。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.resize(<span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// s -&gt; &#34;hel&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.resize(<span style="color:#099">6</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">5</span>];  <span style="color:#998;font-style:italic">// c 是不确定的随机值
+</span></span></span></code></pre></div><h3 id="shrink"><a class="anchor" href="#shrink">#</a>shrink</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">shrink</span>();
+</span></span></code></pre></div><ul>
+<li>
+<p>释放 fastring 中多余的内存。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.reserve(<span style="color:#099">32</span>);  <span style="color:#998;font-style:italic">// capacity -&gt; 32
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.shrink();     <span style="color:#998;font-style:italic">// capacity -&gt; 6
+</span></span></span></code></pre></div><h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastring<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>交换两个 fastring，仅交换内部指针、容量、大小。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">x</span>(<span style="color:#d14">&#34;world&#34;</span>);
+</span></span><span style="display:flex;"><span>s.swap(x);  <span style="color:#998;font-style:italic">// s -&gt; &#34;world&#34;, x -&gt; &#34;hello&#34;
+</span></span></span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
+<h3 id="append"><a class="anchor" href="#append">#</a>append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(size_t n, <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>
+<p>1, 追加指定长度的字节序列，n 为序列长度。</p>
+</li>
+<li>
+<p>2, 追加 &lsquo;\0&rsquo; 结尾的字符串，s 可以是执行 append 操作的 fastring 的一部分。</p>
+</li>
+<li>
+<p>3, 追加 fastring 对象，s 可以是执行 append 操作的 fastring 对象本身。</p>
+</li>
+<li>
+<p>4, 追加 std::string 对象。</p>
+</li>
+<li>
+<p>5-6, 追加 n 个字符 c。</p>
+</li>
+<li>
+<p>7, 追加单个字符 c。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#39;c&#39;</span>);                 <span style="color:#998;font-style:italic">// s -&gt; &#34;c&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#099">2</span>, <span style="color:#d14">&#39;c&#39;</span>);              <span style="color:#998;font-style:italic">// s -&gt; &#34;ccc&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#39;c&#39;</span>, <span style="color:#099">2</span>);              <span style="color:#998;font-style:italic">// s -&gt; &#34;ccccc&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.clear();
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#39;c&#39;</span>).append(<span style="color:#099">2</span>, <span style="color:#d14">&#39;x&#39;</span>);  <span style="color:#998;font-style:italic">// s -&gt; &#34;cxx&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);       <span style="color:#998;font-style:italic">// s -&gt; &#34;cxxxx&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(s.data(), <span style="color:#099">3</span>);         <span style="color:#998;font-style:italic">// s -&gt; &#34;cxxxxcxx&#34;
+</span></span></span></code></pre></div><h3 id="append_nomchk"><a class="anchor" href="#append_nomchk">#</a>append_nomchk</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s)
+</span></span></code></pre></div><ul>
+<li>与 <a href="#append">append()</a> 类似，但不会检查 s 是否与内部内存重叠。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 s 与 fastring 内部内存可能重叠，则不能使用此方法。
+</blockquote>
+
+<h3 id="cat"><a class="anchor" href="#cat">#</a>cat</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X, <span style="color:#000;font-weight:bold">typename</span> ...V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> cat(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> x, V<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... v);
+</span></span></code></pre></div><ul>
+<li>
+<p>v2.0.3 新增。将任意数量的元素连接到 fastring 中。</p>
+</li>
+<li>
+<p>此方法调用 <code>operator&lt;&lt;</code> 操作，将参数中的元素逐个追加到 fastring 中。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.cat(<span style="color:#d14">&#39; &#39;</span>, <span style="color:#099">23</span>, <span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#0086b3">false</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23xxfalse&#34;
+</span></span></span></code></pre></div><h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">bool</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">double</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">float</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> dp<span style="color:#000;font-weight:bold">::</span>_fpt<span style="color:#000;font-weight:bold">&amp;</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> v);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(std<span style="color:#000;font-weight:bold">::</span>nullptr_t);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>
+<p>将 bool、char、整数类型、浮点数类型、指针类型、字符串类型的值格式化后追加到 fastring 中。</p>
+</li>
+<li>
+<p><code>operator&lt;&lt;(const dp::_fpt&amp;)</code> 用于格式化输出浮点数，可指定有效小数位数。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#39;x&#39;</span>;             <span style="color:#998;font-style:italic">// s -&gt; &#34;x&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;               <span style="color:#998;font-style:italic">// s -&gt; &#34;xx&#34;           (append itself)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#0086b3">false</span>;           <span style="color:#998;font-style:italic">// s -&gt; &#34;xxfalse&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">6</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 2323&#34;   (append part of s)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.1415</span>;          <span style="color:#998;font-style:italic">// s -&gt; &#34;3.1415&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">32</span>;       <span style="color:#998;font-style:italic">// s -&gt; &#34;0x20&#34;
+</span></span></span></code></pre></div><blockquote class="book-hint info">
+  <p><strong>指定有效小数的位数</strong><br>
+coost 提供 <code>dp::_1, dp::_2, ..., dp::_16, dp::_n</code>，用于设置浮点数的有效小数位数。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_2(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.14
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_3(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.141&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_n(<span style="color:#099">3.14</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// &#34;3.1&#34;, 与 dp::_1(3.14) 等价
+</span></span></span></code></pre></div>
+</blockquote>
+
+<h3 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator+=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+=</span>(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法等价于 <a href="#append">append()</a> 方法。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#39;c&#39;</span>;   <span style="color:#998;font-style:italic">// s -&gt; &#34;c&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;xx&#34;</span>;  <span style="color:#998;font-style:italic">// s -&gt; &#34;cxx&#34;
+</span></span></span></code></pre></div><h3 id="push_back"><a class="anchor" href="#push_back">#</a>push_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> push_back(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>追加单个字符到 fastring 尾部，与 <a href="#append">append(c)</a> 等价。</li>
+</ul>
+<h3 id="pop_back"><a class="anchor" href="#pop_back">#</a>pop_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#900;font-weight:bold">pop_back</span>();
+</span></span></code></pre></div><ul>
+<li>取出并返回 fastring 最后的一个字符。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 fastring 为空，调用此方法会导致未定义的行为。
+</blockquote>
+
+<h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>———————————</h3>
+<h3 id="compare"><a class="anchor" href="#compare">#</a>compare</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span> <span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">int</span> compare(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">int</span> compare(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">3.</span> <span style="color:#458;font-weight:bold">int</span> compare(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">4.</span> <span style="color:#458;font-weight:bold">int</span> compare(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#099">5.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">6.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">7.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#099">8.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#099">9.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t spos, size_t n<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">10.</span> <span style="color:#458;font-weight:bold">int</span> compare(size_t pos, size_t len, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t spos, size_t n<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>比较 fastring 与指定的字符串。</li>
+<li>1-4, 将 fastring 与 s 比较，n 是 s 的长度。</li>
+<li>5-8, 将 fastring 的 <code>[pos, pos+len)</code> 部分与 s 进行比较，n 是 s 的长度。</li>
+<li>9-10, 将 fastring 的 <code>[pos, pos+len)</code> 部分与 s 的 <code>[spos, spos+n)</code> 部分进行比较。</li>
+</ul>
+<h3 id="contains"><a class="anchor" href="#contains">#</a>contains</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">contains</span>(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">contains</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">contains</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">contains</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>判断 fastring 中是否包含指定的字符或字符串。</li>
+</ul>
+<h3 id="find"><a class="anchor" href="#find">#</a>find</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t find(<span style="color:#458;font-weight:bold">char</span> c, size_t pos, size_t len) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">8.</span> size_t find(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>1, 从位置 0 开始查找字符 c。</li>
+<li>2, 从位置 pos 开始查找字符 c。</li>
+<li>3, v3.0 新增，在 <code>[pos, pos + len)</code> 范围内查找字符 c。</li>
+<li>4, 从位置 0 开始查找子串 s。</li>
+<li>5, 从位置 pos 开始查找子串 s。</li>
+<li>6, 从位置 pos 开始查找子串 s，s 长度为 n。</li>
+<li>7-8, 从位置 pos 开始查找子串 s。</li>
+<li>此方法查找成功时，返回所查找字符或子串的位置，否则返回 <code>npos</code>。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 新增上述 6-8，并支持二进制字符串的查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.find(<span style="color:#d14">&#39;l&#39;</span>);      <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find(<span style="color:#d14">&#39;l&#39;</span>, <span style="color:#099">3</span>);   <span style="color:#998;font-style:italic">// return 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find(<span style="color:#d14">&#34;ll&#34;</span>);     <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find(<span style="color:#d14">&#34;ll&#34;</span>, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// return s.npos
+</span></span></span></code></pre></div><h3 id="ifind"><a class="anchor" href="#ifind">#</a>ifind</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ifind</span>(<span style="color:#458;font-weight:bold">char</span> c, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ifind</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ifind</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos) <span style="color:#000;font-weight:bold">const</span>
+</span></span><span style="display:flex;"><span>size_t ifind(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ifind</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ifind</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>v3.0.1 新增，与 <a href="#find">find</a> 类似，但是忽略大小写。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.ifind(<span style="color:#d14">&#39;L&#39;</span>);      <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.ifind(<span style="color:#d14">&#39;L&#39;</span>, <span style="color:#099">3</span>);   <span style="color:#998;font-style:italic">// return 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.ifind(<span style="color:#d14">&#34;Ll&#34;</span>);     <span style="color:#998;font-style:italic">// return 2
+</span></span></span></code></pre></div><h3 id="rfind"><a class="anchor" href="#rfind">#</a>rfind</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t rfind(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t rfind(<span style="color:#458;font-weight:bold">char</span> c, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t rfind(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t rfind(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> size_t rfind(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> size_t rfind(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> size_t rfind(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>与 <a href="#find">find</a> 类似，只是从反向开始查找。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 新增上述 2, 4-7，并支持二进制字符串的反向查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.rfind(<span style="color:#d14">&#39;l&#39;</span>);    <span style="color:#998;font-style:italic">// return 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.rfind(<span style="color:#d14">&#39;l&#39;</span>, <span style="color:#099">2</span>); <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.rfind(<span style="color:#d14">&#34;ll&#34;</span>);   <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.rfind(<span style="color:#d14">&#34;le&#34;</span>);   <span style="color:#998;font-style:italic">// return s.npos
+</span></span></span></code></pre></div><h3 id="find_first_of"><a class="anchor" href="#find_first_of">#</a>find_first_of</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t find_first_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t find_first_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t find_first_of(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t find_first_of(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>查找第一个出现的指定字符集 s 中的字符, n 是 s 的长度。</li>
+<li>此方法从位置 pos(默认为0) 开始查找，遇到 s 中的任意字符时，即返回该字符的位置，否则返回 npos。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 新增 2-4，并支持二进制字符串的查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.find_first_of(<span style="color:#d14">&#34;def&#34;</span>);    <span style="color:#998;font-style:italic">// return 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_first_of(<span style="color:#d14">&#34;ol&#34;</span>, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// return 3
+</span></span></span></code></pre></div><h3 id="find_first_not_of"><a class="anchor" href="#find_first_not_of">#</a>find_first_not_of</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t find_first_not_of(<span style="color:#458;font-weight:bold">char</span> c, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t find_first_not_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t find_first_not_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t find_first_not_of(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> size_t find_first_not_of(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>查找第一个出现的非指定字符 c 或非指定字符集 s 中的字符，n 是 s 的长度。</li>
+<li>此方法从位置 pos(默认为0) 开始查找，遇到不是 c 或非 s 中的任意字符时，即返回该字符的位置，否则返回 npos。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 中新增 3-5，并支持二进制字符串的查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.find_first_not_of(<span style="color:#d14">&#34;he&#34;</span>);     <span style="color:#998;font-style:italic">// return 2
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_first_not_of(<span style="color:#d14">&#34;he&#34;</span>, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// return 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_first_not_of(<span style="color:#d14">&#39;x&#39;</span>);      <span style="color:#998;font-style:italic">// return 0
+</span></span></span></code></pre></div><h3 id="find_last_of"><a class="anchor" href="#find_last_of">#</a>find_last_of</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t find_last_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t find_last_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t find_last_of(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t find_last_of(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>查找最后一个出现的指定字符集 s 中的字符。</li>
+<li>此方法从 pos(默认值为npos) 处开始反向查找，遇到 s 中的任意字符时，即返回该字符的位置，否则返回 <code>npos</code>。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 中新增 2-4。此方法支持二进制字符串的查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.find_last_of(<span style="color:#d14">&#34;le&#34;</span>);     <span style="color:#998;font-style:italic">// return 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_last_of(<span style="color:#d14">&#34;le&#34;</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// return 1
+</span></span></span></code></pre></div><h3 id="find_last_not_of"><a class="anchor" href="#find_last_not_of">#</a>find_last_not_of</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> size_t find_last_not_of(<span style="color:#458;font-weight:bold">char</span> c, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> size_t find_last_not_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> size_t find_last_not_of(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t pos, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> size_t find_last_not_of(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> size_t find_last_not_of(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s, size_t pos<span style="color:#000;font-weight:bold">=</span>npos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>查找最后一个出现的非指定字符 c 或者非指定字符集 s 中的字符。</li>
+<li>此方法从 pos(默认为npos) 处开始反向查找，遇到不等于 c 或者非 s 中的任意字符时，即返回该字符的位置，否则返回 <code>npos</code>。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 中新增 3-5，并且支持二进制字符串的查找。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.find_last_not_of(<span style="color:#d14">&#34;le&#34;</span>);     <span style="color:#998;font-style:italic">// return 4
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_last_not_of(<span style="color:#d14">&#34;le&#34;</span>, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// return 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.find_last_not_of(<span style="color:#d14">&#39;o&#39;</span>);      <span style="color:#998;font-style:italic">// return 3
+</span></span></span></code></pre></div><h3 id="npos"><a class="anchor" href="#npos">#</a>npos</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">static</span> <span style="color:#000;font-weight:bold">const</span> size_t npos <span style="color:#000;font-weight:bold">=</span> (size_t)<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>npos 是 size_t 类型的最大值。</p>
+</li>
+<li>
+<p>npos 作为长度时，表示直到字符串结尾。</p>
+</li>
+<li>
+<p>npos 作为返回值时，表示未找到。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>size_t r <span style="color:#000;font-weight:bold">=</span> s.find(<span style="color:#d14">&#39;x&#39;</span>);
+</span></span><span style="display:flex;"><span>r <span style="color:#000;font-weight:bold">==</span> s.npos;  <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><h3 id="substr"><a class="anchor" href="#substr">#</a>substr</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">substr</span>(size_t pos) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">substr</span>(size_t pos, size_t len) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>第 1 个版本返回从位置 pos 开始的子串。</p>
+</li>
+<li>
+<p>第 2 个版本返回从位置 pos 开始、长度为 len 的子串。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.substr(<span style="color:#099">2</span>);     <span style="color:#998;font-style:italic">// &#34;llo&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.substr(<span style="color:#099">2</span>, <span style="color:#099">2</span>);  <span style="color:#998;font-style:italic">// &#34;ll&#34;
+</span></span></span></code></pre></div><h3 id="heading-5"><a class="anchor" href="#heading-5">#</a>———————————</h3>
+<h3 id="starts_with"><a class="anchor" href="#starts_with">#</a>starts_with</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">starts_with</span>(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">starts_with</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">starts_with</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">starts_with</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">starts_with</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法判断 fastring 是否以字符 c 或字符串 s 开头，n 是 s 的长度。</li>
+<li>当 s 为空字符串时，此方法始终返回 true。</li>
+</ul>
+<h3 id="ends_with"><a class="anchor" href="#ends_with">#</a>ends_with</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">ends_with</span>(<span style="color:#458;font-weight:bold">char</span> c) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">ends_with</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">ends_with</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">ends_with</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">ends_with</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法判断 fastring 是否以字符 c 或字符串 s 结尾，n 是 s 的长度。</li>
+<li>当 s 为空字符串时，此方法始终返回 true。</li>
+</ul>
+<h3 id="match"><a class="anchor" href="#match">#</a>match</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">match</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> pattern) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>判断 fastring 是否匹配模式 pattern，<code>*</code> 匹配 0 个或多个字符，<code>?</code> 匹配单个字符。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.match(<span style="color:#d14">&#34;he??o&#34;</span>);  <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.match(<span style="color:#d14">&#34;h*o&#34;</span>);    <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.match(<span style="color:#d14">&#34;he?o&#34;</span>);   <span style="color:#998;font-style:italic">// false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.match(<span style="color:#d14">&#34;*o&#34;</span>);     <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.match(<span style="color:#d14">&#34;h*l?&#34;</span>);   <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><h3 id="remove_prefix"><a class="anchor" href="#remove_prefix">#</a>remove_prefix</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_prefix(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_prefix(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_prefix(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_prefix(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>
+<p>删除 fastring 中的前缀 s，n 是 s 的长度。</p>
+</li>
+<li>
+<p>v3.0.1 新增。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;12345678&#34;</span>);
+</span></span><span style="display:flex;"><span>s.remove_prefix(<span style="color:#d14">&#34;123&#34;</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;45678&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.remove_prefix(<span style="color:#d14">&#34;xxx&#34;</span>); <span style="color:#998;font-style:italic">// nothing will be done
+</span></span></span></code></pre></div><h3 id="remove_suffix"><a class="anchor" href="#remove_suffix">#</a>remove_suffix</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_suffix(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_suffix(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_suffix(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> remove_suffix(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>删除 fastring 的后缀 s，n 是 s 的长度。</li>
+</ul>
+<blockquote class="book-hint warning">
+  v3.0.1 中将 <strong>remove_tail</strong> 更名为 <strong>remove_suffix</strong>。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello.log&#34;</span>);
+</span></span><span style="display:flex;"><span>s.remove_suffix(<span style="color:#d14">&#34;.log&#34;</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.remove_suffix(<span style="color:#d14">&#34;.xxx&#34;</span>); <span style="color:#998;font-style:italic">// nothing will be done
+</span></span></span></code></pre></div><h3 id="heading-6"><a class="anchor" href="#heading-6">#</a>———————————</h3>
+<h3 id="replace"><a class="anchor" href="#replace">#</a>replace</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> replace(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> sub, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to, size_t maxreplace<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> replace(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> sub, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> to, size_t maxreplace<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> replace(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> sub, size_t n, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> to, size_t m, size_t maxreplace<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);
+</span></span></code></pre></div><ul>
+<li>此方法将 fastring 中的子串 sub 替换成 to，参数 maxreplace 指定最大的替换次数，0 表示不限次数。n 和 m 分别是子串 sub、to 的长度。</li>
+</ul>
+<blockquote class="book-hint info">
+  v3.0.1 中新增 2-3，并支持二进制字符串的替换。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.replace(<span style="color:#d14">&#34;ll&#34;</span>, <span style="color:#d14">&#34;rr&#34;</span>);                     <span style="color:#998;font-style:italic">// s -&gt; &#34;herro&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.replace(<span style="color:#d14">&#34;err&#34;</span>, <span style="color:#d14">&#34;ok&#34;</span>).replace(<span style="color:#d14">&#34;k&#34;</span>, <span style="color:#d14">&#34;o&#34;</span>);  <span style="color:#998;font-style:italic">// s -&gt; &#34;hooo&#34;
+</span></span></span></code></pre></div><h3 id="strip"><a class="anchor" href="#strip">#</a>strip</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> ...X<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> strip(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> ...x);
+</span></span></code></pre></div><ul>
+<li>修剪字符串，与 <a href="#trim">trim</a> 等价。</li>
+</ul>
+<h3 id="trim"><a class="anchor" href="#trim">#</a>trim</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(<span style="color:#458;font-weight:bold">char</span> c, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> c, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> c, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34; </span><span style="color:#d14">\t\r\n</span><span style="color:#d14">&#34;</span>, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(size_t n, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> trim(<span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">char</span> d<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;b&#39;</span>);
+</span></span></code></pre></div><ul>
+<li>修剪字符串，去掉 fastring 左边、右边或两边的指定字符。</li>
+<li>参数 d 表示方向，&rsquo;l&rsquo; 或 &lsquo;L&rsquo; 表示左边，&lsquo;r&rsquo; 或 &lsquo;R&rsquo; 表示右边，默认为 &lsquo;b&rsquo; 表示左右两边。</li>
+<li>1-3, 去掉左、右或两边的单个字符 c。</li>
+<li>4, 去掉左、右或两边的 s 中的字符。</li>
+<li>5-6, 去掉左、右或两边的 n 个字符。</li>
+</ul>
+<blockquote class="book-hint info">
+  从 v3.0.1 开始，参数 <code>c</code> 可以是 <code>\0</code>。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34; sos</span><span style="color:#d14">\r\n</span><span style="color:#d14">&#34;</span>;
+</span></span><span style="display:flex;"><span>s.trim();          <span style="color:#998;font-style:italic">// s -&gt; &#34;sos&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.trim(<span style="color:#d14">&#39;s&#39;</span>, <span style="color:#d14">&#39;l&#39;</span>);  <span style="color:#998;font-style:italic">// s -&gt; &#34;os&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.trim(<span style="color:#d14">&#39;s&#39;</span>, <span style="color:#d14">&#39;r&#39;</span>);  <span style="color:#998;font-style:italic">// s -&gt; &#34;o&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;[[xx]]&#34;</span>;
+</span></span><span style="display:flex;"><span>s.trim(<span style="color:#099">2</span>);         <span style="color:#998;font-style:italic">// s -&gt; &#34;xx&#34;
+</span></span></span></code></pre></div><h3 id="tolower"><a class="anchor" href="#tolower">#</a>tolower</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> tolower();
+</span></span></code></pre></div><ul>
+<li>此方法将 fastring 转换成小写，并返回 fastring 的引用。</li>
+</ul>
+<h3 id="toupper"><a class="anchor" href="#toupper">#</a>toupper</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring<span style="color:#000;font-weight:bold">&amp;</span> toupper();
+</span></span></code></pre></div><ul>
+<li>此方法将 fastring 转换成大写，并返回 fastring 的引用。</li>
+</ul>
+<h3 id="lower"><a class="anchor" href="#lower">#</a>lower</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">lower</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastring 的小写形式。</li>
+</ul>
+<h3 id="upper"><a class="anchor" href="#upper">#</a>upper</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">upper</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法返回 fastring 的大写形式。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;Hello&#34;</span>);
+</span></span><span style="display:flex;"><span>fastring x <span style="color:#000;font-weight:bold">=</span> s.lower();  <span style="color:#998;font-style:italic">// x = &#34;hello&#34;, s 保持不变
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastring y <span style="color:#000;font-weight:bold">=</span> s.upper();  <span style="color:#998;font-style:italic">// x = &#34;HELLO&#34;, s 保持不变
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.tolower();             <span style="color:#998;font-style:italic">// s -&gt; &#34;hello&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.toupper();             <span style="color:#998;font-style:italic">// s -&gt; &#34;HELLO&#34;
+</span></span></span></code></pre></div><h2 id="global-functions"><a class="anchor" href="#global-functions">#</a>global functions</h2>
+<h3 id="operator-4"><a class="anchor" href="#operator-4">#</a>operator+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#458;font-weight:bold">char</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#458;font-weight:bold">char</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">+</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>
+<p>加法操作，此方法至少有一个参数是 fastring。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">=</span> s <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#39;^&#39;</span>;        <span style="color:#998;font-style:italic">// s -&gt; &#34;^&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;o&#34;</span> <span style="color:#000;font-weight:bold">+</span> s <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;o&#34;</span>;  <span style="color:#998;font-style:italic">// s -&gt; &#34;o^o&#34;
+</span></span></span></code></pre></div><h3 id="operator-5"><a class="anchor" href="#operator-5">#</a>operator==</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>此方法判断两个字符串是否相等，至少有一个参数是 fastring。</li>
+</ul>
+<h3 id="operator-6"><a class="anchor" href="#operator-6">#</a>operator!=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>此方法判断两个字符串是否不相等，至少有一个参数是 fastring。</li>
+</ul>
+<h3 id="operator-7"><a class="anchor" href="#operator-7">#</a>operator&lt;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>此方法判断字符串 a 是否小于 b，至少有一个参数是 fastring。</li>
+</ul>
+<h3 id="operator-8"><a class="anchor" href="#operator-8">#</a>operator&gt;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>此方法判断字符串 a 是否大于 b，至少有一个参数是 fastring。</li>
+</ul>
+<h3 id="operator-9"><a class="anchor" href="#operator-9">#</a>operator&lt;=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>此方法判断字符串 a 是否小于或等于 b，至少有一个参数是 fastring。</li>
+</ul>
+<h3 id="operator-10"><a class="anchor" href="#operator-10">#</a>operator&gt;=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;=</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;=</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;=</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> a, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> b);
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法判断字符串 a 是否大于或等于 b，至少有一个参数是 fastring。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;hello&#34;</span>;  <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#34;hello&#34;</span>;  <span style="color:#998;font-style:italic">// false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#d14">&#34;aa&#34;</span>;      <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#d14">&#34;xx&#34;</span>;      <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&gt;=</span> <span style="color:#d14">&#34;he&#34;</span>;     <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;=</span> <span style="color:#d14">&#34;he&#34;</span>;     <span style="color:#998;font-style:italic">// false
+</span></span></span></code></pre></div><h3 id="operator-11"><a class="anchor" href="#operator-11">#</a>operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>ostream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(std<span style="color:#000;font-weight:bold">::</span>ostream<span style="color:#000;font-weight:bold">&amp;</span> os, <span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">s</span>(<span style="color:#d14">&#34;xx&#34;</span>);
+</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>cout <span style="color:#000;font-weight:bold">&lt;&lt;</span> s <span style="color:#000;font-weight:bold">&lt;&lt;</span> std<span style="color:#000;font-weight:bold">::</span>endl;
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/co/other/fastring/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/other/fastring.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastring">fastring</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#assign">assign</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#shrink">shrink</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+            <li><a href="#operator-3">operator+=</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#pop_back">pop_back</a></li>
+            <li><a href="#heading-4">———————————</a></li>
+            <li><a href="#compare">compare</a></li>
+            <li><a href="#contains">contains</a></li>
+            <li><a href="#find">find</a></li>
+            <li><a href="#ifind">ifind</a></li>
+            <li><a href="#rfind">rfind</a></li>
+            <li><a href="#find_first_of">find_first_of</a></li>
+            <li><a href="#find_first_not_of">find_first_not_of</a></li>
+            <li><a href="#find_last_of">find_last_of</a></li>
+            <li><a href="#find_last_not_of">find_last_not_of</a></li>
+            <li><a href="#npos">npos</a></li>
+            <li><a href="#substr">substr</a></li>
+            <li><a href="#heading-5">———————————</a></li>
+            <li><a href="#starts_with">starts_with</a></li>
+            <li><a href="#ends_with">ends_with</a></li>
+            <li><a href="#match">match</a></li>
+            <li><a href="#remove_prefix">remove_prefix</a></li>
+            <li><a href="#remove_suffix">remove_suffix</a></li>
+            <li><a href="#heading-6">———————————</a></li>
+            <li><a href="#replace">replace</a></li>
+            <li><a href="#strip">strip</a></li>
+            <li><a href="#trim">trim</a></li>
+            <li><a href="#tolower">tolower</a></li>
+            <li><a href="#toupper">toupper</a></li>
+            <li><a href="#lower">lower</a></li>
+            <li><a href="#upper">upper</a></li>
+          </ul>
+        </li>
+        <li><a href="#global-functions">global functions</a>
+          <ul>
+            <li><a href="#operator-4">operator+</a></li>
+            <li><a href="#operator-5">operator==</a></li>
+            <li><a href="#operator-6">operator!=</a></li>
+            <li><a href="#operator-7">operator&lt;</a></li>
+            <li><a href="#operator-8">operator&gt;</a></li>
+            <li><a href="#operator-9">operator&lt;=</a></li>
+            <li><a href="#operator-10">operator&gt;=</a></li>
+            <li><a href="#operator-11">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

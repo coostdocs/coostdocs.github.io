@@ -4,38 +4,34 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="include: co/log.h.
-#简介 co/log 是一个类似 google glog 的 C&#43;&#43; 流式日志库，它像下面这样打印日志：
-LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log co/log 支持两种类型的日志，level log 与 topic log(TLOG)。
-#Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
-打印 fatal 级别的日志会终止程序的运行，co/log 还会在程序退出前打印函数调用栈信息，以方便追查程序崩溃的原因。
-此类型的日志会写入同一个文件中，一般用于打印调试信息。
+#简介 co.log 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：
+LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log #Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
+打印 fatal 级别的日志会终止程序的运行，co.log 还会试图在程序退出前打印函数调用栈信息，以方便排查程序崩溃的原因。 此类型的日志会写入同一个文件中，一般用于打印调试信息。
 #Topic Log Topic log(TLOG) 没有级别之分，而是按主题分类。
 此类型的日志，按主题写入不同的文件，一般用于打印业务日志，按业务功能划分，便于日志管理。
-#性能 co/log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
-platform google glog co/log win2012 HHD 1.">
+#性能 co.log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
+platform glog co.log win2012 HHD 1.6MB/s 180MB/s win10 SSD 3.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="日志" />
 <meta property="og:description" content="include: co/log.h.
-#简介 co/log 是一个类似 google glog 的 C&#43;&#43; 流式日志库，它像下面这样打印日志：
-LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log co/log 支持两种类型的日志，level log 与 topic log(TLOG)。
-#Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
-打印 fatal 级别的日志会终止程序的运行，co/log 还会在程序退出前打印函数调用栈信息，以方便追查程序崩溃的原因。
-此类型的日志会写入同一个文件中，一般用于打印调试信息。
+#简介 co.log 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：
+LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log #Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
+打印 fatal 级别的日志会终止程序的运行，co.log 还会试图在程序退出前打印函数调用栈信息，以方便排查程序崩溃的原因。 此类型的日志会写入同一个文件中，一般用于打印调试信息。
 #Topic Log Topic log(TLOG) 没有级别之分，而是按主题分类。
 此类型的日志，按主题写入不同的文件，一般用于打印业务日志，按业务功能划分，便于日志管理。
-#性能 co/log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
-platform google glog co/log win2012 HHD 1." />
+#性能 co.log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
+platform glog co.log win2012 HHD 1.6MB/s 180MB/s win10 SSD 3." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/log/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2022-10-08T20:31:26+08:00" />
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
 <title>日志 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
-  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/log/" title="co/log">
-<link rel="stylesheet" href="../../../book.min.34012a023bb86e99e9c5d444ca11c3e38625a1b8f226bf07e2360827bb149b14.css" integrity="sha256-NAEqAju4bpnpxdREyhHD44YlobjyJr8H4jYIJ7sUmxQ=" crossorigin="anonymous">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/log/" title="log">
+<link rel="stylesheet" href="../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.a15a5444aaacaf4689e3d4441e4b3a1a51f384942efed6c32ea1208b99042786.js" integrity="sha256-oVpURKqsr0aJ49REHks6GlHzhJQu/tbDLqEgi5kEJ4Y=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -149,7 +145,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <span>CO 参考文档</span>
+    <span>参考文档</span>
   
 
           
@@ -175,7 +171,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/defer/" class="">defer</a>
+    <a href="../../../cn/co/god/" class="">面向玄学</a>
   
 
         </li>
@@ -188,7 +184,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/atomic/" class="">原子操作</a>
+    <a href="../../../cn/co/mem/" class="">内存分配</a>
   
 
         </li>
@@ -201,46 +197,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/fastring/" class="">字符串(fastring)</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/fastream/" class="">字符流(fastream)</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/str/" class="">字符串操作</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/flag/" class="">命令行参数与配置文件解析</a>
+    <a href="../../../cn/co/flag/" class="">配置</a>
   
 
         </li>
@@ -266,7 +223,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/unitest/" class="">单元测试框架</a>
+    <a href="../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/benchmark/" class="">基准测试</a>
   
 
         </li>
@@ -292,7 +262,23 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/time/" class="">时间</a>
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/atomic/" class="">原子操作</a>
   
 
         </li>
@@ -305,7 +291,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/thread/" class="">线程</a>
+    <a href="../../../cn/co/concurrency/thread/" class="">线程</a>
   
 
         </li>
@@ -318,8 +304,138 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/coroutine/" class="">协程</a>
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
   
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
 
         </li>
       
@@ -348,6 +464,45 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/third/" class="">使用三方网络库</a>
   
 
         </li>
@@ -404,7 +559,23 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/tasked/" class="">定时任务</a>
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/console/" class="">终端输出</a>
   
 
         </li>
@@ -417,7 +588,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/random/" class="">随机数</a>
+    <a href="../../../cn/co/other/defer/" class="">defer</a>
   
 
         </li>
@@ -430,7 +601,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/lrumap/" class="">LruMap</a>
+    <a href="../../../cn/co/other/error/" class="">错误</a>
   
 
         </li>
@@ -443,7 +614,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/hash/" class="">Hash</a>
+    <a href="../../../cn/co/other/fastring/" class="">fastring</a>
   
 
         </li>
@@ -456,7 +627,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/path/" class="">文件路径(path)</a>
+    <a href="../../../cn/co/other/fastream/" class="">fastream</a>
   
 
         </li>
@@ -469,7 +640,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/fs/" class="">文件系统</a>
+    <a href="../../../cn/co/other/stl/" class="">STL</a>
   
 
         </li>
@@ -482,7 +653,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/os/" class="">操作系统</a>
+    <a href="../../../cn/co/other/str/" class="">string utility</a>
   
 
         </li>
@@ -495,7 +666,85 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/co/build/" class="">编译</a>
+    <a href="../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/os/" class="">操作系统</a>
   
 
         </li>
@@ -513,20 +762,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <span>markdown文档示例</span>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/demo/demo/" class="">markdown模板文档</a>
+    <a href="../../../cn/co/build/" class="">编译</a>
   
 
         </li>
@@ -598,7 +834,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#性能">性能</a></li>
           </ul>
         </li>
-        <li><a href="#api">API</a>
+        <li><a href="#apis">APIs</a>
           <ul>
             <li><a href="#logexit">log::exit</a></li>
             <li><a href="#logset_write_cb">log::set_write_cb</a></li>
@@ -632,12 +868,12 @@ https://github.com/alex-shpak/hugo-book
         </li>
         <li><a href="#日志文件">日志文件</a>
           <ul>
-            <li><a href="#日志组织方式">日志组织方式</a></li>
+            <li><a href="#日志文件名">日志文件名</a></li>
             <li><a href="#日志格式">日志格式</a></li>
             <li><a href="#查看日志">查看日志</a></li>
           </ul>
         </li>
-        <li><a href="#构建及运行-colog-测试程序">构建及运行 co/log 测试程序</a></li>
+        <li><a href="#构建及运行-colog-测试程序">构建及运行 co.log 测试程序</a></li>
       </ul>
     </li>
   </ul>
@@ -654,25 +890,27 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/log.h">co/log.h</a>.</p>
 <h2 id="简介"><a class="anchor" href="#%e7%ae%80%e4%bb%8b">#</a>简介</h2>
-<p><code>co/log</code> 是一个类似 <a href="https://github.com/google/glog">google glog</a> 的 C++ 流式日志库，它像下面这样打印日志：</p>
+<p><strong>co.log</strong> 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;     <span style="color:#998;font-style:italic">// level log
 </span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>TLOG(<span style="color:#d14">&#34;topic&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>; <span style="color:#998;font-style:italic">// topic log
-</span></span></span></code></pre></div><p>co/log 支持两种类型的日志，level log 与 topic log(TLOG)。</p>
-<h3 id="level-log"><a class="anchor" href="#level-log">#</a>Level Log</h3>
+</span></span></span></code></pre></div><h3 id="level-log"><a class="anchor" href="#level-log">#</a>Level Log</h3>
 <p>Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。</p>
-<p><strong>打印 fatal 级别的日志会终止程序的运行</strong>，co/log 还会在程序退出前打印函数调用栈信息，以方便追查程序崩溃的原因。</p>
+<blockquote class="book-hint warning">
+  <strong>打印 fatal 级别的日志会终止程序的运行</strong>，co.log 还会试图在程序退出前打印函数调用栈信息，以方便排查程序崩溃的原因。
+</blockquote>
+
 <p>此类型的日志会写入同一个文件中，一般用于打印调试信息。</p>
 <h3 id="topic-log"><a class="anchor" href="#topic-log">#</a>Topic Log</h3>
 <p>Topic log(TLOG) 没有级别之分，而是按主题分类。</p>
 <p>此类型的日志，按主题写入不同的文件，一般用于打印业务日志，按业务功能划分，便于日志管理。</p>
 <h3 id="性能"><a class="anchor" href="#%e6%80%a7%e8%83%bd">#</a>性能</h3>
-<p>co/log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：</p>
+<p>co.log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：</p>
 <table>
 <thead>
 <tr>
 <th>platform</th>
-<th>google glog</th>
-<th>co/log</th>
+<th>glog</th>
+<th>co.log</th>
 </tr>
 </thead>
 <tbody>
@@ -698,14 +936,14 @@ https://github.com/alex-shpak/hugo-book
 </tr>
 </tbody>
 </table>
-<h2 id="api"><a class="anchor" href="#api">#</a>API</h2>
+<h2 id="apis"><a class="anchor" href="#apis">#</a>APIs</h2>
 <h3 id="logexit"><a class="anchor" href="#logexit">#</a>log::exit</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
 </span></span></code></pre></div><ul>
 <li>将缓存中的日志写入文件，并退出后台写日志的线程。</li>
-<li>程序正常退出时，co/log 会自动调用此函数。</li>
+<li>程序正常退出时，co.log 会自动调用此函数。</li>
 <li>多次调用此函数是安全的。</li>
-<li>co/log 内部捕获到 <code>SIGINT, SIGTERM, SIGQUIT</code> 等信号时，会在程序退出前调用此函数。</li>
+<li>co.log 内部捕获到 <code>SIGINT, SIGTERM, SIGQUIT</code> 等信号时，会在程序退出前调用此函数。</li>
 </ul>
 <h3 id="logset_write_cb"><a class="anchor" href="#logset_write_cb">#</a>log::set_write_cb</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(
@@ -717,7 +955,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> flags<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
 </span></span><span style="display:flex;"><span>);
 </span></span></code></pre></div><ul>
-<li>co/log 默认将日志写到本地文件，用户可以调用此 API 自定义写日志的 callback，将日志写到不同的目标。</li>
+<li>co.log 默认将日志写到本地文件，用户可以调用此 API 自定义写日志的 callback，将日志写到不同的目标。</li>
 <li>参数 <code>cb</code> 是 callback。第 1 个版本用于 Level log，cb 带 2 个参数，表示日志 buffer 的地址及长度；第 2 个版本用于 Topic log(TLOG)，cb 带 3 个参数，第 1 个参数是 topic，后两个参数与第 1 个版本相同。buffer 中可能含有多条日志。</li>
 <li>参数 <code>flags</code> 是 v3.0 新增，默认为 0，可以是下述选项的组合：
 <ul>
@@ -728,7 +966,7 @@ https://github.com/alex-shpak/hugo-book
 <h3 id="v30-删除的-api"><a class="anchor" href="#v30-%e5%88%a0%e9%99%a4%e7%9a%84-api">#</a>v3.0 删除的 API</h3>
 <ul>
 <li>
-<p><strong>log::init</strong>，v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 <code>flag::init(argc, argv)</code>。</p>
+<p><strong>log::init</strong>，v3.0 移除，从 v3.0 开始，一般只需要在 main 函数开头调用 <code>flag::parse(argc, argv)</code>。</p>
 </li>
 <li>
 <p><strong>log::set_single_write_cb</strong>，v3.0 移除。</p>
@@ -754,7 +992,7 @@ https://github.com/alex-shpak/hugo-book
 <p>前 4 种仅在 <code>FLG_min_log_level</code> 不大于当前日志级别时，才会打印日志，用户可以将 FLG_min_log_level 的值设置大一些，以屏蔽低级别的日志。</p>
 </li>
 <li>
-<p>打印 fatal 级别的日志，表示程序出现了致命错误，co/log 会打印当前线程的函数调用栈信息，并终止程序的运行。</p>
+<p>打印 fatal 级别的日志，表示程序出现了致命错误，coost 会打印当前线程的函数调用栈信息，并终止程序的运行。</p>
 </li>
 <li>
 <p>示例</p>
@@ -772,18 +1010,15 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_IF(cond) if (cond) ELOG
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define FLOG_IF(cond) if (cond) FLOG
 </span></span></span></code></pre></div><ul>
-<li>
-<p>上面的 5 个宏，接受一个条件参数 cond，当 cond 为 true 时才打印日志。</p>
-</li>
-<li>
-<p>参数 cond 可以是值为 bool 类型的任意表达式。</p>
-</li>
-<li>
-<p>由于条件判断在最前面，即使相应级别的日志被屏蔽掉，这些宏也会保证 cond 表达式被执行。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li>上面的 5 个宏，接受一个条件参数 cond，当 cond 为 true 时才打印日志。</li>
+<li>参数 cond 可以是值为 bool 类型的任意表达式。</li>
+</ul>
+<blockquote class="book-hint warning">
+  由于条件判断在前面，即使相应级别的日志被屏蔽掉，这些宏也会保证 cond 表达式被执行。
+</blockquote>
+
+<ul>
+<li>示例</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
 </span></span><span style="display:flex;"><span>DLOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
@@ -798,10 +1033,10 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
-<p>上面的宏每 n 条打印一次日志，内部用<a href="../atomic/">原子操作</a>计数，是<strong>线程安全</strong>的。</p>
+<p>上面的宏每 n 条打印一次日志。</p>
 </li>
 <li>
-<p>参数 n 必须是大于 0 的整数，一般不要超过 int 类型的最大值。</p>
+<p>参数 n 必须是大于 0 的整数。</p>
 </li>
 <li>
 <p>第 1 条日志始终会被打印，之后每隔 n 条打印一次。</p>
@@ -825,7 +1060,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
-<p>上面的宏打印前 n 条日志，内部用<a href="../atomic/">原子操作</a>计数，是<strong>线程安全</strong>的。</p>
+<p>上面的宏打印前 n 条日志。</p>
 </li>
 <li>
 <p>参数 n 是不小于 0 的整数(等于 0 时不会打印日志)，一般不要超过 int 类型的最大值。</p>
@@ -876,7 +1111,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
 </span></span></span></code></pre></div><ul>
 <li>
-<p>上面的宏可视为加强版的 assert，它们在 DEBUG 模式下也不会被清除。</p>
+<p>上面的宏可视为加强版的 <code>assert</code>，它们在 DEBUG 模式下也不会被清除。</p>
 </li>
 <li>
 <p>这些宏与 <code>FLOG</code> 类似，可以打印 fatal 级别的日志。</p>
@@ -888,22 +1123,22 @@ https://github.com/alex-shpak/hugo-book
 <p><code>CHECK_NOTNULL</code> 断言指针不是 NULL，参数 p 是任意类型的指针。</p>
 </li>
 <li>
-<p><code>CHECK_EQ</code> 断言 <code>a == b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_EQ</code> 断言 <code>a == b</code>。</p>
 </li>
 <li>
-<p><code>CHECK_NE</code> 断言 <code>a != b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_NE</code> 断言 <code>a != b</code>。</p>
 </li>
 <li>
-<p><code>CHECK_GE</code> 断言 <code>a &gt;= b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_GE</code> 断言 <code>a &gt;= b</code>。</p>
 </li>
 <li>
-<p><code>CHECK_LE</code> 断言 <code>a &lt;= b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_LE</code> 断言 <code>a &lt;= b</code>。</p>
 </li>
 <li>
-<p><code>CHECK_GT</code> 断言 <code>a &gt; b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_GT</code> 断言 <code>a &gt; b</code>。</p>
 </li>
 <li>
-<p><code>CHECK_LT</code> 断言 <code>a &lt; b</code>，参数 a 与 b 确保只计算一次。</p>
+<p><code>CHECK_LT</code> 断言 <code>a &lt; b</code>。</p>
 </li>
 <li>
 <p>一般建议优先使用 <code>CHECK_XX(a, b)</code> 这些宏，它们提供比 <code>CHECK(cond)</code> 更多的信息，会打印出参数 a 与 b 的值。</p>
@@ -912,7 +1147,7 @@ https://github.com/alex-shpak/hugo-book
 <p><code>fastream::operator&lt;&lt;</code> 不支持的参数类型，如 STL 容器的 iterator 类型，不能用 <code>CHECK_XX(a, b)</code> 这些宏。</p>
 </li>
 <li>
-<p>断言失败时，co/log 先调用 <code>log::exit()</code>，再打印当前线程的函数调用栈信息，然后退出程序。</p>
+<p>断言失败时，co.log 先调用 <code>log::exit()</code>，再打印当前线程的函数调用栈信息，然后退出程序。</p>
 </li>
 <li>
 <p>示例</p>
@@ -929,7 +1164,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">3</span>);
 </span></span><span style="display:flex;"><span>CHECK(it <span style="color:#000;font-weight:bold">!=</span> m.end()); <span style="color:#998;font-style:italic">// 不能使用 CHECK_NE(it, m.end()), 编译器会报错
 </span></span></span></code></pre></div><h2 id="打印堆栈信息"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e5%a0%86%e6%a0%88%e4%bf%a1%e6%81%af">#</a>打印堆栈信息</h2>
-<p><code>co/log</code> 在 <code>CHECK</code> 断言失败或捕获到 <code>SIGSEGV</code> 等异常信号时，会打印函数调用栈，以方便定位问题，效果见下图：</p>
+<p>co.log 在 <code>CHECK</code> 断言失败或捕获到 <code>SIGSEGV</code> 等异常信号时，会打印函数调用栈，以方便定位问题，效果见下图：</p>
 <p><img src="https://coostdocs.github.io/images/stack.png" alt="stack" />(<a href="https://asciinema.org/a/435894">https://asciinema.org/a/435894</a>)</p>
 <p>此功能需要在编译时，加入调试信息，如 gcc 需要开启 <code>-g</code> 选项。在 linux 与 macosx 平台，还需要安装 <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a>，才能打印堆栈信息。在 linux 上，<code>libbacktrace</code> 可能已经集成到 gcc 里了，您也许可以在类似 <code>/usr/lib/gcc/x86_64-linux-gnu/9</code> 的目录中找到它。否则，您可以按下面的方式手动安装它：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/ianlancetaylor/libbacktrace.git
@@ -938,86 +1173,73 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>make -j8
 </span></span><span style="display:flex;"><span>sudo make install
 </span></span></code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
-<p>co/log 使用 <a href="../flag/">co/flag</a> 定义配置项，下面列出的是 co/log 内部定义的 flag，这些配置项如无特别说明，对 level log 与 TLOG 均有效。</p>
+<p>co.log 使用 <a href="../flag/">co.flag</a> 定义配置项，下面列出的是 co.log 内部定义的 flag，这些配置项如无特别说明，对 level log 与 TLOG 均有效。</p>
 <h3 id="log_dir"><a class="anchor" href="#log_dir">#</a>log_dir</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_string(log_dir, <span style="color:#d14">&#34;logs&#34;</span>, <span style="color:#d14">&#34;#0 log dir, will be created if not exists&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>指定日志目录，默认为当前目录下的 <code>logs</code> 目录，不存在时将会自动创建。</li>
 <li>log_dir 可以是绝对路径或相对路径，路径分隔符可以是 &lsquo;/&rsquo; 或 &lsquo;\&rsquo;，一般建议使用 &lsquo;/&rsquo;。</li>
 <li>程序启动时，确保当前用户有足够的权限，否则创建日志目录可能失败。</li>
 </ul>
 <h3 id="log_file_name"><a class="anchor" href="#log_file_name">#</a>log_file_name</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_string(log_file_name, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;#0 name of log file, using exename if empty&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>指定日志文件名(不含路径)，默认为空，使用程序名作为日志文件名(程序名末尾的 <code>.exe</code> 会被去掉)，如程序 xx 或 xx.exe 对应的日志文件名是 xx.log。</li>
 <li>如果日志文件名不是以 <code>.log</code> 结尾，co/log 自动在文件名末尾加上 <code>.log</code>。</li>
 </ul>
 <h3 id="min_log_level"><a class="anchor" href="#min_log_level">#</a>min_log_level</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(min_log_level, <span style="color:#099">0</span>, <span style="color:#d14">&#34;#0 write logs at or above this level, 0-4 (debug|info|warning|error|fatal)&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>仅适用于 level log，指定打印日志的最小级别，用于屏蔽低级别的日志，默认为 0，打印所有级别的日志。</li>
 </ul>
 <h3 id="max_log_size"><a class="anchor" href="#max_log_size">#</a>max_log_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(max_log_size, <span style="color:#099">4096</span>, <span style="color:#d14">&#34;#0 max size of a single log&#34;</span>);
-</span></span></code></pre></div><ul>
-<li>单条日志的最大长度，超过这个值，日志会被截断。</li>
+<ul>
+<li>单条日志的最大长度，默认为 4096，超过这个值，日志会被截断。</li>
 </ul>
 <h3 id="max_log_file_size"><a class="anchor" href="#max_log_file_size">#</a>max_log_file_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int64(max_log_file_size, <span style="color:#099">256</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#0 max size of log file, default: 256MB&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>指定日志文件的最大大小，默认 256M，超过此大小，生成新的日志文件，旧的日志文件会被重命名。</li>
 </ul>
 <h3 id="max_log_file_num"><a class="anchor" href="#max_log_file_num">#</a>max_log_file_num</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(max_log_file_num, <span style="color:#099">8</span>, <span style="color:#d14">&#34;#0 max number of log files&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>指定日志文件的最大数量，默认是 8，超过此值，删除旧的日志文件。</li>
 </ul>
 <h3 id="max_log_buffer_size"><a class="anchor" href="#max_log_buffer_size">#</a>max_log_buffer_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(max_log_buffer_size, <span style="color:#099">32</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#0 max size of log buffer, default: 32MB&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>指定日志缓存的最大大小，默认 32M，超过此值，丢掉一半的日志。</li>
 </ul>
 <h3 id="log_flush_ms"><a class="anchor" href="#log_flush_ms">#</a>log_flush_ms</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(log_flush_ms, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#0 flush the log buffer every n ms&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>后台线程将日志缓存刷入文件的时间间隔，单位为毫秒。</li>
 </ul>
 <h3 id="log_daily"><a class="anchor" href="#log_daily">#</a>log_daily</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(log_daily, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;&gt;&gt;#0 if true, enable daily log rotation&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>按天生成日志文件，默认为 false。</li>
 </ul>
 <h3 id="cout"><a class="anchor" href="#cout">#</a>cout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(cout, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;#0 also logging to terminal&#34;</span>);
-</span></span></code></pre></div><ul>
+<ul>
 <li>终端日志开关，默认为 false。若为 true，将日志也打印到终端。</li>
 </ul>
 <h2 id="日志文件"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6">#</a>日志文件</h2>
-<h3 id="日志组织方式"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f">#</a>日志组织方式</h3>
-<p>co/log 将所有级别的日志记录到同一个文件中，默认使用程序名作为日志文件名，如进程 xx 的日志文件是 xx.log。当日志文件达到最大大小 (FLG_max_log_file_size) 时，co/log 会重命名日志文件，并生成新文件。日志目录下面可能包含如下的文件：</p>
+<h3 id="日志文件名"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6%e5%90%8d">#</a>日志文件名</h3>
+<p>co.log 将所有级别的日志记录到同一个文件中，默认使用程序名作为日志文件名，如进程 xx 的日志文件是 xx.log。当日志文件达到最大大小 (FLG_max_log_file_size) 时，co.log 会重命名日志文件，并生成新文件。日志目录下面可能包含如下的文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xx.log
 </span></span><span style="display:flex;"><span>xx_0523_16_12_54.970.log
 </span></span><span style="display:flex;"><span>xx_0523_16_13_12.921.log
 </span></span><span style="display:flex;"><span>xx_0523_16_15_05.264.log
-</span></span></code></pre></div><p><code>xx.log</code> 始终是当前最新的日志文件。当文件数量超过 <code>FLG_max_log_file_num</code> 时，co/log 就会删除最旧的日志文件。</p>
-<p><code>fatal</code> 级别的日志，还会额外记录到 <code>xx.fatal</code> 文件中，<strong>co/log 不会重命名 fatal 日志文件，也不会删除它</strong>。</p>
+</span></span></code></pre></div><p><code>xx.log</code> 始终是当前最新的日志文件。当文件数量超过 <code>FLG_max_log_file_num</code> 时，co.log 就会删除最旧的日志文件。</p>
+<p><code>fatal</code> 级别的日志，还会额外记录到 <code>xx.fatal</code> 文件中，<strong>co.log 不会重命名 fatal 日志文件，也不会删除它</strong>。</p>
 <h3 id="日志格式"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%a0%bc%e5%bc%8f">#</a>日志格式</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>I0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>D0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:12<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>W0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:13<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>E0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:14<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>F0514 11:15:30.123 <span style="color:#099">1045</span> test/xx.cc:15<span style="color:#000;font-weight:bold">]</span> hello world
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>I0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
+</span></span><span style="display:flex;"><span>D0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:12<span style="color:#000;font-weight:bold">]</span> hello world
+</span></span><span style="display:flex;"><span>W0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:13<span style="color:#000;font-weight:bold">]</span> hello world
+</span></span><span style="display:flex;"><span>E0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:14<span style="color:#000;font-weight:bold">]</span> hello world
+</span></span><span style="display:flex;"><span>F0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:15<span style="color:#000;font-weight:bold">]</span> hello world
+</span></span><span style="display:flex;"><span><span style="color:#099">0514</span> 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
 </span></span></code></pre></div><ul>
-<li>上面的例子中，每行对应一条日志。</li>
-<li>每条日志的第一个字母是日志级别，<code>I</code> 表示 info，<code>D</code> 表示 debug，<code>W</code> 表示 warning，<code>E</code> 表示 error，<code>F</code> 表示 fatal。</li>
-<li>级别后面是时间，从月份开始到毫秒。年份意义不大，只会多占几个字节，因此没有打印出来。co/log 日志的时间，并不是生成时的时间，而是写入缓存时的时间，这是为了保证日志文件中的日志严格按时间排序。</li>
-<li>时间后面是线程 id，上面的 1045 即是线程 id。</li>
-<li>线程 id 后面是日志代码所在文件及行数。</li>
-<li>行数后面是 <code>] </code> ，即 <code>]</code> 后面加一个空格。</li>
-<li><code>] </code> 后面就是用户输入的日志内容。</li>
+<li>Level log 从左到右依次是级别、时间(月份到毫秒)、线程id、日志代码所在文件与行数、日志内容。</li>
+<li>Level log 的第一个字母是日志级别，<code>I</code> 表示 info，<code>D</code> 表示 debug，<code>W</code> 表示 warning，<code>E</code> 表示 error，<code>F</code> 表示 fatal。</li>
+<li>Topic log 没有级别，其他与 Level log 一样(上面的例子中最后一条即是 topic log)。</li>
 </ul>
 <h3 id="查看日志"><a class="anchor" href="#%e6%9f%a5%e7%9c%8b%e6%97%a5%e5%bf%97">#</a>查看日志</h3>
-<p>Linux 等系统，可以用 <code>grep</code>，<code>tail</code> 等命令查看日志。</p>
+<p>Linux、mac 等系统，可以用 <code>grep</code>，<code>tail</code> 等命令查看日志。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep ^E xx.log
 </span></span><span style="display:flex;"><span>tail -F xx.log
 </span></span><span style="display:flex;"><span>tail -F xx.log | grep ^E
@@ -1026,14 +1248,14 @@ https://github.com/alex-shpak/hugo-book
 <li>第 2 行用 <code>tail -F</code> 命令动态追踪日志文件，这里需要用大写的 <code>F</code>，因为 xx.log 可能被重命名，然后生成新的 xx.log 文件，<code>-F</code> 确保按文件名追踪到最新的日志文件。</li>
 <li>第 3 行用 <code>tail -F</code> 配合 <code>grep</code> 动态追踪日志文件中的错误日志。</li>
 </ul>
-<h2 id="构建及运行-colog-测试程序"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c-colog-%e6%b5%8b%e8%af%95%e7%a8%8b%e5%ba%8f">#</a>构建及运行 co/log 测试程序</h2>
+<h2 id="构建及运行-colog-测试程序"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c-colog-%e6%b5%8b%e8%af%95%e7%a8%8b%e5%ba%8f">#</a>构建及运行 co.log 测试程序</h2>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b log                   <span style="color:#998;font-style:italic"># build log or log.exe</span>
 </span></span><span style="display:flex;"><span>xmake r log                    <span style="color:#998;font-style:italic"># run log or log.exe</span>
 </span></span><span style="display:flex;"><span>xmake r log -cout              <span style="color:#998;font-style:italic"># also log to terminal</span>
 </span></span><span style="display:flex;"><span>xmake r log -min_log_level<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>   <span style="color:#998;font-style:italic"># 0-4: debug,info,warning,error,fatal </span>
 </span></span><span style="display:flex;"><span>xmake r log -perf              <span style="color:#998;font-style:italic"># performance test</span>
 </span></span></code></pre></div><ul>
-<li>在 co 根目录执行 <code>xmake -b log</code> 即可编译 <a href="https://github.com/idealvin/coost/blob/master/test/log.cc">test/log.cc</a> 测试代码，并生成 <code>log</code> 二进制文件。</li>
+<li>在 coost 根目录执行 <code>xmake -b log</code> 即可编译 <a href="https://github.com/idealvin/coost/blob/master/test/log.cc">test/log.cc</a> 测试代码，并生成 <code>log</code> 二进制文件。</li>
 </ul>
 </article>
  
@@ -1087,16 +1309,16 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/cocoyaxi/codoc/commit/9d78b93ef945a4034fb52cf51ffcb5aba7f50ad1" title='最后修改者 idealvin | October 8, 2022' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>October 8, 2022</span>
+      <span>September 9, 2023</span>
     </a>
   </div>
 
 
 
   <div class="book-edit">
-    <a class="flex align-center" href="https://github.com/cocoyaxi/codoc/edit/master/content/cn/co/log.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/log.md" target="_blank" rel="noopener">
       <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
       <span>编辑本页</span>
     </a>
@@ -1171,7 +1393,7 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#性能">性能</a></li>
           </ul>
         </li>
-        <li><a href="#api">API</a>
+        <li><a href="#apis">APIs</a>
           <ul>
             <li><a href="#logexit">log::exit</a></li>
             <li><a href="#logset_write_cb">log::set_write_cb</a></li>
@@ -1205,12 +1427,12 @@ https://github.com/alex-shpak/hugo-book
         </li>
         <li><a href="#日志文件">日志文件</a>
           <ul>
-            <li><a href="#日志组织方式">日志组织方式</a></li>
+            <li><a href="#日志文件名">日志文件名</a></li>
             <li><a href="#日志格式">日志格式</a></li>
             <li><a href="#查看日志">查看日志</a></li>
           </ul>
         </li>
-        <li><a href="#构建及运行-colog-测试程序">构建及运行 co/log 测试程序</a></li>
+        <li><a href="#构建及运行-colog-测试程序">构建及运行 co.log 测试程序</a></li>
       </ul>
     </li>
   </ul>

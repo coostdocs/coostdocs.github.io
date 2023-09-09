@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/stl.h.
+#Common containers In the table below, the containers in coost on the left are equivalent to the corresponding std versions on the right, only the internal memory allocators are different.
+coost std co::deque std::deque co::list std::list co::map std::map co::set std::set co::multimap std::multimap co::multiset std::multiset co::hash_map std::unordered_map co::hash_set std::unordered_set When the key is of const char* type (C-style string), co::map, co::set, co::multimap, co::multiset, co:: hash_map, co::hash_set will compare the key and calculate the hash value of the key according to the content of the string.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="STL" />
+<meta property="og:description" content="include: co/stl.h.
+#Common containers In the table below, the containers in coost on the left are equivalent to the corresponding std versions on the right, only the internal memory allocators are different.
+coost std co::deque std::deque co::list std::list co::map std::map co::set std::set co::multimap std::multimap co::multiset std::multiset co::hash_map std::unordered_map co::hash_set std::unordered_set When the key is of const char* type (C-style string), co::map, co::set, co::multimap, co::multiset, co:: hash_map, co::hash_set will compare the key and calculate the hash value of the key according to the content of the string." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/other/stl/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>STL | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/stl/" title="STL">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle" checked />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class=" active">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>STL</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#common-containers">Common containers</a></li>
+        <li><a href="#colru_map">co::lru_map</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#begin">begin</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#end">end</a></li>
+            <li><a href="#erase">erase</a></li>
+            <li><a href="#find">find</a></li>
+            <li><a href="#insert">insert</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#covector">co::vector</a>
+          <ul>
+            <li><a href="#constructor-1">constructor</a></li>
+            <li><a href="#destructor">destructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">————————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">————————————</a></li>
+            <li><a href="#begin-1">begin</a></li>
+            <li><a href="#end-1">end</a></li>
+            <li><a href="#heading-2">————————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty-1">empty</a></li>
+            <li><a href="#size-1">size</a></li>
+            <li><a href="#heading-3">————————————</a></li>
+            <li><a href="#clear-1">clear</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap-1">swap</a></li>
+            <li><a href="#heading-4">————————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#emplace_back">emplace_back</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#pop_back">pop_back</a></li>
+            <li><a href="#remove">remove</a></li>
+            <li><a href="#remove_back">remove_back</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/stl.h">co/stl.h</a>.</p>
+<h2 id="common-containers"><a class="anchor" href="#common-containers">#</a>Common containers</h2>
+<p>In the table below, the containers in coost on the left are equivalent to the corresponding std versions on the right, only the internal memory allocators are different.</p>
+<table>
+<thead>
+<tr>
+<th>coost</th>
+<th>std</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>co::deque</td>
+<td>std::deque</td>
+</tr>
+<tr>
+<td>co::list</td>
+<td>std::list</td>
+</tr>
+<tr>
+<td>co::map</td>
+<td>std::map</td>
+</tr>
+<tr>
+<td>co::set</td>
+<td>std::set</td>
+</tr>
+<tr>
+<td>co::multimap</td>
+<td>std::multimap</td>
+</tr>
+<tr>
+<td>co::multiset</td>
+<td>std::multiset</td>
+</tr>
+<tr>
+<td>co::hash_map</td>
+<td>std::unordered_map</td>
+</tr>
+<tr>
+<td>co::hash_set</td>
+<td>std::unordered_set</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="book-hint warning">
+  When the key is of <code>const char*</code> type (C-style string), <code>co::map</code>, <code>co::set</code>, <code>co::multimap</code>, <code>co::multiset</code>, <code>co:: hash_map</code>, <code>co::hash_set</code> will compare the key and calculate the hash value of the key according to the content of the string.
+</blockquote>
+
+<h2 id="colru_map"><a class="anchor" href="#colru_map">#</a>co::lru_map</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">lru_map</span>;
+</span></span></code></pre></div><p><code>co::lru_map</code> is a map implemented based on the LRU (least recently used) strategy. When the number of elements in the map reaches the upper limit, the least recently used data will be replaced first. It is implemented based on <code>co::hash_map</code> and <code>co::list</code>, and the internal elements are unordered.</p>
+<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> lru_map();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> lru_map(size_t capacity);
+</span></span></code></pre></div><ul>
+<li>1, the default constructor, uses 1024 as the maximum capacity.</li>
+<li>2, use the parameter <code>capacity</code> as the maximum capacity.</li>
+</ul>
+<h3 id="begin"><a class="anchor" href="#begin">#</a>begin</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns an iterator refer to the first element. When lru_map is empty, the return value is equal to <a href="#lru_mapend">end()</a>.</li>
+</ul>
+<h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
+</span></span></code></pre></div><ul>
+<li>Clear the elements in lru_map, the size will become 0, and the capacity will remain unchanged.</li>
+</ul>
+<h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether lru_map is empty.</li>
+</ul>
+<h3 id="end"><a class="anchor" href="#end">#</a>end</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns an iterator refer to the next position of the last element.</li>
+</ul>
+<h3 id="erase"><a class="anchor" href="#erase">#</a>erase</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(iterator it);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key);
+</span></span></code></pre></div><ul>
+<li>Remove element by iterator or key.</li>
+</ul>
+<h3 id="find"><a class="anchor" href="#find">#</a>find</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator find(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key)
+</span></span></code></pre></div><ul>
+<li>Find the element corresponding to <code>key</code>.</li>
+</ul>
+<h3 id="insert"><a class="anchor" href="#insert">#</a>insert</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> Key, <span style="color:#000;font-weight:bold">typename</span> Val<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> insert(Key<span style="color:#000;font-weight:bold">&amp;&amp;</span> key, Val<span style="color:#000;font-weight:bold">&amp;&amp;</span> value);
+</span></span></code></pre></div><ul>
+<li>Inserts an element, only if the key does not exist, a new element will be inserted. If the key already exists, nothing will be done.</li>
+<li>If the number of elements has reached the maximum capacity, the least recently used element will be deleted.</li>
+</ul>
+<h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the number of elements in lru_map.</li>
+</ul>
+<h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(lru_map<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(lru_map<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Swap the contents of two lru_maps.</li>
+</ul>
+<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>lru_map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m(<span style="color:#099">128</span>); <span style="color:#998;font-style:italic">// capacity: 128
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">if</span> (it <span style="color:#000;font-weight:bold">==</span> m.end()) {
+</span></span><span style="display:flex;"><span>     m.insert(<span style="color:#099">1</span>, <span style="color:#099">23</span>);
+</span></span><span style="display:flex;"><span>} <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>     it<span style="color:#000;font-weight:bold">-&gt;</span>second <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">23</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>m.erase(it); <span style="color:#998;font-style:italic">// erase by iterator
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.erase(<span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// erase by key
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.clear();   <span style="color:#998;font-style:italic">// clear the map
+</span></span></span></code></pre></div><h2 id="covector"><a class="anchor" href="#covector">#</a>co::vector</h2>
+<p><code>std::vector&lt;bool&gt;</code> in the C++ standard library is an unwise design. For this reason, coost implemented <code>co::vector</code> separately.</p>
+<h3 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> vector() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> vector(size_t cap);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> vector(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> vector(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> vector(std<span style="color:#000;font-weight:bold">::</span>initializer_list<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> vector(T<span style="color:#000;font-weight:bold">*</span> p, size_t n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> It<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    vector(It beg, It end);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">8.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    vector(size_t n, X<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span></code></pre></div><ul>
+<li>1, the default constructor, constructs an empty vector with size and capacity both being 0.</li>
+<li>2, <strong>Construct an empty vector</strong> with capacity as <code>cap</code>.</li>
+<li>3, copy constructor.</li>
+<li>4, Move constructor, after construction, <code>x</code> becomes an empty object.</li>
+<li>5, Construct vector with a initialization list, <code>T</code> is the type of elements in the vector.</li>
+<li>6, Construct vector from an array, <code>p</code> points to the first element of the array, <code>n</code> is the length of the array.</li>
+<li>7, Construct vector with elements in range <code>[beg, end)</code>.</li>
+<li>8, There are two cases: when <code>X</code> is not int or the element type <code>T</code> is int, the vector is initialized with <code>n</code> values of <code>x</code>; when <code>X</code> is int and the element type <code>T</code> is not int, the vector is initialized to <code>n</code> default values ​​of type <code>T</code>.</li>
+</ul>
+<blockquote class="book-hint warning">
+  <p>The behavior of constructor 2 is different from the corresponding version in <code>std::vector</code>. To construct a vector of <code>n</code> default values, you can use constructor 8 (the second parameter passes 0):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> v(<span style="color:#099">32</span>, <span style="color:#099">0</span>);
+</span></span></code></pre></div>
+</blockquote>
+
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> a(<span style="color:#099">32</span>);        <span style="color:#998;font-style:italic">// size: 0, capacity: 32
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> b <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span> }; <span style="color:#998;font-style:italic">// [1,2]
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v(<span style="color:#099">8</span>, <span style="color:#099">0</span>);      <span style="color:#998;font-style:italic">// contains 8 zeros
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> s(<span style="color:#099">8</span>, <span style="color:#099">0</span>); <span style="color:#998;font-style:italic">// contains 8 empty fastring objects
+</span></span></span></code></pre></div><h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>vector();
+</span></span></code></pre></div><ul>
+<li>Release the memory, and the vector becomes an empty object after destruction.</li>
+</ul>
+<h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(std<span style="color:#000;font-weight:bold">::</span>initializer_list<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> x);
+</span></span></code></pre></div><ul>
+<li>
+<p>Assignment operations.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v;
+</span></span><span style="display:flex;"><span>v <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span> };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> x;
+</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> v;
+</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>move(v);
+</span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>————————————</h3>
+<h3 id="back"><a class="anchor" href="#back">#</a>back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> back();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> back() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns a reference to the last element in vector.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If vector is empty, calling this method results in undefined behavior.
+</blockquote>
+
+<h3 id="front"><a class="anchor" href="#front">#</a>front</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> front();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> front() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns a reference to the first element of the vector.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If vector is empty, calling this method results in undefined behavior.
+</blockquote>
+
+<h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator[]</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Returns a reference to the nth element of vector.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If <code>n</code> is outside a reasonable range, calling this method results in undefined behavior.
+</blockquote>
+
+<h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>————————————</h3>
+<h3 id="begin-1"><a class="anchor" href="#begin-1">#</a>begin</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns an iterator pointing to the first element.</li>
+</ul>
+<h3 id="end-1"><a class="anchor" href="#end-1">#</a>end</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the end iterator.</li>
+</ul>
+<h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>————————————</h3>
+<h3 id="capacity"><a class="anchor" href="#capacity">#</a>capacity</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">capacity</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the capacity of the vector.</li>
+</ul>
+<h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">data</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns a pointer to the internal elements of the vector.</li>
+</ul>
+<h3 id="empty-1"><a class="anchor" href="#empty-1">#</a>empty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the vector is empty.</li>
+</ul>
+<h3 id="size-1"><a class="anchor" href="#size-1">#</a>size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns the number of elements in the vector.</li>
+</ul>
+<h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>————————————</h3>
+<h3 id="clear-1"><a class="anchor" href="#clear-1">#</a>clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
+</span></span></code></pre></div><ul>
+<li>Empty the vector, the size becomes 0, and the capacity remains unchanged.</li>
+</ul>
+<h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>Adjust the capacity of the vector to ensure that the capacity is at least <code>n</code>.</li>
+<li>When <code>n</code> is less than the original capacity, keep the capacity unchanged.</li>
+</ul>
+<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>Destroy all elements in the vector and release the memory
+.</li>
+</ul>
+<h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resize</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>Resize vector to <code>n</code>.</li>
+<li>When <code>n</code> is larger than the original size, fill the extended part with the default value.</li>
+</ul>
+<h3 id="swap-1"><a class="anchor" href="#swap-1">#</a>swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(vector<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Swaps two vectors.</li>
+</ul>
+<h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>————————————</h3>
+<h3 id="append"><a class="anchor" href="#append">#</a>append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span> append(T<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> <span style="color:#458;font-weight:bold">void</span> append(size_t n, <span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">*</span> p, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> <span style="color:#458;font-weight:bold">void</span> append(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> It<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> append(It beg, It end);
+</span></span></code></pre></div><ul>
+<li>
+<p>Add elements to the end of the vector.</p>
+</li>
+<li>
+<p>1-2, append a single element.</p>
+</li>
+<li>
+<p>3, append <code>n</code> elements <code>x</code>.</p>
+</li>
+<li>
+<p>4, append an array, <code>n</code> is length of the array.</p>
+</li>
+<li>
+<p>5-6, append all elements in vector <code>x</code>.</p>
+</li>
+<li>
+<p>7, append elements in range <code>[beg, end)</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> a[<span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>, <span style="color:#099">4</span> };
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v;
+</span></span><span style="display:flex;"><span>v. append(<span style="color:#099">7</span>);
+</span></span><span style="display:flex;"><span>v. append(v);
+</span></span><span style="display:flex;"><span>v. append(a, <span style="color:#099">4</span>);
+</span></span></code></pre></div><h3 id="emplace_back"><a class="anchor" href="#emplace_back">#</a>emplace_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> ... X<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> emplace_back(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... x);
+</span></span></code></pre></div><ul>
+<li>
+<p>Insert a new element constructed with the arguments <code>x...</code> at the end of the vector.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> v;
+</span></span><span style="display:flex;"><span>v. emplace_back(<span style="color:#099">4</span>, <span style="color:#d14">&#39;x&#39;</span>); <span style="color:#998;font-style:italic">// append(&#34;xxxx&#34;)
+</span></span></span></code></pre></div><h3 id="push_back"><a class="anchor" href="#push_back">#</a>push_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(T<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span></code></pre></div><ul>
+<li>Appends the element <code>x</code> to the end of the vector.</li>
+</ul>
+<h3 id="pop_back"><a class="anchor" href="#pop_back">#</a>pop_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T <span style="color:#900;font-weight:bold">pop_back</span>();
+</span></span></code></pre></div><ul>
+<li>Pop and return the last element of the vector.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If vector is empty, calling this method results in undefined behavior.
+</blockquote>
+
+<h3 id="remove"><a class="anchor" href="#remove">#</a>remove</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>
+<p>Remove the nth element and moves the last element to the position of the deleted element.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>, <span style="color:#099">4</span> };
+</span></span><span style="display:flex;"><span>v. remove(<span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// v -&gt; [1, 4, 3]
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>v. remove(<span style="color:#099">2</span>); <span style="color:#998;font-style:italic">// v -&gt; [1, 4]
+</span></span></span></code></pre></div><h3 id="remove_back"><a class="anchor" href="#remove_back">#</a>remove_back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_back</span>();
+</span></span></code></pre></div><ul>
+<li>Remove the last element of the vector, and do nothing if the vector is empty.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/other/stl/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/other/stl.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#common-containers">Common containers</a></li>
+        <li><a href="#colru_map">co::lru_map</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#begin">begin</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#end">end</a></li>
+            <li><a href="#erase">erase</a></li>
+            <li><a href="#find">find</a></li>
+            <li><a href="#insert">insert</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#code-example">Code example</a></li>
+          </ul>
+        </li>
+        <li><a href="#covector">co::vector</a>
+          <ul>
+            <li><a href="#constructor-1">constructor</a></li>
+            <li><a href="#destructor">destructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">————————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">————————————</a></li>
+            <li><a href="#begin-1">begin</a></li>
+            <li><a href="#end-1">end</a></li>
+            <li><a href="#heading-2">————————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty-1">empty</a></li>
+            <li><a href="#size-1">size</a></li>
+            <li><a href="#heading-3">————————————</a></li>
+            <li><a href="#clear-1">clear</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap-1">swap</a></li>
+            <li><a href="#heading-4">————————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#emplace_back">emplace_back</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#pop_back">pop_back</a></li>
+            <li><a href="#remove">remove</a></li>
+            <li><a href="#remove_back">remove_back</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

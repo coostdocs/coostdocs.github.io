@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/co.h.
+#线程 v3.0.1 删除了 co/thread.h 头文件，移除了全局的 Thread 与 Mutex 类，其功能与 C&#43;&#43;11 中的 std::thread 与 std::mutex 一样，用户可以直接使用 std 版本。 #co::thread_id uint32 thread_id(); 返回当前线程的 id 值。 #co::sync_event 同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 wait() 方法等待同步信号，生产者线程则调用 signal() 方法产生同步信号。co::sync_event 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。
+v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之。 #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); 构造函数，参数 manual_reset 表示是否手动将同步状态设置成未同步，参数 signaled 表示初始状态是否为同步状态。 #sync_event::reset void reset(); 将事件设置成未同步状态。 当构造函数中 manual_reset 为 true 时，用户在调用 wait() 后需要手动调用此方法，将事件设置成未同步状态。 #sync_event::signal void signal(); 产生同步信号，将事件设置成同步状态。 #sync_event::wait 1. void wait(); 2. bool wait(uint32 ms); 1, 一直等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &#34;co/co.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="线程" />
+<meta property="og:description" content="include: co/co.h.
+#线程 v3.0.1 删除了 co/thread.h 头文件，移除了全局的 Thread 与 Mutex 类，其功能与 C&#43;&#43;11 中的 std::thread 与 std::mutex 一样，用户可以直接使用 std 版本。 #co::thread_id uint32 thread_id(); 返回当前线程的 id 值。 #co::sync_event 同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 wait() 方法等待同步信号，生产者线程则调用 signal() 方法产生同步信号。co::sync_event 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。
+v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之。 #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); 构造函数，参数 manual_reset 表示是否手动将同步状态设置成未同步，参数 signaled 表示初始状态是否为同步状态。 #sync_event::reset void reset(); 将事件设置成未同步状态。 当构造函数中 manual_reset 为 true 时，用户在调用 wait() 后需要手动调用此方法，将事件设置成未同步状态。 #sync_event::signal void signal(); 产生同步信号，将事件设置成同步状态。 #sync_event::wait 1. void wait(); 2. bool wait(uint32 ms); 1, 一直等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &#34;co/co." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/concurrency/thread/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>线程 | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/concurrency/thread/" title="Thread">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/thread/" class=" active">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>线程</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#线程">线程</a>
+          <ul>
+            <li><a href="#cothread_id">co::thread_id</a></li>
+            <li><a href="#cosync_event">co::sync_event</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#sync_eventreset">sync_event::reset</a></li>
+                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
+                <li><a href="#sync_eventwait">sync_event::wait</a></li>
+                <li><a href="#代码示例">代码示例</a></li>
+              </ul>
+            </li>
+            <li><a href="#cotls">co::tls</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#tlsget">tls::get</a></li>
+                <li><a href="#tlsset">tls::set</a></li>
+                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
+                <li><a href="#tlsoperator">tls::operator*</a></li>
+                <li><a href="#operator">operator==</a></li>
+                <li><a href="#operator-1">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
+<h2 id="线程"><a class="anchor" href="#%e7%ba%bf%e7%a8%8b">#</a>线程</h2>
+<blockquote class="book-hint warning">
+  v3.0.1 删除了 <code>co/thread.h</code> 头文件，移除了全局的 <code>Thread</code> 与 <code>Mutex</code> 类，其功能与 C++11 中的 <code>std::thread</code> 与 <code>std::mutex</code> 一样，用户可以直接使用 std 版本。
+</blockquote>
+
+<h3 id="cothread_id"><a class="anchor" href="#cothread_id">#</a>co::thread_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>uint32 <span style="color:#900;font-weight:bold">thread_id</span>();
+</span></span></code></pre></div><ul>
+<li>返回当前线程的 id 值。</li>
+</ul>
+<h3 id="cosync_event"><a class="anchor" href="#cosync_event">#</a>co::sync_event</h3>
+<p>同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 <code>wait()</code> 方法等待同步信号，生产者线程则调用 <code>signal()</code> 方法产生同步信号。<code>co::sync_event</code> 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。</p>
+<blockquote class="book-hint warning">
+  v3.0.1 移除了全局范围的 <code>SyncEvent</code>，请使用 <code>co::sync_event</code> 替代之。
+</blockquote>
+
+<h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">sync_event</span>(<span style="color:#458;font-weight:bold">bool</span> manual_reset<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>, <span style="color:#458;font-weight:bold">bool</span> signaled<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+</span></span></code></pre></div><ul>
+<li>构造函数，参数 <code>manual_reset</code> 表示是否手动将同步状态设置成未同步，参数 <code>signaled</code> 表示初始状态是否为同步状态。</li>
+</ul>
+<h4 id="sync_eventreset"><a class="anchor" href="#sync_eventreset">#</a>sync_event::reset</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>将事件设置成未同步状态。</li>
+<li>当构造函数中 <code>manual_reset</code> 为 true 时，用户在调用 <a href="#sync_eventwait">wait()</a> 后需要手动调用此方法，将事件设置成未同步状态。</li>
+</ul>
+<h4 id="sync_eventsignal"><a class="anchor" href="#sync_eventsignal">#</a>sync_event::signal</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">signal</span>();
+</span></span></code></pre></div><ul>
+<li>产生同步信号，将事件设置成同步状态。</li>
+</ul>
+<h4 id="sync_eventwait"><a class="anchor" href="#sync_eventwait">#</a>sync_event::wait</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> wait();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">bool</span> wait(uint32 ms);
+</span></span></code></pre></div><ul>
+<li>1, 一直等待直到事件变成同步状态。</li>
+<li>2, 等待直到事件变成同步状态或超时。参数 <code>ms</code> 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。</li>
+<li>当构造函数中 <code>manual_reset</code> 为 false 时，<a href="#sync_eventwait">wait()</a> 结束时会自动将事件设置成未同步状态。</li>
+</ul>
+<h4 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> manual_reset <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>sync_event ev(manual_reset);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f1</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(<span style="color:#099">1000</span>)) {
+</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: timedout..&#34;</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: event signaled..&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (manual_reset) ev.reset();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f2</span>() {
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f2: send a signal..&#34;</span>;
+</span></span><span style="display:flex;"><span>    ev.signal();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f1).detach();
+</span></span><span style="display:flex;"><span>    std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f2).detach();
+</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="cotls"><a class="anchor" href="#cotls">#</a>co::tls</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">tls</span>;
+</span></span></code></pre></div><p><code>co::tls</code> 对系统的 <strong>thread local</strong> 接口进行封装。</p>
+<blockquote class="book-hint warning">
+  v3.0.1 中移除了 <code>thread_ptr</code>，取而代之提供了 <code>co::tls</code>。
+</blockquote>
+
+<h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>tls();
+</span></span></code></pre></div><ul>
+<li>构造函数，分配系统资源及初始化。</li>
+</ul>
+<h4 id="tlsget"><a class="anchor" href="#tlsget">#</a>tls::get</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>返回当前线程拥有的指针值。</li>
+</ul>
+<h4 id="tlsset"><a class="anchor" href="#tlsset">#</a>tls::set</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set</span>(T<span style="color:#000;font-weight:bold">*</span> p);
+</span></span></code></pre></div><ul>
+<li>设置当前线程拥有的指针值。</li>
+</ul>
+<h4 id="tlsoperator-"><a class="anchor" href="#tlsoperator-">#</a>tls::operator-&gt;</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>返回当前线程拥有的指针值。</li>
+</ul>
+<h4 id="tlsoperator"><a class="anchor" href="#tlsoperator">#</a>tls::operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>返回当前线程拥有指针所指向对象的引用。</li>
+</ul>
+<h4 id="operator"><a class="anchor" href="#operator">#</a>operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>判断当前线程所拥有的指针是否等于 <code>p</code>。</li>
+</ul>
+<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>判断当前线程所拥有的指针是否不等于 <code>p</code>。</li>
+</ul>
+<h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>当前线程所拥有的指针不是 NULL 时，返回 true，否则返回 false。</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/co/concurrency/thread/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/concurrency/thread.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#线程">线程</a>
+          <ul>
+            <li><a href="#cothread_id">co::thread_id</a></li>
+            <li><a href="#cosync_event">co::sync_event</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#sync_eventreset">sync_event::reset</a></li>
+                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
+                <li><a href="#sync_eventwait">sync_event::wait</a></li>
+                <li><a href="#代码示例">代码示例</a></li>
+              </ul>
+            </li>
+            <li><a href="#cotls">co::tls</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#tlsget">tls::get</a></li>
+                <li><a href="#tlsset">tls::set</a></li>
+                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
+                <li><a href="#tlsoperator">tls::operator*</a></li>
+                <li><a href="#operator">operator==</a></li>
+                <li><a href="#operator-1">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

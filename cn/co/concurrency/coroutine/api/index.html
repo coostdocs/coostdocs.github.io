@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/co.h.
+#Coroutine APIs v3.0 移除了 co::init, co::exit, co::stop。 #go 1. void go(Closure* cb); 2. template&lt;typename F&gt; void go(F&amp;&amp; f); 3. template&lt;typename F, typename P&gt; void go(F&amp;&amp; f, P&amp;&amp; p); 4. template&lt;typename F, typename T, typename P&gt; void go(F&amp;&amp; f, T* t, P&amp;&amp; p); 此函数用于创建协程，与创建线程类似，需要指定一个协程函数。
+1, 参数 cb 指向一个 Closure 对象，协程启动后会调用 Closure 中的 run() 方法。
+2-4, 将传入的参数打包成一个 Closure，然后调用 1。
+2, 参数 f 是任意可调用的对象，只要能调用 f() 或 (*f)() 就行。
+3, 参数 f 是任意可调用的对象，只要能调用 f(p), (*f)(p) 或 (p-&gt;*f)() 就行。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="APIs" />
+<meta property="og:description" content="include: co/co.h.
+#Coroutine APIs v3.0 移除了 co::init, co::exit, co::stop。 #go 1. void go(Closure* cb); 2. template&lt;typename F&gt; void go(F&amp;&amp; f); 3. template&lt;typename F, typename P&gt; void go(F&amp;&amp; f, P&amp;&amp; p); 4. template&lt;typename F, typename T, typename P&gt; void go(F&amp;&amp; f, T* t, P&amp;&amp; p); 此函数用于创建协程，与创建线程类似，需要指定一个协程函数。
+1, 参数 cb 指向一个 Closure 对象，协程启动后会调用 Closure 中的 run() 方法。
+2-4, 将传入的参数打包成一个 Closure，然后调用 1。
+2, 参数 f 是任意可调用的对象，只要能调用 f() 或 (*f)() 就行。
+3, 参数 f 是任意可调用的对象，只要能调用 f(p), (*f)(p) 或 (p-&gt;*f)() 就行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/concurrency/coroutine/api/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>APIs | Documents for Coost</title>
+<link rel="manifest" href="../../../../../manifest.json">
+<link rel="icon" href="../../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/concurrency/coroutine/api/" title="APIs">
+<link rel="stylesheet" href="../../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle" checked />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/api/" class=" active">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>APIs</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#coroutine-apis">Coroutine APIs</a>
+          <ul>
+            <li><a href="#go">go</a></li>
+            <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
+            <li><a href="#comain_sched">co::main_sched</a></li>
+            <li><a href="#conext_sched">co::next_sched</a></li>
+            <li><a href="#cosched">co::sched</a></li>
+            <li><a href="#coscheds">co::scheds</a></li>
+            <li><a href="#cosched_id">co::sched_id</a></li>
+            <li><a href="#cosched_num">co::sched_num</a></li>
+            <li><a href="#costop_scheds">co::stop_scheds</a></li>
+            <li><a href="#代码示例">代码示例</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#cosleep">co::sleep</a></li>
+            <li><a href="#cotimeout">co::timeout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
+<h2 id="coroutine-apis"><a class="anchor" href="#coroutine-apis">#</a>Coroutine APIs</h2>
+<blockquote class="book-hint warning">
+  v3.0 移除了 <code>co::init</code>, <code>co::exit</code>, <code>co::stop</code>。
+</blockquote>
+
+<h3 id="go"><a class="anchor" href="#go">#</a>go</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> go(Closure<span style="color:#000;font-weight:bold">*</span> cb);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F, <span style="color:#000;font-weight:bold">typename</span> P<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, P<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> F, <span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> P<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> go(F<span style="color:#000;font-weight:bold">&amp;&amp;</span> f, T<span style="color:#000;font-weight:bold">*</span> t, P<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
+</span></span></code></pre></div><ul>
+<li>
+<p>此函数用于<strong>创建协程</strong>，与创建线程类似，需要指定一个协程函数。</p>
+</li>
+<li>
+<p>1, 参数 cb 指向一个 Closure 对象，协程启动后会调用 Closure 中的 <code>run()</code> 方法。</p>
+</li>
+<li>
+<p>2-4, 将传入的参数打包成一个 Closure，然后调用 1。</p>
+</li>
+<li>
+<p>2, 参数 f 是任意可调用的对象，只要能调用 <code>f()</code> 或 <code>(*f)()</code> 就行。</p>
+</li>
+<li>
+<p>3, 参数 f 是任意可调用的对象，只要能调用 <code>f(p)</code>, <code>(*f)(p)</code> 或 <code>(p-&gt;*f)()</code> 就行。</p>
+</li>
+<li>
+<p>4, 参数 f 是类中带一个参数的方法 <code>void T::f(P)</code>，参数 t 是 <code>T</code> 类型的指针，参数 p 是方法 f 的参数。</p>
+</li>
+<li>
+<p>实际测试发现，创建 <code>std::function</code> 类型的对象开销较大，应尽量少用。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>go(f);             <span style="color:#998;font-style:italic">// void f();
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>go(f, <span style="color:#099">7</span>);          <span style="color:#998;font-style:italic">// void f(int);
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o);     <span style="color:#998;font-style:italic">// void T::f();    T o;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>go(<span style="color:#000;font-weight:bold">&amp;</span>T<span style="color:#000;font-weight:bold">::</span>f, <span style="color:#000;font-weight:bold">&amp;</span>o, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// void T::f(int); T o;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// lambda
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>go([](){
+</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello co&#34;</span>;
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// std::function
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>()<span style="color:#000;font-weight:bold">&gt;</span> x(std<span style="color:#000;font-weight:bold">::</span>bind(f, <span style="color:#099">7</span>));
+</span></span><span style="display:flex;"><span>go(x);
+</span></span><span style="display:flex;"><span>go(<span style="color:#000;font-weight:bold">&amp;</span>x); <span style="color:#998;font-style:italic">// Ensure that x is alive when the coroutine is running.
+</span></span></span></code></pre></div><h3 id="def_main"><a class="anchor" href="#def_main">#</a>DEF_main</h3>
+<p>这个宏用于定义 main 函数，并将 main 函数中的代码也放到协程中运行。DEF_main 内部已经调用 <a href="../../../flag/#flagparse">flag::parse()</a> 解析命令行参数，用户无需再次调用。</p>
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_main(argc, argv) {
+</span></span><span style="display:flex;"><span>    go([](){
+</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span>;
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="cocoroutine"><a class="anchor" href="#cocoroutine">#</a>co::coroutine</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">coroutine</span>();
+</span></span></code></pre></div><ul>
+<li>返回当前的 coroutine 指针，若在非协程中调用此函数，则返回值是 NULL。</li>
+<li>此函数的返回值，可作为 <a href="#coresume">co::resume()</a> 的参数，用于唤醒协程。</li>
+</ul>
+<h3 id="coresume"><a class="anchor" href="#coresume">#</a>co::resume</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resume</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p);
+</span></span></code></pre></div><ul>
+<li>唤醒指定的协程，参数 <code>p</code> 是 <a href="#cocoroutine">co::coroutine()</a> 的返回值。</li>
+<li>此函数是线程安全的，可在任意地方调用。</li>
+</ul>
+<h3 id="coyield"><a class="anchor" href="#coyield">#</a>co::yield</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">yield</span>();
+</span></span></code></pre></div><ul>
+<li>挂起当前协程，必须在协程中调用。</li>
+<li>此函数配合 <a href="#cocoroutine">co::coroutine()</a> 与 <a href="#coresume">co::resume()</a>，可以手动控制协程的调度，详情参考 <a href="https://github.com/idealvin/coost/blob/master/test/yield.cc">test/yield.cc</a>。</li>
+</ul>
+<h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="cocoroutine_id"><a class="anchor" href="#cocoroutine_id">#</a>co::coroutine_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">coroutine_id</span>();
+</span></span></code></pre></div><ul>
+<li>返回当前协程的 id，在非协程中调用时，返回值是 -1。</li>
+</ul>
+<h3 id="comain_sched"><a class="anchor" href="#comain_sched">#</a>co::main_sched</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>MainSched<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">main_sched</span>();
+</span></span></code></pre></div><ul>
+<li>此函数用于将主线程变成调度线程。</li>
+<li>用户获取 <code>MainSched</code> 指针后，必须在主线程中调用其 <code>loop()</code> 方法。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
+</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;main thread id: &#34;</span>, co<span style="color:#000;font-weight:bold">::</span>thread_id());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>main_sched();
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
+</span></span><span style="display:flex;"><span>        go([]{
+</span></span><span style="display:flex;"><span>            co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;thread: &#34;</span>, co<span style="color:#000;font-weight:bold">::</span>thread_id(), <span style="color:#d14">&#34; sched: &#34;</span>, co<span style="color:#000;font-weight:bold">::</span>sched_id());
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    s<span style="color:#000;font-weight:bold">-&gt;</span>loop(); <span style="color:#998;font-style:italic">// loop forever
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;  <span style="color:#998;font-style:italic">// fake return value
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>}
+</span></span></code></pre></div><h3 id="conext_sched"><a class="anchor" href="#conext_sched">#</a>co::next_sched</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Sched<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">next_sched</span>();
+</span></span></code></pre></div><ul>
+<li>
+<p>返回指向下一个 <code>Sched</code> 的指针。</p>
+</li>
+<li>
+<p><a href="#go">go(&hellip;)</a> 实际上等价于 <code>co::next_sched()-&gt;go(...)</code>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// 创建在同一个线程中运行的协程
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>next_sched();
+</span></span><span style="display:flex;"><span>s<span style="color:#000;font-weight:bold">-&gt;</span>go(f1);
+</span></span><span style="display:flex;"><span>s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
+</span></span></code></pre></div><blockquote class="book-hint warning">
+  v3.0.1 中将 <code>co::next_scheduler</code> 重命名为 <code>co::next_sched</code>。
+</blockquote>
+
+<h3 id="cosched"><a class="anchor" href="#cosched">#</a>co::sched</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Sched<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">sched</span>();
+</span></span></code></pre></div><ul>
+<li>返回指向当前协程调度器的指针，调度器与调度线程是一一对应的，如果当前线程不是调度线程，返回值是 NULL。</li>
+</ul>
+<blockquote class="book-hint warning">
+  v3.0.1 中将 <code>co::scheduler</code> 重命名为 <code>co::sched</code>。
+</blockquote>
+
+<h3 id="coscheds"><a class="anchor" href="#coscheds">#</a>co::scheds</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>Sched<span style="color:#000;font-weight:bold">*&gt;&amp;</span> scheds();
+</span></span></code></pre></div><ul>
+<li>返回协程调度器列表的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  v3.0.1 中将 <code>co::schedulers</code> 重命名为 <code>co::scheds</code>。
+</blockquote>
+
+<h3 id="cosched_id"><a class="anchor" href="#cosched_id">#</a>co::sched_id</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">sched_id</span>();
+</span></span></code></pre></div><ul>
+<li>返回当前协程调度器的 id，这个值是 0 到 <code>co::sched_num()-1</code> 之间的值。如果当前线程不是调度线程，返回值是 -1。</li>
+</ul>
+<blockquote class="book-hint warning">
+  v3.0.1 中将 <code>co::scheduler_id</code> 重命名为 <code>co::sched_id</code>。
+</blockquote>
+
+<h3 id="cosched_num"><a class="anchor" href="#cosched_num">#</a>co::sched_num</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">sched_num</span>();
+</span></span></code></pre></div><ul>
+<li>
+<p>返回协程调度器的数量，此函数常用于实现一些协程安全的数据结构。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> v(co<span style="color:#000;font-weight:bold">::</span>sched_num(), <span style="color:#099">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">// get object for the current scheduler
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">auto</span><span style="color:#000;font-weight:bold">&amp;</span> t <span style="color:#000;font-weight:bold">=</span> v[co<span style="color:#000;font-weight:bold">::</span>sched_id()];
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>go(f);
+</span></span></code></pre></div><blockquote class="book-hint warning">
+  v3.0.1 中将 <code>co::scheduler_num</code> 重命名为 <code>co::sched_num</code>。
+</blockquote>
+
+<h3 id="costop_scheds"><a class="anchor" href="#costop_scheds">#</a>co::stop_scheds</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">stop_scheds</span>();
+</span></span></code></pre></div><ul>
+<li>停止所有协程调度器，退出所有调度线程。</li>
+</ul>
+<h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// print sched id and coroutine id every 3 seconds
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
+</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;s: &#34;</span>, co<span style="color:#000;font-weight:bold">::</span>sched_id(), <span style="color:#d14">&#34; c: &#34;</span>, co<span style="color:#000;font-weight:bold">::</span>coroutine_id());
+</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
+</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; <span style="color:#000;font-weight:bold">++</span>i) go(f);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">1024</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
+<h3 id="cosleep"><a class="anchor" href="#cosleep">#</a>co::sleep</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">sleep</span>(uint32 ms);
+</span></span></code></pre></div><ul>
+<li>让当前协程睡一会儿，参数 ms 是时间，单位是毫秒。</li>
+<li>此函数一般在协程中调用，在非协程中调用相当于 <code>sleep::ms(ms)</code>。</li>
+</ul>
+<h3 id="cotimeout"><a class="anchor" href="#cotimeout">#</a>co::timeout</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">timeout</span>();
+</span></span></code></pre></div><ul>
+<li>判断之前的 IO 操作是否超时。用户在调用 <code>co::recv()</code> 等带超时时间的函数后，可以调用此函数判断是否超时。</li>
+<li><strong>此函数必须在协程中调用</strong>。</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../../cn/" class="flex align-center">
+        <img src="../../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../../en/co/concurrency/coroutine/api/" class="flex align-center">
+        <img src="../../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/concurrency/coroutine/api.md" target="_blank" rel="noopener">
+      <img src="../../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#coroutine-apis">Coroutine APIs</a>
+          <ul>
+            <li><a href="#go">go</a></li>
+            <li><a href="#def_main">DEF_main</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#cocoroutine">co::coroutine</a></li>
+            <li><a href="#coresume">co::resume</a></li>
+            <li><a href="#coyield">co::yield</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#cocoroutine_id">co::coroutine_id</a></li>
+            <li><a href="#comain_sched">co::main_sched</a></li>
+            <li><a href="#conext_sched">co::next_sched</a></li>
+            <li><a href="#cosched">co::sched</a></li>
+            <li><a href="#coscheds">co::scheds</a></li>
+            <li><a href="#cosched_id">co::sched_id</a></li>
+            <li><a href="#cosched_num">co::sched_num</a></li>
+            <li><a href="#costop_scheds">co::stop_scheds</a></li>
+            <li><a href="#代码示例">代码示例</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#cosleep">co::sleep</a></li>
+            <li><a href="#cotimeout">co::timeout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

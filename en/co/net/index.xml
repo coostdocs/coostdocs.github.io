@@ -13,7 +13,39 @@
       <guid>https://coostdocs.github.io/en/co/net/byte_order/</guid>
       <description>include: co/byte_order.h.
 Data in the computer is stored in bytes (8 bit). Big-endian computers use big-endian byte order, that is, the high-order byte is at the lower address, and the low-order byte is at the higher address. The little-endian machine uses little-endian byte order, that is, the low-order byte is at the lower address, and the high-order byte is at the higher address.
-A single byte is exactly the same on big endian and little endian machines, while the basic data types of multiple bytes have are different.</description>
+A single byte is exactly the same on big endian and little endian machines, while basic data types of multiple bytes are different.</description>
+    </item>
+    
+    <item>
+      <title>Socket programming</title>
+      <link>https://coostdocs.github.io/en/co/net/sock/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/net/sock/</guid>
+      <description>include: co/co.h.
+#Socket APIs Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.
+Most of the APIs are consistent in form with the native socket APIs, which can reduce the user&amp;rsquo;s learning burden, and users who are familiar with socket programming can easily get started.
+Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block.</description>
+    </item>
+    
+    <item>
+      <title>Network programming model</title>
+      <link>https://coostdocs.github.io/en/co/net/mode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/net/mode/</guid>
+      <description>#Coroutine based network programming model It is easy to write high-concurrency and high-performance network programs with coroutine. Although a coroutine may block, the scheduling thread can quickly switch between a large number of coroutines. Therefore, to achieve high concurrency, we just need to create more coroutines.
+#Network model for TCP server void on_connection(int fd) { while (true) { co::recv(fd, ...); // recv request from client process(...); // process the request co::send(fd, .</description>
+    </item>
+    
+    <item>
+      <title>Use third-party network libraries</title>
+      <link>https://coostdocs.github.io/en/co/net/third/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/net/third/</guid>
+      <description>#Use third-party network libraries in coroutines There are two ways to use third-party network libraries in coroutines:
+Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost. Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with co::io_event. #System API hook API hook simply intercepts system API requests.</description>
     </item>
     
     <item>
@@ -34,8 +66,8 @@ A single byte is exactly the same on big endian and little endian machines, whil
       
       <guid>https://coostdocs.github.io/en/co/net/http/</guid>
       <description>include: co/http.h.
-#http::Client http::Client is a coroutine-based http client, which is implemented based on libcurl.
-#Client::Client explicit Client(const char* serv_url); Constructor, the parameter serv_url is the url address of the server, and its form is protocol://host:port, the following server urls are all ok: &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo; Like the tcp::Client, connection is not established in the constructor. #Client::~Client Client::~Client(); Destructor, close the connection, and release libcurl related resources. #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); Add a HTTP header.</description>
+#http::Client http::Client is a coroutine-based HTTP client, which is implemented based on libcurl.
+#Client::Client explicit Client(const char* serv_url); Constructor, the parameter serv_url is the url address of the server, and its form is protocol://host:port, the following server urls are all ok: &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo; Connection is not established in the constructor. #Client::~Client Client::~Client(); Destructor, close the connection, and release libcurl related resources. #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); Add a HTTP header.</description>
     </item>
     
     <item>
@@ -45,8 +77,8 @@ A single byte is exactly the same on big endian and little endian machines, whil
       
       <guid>https://coostdocs.github.io/en/co/net/rpc/</guid>
       <description>include: co/rpc.h.
-co/rpc is a high-performance RPC framework similar to grpc, it uses JSON as the data exchange format, which is different from binary protocols such as protobuf.
-#rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&amp;lt;void(Json&amp;amp;, Json&amp;amp;)&amp;gt; Fun; virtual const char* name() const = 0; virtual const co::map&amp;lt;const char*, Fun&amp;gt;&amp;amp; methods() const = 0; }; This class is a pure interface, which represents a service.</description>
+Coost implements a coroutine-based RPC framework, which internally uses JSON as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.
+Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method. #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&amp;lt;void(Json&amp;amp;, Json&amp;amp;)&amp;gt; Fun; virtual const char* name() const = 0; virtual const co::map&amp;lt;const char*, Fun&amp;gt;&amp;amp; methods() const = 0; }; This class is a pure interface, which represents a RPC service.</description>
     </item>
     
   </channel>

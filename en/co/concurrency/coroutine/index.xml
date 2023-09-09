@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coroutine on Documents for Coost</title>
+    <link>https://coostdocs.github.io/en/co/concurrency/coroutine/</link>
+    <description>Recent content in Coroutine on Documents for Coost</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/en/co/concurrency/coroutine/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Basic concepts</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/basic/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/basic/</guid>
+      <description>#Basic concepts of coroutine Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine. When a coroutine is suspended, the scheduling thread will switch to other coroutines waiting to be executed.</description>
+    </item>
+    
+    <item>
+      <title>APIs</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/api/</guid>
+      <description>#Coroutine APIs Coost v3.0 removed co::init, co::exit, co::stop. #go 1. void go(Closure* cb); 2. template&amp;lt;typename F&amp;gt; void go(F&amp;amp;&amp;amp; f); 3. template&amp;lt;typename F, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); 4. template&amp;lt;typename F, typename T, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p); This function is used to create a coroutine, similar to creating a thread, a coroutine function must be specified.
+1, the parameter cb points to a Closure object.</description>
+    </item>
+    
+    <item>
+      <title>Channel</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/chan/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/chan/</guid>
+      <description>include: co/co.h.
+#co::chan template&amp;lt;typename T&amp;gt; class chan; co::chan is a template class, which is similar to the channel in golang and is used to pass data between coroutines.
+Since v3.0.1, co::chan can be used in coroutines or non-coroutines, and can store values ​​of non-POD types such as std::string. #constructor 1. explicit chan(uint32 cap=1, uint32 ms=(uint32)-1); 2. chan(chan&amp;amp;&amp;amp; c); 3. chan(const chan&amp;amp; c); 1, cap is the maximum capacity of the internal queue, the default is 1.</description>
+    </item>
+    
+    <item>
+      <title>Sync Event</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/event/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/event/</guid>
+      <description>include: co/co.h.
+#co::event co::event is a synchronization mechanism between coroutines, which is similar to co::sync_event in threads.
+Starting from v2.0.1, co::event can be used in coroutines and non-coroutines. #constructor 1. explicit event(bool manual_reset=false, bool signaled=false); 2. event(event&amp;amp;&amp;amp; e); 3. event(const event&amp;amp; e); 1, similar to co::sync_event in threads. 2, move constructor. 3, copy constructor, only increases the internal reference count by 1. #reset void reset() const; Reset the event to unsynced state.</description>
+    </item>
+    
+    <item>
+      <title>IO Event</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/io_event/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/io_event/</guid>
+      <description>include: co/co.h.
+#co::_ev_t enum _ev_t { ev_read = 1, ev_write = 2, }; Type of I/O event. #co::io_event co::io_event is used to convert non-blocking I/O to synchronous mode. The user performs I/O operations on a non-blocking socket in coroutine. When the socket is unreadable or unwritable, the user calls the wait() method of co::io_event to suspend the coroutine and wait for the I/O event; When the socket becomes readable or writable, the scheduling thread will wake up the coroutine again and continue the I/O operation.</description>
+    </item>
+    
+    <item>
+      <title>Mutex Lock</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/mutex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/mutex/</guid>
+      <description>include: co/co.h.
+#co::mutex Starting from v3.0.1, co::mutex can be used in coroutines and non-coroutines. #constructor 1. mutex(); 2. mutex(mutex&amp;amp;&amp;amp; m); 3. mutex(const mutex&amp;amp; m); 1, default constructor. 2, move constructor. 3, copy constructor, only increases the internal reference count by 1. #lock void lock() const; Acquire the lock, will block until the lock is acquired. #try_lock bool try_lock() const; Acquire the lock, will not block, return true when the lock is successfully acquired, otherwise return false.</description>
+    </item>
+    
+    <item>
+      <title>Wait Group</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/wg/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/wg/</guid>
+      <description>include: co/co.h.
+#co::wait_group co::wait_group is similar to sync.WaitGroup in golang and can be used to wait for the exit of a coroutine or thread.
+#constructor 1. explicit wait_group(uint32 n); 2. wait_group(); 3. wait_group(wait_group&amp;amp;&amp;amp; wg); 4. wait_group(const wait_group&amp;amp; wg); 1, initializes the internal counter to n. 2, default constructor, initializes the internal counter to 0. 3, move constructor. 4, copy constructor, only increases the internal reference count by 1. #add void add(uint32 n=1) const; Increment internal counter by n, n defaults to 1.</description>
+    </item>
+    
+    <item>
+      <title>Coroutine Pool</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/pool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/pool/</guid>
+      <description>include: co/co.h.
+#co::pool co::pool is a general-purpose coroutine pool, which is coroutine-safe and internally stores void* type pointers, which can be used as connection pool, memory pool or caches for other purposes.
+#constructor 1. pool(); 2. pool(pool&amp;amp;&amp;amp; p); 3. pool(const pool&amp;amp; p); 4. pool(std::function&amp;lt;void*()&amp;gt;&amp;amp;&amp;amp; ccb, ​​std::function&amp;lt;void(void*)&amp;gt;&amp;amp;&amp;amp; dcb, size_t cap=(size_t)-1); 1, default constructor, compared to 4, ccb and dcb are NULL.
+2, move constructor.
+3, copy constructor, only increases the internal reference count by 1.</description>
+    </item>
+    
+    <item>
+      <title>Config</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/conf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/conf/</guid>
+      <description>#Config Coost uses co.flag to define config items for the coroutine module. Please refer to co.flag documents for detailed usage.
+#co_hook_log DEF_bool(co_hook_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print log for API hooks&amp;#34;); Print API hook related logs, default is false. Coost v3.0.1 renamed hook_log to co_hook_log. #co_sched_log DEF_bool(co_sched_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print logs for coroutine schedulers&amp;#34;); Print debug logs for coroutine scheduling, default is false. Coost v3.0.1 renamed co_debug_log to co_sched_log. #co_sched_num DEF_uint32(co_sched_num, os::cpunum(), &amp;#34;&amp;gt;&amp;gt;#1 number of coroutine schedulers&amp;#34;); The number of coroutine scheduling threads, which defaults to the number of system CPU cores.</description>
+    </item>
+    
+  </channel>
+</rss>

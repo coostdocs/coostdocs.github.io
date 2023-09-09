@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>并发编程 on Documents for Coost</title>
+    <link>https://coostdocs.github.io/cn/co/concurrency/</link>
+    <description>Recent content in 并发编程 on Documents for Coost</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/co/concurrency/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>原子操作</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/atomic/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/atomic/</guid>
+      <description>include: co/atomic.h.
+#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
+#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;amp;x, 0) 取代之。 #load &amp;amp; store #atomic_load template &amp;lt;typename T&amp;gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。</description>
+    </item>
+    
+    <item>
+      <title>线程</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/thread/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/thread/</guid>
+      <description>include: co/co.h.
+#线程 v3.0.1 删除了 co/thread.h 头文件，移除了全局的 Thread 与 Mutex 类，其功能与 C++11 中的 std::thread 与 std::mutex 一样，用户可以直接使用 std 版本。 #co::thread_id uint32 thread_id(); 返回当前线程的 id 值。 #co::sync_event 同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 wait() 方法等待同步信号，生产者线程则调用 signal() 方法产生同步信号。co::sync_event 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。
+v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之。 #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); 构造函数，参数 manual_reset 表示是否手动将同步状态设置成未同步，参数 signaled 表示初始状态是否为同步状态。 #sync_event::reset void reset(); 将事件设置成未同步状态。 当构造函数中 manual_reset 为 true 时，用户在调用 wait() 后需要手动调用此方法，将事件设置成未同步状态。 #sync_event::signal void signal(); 产生同步信号，将事件设置成同步状态。 #sync_event::wait 1. void wait(); 2. bool wait(uint32 ms); 1, 一直等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &amp;#34;co/co.</description>
+    </item>
+    
+  </channel>
+</rss>

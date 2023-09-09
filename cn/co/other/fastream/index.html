@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/fastream.h.
+#fastream fastream 用于取代 C&#43;&#43; 标准库中的 std::ostringstream。std::ostringstream 性能较差，实测比 snprintf 慢好几倍，fastream 在不同平台测试比 snprintf 快 10~30 倍左右。
+#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;&amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastream 对象，内部不会分配任何内存。
+2, 用参数 cap 指定 fastream 的初始容量，即预分配 cap 字节的内存。
+3, 移动构造函数，不会进行内存拷贝。
+示例
+fastream s; // 空对象, 未分配内存 fastream s(1024); // 预分配 1k 内存 fastream x(std::move(s)); // 移动构造, s 变成空对象 #operator= fastream&amp; operator=(fastream&amp;&amp; s) noexcept; fastream 只支持 move 赋值操作，s 的内容被转移到 fastream 中，s 自身变成空对象。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="fastream" />
+<meta property="og:description" content="include: co/fastream.h.
+#fastream fastream 用于取代 C&#43;&#43; 标准库中的 std::ostringstream。std::ostringstream 性能较差，实测比 snprintf 慢好几倍，fastream 在不同平台测试比 snprintf 快 10~30 倍左右。
+#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;&amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastream 对象，内部不会分配任何内存。
+2, 用参数 cap 指定 fastream 的初始容量，即预分配 cap 字节的内存。
+3, 移动构造函数，不会进行内存拷贝。
+示例
+fastream s; // 空对象, 未分配内存 fastream s(1024); // 预分配 1k 内存 fastream x(std::move(s)); // 移动构造, s 变成空对象 #operator= fastream&amp; operator=(fastream&amp;&amp; s) noexcept; fastream 只支持 move 赋值操作，s 的内容被转移到 fastream 中，s 自身变成空对象。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/other/fastream/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>fastream | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/fastream/" title="fastream">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle" checked />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastream/" class=" active">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>fastream</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastream">fastream</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/fastream.h">co/fastream.h</a>.</p>
+<h2 id="fastream"><a class="anchor" href="#fastream">#</a>fastream</h2>
+<p><strong>fastream</strong> 用于取代 C++ 标准库中的 <code>std::ostringstream</code>。std::ostringstream 性能较差，实测比 snprintf 慢好几倍，fastream 在不同平台测试比 snprintf 快 10~30 倍左右。</p>
+<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> fastream() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> fastream(size_t cap);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastream(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>1, 默认构造函数，创建一个空的 fastream 对象，内部不会分配任何内存。</p>
+</li>
+<li>
+<p>2, 用参数 cap 指定 fastream 的初始容量，即预分配 cap 字节的内存。</p>
+</li>
+<li>
+<p>3, 移动构造函数，不会进行内存拷贝。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;               <span style="color:#998;font-style:italic">// 空对象, 未分配内存
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">1024</span>);         <span style="color:#998;font-style:italic">// 预分配 1k 内存
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastream <span style="color:#900;font-weight:bold">x</span>(std<span style="color:#000;font-weight:bold">::</span>move(s)); <span style="color:#998;font-style:italic">// 移动构造, s 变成空对象
+</span></span></span></code></pre></div><h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>fastream 只支持 move 赋值操作，s 的内容被转移到 fastream 中，s 自身变成空对象。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">32</span>);
+</span></span><span style="display:flex;"><span>fastream x;
+</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>move(s);  <span style="color:#998;font-style:italic">// x capacity -&gt; 32,  s -&gt; empty
+</span></span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="back"><a class="anchor" href="#back">#</a>back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastream 中最后一个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 fastream 为空，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.back();   <span style="color:#998;font-style:italic">// c = &#39;o&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.back() <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;      <span style="color:#998;font-style:italic">// s -&gt; &#34;hellx&#34;
+</span></span></span></code></pre></div><h3 id="front"><a class="anchor" href="#front">#</a>front</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastream 中第一个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 fastream 为空，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.front();  <span style="color:#998;font-style:italic">// c = &#39;h&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.front() <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;xello&#34;
+</span></span></span></code></pre></div><h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator[]</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastream 中第 n 个字符的引用。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 n 超出合理的范围，调用此方法会导致未定义的行为。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">1</span>];       <span style="color:#998;font-style:italic">// c = &#39;e&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s[<span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;x&#39;</span>;          <span style="color:#998;font-style:italic">// s -&gt; &#34;hxllo&#34;
+</span></span></span></code></pre></div><h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="capacity"><a class="anchor" href="#capacity">#</a>capacity</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">capacity</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastream 的容量。</li>
+</ul>
+<h3 id="c_str"><a class="anchor" href="#c_str">#</a>c_str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">c_str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>此方法获取等效的 C 字符串。</li>
+<li>此方法在 fastream 末尾加上一个 &lsquo;\0&rsquo;，它不会改变 fastream 的 size 及内容，但有可能导致内部重新分配内存。</li>
+</ul>
+<h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">data</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法与 <a href="#c_str">c_str()</a> 类似，但不保证字符串以 &lsquo;\0&rsquo; 结尾。</li>
+</ul>
+<h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法判断 fastream 是否为空。</li>
+</ul>
+<h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>此方法返回 fastream 内部数据的长度。</li>
+</ul>
+<h3 id="str"><a class="anchor" href="#str">#</a>str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法以 fastring 形式返回 fastream 内部数据的一份拷贝。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>fastring x <span style="color:#000;font-weight:bold">=</span> s.str();  <span style="color:#998;font-style:italic">// x = &#34;hello&#34;
+</span></span></span></code></pre></div><h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
+<h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> clear();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span> clear(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>此方法仅将 fastream 的 size 置为 0，capacity 保持不变。</li>
+<li>2 与 1 类似，只是 size 置为 0 前会用字符 c 填充内部内存。</li>
+</ul>
+<blockquote class="book-hint info">
+  2 是 v3.0.1 新增，可用于清除内存中的敏感信息。
+</blockquote>
+
+<h3 id="ensure"><a class="anchor" href="#ensure">#</a>ensure</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ensure</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>此方法确保 fastream 剩余的内存容量能容纳至少 n 个字符。</li>
+</ul>
+<h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>此方法调整 fastream 的容量，确保容量至少是 n。</li>
+<li>当 n 小于原来的容量时，则保持容量不变。</li>
+</ul>
+<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>v2.0.3 新增。清空 fastream 并释放内存。</li>
+</ul>
+<h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resize</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>
+<p>此方法将 fastream 的 size 设置为 n。</p>
+</li>
+<li>
+<p>当 n 大于原来的 size 时，此操作将 size 扩大到 n，但不会用 &lsquo;\0&rsquo; 填充扩展的部分。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.resize(<span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// s -&gt; &#34;hel&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.resize(<span style="color:#099">6</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">5</span>];  <span style="color:#998;font-style:italic">// c 是不确定的随机值
+</span></span></span></code></pre></div><h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastream<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>交换两个 fastream，仅交换内部指针、容量、大小。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">32</span>);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">x</span>(<span style="color:#099">64</span>);
+</span></span><span style="display:flex;"><span>s.swap(x);  <span style="color:#998;font-style:italic">// s: cap -&gt; 64,  x: cap -&gt; 32
+</span></span></span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
+<h3 id="append"><a class="anchor" href="#append">#</a>append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(size_t n, <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c, size_t n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">8.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">9.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> v)
+</span></span><span style="display:flex;"><span><span style="color:#099">10.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">11.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint16 v);
+</span></span><span style="display:flex;"><span><span style="color:#099">12.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint32 v);
+</span></span><span style="display:flex;"><span><span style="color:#099">13.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint64 v);
+</span></span></code></pre></div><ul>
+<li>1, 追加长度为 n 的字节序列。</li>
+<li>2-4, 追加字符串 s。</li>
+<li>5, 追加 fastream，s 可以是进行 append 操作的 fastream 对象本身。</li>
+<li>6-7, 追加 n 个字符 c。</li>
+<li>8-10, 追加单个字符 c。</li>
+<li>11-13, 等价于 <code>append(&amp;v, sizeof(v))</code>。</li>
+</ul>
+<blockquote class="book-hint info">
+  从 v3.0.1 开始，1-2 参数 s 可以与 fastream 内部内存重叠。
+</blockquote>
+
+<ul>
+<li>示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>int32 i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;xx&#34;</span>);      <span style="color:#998;font-style:italic">// s -&gt; &#34;xx
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(s);         <span style="color:#998;font-style:italic">// 追加自身, s -&gt; &#34;xxxx&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(buf, <span style="color:#099">8</span>);    <span style="color:#998;font-style:italic">// 追加 8 字节
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#39;c&#39;</span>);       <span style="color:#998;font-style:italic">// 追加单个字符
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#099">100</span>, <span style="color:#d14">&#39;c&#39;</span>);  <span style="color:#998;font-style:italic">// 追加 100 个 &#39;c&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#39;c&#39;</span>, <span style="color:#099">100</span>);  <span style="color:#998;font-style:italic">// 追加 100 个 &#39;c&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">4</span>);     <span style="color:#998;font-style:italic">// 追加 4 字节
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(i);         <span style="color:#998;font-style:italic">// 追加 4 字节, 与上同
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append((int16)<span style="color:#099">23</span>); <span style="color:#998;font-style:italic">// 追加 2 字节
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.append(s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// v3.0.1 支持
+</span></span></span></code></pre></div><h3 id="append_nomchk"><a class="anchor" href="#append_nomchk">#</a>append_nomchk</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s)
+</span></span></code></pre></div><ul>
+<li>与 <a href="#append">append()</a> 类似，但不会检查 s 是否与内部内存重叠。</li>
+</ul>
+<blockquote class="book-hint warning">
+  若 s 与 fastream 内部内存可能重叠，则不能使用此方法。
+</blockquote>
+
+<h3 id="cat"><a class="anchor" href="#cat">#</a>cat</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X, <span style="color:#000;font-weight:bold">typename</span> ...V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> cat(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> x, V<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... v);
+</span></span></code></pre></div><ul>
+<li>
+<p>v2.0.3 新增。将任意数量的元素连接到 fastream 中。</p>
+</li>
+<li>
+<p>此方法调用 <code>operator&lt;&lt;</code> 操作，将参数中的元素逐个追加到 fastream 中。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello&#34;</span>;
+</span></span><span style="display:flex;"><span>s.cat(<span style="color:#d14">&#39; &#39;</span>, <span style="color:#099">23</span>, <span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#0086b3">false</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23xxfalse&#34;
+</span></span></span></code></pre></div><h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">bool</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">double</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">float</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> dp<span style="color:#000;font-weight:bold">::</span>_fpt<span style="color:#000;font-weight:bold">&amp;</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(std<span style="color:#000;font-weight:bold">::</span>nullptr_t);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>
+<p>将 bool、char、整数类型、浮点数类型、指针类型、字符串类型的值格式化后追加到 fastream 中。</p>
+</li>
+<li>
+<p><code>operator&lt;&lt;(const dp::_fpt&amp;)</code> 用于格式化输出浮点数，可指定有效小数位数。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#39;x&#39;</span>;             <span style="color:#998;font-style:italic">// s -&gt; &#34;x&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;               <span style="color:#998;font-style:italic">// s -&gt; &#34;xx&#34;           (append itself)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#0086b3">false</span>;           <span style="color:#998;font-style:italic">// s -&gt; &#34;xxfalse&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">6</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 2323&#34;   (append part of s)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.1415</span>;          <span style="color:#998;font-style:italic">// s -&gt; &#34;3.1415&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">32</span>;       <span style="color:#998;font-style:italic">// s -&gt; &#34;0x20&#34;
+</span></span></span></code></pre></div><blockquote class="book-hint info">
+  <p><strong>指定有效小数的位数</strong><br>
+coost 提供 <code>dp::_1, dp::_2, ..., dp::_16, dp::_n</code>，用于设置浮点数的有效小数位数。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_2(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.14
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_3(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.141&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_n(<span style="color:#099">3.14</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// &#34;3.1&#34;, 与 dp::_1(3.14) 等价
+</span></span></span></code></pre></div>
+</blockquote>
+
+<blockquote class="book-hint info">
+  <p><a href="../../log/">co.log</a> 基于 fastream 实现，因此用 co.log 打印日志时，也可以用上述方法控制浮点数的有效小数位数。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_2(<span style="color:#099">3.1415</span>);
+</span></span></code></pre></div>
+</blockquote>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/co/other/fastream/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/other/fastream.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastream">fastream</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

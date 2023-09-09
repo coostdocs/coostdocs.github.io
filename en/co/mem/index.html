@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/mem.h.
+#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, allocate size bytes of memory. 2, allocate size bytes of memory, and the memory boundary is align byte-aligned (align &lt;= 1024). In the 2nd, align must be power of 2 and cannot exceed 1024. #co::free void free(void* p, size_t size); Free memory allocated by co::alloc or co::realloc, where size is the size of the allocated memory. co::free is different from the ::free provided by the system, it needs an additional size parameter.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Memory Allocation" />
+<meta property="og:description" content="include: co/mem.h.
+#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, allocate size bytes of memory. 2, allocate size bytes of memory, and the memory boundary is align byte-aligned (align &lt;= 1024). In the 2nd, align must be power of 2 and cannot exceed 1024. #co::free void free(void* p, size_t size); Free memory allocated by co::alloc or co::realloc, where size is the size of the allocated memory. co::free is different from the ::free provided by the system, it needs an additional size parameter." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/mem/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>Memory Allocation | Documents for Coost</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/mem/" title="内存分配">
+<link rel="stylesheet" href="../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/mem/" class=" active">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Memory Allocation</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#coalloc">co::alloc</a></li>
+            <li><a href="#cofree">co::free</a></li>
+            <li><a href="#corealloc">co::realloc</a></li>
+            <li><a href="#cozalloc">co::zalloc</a></li>
+            <li><a href="#------------">&mdash;&mdash;&mdash;&mdash;</a></li>
+            <li><a href="#comake">co::make</a></li>
+            <li><a href="#codel">co::del</a></li>
+            <li><a href="#comake_rootic">co::make_rootic</a></li>
+            <li><a href="#comake_static">co::make_static</a></li>
+            <li><a href="#-------------1">&mdash;&mdash;&mdash;&mdash;</a></li>
+            <li><a href="#coshared">co::shared</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#destructor">destructor</a></li>
+                <li><a href="#operator">operator=</a></li>
+                <li><a href="#get">get</a></li>
+                <li><a href="#operator-">operator-&gt;</a></li>
+                <li><a href="#operator-1">operator*</a></li>
+                <li><a href="#operator-2">operator==</a></li>
+                <li><a href="#operator-3">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+                <li><a href="#ref_count">ref_count</a></li>
+                <li><a href="#reset">reset</a></li>
+                <li><a href="#swap">swap</a></li>
+                <li><a href="#use_count">use_count</a></li>
+              </ul>
+            </li>
+            <li><a href="#comake_shared">co::make_shared</a></li>
+            <li><a href="#counique">co::unique</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#destructor-1">destructor</a></li>
+                <li><a href="#operator-4">operator=</a></li>
+                <li><a href="#get-1">get</a></li>
+                <li><a href="#operator--1">operator-&gt;</a></li>
+                <li><a href="#operator-5">operator*</a></li>
+                <li><a href="#operator-6">operator==</a></li>
+                <li><a href="#operator-7">operator!=</a></li>
+                <li><a href="#operator-bool-1">operator bool</a></li>
+                <li><a href="#reset-1">reset</a></li>
+                <li><a href="#swap-1">swap</a></li>
+              </ul>
+            </li>
+            <li><a href="#comake_unique">co::make_unique</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/mem.h">co/mem.h</a>.</p>
+<h3 id="coalloc"><a class="anchor" href="#coalloc">#</a>co::alloc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> alloc(size_t size);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> alloc(size_t size, size_t align);
+</span></span></code></pre></div><ul>
+<li>1, allocate <code>size</code> bytes of memory.</li>
+<li>2, allocate <code>size</code> bytes of memory, and the memory boundary is <code>align</code> byte-aligned (align &lt;= 1024).</li>
+</ul>
+<blockquote class="book-hint warning">
+  In the 2nd, <code>align</code> must be power of 2 and cannot exceed 1024.
+</blockquote>
+
+<h3 id="cofree"><a class="anchor" href="#cofree">#</a>co::free</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">free</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p, size_t size);
+</span></span></code></pre></div><ul>
+<li>Free memory allocated by <a href="#coalloc">co::alloc</a> or <a href="#corealloc">co::realloc</a>, where <code>size</code> is the size of the allocated memory.</li>
+</ul>
+<blockquote class="book-hint warning">
+  <code>co::free</code> is different from the <code>::free</code> provided by the system, it needs an additional <code>size</code> parameter.
+</blockquote>
+
+<h3 id="corealloc"><a class="anchor" href="#corealloc">#</a>co::realloc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">realloc</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p, size_t old_size, size_t new_size);
+</span></span></code></pre></div><ul>
+<li>Reallocate memory, <code>old_size</code> is the previous memory size, <code>new_size</code> is the new size, <strong>the latter must be greater than the former</strong>.</li>
+</ul>
+<h3 id="cozalloc"><a class="anchor" href="#cozalloc">#</a>co::zalloc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">zalloc</span>(size_t size);
+</span></span></code></pre></div><ul>
+<li>Allocate <code>size</code> bytes of memory and fill the memory with zeros.</li>
+</ul>
+<h3 id="------------"><a class="anchor" href="#------------">#</a>&mdash;&mdash;&mdash;&mdash;</h3>
+<h3 id="comake"><a class="anchor" href="#comake">#</a>co::make</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span>... Args<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T<span style="color:#000;font-weight:bold">*</span> make(Args<span style="color:#000;font-weight:bold">&amp;&amp;</span>... args);
+</span></span></code></pre></div><ul>
+<li>
+<p>Call <a href="#coalloc">co::alloc</a> to allocate memory and make an object of type <code>T</code> on it with argument <code>args</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">7</span>);
+</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">*</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make<span style="color:#000;font-weight:bold">&lt;</span>std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">3</span>, <span style="color:#d14">&#39;x&#39;</span>);
+</span></span></code></pre></div><h3 id="codel"><a class="anchor" href="#codel">#</a>co::del</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">void</span> del(T<span style="color:#000;font-weight:bold">*</span> p, size_t n<span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">sizeof</span>(T));
+</span></span></code></pre></div><ul>
+<li>
+<p>Destroy objects created by <a href="#comake">co::make</a> and free the memory.</p>
+</li>
+<li>
+<p>The parameter <code>n</code> is the memory size of the object pointed to by <code>p</code>, and the default is <code>sizeof(T)</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">7</span>);
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>del(p);
+</span></span></code></pre></div><h3 id="comake_rootic"><a class="anchor" href="#comake_rootic">#</a>co::make_rootic</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span>... Args<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T<span style="color:#000;font-weight:bold">*</span> make_rootic(Args<span style="color:#000;font-weight:bold">&amp;&amp;</span>... args);
+</span></span></code></pre></div><ul>
+<li>Similar to <a href="#comake_static">co::make_static</a>, except that static objects created by this function are destructed later than static objects created by <code>co::make_static</code>.</li>
+</ul>
+<h3 id="comake_static"><a class="anchor" href="#comake_static">#</a>co::make_static</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span>... Args<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T<span style="color:#000;font-weight:bold">*</span> make_static(Args<span style="color:#000;font-weight:bold">&amp;&amp;</span>... args);
+</span></span></code></pre></div><ul>
+<li>
+<p>Create a static object of type <code>T</code> with the parameter <code>args</code>, and it will be automatically destroyed when the program exits.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fasting<span style="color:#000;font-weight:bold">&amp;</span> s <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>co<span style="color:#000;font-weight:bold">::</span>make_static<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">32</span>, <span style="color:#d14">&#39;x&#39;</span>);
+</span></span></code></pre></div><h3 id="-------------1"><a class="anchor" href="#-------------1">#</a>&mdash;&mdash;&mdash;&mdash;</h3>
+<h3 id="coshared"><a class="anchor" href="#coshared">#</a>co::shared</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">shared</span>;
+</span></span></code></pre></div><p>Similar to <code>std::shared_ptr</code>, but with some minor differences.</p>
+<h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> shared() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">constexpr</span> shared(std<span style="color:#000;font-weight:bold">::</span>nullptr_t) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> shared(<span style="color:#000;font-weight:bold">const</span> shared<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> shared(shared<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> shared(<span style="color:#000;font-weight:bold">const</span> shared<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> shared(shared<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>1-2, create an empty <code>shared</code> object.</li>
+<li>3, Copy constructor, if <code>x</code> is not an empty object, increase the internal reference count.</li>
+<li>4, Move constructor, when the construction is completed, <code>x</code> becomes an empty object.</li>
+<li>5-6, Construct <code>shared&lt;T&gt;</code> object from <code>shared&lt;X&gt;</code> object, <code>T</code> is the base class of <code>X</code>, and the destructor of <code>T</code> is virtual.</li>
+</ul>
+<blockquote class="book-hint warning">
+  <code>co::shared</code> objects cannot be constructed directly from <code>T*</code> pointer, coost provides <a href="#comake_shared">co::make_shared</a> for constructing <code>co::shared</code> objects.
+</blockquote>
+
+<h4 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>shared();
+</span></span></code></pre></div><ul>
+<li>If the object is not empty, the internal reference count will be decremented by 1. When the reference count is reduced to 0, the internal object will be destroyed and the memory will be released.</li>
+</ul>
+<h4 id="operator"><a class="anchor" href="#operator">#</a>operator=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> shared<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> shared<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> shared<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(shared<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> shared<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> shared<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> shared<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(shared<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> x);
+</span></span></code></pre></div><ul>
+<li>Assignment operations.</li>
+<li>3-4, assign value of <code>shared&lt;X&gt;</code> to object of <code>shared&lt;T&gt;</code>, <code>T</code> is the base class of <code>X</code>, and the destructor of <code>T</code> is virtual .</li>
+</ul>
+<h4 id="get"><a class="anchor" href="#get">#</a>get</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Get a pointer to the internal object.</li>
+</ul>
+<h4 id="operator-"><a class="anchor" href="#operator-">#</a>operator-&gt;</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Overload <code>operator-&gt;</code>, return a pointer to the internal object.</li>
+</ul>
+<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Overload <code>operator*</code>, return a reference to the internal object.</li>
+</ul>
+<h4 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the internal pointer is equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the internal pointer is not equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns false if the internal pointer is NULL, otherwise returns true.</li>
+</ul>
+<h4 id="ref_count"><a class="anchor" href="#ref_count">#</a>ref_count</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">ref_count</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Get the reference count of the internal object.</li>
+</ul>
+<h4 id="reset"><a class="anchor" href="#reset">#</a>reset</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>If the internal pointer is not NULL, decrement the reference count by 1 (destroy the internal object when reduced to 0), and then set the internal pointer to NULL.</li>
+</ul>
+<h4 id="swap"><a class="anchor" href="#swap">#</a>swap</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(shared<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(shared<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span></code></pre></div><ul>
+<li>Swaps internal pointers of <code>co::shared</code> objects.</li>
+</ul>
+<h4 id="use_count"><a class="anchor" href="#use_count">#</a>use_count</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">use_count</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Equivalent to <a href="#ref_count">ref_count</a>.</li>
+</ul>
+<h3 id="comake_shared"><a class="anchor" href="#comake_shared">#</a>co::make_shared</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span>... Args<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> shared<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> make_shared(Args<span style="color:#000;font-weight:bold">&amp;&amp;</span>... args);
+</span></span></code></pre></div><ul>
+<li>
+<p>Creates an object of type <code>shared&lt;T&gt;</code> with arguments <code>args</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>shared<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> i <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make_shared<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">23</span>);
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>shared<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make_shared<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">32</span>, <span style="color:#d14">&#39;x&#39;</span>);
+</span></span></code></pre></div><h3 id="counique"><a class="anchor" href="#counique">#</a>co::unique</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">unique</span>;
+</span></span></code></pre></div><p>Similar to <code>std::unique_ptr</code>, but with some minor differences.</p>
+<h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> unique() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">constexpr</span> unique(std<span style="color:#000;font-weight:bold">::</span>nullptr_t) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> unique(unique<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> unique(unique<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> unique(unique<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> unique(unique<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>1-2, create an empty <code>unique</code> object.</li>
+<li>3-4, transfer the internal pointer of <code>x</code> to the constructed <code>unique</code> object, and the internal pointer of <code>x</code> becomes NULL.</li>
+<li>5-6, Construct <code>unique&lt;T&gt;</code> object from <code>unique&lt;X&gt;</code> object, <code>T</code> is the base class of <code>X</code>, and the destructor of <code>T</code> is virtual.</li>
+</ul>
+<blockquote class="book-hint warning">
+  <code>co::unique</code> object cannot be constructed directly from <code>T*</code> pointer, coost provides <a href="#comake_unique">co::make_unique</a> for constructing <code>co::unique</code> object.
+</blockquote>
+
+<h4 id="destructor-1"><a class="anchor" href="#destructor-1">#</a>destructor</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>unique();
+</span></span></code></pre></div><ul>
+<li>Destroy the internal object, and free the memory.</li>
+</ul>
+<h4 id="operator-4"><a class="anchor" href="#operator-4">#</a>operator=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> unique<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(unique<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> unique<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(unique<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> unique<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(unique<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> unique<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(unique<span style="color:#000;font-weight:bold">&lt;</span>X<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span>x);
+</span></span></code></pre></div><ul>
+<li>Assignment operations.</li>
+<li>3-4, assign value of <code>unique&lt;X&gt;</code> to object of <code>unique&lt;T&gt;</code>, <code>T</code> is the base class of <code>X</code>, and the destructor of <code>T</code> is virtual .</li>
+</ul>
+<h4 id="get-1"><a class="anchor" href="#get-1">#</a>get</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Get a pointer to the internal object.</li>
+</ul>
+<h4 id="operator--1"><a class="anchor" href="#operator--1">#</a>operator-&gt;</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Overload <code>operator-&gt;</code>, return a pointer to the internal object.</li>
+</ul>
+<h4 id="operator-5"><a class="anchor" href="#operator-5">#</a>operator*</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>Overload <code>operator*</code>, return a reference to the internal object.</li>
+</ul>
+<h4 id="operator-6"><a class="anchor" href="#operator-6">#</a>operator==</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the internal pointer is equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-7"><a class="anchor" href="#operator-7">#</a>operator!=</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Determine whether the internal pointer is not equal to <code>p</code>.</li>
+</ul>
+<h4 id="operator-bool-1"><a class="anchor" href="#operator-bool-1">#</a>operator bool</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>Returns false if the internal pointer is NULL, otherwise returns true.</li>
+</ul>
+<h4 id="reset-1"><a class="anchor" href="#reset-1">#</a>reset</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>Destroy the internal object, and free the memory.</li>
+</ul>
+<h4 id="swap-1"><a class="anchor" href="#swap-1">#</a>swap</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(unique<span style="color:#000;font-weight:bold">&amp;</span> x);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(unique<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+</span></span></code></pre></div><ul>
+<li>Swap the internal pointers of <code>co::unique</code> objects.</li>
+</ul>
+<h3 id="comake_unique"><a class="anchor" href="#comake_unique">#</a>co::make_unique</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span>... Args<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> unique<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> make_unique(Args<span style="color:#000;font-weight:bold">&amp;&amp;</span>... args);
+</span></span></code></pre></div><ul>
+<li>
+<p>Create an object of type <code>unique&lt;T&gt;</code> with arguments <code>args</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>unique<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> i <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make_unique<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">23</span>);
+</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>unique<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>make_unique<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">32</span>, <span style="color:#d14">&#39;x&#39;</span>);
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../cn/co/mem/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/mem.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#coalloc">co::alloc</a></li>
+            <li><a href="#cofree">co::free</a></li>
+            <li><a href="#corealloc">co::realloc</a></li>
+            <li><a href="#cozalloc">co::zalloc</a></li>
+            <li><a href="#------------">&mdash;&mdash;&mdash;&mdash;</a></li>
+            <li><a href="#comake">co::make</a></li>
+            <li><a href="#codel">co::del</a></li>
+            <li><a href="#comake_rootic">co::make_rootic</a></li>
+            <li><a href="#comake_static">co::make_static</a></li>
+            <li><a href="#-------------1">&mdash;&mdash;&mdash;&mdash;</a></li>
+            <li><a href="#coshared">co::shared</a>
+              <ul>
+                <li><a href="#constructor">constructor</a></li>
+                <li><a href="#destructor">destructor</a></li>
+                <li><a href="#operator">operator=</a></li>
+                <li><a href="#get">get</a></li>
+                <li><a href="#operator-">operator-&gt;</a></li>
+                <li><a href="#operator-1">operator*</a></li>
+                <li><a href="#operator-2">operator==</a></li>
+                <li><a href="#operator-3">operator!=</a></li>
+                <li><a href="#operator-bool">operator bool</a></li>
+                <li><a href="#ref_count">ref_count</a></li>
+                <li><a href="#reset">reset</a></li>
+                <li><a href="#swap">swap</a></li>
+                <li><a href="#use_count">use_count</a></li>
+              </ul>
+            </li>
+            <li><a href="#comake_shared">co::make_shared</a></li>
+            <li><a href="#counique">co::unique</a>
+              <ul>
+                <li><a href="#constructor-1">constructor</a></li>
+                <li><a href="#destructor-1">destructor</a></li>
+                <li><a href="#operator-4">operator=</a></li>
+                <li><a href="#get-1">get</a></li>
+                <li><a href="#operator--1">operator-&gt;</a></li>
+                <li><a href="#operator-5">operator*</a></li>
+                <li><a href="#operator-6">operator==</a></li>
+                <li><a href="#operator-7">operator!=</a></li>
+                <li><a href="#operator-bool-1">operator bool</a></li>
+                <li><a href="#reset-1">reset</a></li>
+                <li><a href="#swap-1">swap</a></li>
+              </ul>
+            </li>
+            <li><a href="#comake_unique">co::make_unique</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

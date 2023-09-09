@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>协程 on Documents for Coost</title>
+    <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/</link>
+    <description>Recent content in 协程 on Documents for Coost</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/co/concurrency/coroutine/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基本概念</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/basic/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/basic/</guid>
+      <description>#协程基本概念 协程是运行于线程中的轻量级调度单位。 协程之于线程，类似于线程之于进程。 一个进程中可以存在多个线程，一个线程中可以存在多个协程。 协程所在的线程一般被称为调度线程。 协程发生 io 阻塞或调用 sleep 等操作时，调度线程会挂起此协程。 协程挂起时，调度线程会切换到其他等待中的协程运行。 协程的切换是在用户态进行的，比线程间的切换更快。 协程非常适合写网络程序，可以实现同步的编程方式，不需要异步回调，大大减轻了程序员的思想负担。
+#co 协程特性 coost 中实现的是一种类似 goroutine 的协程，有如下特性：
+支持多线程调度，默认线程数为系统 CPU 核数。 共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。 协程创建后，始终在同一个线程中运行，而不会切换到其他线程。 各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。 coost 协程库中 context 相关代码取自 ruki 的 tbox，而 tbox 则参考了 boost 的实现，在此表示感谢！ </description>
+    </item>
+    
+    <item>
+      <title>APIs</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/api/</guid>
+      <description>include: co/co.h.
+#Coroutine APIs v3.0 移除了 co::init, co::exit, co::stop。 #go 1. void go(Closure* cb); 2. template&amp;lt;typename F&amp;gt; void go(F&amp;amp;&amp;amp; f); 3. template&amp;lt;typename F, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); 4. template&amp;lt;typename F, typename T, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p); 此函数用于创建协程，与创建线程类似，需要指定一个协程函数。
+1, 参数 cb 指向一个 Closure 对象，协程启动后会调用 Closure 中的 run() 方法。
+2-4, 将传入的参数打包成一个 Closure，然后调用 1。
+2, 参数 f 是任意可调用的对象，只要能调用 f() 或 (*f)() 就行。
+3, 参数 f 是任意可调用的对象，只要能调用 f(p), (*f)(p) 或 (p-&amp;gt;*f)() 就行。</description>
+    </item>
+    
+    <item>
+      <title>channel</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/chan/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/chan/</guid>
+      <description>include: co/co.h.
+#co::chan template&amp;lt;typename T&amp;gt; class chan; co::chan 是一个模板类，它类似于 golang 中的 channel，用于在协程之间传递数据。
+从 v3.0.1 开始，co::chan 可在协程或非协程中使用，且可存储 std::string 等非 POD 类型的值。 #constructor 1. explicit chan(uint32 cap=1, uint32 ms=(uint32)-1); 2. chan(chan&amp;amp;&amp;amp; c); 3. chan(const chan&amp;amp; c); 1, 参数 cap 是内部队列的最大容量，默认是 1，参数 ms 是读写操作的超时时间，单位为毫秒，默认为 -1，永不超时。 2, 移动构造函数。 3, 拷贝构造函数，仅将内部引用计数加 1。 #close void close() const; 关闭 channel，关闭后 channel 不可写，但可读。 #done bool done() const; 判断读、写操作是否成功完成。 #operator bool explicit operator bool() const; 若 channel 为关闭状态，返回 false，否则返回 true。 #operator&amp;laquo; chan&amp;amp; operator&amp;lt;&amp;lt;(const T&amp;amp; x) const; chan&amp;amp; operator&amp;lt;&amp;lt;(T&amp;amp;&amp;amp; x) const; 写入元素 x。 此方法会阻塞，直到写入操作完成或超时。可以调用 done() 方法判断写操作是否成功完成。 若 channel 已关闭，写操作会失败，此方法立即返回。 #operator&amp;raquo; chan&amp;amp; operator&amp;gt;&amp;gt;(T&amp;amp; x) const; 读取元素。 此方法会阻塞，直到读取操作完成或超时。可以调用 done() 方法判断读操作是否成功完成。 若 channel 已关闭且 channel 中无元素可读时，读操作会失败，此方法立即返回。 #代码示例 #include &amp;#34;co/co.</description>
+    </item>
+    
+    <item>
+      <title>同步事件</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/event/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/event/</guid>
+      <description>include: co/co.h.
+#co::event co::event 是协程间的一种同步机制，它与线程中的 co::sync_event 类似。
+从 v2.0.1 版本开始，co::event 可以在协程与非协程中使用。 #constructor 1. explicit event(bool manual_reset=false, bool signaled=false); 2. event(event&amp;amp;&amp;amp; e); 3. event(const event&amp;amp; e); 1, 与线程中的 co::sync_event 类似。 2, 移动构造函数。 3, 拷贝构造函数，仅将内部引用计数加 1。 #reset void reset() const; 将事件重置为未同步状态。 #signal void signal() const; 产生同步信号，将事件设置成同步状态。 所有 waiting 状态的协程或线程会被唤醒。若当前并没有 waiting 状态的协程或线程，则下一个调用 wait() 方法的协程或线程会立即返回。 #wait 1. void wait() const; 2. bool wait(uint32 ms) const; 1, 等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &amp;#34;co/co.</description>
+    </item>
+    
+    <item>
+      <title>IO 事件</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/io_event/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/io_event/</guid>
+      <description>include: co/co.h.
+#co::_ev_t enum _ev_t { ev_read = 1, ev_write = 2, }; I/O 事件类型，ev_read 表示读，ev_write 表示写。 #co::io_event co::io_event 用于将非阻塞 I/O 转换为同步方式。用户在协程中对一个 non-blocking socket 进行 I/O 操作，当 socket 不可读或不可写时，用户调用 co::io_event 的 wait() 方法挂起协程，等待 I/O 事件；当 socket 变为可读或可写时，调度线程唤醒该协程，继续 I/O 操作。
+#constructor 1. io_event(sock_t fd, _ev_t ev); 2. io_event(sock_t fd, int n=0); // for windows only 1, 参数 fd 是一个 non-blocking socket，参数 ev 是 ev_read 或 ev_write 中的一种。调用 wait() 方法会在 socket 上等待 ev 指定的 I/O 事件，wait() 成功返回时，需要用户调用 recv, send 等函数完成 I/O 操作。在 windows 平台，fd 必须是 TCP socket(对于 UDP，很难用 IOCP 模拟 epoll 或 kqueue 的行为)。 2, 仅适用于 windows，fd 可以是 UDP socket，但用户需要手动调用 WSARecvFrom, WSASendTo 等函数向 IOCP 发送 overlapped I/O 请求，然后调用 wait() 方法，当 wait() 成功返回时，表示 IOCP 已经帮用户完成了 I/O 操作。具体的用法此处不详述，代码中有详细的注释，建议直接参考 co::io_event 的源码，以及 windows 上 co::accept, co::connect, co::recvfrom, co::sendto 的实现。 #destructor ~io_event(); 析构函数，从 epoll 或 kqueue 中移除之前注册的 I/O 事件。 #wait bool wait(uint32 ms=-1); 此方法等待 socket 上的 I/O 事件，参数 ms 是超时时间，单位为毫秒，默认为 -1，永不超时。 此方法阻塞，直到 I/O 事件到来，或者超时、发生错误。 此方法成功时返回 true，超时或发生错误时返回 false。 #代码示例 int recv(sock_t fd, void* buf, int n, int ms) { const auto sched = xx::gSched; CHECK(sched) &amp;lt;&amp;lt; &amp;#34;must be called in coroutine.</description>
+    </item>
+    
+    <item>
+      <title>互斥锁</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/mutex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/mutex/</guid>
+      <description>include: co/co.h.
+#co::mutex 从 v3.0.1 开始，co::mutex 可以在协程与非协程中使用。 #constructor 1. mutex(); 2. mutex(mutex&amp;amp;&amp;amp; m); 3. mutex(const mutex&amp;amp; m); 1, 默认构造函数。 2, 移动构造函数。 3, 拷贝构造函数，仅将内部引用计数加 1。 #lock void lock() const; 获取锁，阻塞直到获得锁为止。 #try_lock bool try_lock() const; 获取锁，不会阻塞，成功获取锁时返回 true，否则返回 false。 #unlock void unlock() const; 释放锁，一般由之前获得锁的协程或线程调用。 #co::mutex_guard #constructor explicit mutex_guard(co::mutex&amp;amp; m); explicit mutex_guard(co::mutex* m); 构造函数，调用 m.lock() 获取锁，参数 m 是 co::mutex 类的引用或指针。 #destructor ~mutex_guard(); 析构函数，释放构造函数中获得的锁。 #代码示例 #include &amp;#34;co/co.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; co::mutex g_m; int g_v = 0; void f() { co::mutex_guard g(g_m); ++g_v; } int main(int argc, char** argv) { flag::parse(argc, argv); go(f); go(f); f(); f(); co::sleep(100); co::print(&amp;#34;g_v: &amp;#34;, g_v); return 0; } </description>
+    </item>
+    
+    <item>
+      <title>wait group</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/wg/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/wg/</guid>
+      <description>include: co/co.h.
+#co::wait_group co::wait_group 类似于 golang 中的 sync.WaitGroup，可用于等待协程或线程的退出。
+#constructor 1. explicit wait_group(uint32 n); 2. wait_group(); 3. wait_group(wait_group&amp;amp;&amp;amp; wg); 4. wait_group(const wait_group&amp;amp; wg); 1, 将内部计数器初始化为 n。 2, 默认构造函数，将内部计数器初始化为 0。 3, 移动构造函数。 4, 拷贝构造函数，仅将内部引用计数加 1。 #add void add(uint32 n=1) const; 将内部计数器加 n，n 默认为 1。 #done void done() const; 将内部计数器减 1。 #wait void wait() const; 等待直到内部计数器的值变为 0。 #代码示例 #include &amp;#34;co/co.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; DEF_uint32(n, 8, &amp;#34;coroutine number&amp;#34;); int main(int argc, char** argv) { flag::parse(argc, argv); co::wait_group wg; wg.</description>
+    </item>
+    
+    <item>
+      <title>协程池</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/pool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/pool/</guid>
+      <description>include: co/co.h.
+#co::pool co::pool 是一种通用的协程池，它是协程安全的，内部存储 void* 类型的指针，可以用作连接池、内存池或其他用途的缓存。
+#constructor 1. pool(); 2. pool(pool&amp;amp;&amp;amp; p); 3. pool(const pool&amp;amp; p); 4. pool(std::function&amp;lt;void*()&amp;gt;&amp;amp;&amp;amp; ccb, std::function&amp;lt;void(void*)&amp;gt;&amp;amp;&amp;amp; dcb, size_t cap=(size_t)-1); 1, 默认构造函数，与 4 相比，ccb 与 dcb 为 NULL。
+2, 移动构造函数。
+3, 拷贝构造函数，仅将内部引用计数加 1。
+4, 参数 ccb 用于创建元素，参数 dcb 用于销毁元素，参数 cap 指定 pool 的最大容量，默认为 -1，不限容量。
+注意参数 cap 并不是总容量，它是对单个线程而言，在 co::pool 内部实现中，每个线程都有自己的 pool，如 cap 设置为 1024，调度线程有 8 个，则总容量是 8192。
+当 dcb 为 NULL 时，参数 cap 会被忽略，这是因为当元素个数超过最大容量时，co::pool 需要用 dcb 销毁多余的元素。</description>
+    </item>
+    
+    <item>
+      <title>配置项</title>
+      <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/conf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/concurrency/coroutine/conf/</guid>
+      <description>#配置 Coost 使用 co.flag 定义了协程相关的配置项，配置详细用法请参考 co.flag 文档。
+#co_hook_log DEF_bool(co_hook_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print log for API hooks&amp;#34;); 打印 API hook 相关的日志，默认为 false。 v3.0.1 中将配置项 hook_log 重命名为 co_hook_log。 #co_sched_log DEF_bool(co_sched_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print logs for coroutine schedulers&amp;#34;); 打印协程调度相关的调试日志，默认为 false。 v3.0.1 将配置项 co_debug_log 重命名为 co_sched_log。 #co_sched_num DEF_uint32(co_sched_num, os::cpunum(), &amp;#34;&amp;gt;&amp;gt;#1 number of coroutine schedulers&amp;#34;); 协程调度线程的数量，默认为系统 CPU 核数。目前的实现中，这个值最大也是系统 CPU 核数。 #co_stack_num DEF_uint32(co_stack_num, 8, &amp;#34;&amp;gt;&amp;gt;#1 number of stacks per scheduler, must be power of 2&amp;#34;); v3.0.1 新增，每个协程调度器的共享协程栈数量，该值必须是 2 的幂，默认为 8。 #co_stack_size DEF_uint32(co_stack_size, 1024 * 1024, &amp;#34;&amp;gt;&amp;gt;#1 size of the stack shared by coroutines&amp;#34;); 协程栈大小，默认为 1M。 </description>
+    </item>
+    
+  </channel>
+</rss>

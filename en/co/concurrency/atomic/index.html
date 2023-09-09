@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/atomic.h.
+#Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
+#APIs removed since v3.0 atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead. #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Atomic Operations" />
+<meta property="og:description" content="include: co/atomic.h.
+#Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
+#APIs removed since v3.0 atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;x, 0) instead. #load &amp; store #atomic_load template&lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/concurrency/atomic/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>Atomic Operations | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/concurrency/atomic/" title="原子操作">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class=" active">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Atomic Operations</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#memory-order">Memory Order</a></li>
+        <li><a href="#apis-removed-since-v30">APIs removed since v3.0</a></li>
+        <li><a href="#load--store">load &amp; store</a>
+          <ul>
+            <li><a href="#atomic_load">atomic_load</a></li>
+            <li><a href="#atomic_store">atomic_store</a></li>
+          </ul>
+        </li>
+        <li><a href="#swap-operations">Swap operations</a>
+          <ul>
+            <li><a href="#atomic_swap">atomic_swap</a></li>
+            <li><a href="#atomic_cas">atomic_cas</a></li>
+            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
+          </ul>
+        </li>
+        <li><a href="#arithmetic-operations">Arithmetic operations</a>
+          <ul>
+            <li><a href="#atomic_inc">atomic_inc</a></li>
+            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
+            <li><a href="#atomic_dec">atomic_dec</a></li>
+            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
+            <li><a href="#atomic_add">atomic_add</a></li>
+            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
+            <li><a href="#atomic_sub">atomic_sub</a></li>
+            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
+          </ul>
+        </li>
+        <li><a href="#bit-operation">Bit operation</a>
+          <ul>
+            <li><a href="#atomic_or">atomic_or</a></li>
+            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
+            <li><a href="#atomic_and">atomic_and</a></li>
+            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
+            <li><a href="#atomic_xor">atomic_xor</a></li>
+            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/tree/master/include/co/atomic.h">co/atomic.h</a>.</p>
+<h2 id="memory-order"><a class="anchor" href="#memory-order">#</a>Memory Order</h2>
+<p>Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">enum</span> <span style="color:#458;font-weight:bold">memory_order_t</span> {
+</span></span><span style="display:flex;"><span>    mo_relaxed,
+</span></span><span style="display:flex;"><span>    mo_consume,
+</span></span><span style="display:flex;"><span>    mo_acquire,
+</span></span><span style="display:flex;"><span>    mo_release,
+</span></span><span style="display:flex;"><span>    mo_acq_rel,
+</span></span><span style="display:flex;"><span>    mo_seq_cst,
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The default memory order of atomic operations in co is <code>mo_seq_cst</code>.</p>
+<h2 id="apis-removed-since-v30"><a class="anchor" href="#apis-removed-since-v30">#</a>APIs removed since v3.0</h2>
+<ul>
+<li><strong>atomic_get</strong>, use <code>atomic_load</code> instead.</li>
+<li><strong>atomic_set</strong>, use <code>atomic_store</code> instead.</li>
+<li><strong>atomic_reset</strong>, use <code>atomic_store(&amp;x, 0)</code> instead.</li>
+</ul>
+<h2 id="load--store"><a class="anchor" href="#load--store">#</a>load &amp; store</h2>
+<h3 id="atomic_load"><a class="anchor" href="#atomic_load">#</a>atomic_load</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_load(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.</p>
+</li>
+<li>
+<p><code>mo</code> can be any of mo_relaxed, mo_consume, mo_acquire, mo_seq_cst.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_load(<span style="color:#000;font-weight:bold">&amp;</span>i); <span style="color:#998;font-style:italic">// r = 7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> atomic_load(<span style="color:#000;font-weight:bold">&amp;</span>i, mo_relaxed);
+</span></span></code></pre></div><h3 id="atomic_store"><a class="anchor" href="#atomic_store">#</a>atomic_store</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">void</span> atomic_store(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>This function sets the value pointed to by p to v, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes, and V is any type that can be converted to type of T.</p>
+</li>
+<li>
+<p><code>mo</code> can be any of mo_relaxed, mo_release, mo_seq_cst.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span>atomic_store(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// i -&gt; 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>atomic_store(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>, mo_release);
+</span></span></code></pre></div><h2 id="swap-operations"><a class="anchor" href="#swap-operations">#</a>Swap operations</h2>
+<h3 id="atomic_swap"><a class="anchor" href="#atomic_swap">#</a>atomic_swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_swap(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic swap operation, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes, and V is any type that can be converted to type of T.</p>
+</li>
+<li>
+<p>This function exchanges the value pointed to by p and v, and returns the value before the exchange.</p>
+</li>
+<li>
+<p><code>mo</code> can be any type.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> b <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>b, <span style="color:#0086b3">true</span>);      <span style="color:#998;font-style:italic">// b -&gt; true, x = false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);          <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> q <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>p, (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">8</span>); <span style="color:#998;font-style:italic">// p -&gt; 8, q = 0
+</span></span></span></code></pre></div><h3 id="atomic_cas"><a class="anchor" href="#atomic_cas">#</a>atomic_cas</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_cas(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_compare_swap(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic swap operation, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes, O and V are any types that can be converted to type of T.</p>
+</li>
+<li>
+<p>This function exchanges with v only when the value pointed to by p is equal to o.</p>
+</li>
+<li>
+<p>This function returns the value before the exchange operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> b <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>b, <span style="color:#0086b3">false</span>, <span style="color:#0086b3">true</span>);  <span style="color:#998;font-style:italic">// b -&gt; true, x = false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>, <span style="color:#099">2</span>);          <span style="color:#998;font-style:italic">// No swap, i remains unchanged, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> q <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>p, <span style="color:#099">0</span>, (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">8</span>); <span style="color:#998;font-style:italic">// p -&gt; 8, q = 0
+</span></span></span></code></pre></div><h3 id="atomic_bool_cas"><a class="anchor" href="#atomic_bool_cas">#</a>atomic_bool_cas</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> atomic_bool_cas(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><ul>
+<li>Like the <a href="#atomic_cas">atomic_cas</a>, but returns true if the swap operation was successful, otherwise returns false.</li>
+</ul>
+<h2 id="arithmetic-operations"><a class="anchor" href="#arithmetic-operations">#</a>Arithmetic operations</h2>
+<h3 id="atomic_inc"><a class="anchor" href="#atomic_inc">#</a>atomic_inc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_inc(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic increment, T is any integer type with a length of 1, 2, 4, 8 bytes, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function performs an increment operation on the integer pointed to by p and returns the result after increment.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_inc(<span style="color:#000;font-weight:bold">&amp;</span>i);    <span style="color:#998;font-style:italic">// i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_inc(<span style="color:#000;font-weight:bold">&amp;</span>u); <span style="color:#998;font-style:italic">// u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_inc"><a class="anchor" href="#atomic_fetch_inc">#</a>atomic_fetch_inc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_inc(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_inc">atomic_inc</a>, but returns the value before increment.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_inc(<span style="color:#000;font-weight:bold">&amp;</span>i);    <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_inc(<span style="color:#000;font-weight:bold">&amp;</span>u); <span style="color:#998;font-style:italic">// u -&gt; 1, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_dec"><a class="anchor" href="#atomic_dec">#</a>atomic_dec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_dec(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic decrement, T is any integer type with a length of 1, 2, 4, 8 bytes, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function decrements the integer pointed to by p and returns the decremented result.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_dec(<span style="color:#000;font-weight:bold">&amp;</span>i);    <span style="color:#998;font-style:italic">// i -&gt; 0, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_dec(<span style="color:#000;font-weight:bold">&amp;</span>u); <span style="color:#998;font-style:italic">// u -&gt; 0, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_fetch_dec"><a class="anchor" href="#atomic_fetch_dec">#</a>atomic_fetch_dec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_dec(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_dec">atomic_dec</a>, but returns the value before decrement.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_dec(<span style="color:#000;font-weight:bold">&amp;</span>i);    <span style="color:#998;font-style:italic">// i -&gt; 0, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_dec(<span style="color:#000;font-weight:bold">&amp;</span>u); <span style="color:#998;font-style:italic">// u -&gt; 0, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_add"><a class="anchor" href="#atomic_add">#</a>atomic_add</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_add(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic addition, T is any integer type with a length of 1, 2, 4, 8 bytes, V is any integer type, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function adds the value v to the integer pointed to by p, and returns the result after adding v.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_add(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);    <span style="color:#998;font-style:italic">// i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_add(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_add"><a class="anchor" href="#atomic_fetch_add">#</a>atomic_fetch_add</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_add(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_add">atomic_add</a>, but returns the value before adding v.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_add(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);    <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_add(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// u -&gt; 1, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_sub"><a class="anchor" href="#atomic_sub">#</a>atomic_sub</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_sub(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic subtraction, T is any integer type with a length of 1, 2, 4, 8 bytes, V is any integer type, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function subtracts value v from the integer pointed to by p, and returns the result of subtracting v.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_sub(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);    <span style="color:#998;font-style:italic">// i -&gt; 0, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_sub(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// u -&gt; 0, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_fetch_sub"><a class="anchor" href="#atomic_fetch_sub">#</a>atomic_fetch_sub</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_sub(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_sub">atomic_sub</a>, but returns the value before subtracting v.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_sub(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);    <span style="color:#998;font-style:italic">// i -&gt; 0, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_sub(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// u -&gt; 0, x = 1
+</span></span></span></code></pre></div><h2 id="bit-operation"><a class="anchor" href="#bit-operation">#</a>Bit operation</h2>
+<h3 id="atomic_or"><a class="anchor" href="#atomic_or">#</a>atomic_or</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_or(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic bitwise OR operation, T is any integer type with a length of 1, 2, 4, 8 bytes, V is any integer type, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function performs bitwise OR operation on the integer pointed to by p and v, and returns the result of the operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_or(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i |= 3, i -&gt; 7, r = 7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_or(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u |= 3, u -&gt; 7, x = 7
+</span></span></span></code></pre></div><h3 id="atomic_fetch_or"><a class="anchor" href="#atomic_fetch_or">#</a>atomic_fetch_or</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_or(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_or">atomic_or</a>, but returns the value before the bitwise OR operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_or(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i |= 3, i -&gt; 7, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_or(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u |= 3, u -&gt; 7, x = 5
+</span></span></span></code></pre></div><h3 id="atomic_and"><a class="anchor" href="#atomic_and">#</a>atomic_and</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_and(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic bitwise AND operation, T is any integer type with a length of 1, 2, 4, 8 bytes, V is any integer type, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function performs bitwise AND operation on the integer pointed to by p and v, and returns the result after the operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_and(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i &amp;= 3, i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_and(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u &amp;= 3, u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_and"><a class="anchor" href="#atomic_fetch_and">#</a>atomic_fetch_and</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_and(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_and">atomic_and</a>, but returns the value before the bitwise AND operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_and(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i &amp;= 3, i -&gt; 1, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_and(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u &amp;= 3, u -&gt; 1, x = 5
+</span></span></span></code></pre></div><h3 id="atomic_xor"><a class="anchor" href="#atomic_xor">#</a>atomic_xor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_xor(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>Atomic bitwise XOR operation, T is any integer type with a length of 1, 2, 4, 8 bytes, V is any integer type, and the parameter p is a pointer of type T.</p>
+</li>
+<li>
+<p>This function performs a bitwise XOR operation on the integer pointed to by p and v, and returns the result of the operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_xor(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i ^= 3, i -&gt; 6, r = 6
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_xor(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u ^= 3, u -&gt; 6, x = 6
+</span></span></span></code></pre></div><h3 id="atomic_fetch_xor"><a class="anchor" href="#atomic_fetch_xor">#</a>atomic_fetch_xor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_xor(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>The same as <a href="#atomic_xor">atomic_xor</a>, but returns the value before the bitwise XOR operation.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_xor(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);    <span style="color:#998;font-style:italic">// i ^= 3, i -&gt; 6, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_xor(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// u ^= 3, u -&gt; 6, x = 5
+</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/concurrency/atomic/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/concurrency/atomic.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#memory-order">Memory Order</a></li>
+        <li><a href="#apis-removed-since-v30">APIs removed since v3.0</a></li>
+        <li><a href="#load--store">load &amp; store</a>
+          <ul>
+            <li><a href="#atomic_load">atomic_load</a></li>
+            <li><a href="#atomic_store">atomic_store</a></li>
+          </ul>
+        </li>
+        <li><a href="#swap-operations">Swap operations</a>
+          <ul>
+            <li><a href="#atomic_swap">atomic_swap</a></li>
+            <li><a href="#atomic_cas">atomic_cas</a></li>
+            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
+          </ul>
+        </li>
+        <li><a href="#arithmetic-operations">Arithmetic operations</a>
+          <ul>
+            <li><a href="#atomic_inc">atomic_inc</a></li>
+            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
+            <li><a href="#atomic_dec">atomic_dec</a></li>
+            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
+            <li><a href="#atomic_add">atomic_add</a></li>
+            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
+            <li><a href="#atomic_sub">atomic_sub</a></li>
+            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
+          </ul>
+        </li>
+        <li><a href="#bit-operation">Bit operation</a>
+          <ul>
+            <li><a href="#atomic_or">atomic_or</a></li>
+            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
+            <li><a href="#atomic_and">atomic_and</a></li>
+            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
+            <li><a href="#atomic_xor">atomic_xor</a></li>
+            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

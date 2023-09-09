@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/atomic.h.
+#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
+#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;x, 0) 取代之。 #load &amp; store #atomic_load template &lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="原子操作" />
+<meta property="og:description" content="include: co/atomic.h.
+#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
+enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
+#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;x, 0) 取代之。 #load &amp; store #atomic_load template &lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/concurrency/atomic/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>原子操作 | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/concurrency/atomic/" title="Atomic Operations">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.5e4f037c09727c06de98c420b1f4d360aea818c4c0757da6406c27a3b80e5407.js" integrity="sha256-Xk8DfAlyfAbemMQgsfTTYK6oGMTAdX2mQGwno7gOVAc=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class=" active">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>原子操作</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#memory-order">Memory Order</a></li>
+        <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
+        <li><a href="#load--store">load &amp; store</a>
+          <ul>
+            <li><a href="#atomic_load">atomic_load</a></li>
+            <li><a href="#atomic_store">atomic_store</a></li>
+          </ul>
+        </li>
+        <li><a href="#交换">交换</a>
+          <ul>
+            <li><a href="#atomic_swap">atomic_swap</a></li>
+            <li><a href="#atomic_cas">atomic_cas</a></li>
+            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
+          </ul>
+        </li>
+        <li><a href="#算术运算">算术运算</a>
+          <ul>
+            <li><a href="#atomic_inc">atomic_inc</a></li>
+            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
+            <li><a href="#atomic_dec">atomic_dec</a></li>
+            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
+            <li><a href="#atomic_add">atomic_add</a></li>
+            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
+            <li><a href="#atomic_sub">atomic_sub</a></li>
+            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
+          </ul>
+        </li>
+        <li><a href="#位运算">位运算</a>
+          <ul>
+            <li><a href="#atomic_or">atomic_or</a></li>
+            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
+            <li><a href="#atomic_and">atomic_and</a></li>
+            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
+            <li><a href="#atomic_xor">atomic_xor</a></li>
+            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/tree/master/include/co/atomic.h">co/atomic.h</a>.</p>
+<h2 id="memory-order"><a class="anchor" href="#memory-order">#</a>Memory Order</h2>
+<p>coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">enum</span> <span style="color:#458;font-weight:bold">memory_order_t</span> {
+</span></span><span style="display:flex;"><span>    mo_relaxed,
+</span></span><span style="display:flex;"><span>    mo_consume,
+</span></span><span style="display:flex;"><span>    mo_acquire,
+</span></span><span style="display:flex;"><span>    mo_release,
+</span></span><span style="display:flex;"><span>    mo_acq_rel,
+</span></span><span style="display:flex;"><span>    mo_seq_cst,
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>为了保持兼容性，coost 中的原子操作默认的 memory order 均为 <code>mo_seq_cst</code>。</p>
+<h2 id="v30-删除的-api"><a class="anchor" href="#v30-%e5%88%a0%e9%99%a4%e7%9a%84-api">#</a>v3.0 删除的 API</h2>
+<ul>
+<li><strong>atomic_get</strong>，使用 <code>atomic_load</code> 取代之。</li>
+<li><strong>atomic_set</strong>，使用 <code>atomic_store</code> 取代之。</li>
+<li><strong>atomic_reset</strong>，使用 <code>atomic_store(&amp;x, 0)</code> 取代之。</li>
+</ul>
+<h2 id="load--store"><a class="anchor" href="#load--store">#</a>load &amp; store</h2>
+<h3 id="atomic_load"><a class="anchor" href="#atomic_load">#</a>atomic_load</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_load(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。</p>
+</li>
+<li>
+<p><code>mo</code> 可以是 mo_relaxed, mo_consume, mo_acquire, mo_seq_cst。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_load(<span style="color:#000;font-weight:bold">&amp;</span>i); <span style="color:#998;font-style:italic">// r = 7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> atomic_load(<span style="color:#000;font-weight:bold">&amp;</span>i, mo_relaxed);
+</span></span></code></pre></div><h3 id="atomic_store"><a class="anchor" href="#atomic_store">#</a>atomic_store</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">void</span> atomic_store(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>此函数将 p 指向的值设为 v，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，V 是可以转换为 T 类型的任意类型。</p>
+</li>
+<li>
+<p><code>mo</code> 可以是 mo_relaxed, mo_release, mo_seq_cst。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span>atomic_store(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>); <span style="color:#998;font-style:italic">// i -&gt; 3
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>atomic_store(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>, mo_release);
+</span></span></code></pre></div><h2 id="交换"><a class="anchor" href="#%e4%ba%a4%e6%8d%a2">#</a>交换</h2>
+<h3 id="atomic_swap"><a class="anchor" href="#atomic_swap">#</a>atomic_swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_swap(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子交换操作，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，V 是可以转换为 T 类型的任意类型。</p>
+</li>
+<li>
+<p>此函数对 p 指向的值与 v 进行交换操作，并返回交换操作前的值。</p>
+</li>
+<li>
+<p><code>mo</code> 可以是任意类型。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> b <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>b, <span style="color:#0086b3">true</span>);       <span style="color:#998;font-style:italic">// b -&gt; true, x = false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);           <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> q <span style="color:#000;font-weight:bold">=</span> atomic_swap(<span style="color:#000;font-weight:bold">&amp;</span>p, (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">8</span>);  <span style="color:#998;font-style:italic">// p -&gt; 8, q = 0
+</span></span></span></code></pre></div><h3 id="atomic_cas"><a class="anchor" href="#atomic_cas">#</a>atomic_cas</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_cas(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span> <span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_compare_swap(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子交换操作，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，O 与 V 是可以转换为 T 类型的任意类型。</p>
+</li>
+<li>
+<p>此函数仅在 p 指向的值与 o 相等时，才与 v 进行交换操作。</p>
+</li>
+<li>
+<p>此函数返回交换操作前的值，用户可以根据返回值是否与 o 相等来判断是否进行了交换操作。</p>
+</li>
+<li>
+<p><code>smo</code>，交换操作成功时的 memory order，可以是任意类型；<code>fmo</code>，交换操作失败时的 memory order，不能是 mo_release, mo_acq_rel，并且不能强于 <code>smo</code>。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> b <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> x <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>b, <span style="color:#0086b3">false</span>, <span style="color:#0086b3">true</span>);   <span style="color:#998;font-style:italic">// b -&gt; true, x = false
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>, <span style="color:#099">2</span>);           <span style="color:#998;font-style:italic">// 不会交换, i 保持不变, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> q <span style="color:#000;font-weight:bold">=</span> atomic_cas(<span style="color:#000;font-weight:bold">&amp;</span>p, <span style="color:#099">0</span>, (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">8</span>);  <span style="color:#998;font-style:italic">// p -&gt; 8, q = 0
+</span></span></span></code></pre></div><h3 id="atomic_bool_cas"><a class="anchor" href="#atomic_bool_cas">#</a>atomic_bool_cas</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> O, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> atomic_bool_cas(
+</span></span><span style="display:flex;"><span>    T<span style="color:#000;font-weight:bold">*</span> p, O o, V v,
+</span></span><span style="display:flex;"><span>    memory_order_t smo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst,
+</span></span><span style="display:flex;"><span>    memory_order_t fmo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><ul>
+<li>与 <a href="#atomic_cas">atomic_cas</a> 类似，交换操作成功时返回 true，否则返回 false。</li>
+</ul>
+<h2 id="算术运算"><a class="anchor" href="#%e7%ae%97%e6%9c%af%e8%bf%90%e7%ae%97">#</a>算术运算</h2>
+<h3 id="atomic_inc"><a class="anchor" href="#atomic_inc">#</a>atomic_inc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_inc(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子自增，T 是长度为 1, 2, 4, 8 字节的任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数进行自增操作，并返回自增后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_inc(<span style="color:#000;font-weight:bold">&amp;</span>i);     <span style="color:#998;font-style:italic">// i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_inc(<span style="color:#000;font-weight:bold">&amp;</span>u);  <span style="color:#998;font-style:italic">// u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_inc"><a class="anchor" href="#atomic_fetch_inc">#</a>atomic_fetch_inc</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_inc(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_inc">atomic_inc</a> 一样，但返回自增前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_inc(<span style="color:#000;font-weight:bold">&amp;</span>i);     <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_inc(<span style="color:#000;font-weight:bold">&amp;</span>u);  <span style="color:#998;font-style:italic">// u -&gt; 1, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_dec"><a class="anchor" href="#atomic_dec">#</a>atomic_dec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_dec(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子自减，T 是长度为 1, 2, 4, 8 字节的任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数进行自减操作，并返回自减后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_dec(<span style="color:#000;font-weight:bold">&amp;</span>i);     <span style="color:#998;font-style:italic">// i -&gt; 0, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_dec(<span style="color:#000;font-weight:bold">&amp;</span>u);  <span style="color:#998;font-style:italic">// u -&gt; 0, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_fetch_dec"><a class="anchor" href="#atomic_fetch_dec">#</a>atomic_fetch_dec</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_dec(T<span style="color:#000;font-weight:bold">*</span> p, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_dec">atomic_dec</a> 一样，但返回自减前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_dec(<span style="color:#000;font-weight:bold">&amp;</span>i);     <span style="color:#998;font-style:italic">// i -&gt; 0, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_dec(<span style="color:#000;font-weight:bold">&amp;</span>u);  <span style="color:#998;font-style:italic">// u -&gt; 0, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_add"><a class="anchor" href="#atomic_add">#</a>atomic_add</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_add(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子加法，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数加上值 v，并返回加 v 后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_add(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);     <span style="color:#998;font-style:italic">// i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_add(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_add"><a class="anchor" href="#atomic_fetch_add">#</a>atomic_fetch_add</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_add(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_add">atomic_add</a> 一样，但返回加 v 前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_add(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);     <span style="color:#998;font-style:italic">// i -&gt; 1, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_add(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// u -&gt; 1, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_sub"><a class="anchor" href="#atomic_sub">#</a>atomic_sub</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_sub(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子减法，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数减去值 v，并返回减 v 后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_sub(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);     <span style="color:#998;font-style:italic">// i -&gt; 0, r = 0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_sub(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// u -&gt; 0, x = 0
+</span></span></span></code></pre></div><h3 id="atomic_fetch_sub"><a class="anchor" href="#atomic_fetch_sub">#</a>atomic_fetch_sub</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_sub(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_sub">atomic_sub</a> 一样，但返回减 v 前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_sub(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">1</span>);     <span style="color:#998;font-style:italic">// i -&gt; 0, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_sub(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// u -&gt; 0, x = 1
+</span></span></span></code></pre></div><h2 id="位运算"><a class="anchor" href="#%e4%bd%8d%e8%bf%90%e7%ae%97">#</a>位运算</h2>
+<h3 id="atomic_or"><a class="anchor" href="#atomic_or">#</a>atomic_or</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_or(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子位或，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数与 v 进行位或操作，并返回操作后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_or(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i |= 3, i -&gt; 7, r = 7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_or(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u |= 3, u -&gt; 7, x = 7
+</span></span></span></code></pre></div><h3 id="atomic_fetch_or"><a class="anchor" href="#atomic_fetch_or">#</a>atomic_fetch_or</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_or(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_or">atomic_or</a> 一样，但返回位或操作之前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_or(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i |= 3, i -&gt; 7, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_or(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u |= 3, u -&gt; 7, x = 5
+</span></span></span></code></pre></div><h3 id="atomic_and"><a class="anchor" href="#atomic_and">#</a>atomic_and</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_and(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子位与，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数与 v 进行位与操作，并返回操作后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_and(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i &amp;= 3, i -&gt; 1, r = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_and(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u &amp;= 3, u -&gt; 1, x = 1
+</span></span></span></code></pre></div><h3 id="atomic_fetch_and"><a class="anchor" href="#atomic_fetch_and">#</a>atomic_fetch_and</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_and(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_and">atomic_and</a> 一样，但返回位与操作之前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_and(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i &amp;= 3, i -&gt; 1, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_and(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u &amp;= 3, u -&gt; 1, x = 5
+</span></span></span></code></pre></div><h3 id="atomic_xor"><a class="anchor" href="#atomic_xor">#</a>atomic_xor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_xor(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>原子按位异或，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
+</li>
+<li>
+<p>此函数对 p 指向的整数与 v 进行按位异或操作，并返回操作后的结果。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_xor(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i ^= 3, i -&gt; 6, r = 6
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_xor(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u ^= 3, u -&gt; 6, x = 6
+</span></span></span></code></pre></div><h3 id="atomic_fetch_xor"><a class="anchor" href="#atomic_fetch_xor">#</a>atomic_fetch_xor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> T atomic_fetch_xor(T<span style="color:#000;font-weight:bold">*</span> p, V v, memory_order_t mo <span style="color:#000;font-weight:bold">=</span> mo_seq_cst);
+</span></span></code></pre></div><ul>
+<li>
+<p>与 <a href="#atomic_xor">atomic_xor</a> 一样，但返回按位异或操作之前的值。</p>
+</li>
+<li>
+<p>示例</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span>uint64 u <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> atomic_fetch_xor(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">3</span>);     <span style="color:#998;font-style:italic">// i ^= 3, i -&gt; 6, r = 5
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>uint64 x <span style="color:#000;font-weight:bold">=</span> atomic_fetch_xor(<span style="color:#000;font-weight:bold">&amp;</span>u, <span style="color:#099">3</span>);  <span style="color:#998;font-style:italic">// u ^= 3, u -&gt; 6, x = 5
+</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/co/concurrency/atomic/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/concurrency/atomic.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#memory-order">Memory Order</a></li>
+        <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
+        <li><a href="#load--store">load &amp; store</a>
+          <ul>
+            <li><a href="#atomic_load">atomic_load</a></li>
+            <li><a href="#atomic_store">atomic_store</a></li>
+          </ul>
+        </li>
+        <li><a href="#交换">交换</a>
+          <ul>
+            <li><a href="#atomic_swap">atomic_swap</a></li>
+            <li><a href="#atomic_cas">atomic_cas</a></li>
+            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
+          </ul>
+        </li>
+        <li><a href="#算术运算">算术运算</a>
+          <ul>
+            <li><a href="#atomic_inc">atomic_inc</a></li>
+            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
+            <li><a href="#atomic_dec">atomic_dec</a></li>
+            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
+            <li><a href="#atomic_add">atomic_add</a></li>
+            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
+            <li><a href="#atomic_sub">atomic_sub</a></li>
+            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
+          </ul>
+        </li>
+        <li><a href="#位运算">位运算</a>
+          <ul>
+            <li><a href="#atomic_or">atomic_or</a></li>
+            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
+            <li><a href="#atomic_and">atomic_and</a></li>
+            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
+            <li><a href="#atomic_xor">atomic_xor</a></li>
+            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

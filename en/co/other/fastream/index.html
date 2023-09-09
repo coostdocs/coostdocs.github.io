@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="include: co/fastream.h.
+#fastream fastream is used to replace std::ostringstream in the C&#43;&#43; standard library. The performance of std::ostringstream is poor which may be several times slower than snprintf, and fastream is about 10~30 times faster than snprintf on different platforms.
+#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;&amp; s) noexcept; 1, the default constructor, which creates an empty fastream object without any memory allocation.
+2, uses the parameter cap to specify the initial capacity of fastream.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="fastream" />
+<meta property="og:description" content="include: co/fastream.h.
+#fastream fastream is used to replace std::ostringstream in the C&#43;&#43; standard library. The performance of std::ostringstream is poor which may be several times slower than snprintf, and fastream is about 10~30 times faster than snprintf on different platforms.
+#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;&amp; s) noexcept; 1, the default constructor, which creates an empty fastream object without any memory allocation.
+2, uses the parameter cap to specify the initial capacity of fastream." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/en/co/other/fastream/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+
+<title>fastream | Documents for Coost</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+  <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/fastream/" title="fastream">
+<link rel="stylesheet" href="../../../../book.min.3d811ee58aa0ad5e7fe0e310bf2cf34ca110ab32b65ed97f52c543952a14e325.css" integrity="sha256-PYEe5YqgrV5/4OMQvyzzTKEQqzK2Xtl/UsVDlSoU4yU=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../en.search.min.49ad87b00677ec0b6dace2a234712a667da4b1e914ef9ec38cc4517830695526.js" integrity="sha256-Sa2HsAZ37AttrOKiNHEqZn2ksekU757DjMRReDBpVSY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
+  rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>About</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/co/" class="">Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/sponsor/" class="">Sponsor💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Documents</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/def/" class="">Basic Definitions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/flag/" class="">flag</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/log/" class="">log</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/benchmark/" class="">Benchmark</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">Concurrency</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/atomic/" class="">Atomic Operations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/thread/" class="">Thread</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">Coroutine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">Network Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle" checked />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">others</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/console/" class="">Console</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/error/" class="">Error</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fastream/" class=" active">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/str/" class="">String Utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/time/" class="">Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/path/" class="">Path</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/fs/" class="">File System</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/os/" class="">Operating System</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/build/" class="">Compiling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>fastream</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastream">fastream</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/fastream.h">co/fastream.h</a>.</p>
+<h2 id="fastream"><a class="anchor" href="#fastream">#</a>fastream</h2>
+<p><strong>fastream</strong> is used to replace <code>std::ostringstream</code> in the C++ standard library. The performance of std::ostringstream is poor which may be several times slower than <code>snprintf</code>, and fastream is about 10~30 times faster than snprintf on different platforms.</p>
+<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> fastream() <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> fastream(size_t cap);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> fastream(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>1, the default constructor, which creates an empty fastream object without any memory allocation.</p>
+</li>
+<li>
+<p>2, uses the parameter <code>cap</code> to specify the initial capacity of fastream.</p>
+</li>
+<li>
+<p>3, the move constructor.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;              <span style="color:#998;font-style:italic">// empty fastream, no memory allocated
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">1024</span>);        <span style="color:#998;font-style:italic">// Pre-allocate 1k bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>fastream <span style="color:#900;font-weight:bold">x</span>(std<span style="color:#000;font-weight:bold">::</span>move(s); <span style="color:#998;font-style:italic">// move construction, s becomes empty
+</span></span></span></code></pre></div><h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>Move assignment, the content of s is transferred to fastream, and s itself becomes empty.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">32</span>);
+</span></span><span style="display:flex;"><span>fastream x;
+</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>move(s); <span style="color:#998;font-style:italic">// x capacity -&gt; 32, s -&gt; empty
+</span></span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
+<h3 id="back"><a class="anchor" href="#back">#</a>back</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> back() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>This method returns a reference to the last character in fastream.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If fastream is empty, calling this method will cause undefined behavior.
+</blockquote>
+
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.back(); <span style="color:#998;font-style:italic">// c =&#39;o&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.back() <span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;x&#39;</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;hellx&#34;
+</span></span></span></code></pre></div><h3 id="front"><a class="anchor" href="#front">#</a>front</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front();
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> front() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>This method returns the reference of the first character in fastream.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If fastream is empty, calling this method will cause undefined behavior.
+</blockquote>
+
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s.front(); <span style="color:#998;font-style:italic">// c =&#39;h&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.front() <span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;x&#39;</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;xello&#34;
+</span></span></span></code></pre></div><h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator[]</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n) <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>This method returns the reference of the nth character in fastream.</li>
+</ul>
+<blockquote class="book-hint warning">
+  If <code>n</code> is out of a reasonable range, calling this method will cause undefined behavior.
+</blockquote>
+
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">1</span>]; <span style="color:#998;font-style:italic">// c =&#39;e&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s[<span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#39;x&#39;</span>;     <span style="color:#998;font-style:italic">// s -&gt; &#34;hxllo&#34;
+</span></span></span></code></pre></div><h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
+<h3 id="capacity"><a class="anchor" href="#capacity">#</a>capacity</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">capacity</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>This method returns the capacity of fastream.</li>
+</ul>
+<h3 id="c_str"><a class="anchor" href="#c_str">#</a>c_str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">c_str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>This method gets the equivalent C string.</li>
+<li>This method adds a &lsquo;\0&rsquo; to the end of fastream, it will not change the size and content of fastream, but may cause internal reallocation of memory.</li>
+</ul>
+<h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">data</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>This method is similar to <a href="#c_str">c_str()</a>, but it does not guarantee that the string ends with &lsquo;\0&rsquo;.</li>
+</ul>
+<h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>This method determines whether fastream is empty.</li>
+</ul>
+<h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>This method returns the length of data in fastream.</li>
+</ul>
+<h3 id="str"><a class="anchor" href="#str">#</a>str</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">str</span>() <span style="color:#000;font-weight:bold">const</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>This method returns a copy of fastream&rsquo;s internal data in the form of fastring.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>fastring x <span style="color:#000;font-weight:bold">=</span> s.str(); <span style="color:#998;font-style:italic">// x = &#34;hello&#34;
+</span></span></span></code></pre></div><h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
+<h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> clear();
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span> clear(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span></code></pre></div><ul>
+<li>This method sets the size of fastream to 0, and the capacity remains unchanged.</li>
+<li>The second is similar to the first, except that it will fill the memory with character <code>c</code> before setting its size to 0.</li>
+</ul>
+<blockquote class="book-hint info">
+  The second one is added in v3.0.1, which can be used to clear sensitive information in memory.
+</blockquote>
+
+<h3 id="ensure"><a class="anchor" href="#ensure">#</a>ensure</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ensure</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>This method ensures that the remaining memory of fastream can hold at least <code>n</code> characters.</li>
+</ul>
+<h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>This method ensures that the capacity of fastream is at least <code>n</code>.</li>
+<li>When <code>n</code> is less than the original capacity, the capacity remains unchanged.</li>
+</ul>
+<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+</span></span></code></pre></div><ul>
+<li>Added in v2.0.3. Clear fastream and free the memory.</li>
+</ul>
+<h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resize</span>(size_t n);
+</span></span></code></pre></div><ul>
+<li>This method sets the size of fastream to <code>n</code>.</li>
+</ul>
+<blockquote class="book-hint warning">
+  When <code>n</code> is greater than the original size, it will expand size to <code>n</code>, but will not fill the expanded part with zeroes.
+</blockquote>
+
+<ul>
+<li>Example</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>s.resize(<span style="color:#099">3</span>);   <span style="color:#998;font-style:italic">// s -&gt; &#34;hel&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.resize(<span style="color:#099">6</span>);
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> c <span style="color:#000;font-weight:bold">=</span> s[<span style="color:#099">5</span>]; <span style="color:#998;font-style:italic">// c is an uncertain random value
+</span></span></span></code></pre></div><h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastream<span style="color:#000;font-weight:bold">&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(fastream<span style="color:#000;font-weight:bold">&amp;&amp;</span> s) <span style="color:#000;font-weight:bold">noexcept</span>;
+</span></span></code></pre></div><ul>
+<li>
+<p>Swap the contents of two fastreams, only the internal pointer, capacity, and size are exchanged.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream <span style="color:#900;font-weight:bold">s</span>(<span style="color:#099">32</span>);
+</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">x</span>(<span style="color:#099">64</span>);
+</span></span><span style="display:flex;"><span>s.swap(x); <span style="color:#998;font-style:italic">// s: cap -&gt; 64, x: cap -&gt; 32
+</span></span></span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
+<h3 id="append"><a class="anchor" href="#append">#</a>append</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span><span style="color:#099">2.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">3.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">4.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span><span style="color:#099">5.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">6.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(size_t n, <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">7.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c, size_t n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">8.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span><span style="color:#099">9.</span>  fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> v)
+</span></span><span style="display:flex;"><span><span style="color:#099">10.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#099">11.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint16 v);
+</span></span><span style="display:flex;"><span><span style="color:#099">12.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint32 v);
+</span></span><span style="display:flex;"><span><span style="color:#099">13.</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> append(uint64 v);
+</span></span></code></pre></div><ul>
+<li>
+<p>1, appends a byte sequence of length <code>n</code>.</p>
+</li>
+<li>
+<p>2-4, append string <code>s</code>.</p>
+</li>
+<li>
+<p>5, appends a fastream, <code>s</code> can be the fastream itself that performs the append operation.</p>
+</li>
+<li>
+<p>6-7, append n characters <code>c</code>.</p>
+</li>
+<li>
+<p>8-10, append a single character <code>c</code>.</p>
+</li>
+<li>
+<p>11-13, equivalent to <code>append(&amp;v, sizeof(v))</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>int32 i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">7</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">char</span> buf[<span style="color:#099">8</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#d14">&#34;xx&#34;</span>);      <span style="color:#998;font-style:italic">// Append C string
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(s);         <span style="color:#998;font-style:italic">// append itself, s -&gt; &#34;xxxx&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(buf, <span style="color:#099">8</span>);    <span style="color:#998;font-style:italic">// Append 8 bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#39;c&#39;</span>);       <span style="color:#998;font-style:italic">// Append a single character
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#099">100</span>,<span style="color:#d14">&#39;c&#39;</span>);   <span style="color:#998;font-style:italic">// Append 100&#39;c&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(<span style="color:#d14">&#39;c&#39;</span>, <span style="color:#099">100</span>);  <span style="color:#998;font-style:italic">// append 100&#39;c&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.append(<span style="color:#000;font-weight:bold">&amp;</span>i, <span style="color:#099">4</span>);     <span style="color:#998;font-style:italic">// Append 4 bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append(i);         <span style="color:#998;font-style:italic">// Append 4 bytes, same as above
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s.append((int16)<span style="color:#099">23</span>); <span style="color:#998;font-style:italic">// Append 2 bytes
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.append(s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// ok since v3.0.1
+</span></span></span></code></pre></div><h3 id="append_nomchk"><a class="anchor" href="#append_nomchk">#</a>append_nomchk</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> append_nomchk(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s)
+</span></span></code></pre></div><ul>
+<li>Similar to <a href="#append">append()</a>, but will not check if <code>s</code> overlaps with the internal memory.</li>
+</ul>
+<blockquote class="book-hint warning">
+  This method cannot be used if <code>s</code> may overlap with the internal memory of fastream.
+</blockquote>
+
+<h3 id="cat"><a class="anchor" href="#cat">#</a>cat</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X, <span style="color:#000;font-weight:bold">typename</span> ...V<span style="color:#000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> cat(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> x, V<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... v);
+</span></span></code></pre></div><ul>
+<li>
+<p>Added in v2.0.3. Concatenate any number of elements to fastream.</p>
+</li>
+<li>
+<p>This method appends elements in the parameters to fastream one by one through <code>operator&lt;&lt;</code>.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello&#34;</span>;
+</span></span><span style="display:flex;"><span>s.cat(<span style="color:#a61717;background-color:#e3d2d2">&#39;&#39;</span>, <span style="color:#099">23</span>, <span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#0086b3">false</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23xxfalse&#34;
+</span></span></span></code></pre></div><h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator&laquo;</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">bool</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">short</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">long</span> <span style="color:#458;font-weight:bold">long</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">double</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#458;font-weight:bold">float</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> dp<span style="color:#000;font-weight:bold">::</span>_fpt<span style="color:#000;font-weight:bold">&amp;</span> v);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> v);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(std<span style="color:#000;font-weight:bold">::</span>nullptr_t);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">signed</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>string<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span><span style="display:flex;"><span>fastream<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> fastream<span style="color:#000;font-weight:bold">&amp;</span> s);
+</span></span></code></pre></div><ul>
+<li>
+<p>Format value of bool, char, integer type, floating point type, pointer type or string type, and append it to fastream.</p>
+</li>
+<li>
+<p><code>operator&lt;&lt;(const dp::_fpt&amp; v)</code> is used to output formatted floating-point number, which the effective decimal places can be specified.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#39;x&#39;</span>;             <span style="color:#998;font-style:italic">// s -&gt; &#34;x&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;               <span style="color:#998;font-style:italic">// s -&gt; &#34;xx&#34;           (append itself)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#0086b3">false</span>;           <span style="color:#998;font-style:italic">// s -&gt; &#34;xxfalse&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 23&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (s.c_str() <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">6</span>); <span style="color:#998;font-style:italic">// s -&gt; &#34;hello 2323&#34;   (append part of s)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">3.1415</span>;          <span style="color:#998;font-style:italic">// s -&gt; &#34;3.1415&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>s.clear();
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">32</span>;       <span style="color:#998;font-style:italic">// s -&gt; &#34;0x20&#34;
+</span></span></span></code></pre></div><blockquote class="book-hint info">
+  <p><strong>Specify the number of valid decimal places</strong><br>
+coost provides <code>dp::_1, dp::_2, ..., dp::_16, dp::_n</code> to set the number of effective decimal places of floating-point numbers.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastream s;
+</span></span><span style="display:flex;"><span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_2(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.14
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_3(<span style="color:#099">3.1415</span>);   <span style="color:#998;font-style:italic">// &#34;3.141&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>s <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_n(<span style="color:#099">3.14</span>, <span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// &#34;3.1&#34;, equivalent to dp::_1(3.14)
+</span></span></span></code></pre></div>
+</blockquote>
+
+<blockquote class="book-hint info">
+  <p><a href="../log/">co.log</a> is implemented based on fastream, so we can also use the above methods when printing logs.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> dp<span style="color:#000;font-weight:bold">::</span>_2(<span style="color:#099">3.1415</span>);
+</span></span></code></pre></div>
+</blockquote>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+  
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      English
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="">
+      <a href="../../../../cn/co/other/fastream/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="active">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>September 9, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/en/co/other/fastream.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fastream">fastream</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#heading">———————————</a></li>
+            <li><a href="#back">back</a></li>
+            <li><a href="#front">front</a></li>
+            <li><a href="#operator-1">operator[]</a></li>
+            <li><a href="#heading-1">———————————</a></li>
+            <li><a href="#capacity">capacity</a></li>
+            <li><a href="#c_str">c_str</a></li>
+            <li><a href="#data">data</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#heading-2">———————————</a></li>
+            <li><a href="#clear">clear</a></li>
+            <li><a href="#ensure">ensure</a></li>
+            <li><a href="#reserve">reserve</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#swap">swap</a></li>
+            <li><a href="#heading-3">———————————</a></li>
+            <li><a href="#append">append</a></li>
+            <li><a href="#append_nomchk">append_nomchk</a></li>
+            <li><a href="#cat">cat</a></li>
+            <li><a href="#operator-2">operator&laquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

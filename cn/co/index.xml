@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CO 参考文档 on Documents for Coost</title>
+    <title>参考文档 on Documents for Coost</title>
     <link>https://coostdocs.github.io/cn/co/</link>
-    <description>Recent content in CO 参考文档 on Documents for Coost</description>
+    <description>Recent content in 参考文档 on Documents for Coost</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/co/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>基本定义</title>
@@ -12,7 +12,7 @@
       
       <guid>https://coostdocs.github.io/cn/co/def/</guid>
       <description>include: co/def.h.
-#typedefs #定长整数类型 def.h 定义了如下的 8 种整数类型：
+#typedefs #定长整数类型 co/def.h 定义了如下的 8 种整数类型：
 typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
 #macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
 #DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C++ 类中的拷贝构造函数与赋值操作。
@@ -20,81 +20,41 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
     </item>
     
     <item>
-      <title>defer</title>
-      <link>https://coostdocs.github.io/cn/co/defer/</link>
+      <title>面向玄学</title>
+      <link>https://coostdocs.github.io/cn/co/god/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/defer/</guid>
-      <description>include: co/defer.h.
-#defer defer 是 CO 提供的一个宏，它实现了类似 golang 中 defer 的功能。
-#include &amp;#34;co/defer.h&amp;#34; #include &amp;#34;co/time.h&amp;#34; #include &amp;#34;co/log.h&amp;#34; #include &amp;#34;co/json.h&amp;#34; void f(const Json&amp;amp; req, Json&amp;amp; res) { Timer t; LOG &amp;lt;&amp;lt; &amp;#34;req: &amp;#34; &amp;lt;&amp;lt; req; defer(LOG &amp;lt;&amp;lt; &amp;#34;res: &amp;#34; &amp;lt;&amp;lt; res &amp;lt;&amp;lt; &amp;#34;, time elapse: &amp;#34; &amp;lt;&amp;lt; t.us() &amp;lt;&amp;lt; &amp;#34;us&amp;#34;); // do something here } 上面的例子中，defer 中的代码将在函数 f 结束时执行，从而打印出函数的输出及调用时间。</description>
-    </item>
-    
-    <item>
-      <title>原子操作</title>
-      <link>https://coostdocs.github.io/cn/co/atomic/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/atomic/</guid>
-      <description>include: co/atomic.h.
-#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
-enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
-#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;amp;x, 0) 取代之。 #load &amp;amp; store #atomic_load template &amp;lt;typename T&amp;gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。</description>
-    </item>
-    
-    <item>
-      <title>字符串(fastring)</title>
-      <link>https://coostdocs.github.io/cn/co/fastring/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/fastring/</guid>
-      <description>include: co/fastring.h.
-#fastring fastring 是 co 中的字符串类型，它实现了 std::string 中的大部分方法，同时也提供了一些 std::string 没有的方法。
-#fastring::fastring 1. fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp;amp; s); 6. fastring(size_t n, char c); 7. fastring(char c, size_t n); 8. fastring(const fastring&amp;amp; s); 9. fastring(fastring&amp;amp;&amp;amp; s) noexcept; 第 1 个是默认构造函数，创建一个空的 fastring 对象，不会分配任何内存。
-第 2 个构造函数同样创建一个空的 fastring 对象，但用参数 cap 指定初始容量，即预分配 cap 字节的内存。
-第 3 个构造函数从给定的字节序列创建 fastring 对象，参数 n 是序列长度。</description>
-    </item>
-    
-    <item>
-      <title>字符流(fastream)</title>
-      <link>https://coostdocs.github.io/cn/co/fastream/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/fastream/</guid>
-      <description>include: co/fastream.h.
-#fastream fastream 用于取代 C++ 标准库中的 std::ostringstream。std::ostringstream 性能较差，实测比 snprintf 慢好几倍，fastream 在不同平台测试比 snprintf 快 10~30 倍左右。
-#fastream::fastream fastream() noexcept; explicit fastream(size_t cap); fastream(fastream&amp;amp;&amp;amp; s) noexcept; 第 1 个是默认构造函数，创建一个空的 fastream 对象，内部不会分配任何内存。
-第 2 个构造函数用参数 cap 指定 fastream 的初始容量，即预分配 cap 字节的内存。
-第 3 个是 move 构造函数，不会进行内存拷贝。
+      <guid>https://coostdocs.github.io/cn/co/god/</guid>
+      <description>include: co/god.h.
+#god god 模块提供了一些与模板相关的功能，模板用到深处有点玄，一些 C++ 程序员将之称为面向玄学编程。
+#god::bless_no_bugs void bless_no_bugs(); 祈求老天保佑代码无 bug，线程安全，可任意调用。
 示例
-fastream s; // 状态为空的 fastream, 未分配内存 fastream s(1024); // 预分配 1k 内存 fastream x(std::move(s)); // move 构造函数, s 变成空对象 #fastream::operator= fastream&amp;amp; operator=(fastream&amp;amp;&amp;amp; s) noexcept; fastream 只支持 move 赋值操作，s 的内容被转移到 fastream 中，s 自身变成空对象。</description>
+#include &amp;#34;co/god.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; int main(int argc, char** argv) { god::bless_no_bugs(); co::print(&amp;#34;hello world&amp;#34;); return 0; } #god::cast template&amp;lt;typename To, typename From&amp;gt; constexpr To cast(From&amp;amp;&amp;amp; f) { return (To) std::forward&amp;lt;From&amp;gt;(f); } 万能转换，将 From 类型转换为 To 类型，To 可以是引用。
+示例
+int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A&amp;#39; god::cast&amp;lt;char&amp;amp;&amp;gt;(i) = &amp;#39;a&amp;#39;; // 将 i 的低字节设置为 &amp;#39;a&amp;#39; #&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; #god::align_down 1.</description>
     </item>
     
     <item>
-      <title>字符串操作</title>
-      <link>https://coostdocs.github.io/cn/co/str/</link>
+      <title>内存分配</title>
+      <link>https://coostdocs.github.io/cn/co/mem/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/str/</guid>
-      <description>include: co/str.h.
-#切分、修剪、替换、连接 #str::split co::vector&amp;lt;fastring&amp;gt; split(const char* s, char c, uint32 n=0); co::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, char c, uint32 n=0); co::vector&amp;lt;fastring&amp;gt; split(const char* s, const char* c, uint32 n=0); co::vector&amp;lt;fastring&amp;gt; split(const fastring&amp;amp; s, const char* c, uint32 n=0)； 此函数将字符串切分成若干个子串，原字符串保持不变，返回切分后的结果。
-参数 s 是 C 字符串或 fastring，参数 c 是分隔符或 C 字符串，参数 n 是最大切分次数，0 或 -1 表示不限次数。
-第 4 个版本中，s 不能包含 &amp;lsquo;\0&amp;rsquo;，因为内部实现中需要用 strstr() 搜索子串。
-示例
-str::split(&amp;#34;x y z&amp;#34;, &amp;#39; &amp;#39;); // -&amp;gt; [ &amp;#34;x&amp;#34;, &amp;#34;y&amp;#34;, &amp;#34;z&amp;#34; ] str::split(&amp;#34;|x|y|&amp;#34;, &amp;#39;|&amp;#39;); // -&amp;gt; [ &amp;#34;&amp;#34;, &amp;#34;x&amp;#34;, &amp;#34;y&amp;#34; ] str::split(&amp;#34;xooy&amp;#34;, &amp;#34;oo&amp;#34;); // -&amp;gt; [ &amp;#34;x&amp;#34;, &amp;#34;y&amp;#34;] str::split(&amp;#34;xooy&amp;#34;, &amp;#39;o&amp;#39;); // -&amp;gt; [ &amp;#34;x&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;y&amp;#34; ] str::split(&amp;#34;xooy&amp;#34;, &amp;#39;o&amp;#39;, 1); // -&amp;gt; [ &amp;#34;x&amp;#34;, &amp;#34;oy&amp;#34; ] #str::strip fastring strip(const char* s, const char* c=&amp;#34; \t\r\n&amp;#34;, char d=&amp;#39;b&amp;#39;); fastring strip(const fastring&amp;amp; s, const char* c=&amp;#34; \t\r\n&amp;#34;, char d=&amp;#39;b&amp;#39;); fastring strip(const char* s, char c, char d = &amp;#39;b&amp;#39;); fastring strip(const fastring&amp;amp; s, char c, char d=&amp;#39;b&amp;#39;); fastring strip(const fastring&amp;amp; s, const fastring&amp;amp; c, char d=&amp;#39;b&amp;#39;); 此函数去掉字符串左边或右边的字符，原字符串保持不变，返回 strip 后的结果。</description>
+      <guid>https://coostdocs.github.io/cn/co/mem/</guid>
+      <description>include: co/mem.h.
+#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &amp;lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; #co::make template&amp;lt;typename T, typename.</description>
     </item>
     
     <item>
-      <title>命令行参数与配置文件解析</title>
+      <title>配置</title>
       <link>https://coostdocs.github.io/cn/co/flag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/flag/</guid>
       <description>include: co/flag.h.
-#基本概念 co/flag 是一个类似 google gflags 的命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
-#flag 变量 co/flag 中的宏定义的全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
-DEF_bool(x, false, &amp;#34;xxx&amp;#34;); // bool FLG_x = false; co/flag 支持 7 种类型的 flag 变量：
-bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=true，在配置文件中可以用 x = true，设置一个新的值。
+#基本概念 co.flag 是一个命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
+#flag 变量 co.flag 中的宏定义的全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
+DEF_int32(x, 0, &amp;#34;xxx&amp;#34;); // int32 FLG_x = 0; co.flag 支持 7 种类型的 flag 变量：
+bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=23，在配置文件中可以用 x = 23，设置一个新的值。
 #command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。为了方便，下面可能将 flag 与 flag 变量统一称为 flag。</description>
     </item>
     
@@ -105,29 +65,37 @@ bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一�
       
       <guid>https://coostdocs.github.io/cn/co/log/</guid>
       <description>include: co/log.h.
-#简介 co/log 是一个类似 google glog 的 C++ 流式日志库，它像下面这样打印日志：
-LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log co/log 支持两种类型的日志，level log 与 topic log(TLOG)。
-#Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
-打印 fatal 级别的日志会终止程序的运行，co/log 还会在程序退出前打印函数调用栈信息，以方便追查程序崩溃的原因。
-此类型的日志会写入同一个文件中，一般用于打印调试信息。
+#简介 co.log 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：
+LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log #Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
+打印 fatal 级别的日志会终止程序的运行，co.log 还会试图在程序退出前打印函数调用栈信息，以方便排查程序崩溃的原因。 此类型的日志会写入同一个文件中，一般用于打印调试信息。
 #Topic Log Topic log(TLOG) 没有级别之分，而是按主题分类。
 此类型的日志，按主题写入不同的文件，一般用于打印业务日志，按业务功能划分，便于日志管理。
-#性能 co/log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
-platform google glog co/log win2012 HHD 1.</description>
+#性能 co.log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
+platform glog co.log win2012 HHD 1.6MB/s 180MB/s win10 SSD 3.</description>
     </item>
     
     <item>
-      <title>单元测试框架</title>
+      <title>单元测试</title>
       <link>https://coostdocs.github.io/cn/co/unitest/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/unitest/</guid>
       <description>include: co/unitest.h.
-#基本概念 co/unitest 是一个单元测试框架，与 google gtest 类似，但更简单易用。
+#基本概念 co.unitest 是一个单元测试框架，与 google gtest 类似，但更简单易用。
 #测试单元与测试用例 一个测试程序可以按功能或模块划分为多个测试单元，每个测试单元下面可以有多个测试用例。如可以给 C++ 中的一个类(或模块)定义一个测试单元，类(或模块)中的每个方法定义一个测试用例。
-在 co/unitest 中，定义一个测试单元时，会生成一个类，类中有一个 run() 方法，所有的测试用例代码都在 run() 方法里面。co/unitest 几乎屏蔽了所有的细节，用户看不到类，甚至看不到 run() 方法，可以完全专注于写测试代码：
-DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // write test code here } } 上面的 DEF_test 实际上就是实现了类中的 run() 方法，DEF_case 则定义了测试用例，一个测试用例就相当于 run() 方法中的一个代码块，连函数都不是。
-#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &amp;#34;enable this test if true.&amp;#34;); \ ... \ void _UTest_##_name_::run() DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏中间省略的代码，实际上定义了一个类，最后一行定义类中的方法 run()，需要用户完成 run() 方法的函数体。 #DEF_case #define DEF_case(name) _current_case.</description>
+DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // write test code here } } 上面的例子中，DEF_test 定义了一个测试单元(实际上就是定义了一个函数)，DEF_case 则定义了测试用例，一个测试用例就相当于函数内的一个代码块。
+#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &amp;#34;enable this test if true&amp;#34;); \ ... \ void _co_ut_##_name_(unitest::xx::Test&amp;amp; _t_) DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏的最后一行定义测试单元对应的函数。 #DEF_case #define DEF_case(name) \ _t_.</description>
+    </item>
+    
+    <item>
+      <title>基准测试</title>
+      <link>https://coostdocs.github.io/cn/co/benchmark/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/benchmark/</guid>
+      <description>include: co/benchmark.h.
+#基本概念 co.benchmark 是 v3.0.1 新增的基准测试框架，可用于性能基准测试。
+#BM_group #define BM_group(_name_) \ ...... \ void _co_bm_group_##_name_(bm::xx::Group&amp;amp; _g_) BM_group 宏用于定义基准测试组，实际上定义了一个函数。 每个 group 内可以用 BM_add 定义多条基准测试。 参数 _name_ 是组名，也是所定义函数名的一部分，如 BM_group(atomic) 是合理的，而 BM_group(co.atomic) 则是不允许的。 #BM_add #define BM_add(_name_) \ _g_.bm = #_name_; \ _BM_add BM_add 宏用于定义基准测试，它必须在 BM_group 定义的函数内使用。 参数 _name_ 是基准测试名，与 BM_group 不同，BM_add(co.atomic) 也是允许的。 #BM_use #define BM_use(v) bm::xx::use(&amp;amp;v, sizeof(v)) BM_use 宏告诉编译器变量 v 会被使用，防止编译器将一些测试代码优化掉。 #编写基准测试代码 #测试代码示例 #include &amp;#34;co/benchmark.h&amp;#34; #include &amp;#34;co/mem.h&amp;#34; BM_group(malloc) { void* p; BM_add(::malloc)( p = ::malloc(32); ); BM_use(p); BM_add(co::alloc)( p = co::alloc(32); ); BM_use(p); } int main(int argc, char** argv) { flag::parse(argc, argv); bm::run_benchmarks(); return 0; } 上面的代码定义了一个名为 malloc 的基准测试组，组内用 BM_add 添加了 2 个基准测试。 调用 bm::run_benchmarks()，会执行所有的基准测试代码。 上例中，若无 BM_use(p)，编译器可能认为 p 是未使用的变量，将相关的测试代码优化掉，导致无法测出准确的结果。 #测试结果示例 基准测试结果输出为 markdown 表格，可以轻松将测试结果复制到 markdown 文档中。 多个 BM_group 会生成多个 markdown 表格。 表格第 1 列是 group 内的所有基准测试，第 2 列是单次迭代用时(单位为纳秒)，第 3 列是每秒迭代次数，第 4 列是性能提升倍数，以第一个基准测试为基准。 </description>
     </item>
     
     <item>
@@ -137,139 +105,12 @@ DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // w
       
       <guid>https://coostdocs.github.io/cn/co/json/</guid>
       <description>include: co/json.h.
-co/json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
+co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
 #基本概念 JSON 是一种简单的数据格式，它支持两种数据结构：
-由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co/json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
+由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
 object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
 {&amp;#34;a&amp;#34;:1, &amp;#34;b&amp;#34;:false, &amp;#34;s&amp;#34;:&amp;#34;xxx&amp;#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
 #Json #Json::Json 1. Json() noexcept; 2. Json(decltype(nullptr)) noexcept; 3. Json(Json&amp;amp;&amp;amp; v) noexcept; 4.</description>
-    </item>
-    
-    <item>
-      <title>时间</title>
-      <link>https://coostdocs.github.io/cn/co/time/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/time/</guid>
-      <description>include: co/time.h.
-#epoch time epoch 是一个特定的时刻 1970-01-01 00:00:00 UTC，epoch time 是从 epoch 时刻开始的时间，它受系统时间影响。
-#epoch::ms int64 ms(); 返回自 epoch 到当前时刻的时间，单位为毫秒。 #epoch::us int64 us(); 返回自 epoch 到当前时刻的时间，单位为微秒。 #monotonic time monotonic time 是单调递增时间，大多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。
-#now::ms int64 ms(); 返回一个单调递增的时间戳，单位为毫秒。 在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::ms()。 #now::us int64 us(); 返回一个单调递增的时间戳，单位为微秒。
-在 mac 平台，如果系统不支持 CLOCK_MONOTONIC，则使用 epoch::us()。
-示例
-int64 beg = now::us(); int64 end = now::us(); LOG &amp;lt;&amp;lt; &amp;#34;time used: &amp;#34; &amp;lt;&amp;lt; (end - beg) &amp;lt;&amp;lt; &amp;#34; us&amp;#34;; #时间字符串(now::str) // fm: 时间输出格式 fastring str(const char* fm=&amp;#34;%Y-%m-%d %H:%M:%S&amp;#34;); 此函数以指定格式返回当前系统时间的字符串形式，它基于 strftime 实现。</description>
-    </item>
-    
-    <item>
-      <title>线程</title>
-      <link>https://coostdocs.github.io/cn/co/thread/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/thread/</guid>
-      <description>include: co/thread.h.
-#线程(Thread) Thread 类是对线程的封装，创建 Thread 对象时，线程就会启动，线程一旦启动，就会一直运行，直到线程函数退出。Thread 类并不提供强制退出线程的方法(类似于 pthread_cancel)，这类方法通常不安全，可能对用户数据造成破坏。
-#Thread::Thread explicit Thread(co::Closure* cb); template&amp;lt;typename F&amp;gt; explicit Thread(F&amp;amp;&amp;amp; f); template&amp;lt;typename F, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); template&amp;lt;typename F, typename T, typename P&amp;gt; Thread(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p); 构造函数，Thread 对象创建完，线程就会启动。
-第 1 个版本，参数 cb 是 Closure 类型的指针，一般不建议用户直接用这个版本。
-第 2-4 个版本，根据传入的参数构造一个 Closure 对象，然后调用第 1 个版本进行初始化。
-第 2 个版本，参数 f 是任意可调用的对象，只要能调用 f() 或 (*f)() 就行。
-第 3 个版本，参数 f 是任意可调用的对象，只要能调用 f(p), (*f)(p) 或 (p-&amp;gt;*f)() 就行。</description>
-    </item>
-    
-    <item>
-      <title>协程</title>
-      <link>https://coostdocs.github.io/cn/co/coroutine/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/coroutine/</guid>
-      <description>include: co/co.h.
-#基本概念 协程是运行于线程中的轻量级调度单位。 协程之于线程，类似于线程之于进程。 一个进程中可以存在多个线程，一个线程中可以存在多个协程。 协程所在的线程一般被称为调度线程。 协程发生 io 阻塞或调用 sleep 等操作时，调度线程会挂起此协程。 协程挂起时，调度线程会切换到其他等待中的协程运行。 协程的切换是在用户态进行的，比线程间的切换更快。 协程非常适合写网络程序，可以实现同步的编程方式，不需要异步回调，大大减轻了程序员的思想负担。
-co 协程库实现的是一种类似 golang 的协程，有如下特性：
-支持多线程调度，默认线程数为系统 CPU 核数。 共享栈，同一线程中的协程共用若干个栈(大小默认为 1MB)，内存占用低，Linux 上的测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。 协程创建后，始终在同一个线程中运行，而不会切换到其他线程。 各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。 co 协程库在 linux, mac, windows 等平台，分别基于 epoll, kqueue, iocp 实现。
-co 协程库中 context 切换相关的代码，取自 ruki 的 tbox，而 tbox 则参考了 boost 的实现，在此表示感谢！
-#协程 API #v3.0 删除的 API co::init, v3.0 移除，从 co 3.0 开始，一般只需要在 main 函数开头调用 flag::init(argc, argv)。 co::exit, v3.0 移除。 co::stop, v3.</description>
-    </item>
-    
-    <item>
-      <title>定时任务</title>
-      <link>https://coostdocs.github.io/cn/co/tasked/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/tasked/</guid>
-      <description>include: co/tasked.h.
-#Tasked Tasked 类是一个简单的定时任务调度器，内部由单线程调度所有任务，但可以从任意线程添加任务。Tasked 中的任务阻塞时，会影响后面的所有任务，因此不推荐用 Tasked 调度可能会长时间阻塞的任务。
-#Tasked::Tasked Tasked(); Tasked(Tasked&amp;amp;&amp;amp; t); 第 1 个版本是默认构造函数，对象创建完，调度线程即开始运行。 第 2 个版本是 move 构造函数，支持将 Tasked 对象放到 STL 容器中。 #Tasked::~Tasked ~Tasked(); 析构函数，退出任务调度线程。 #Tasked::F typedef std::function&amp;lt;void()&amp;gt; F; 任务类型，固定为 std::function&amp;lt;void()&amp;gt; 类型的函数。 #Tasked::run_at void run_at(F&amp;amp;&amp;amp; f, int hour, int minute=0, int second=0); void run_at(const F&amp;amp; f, int hour, int minute=0, int second=0); 添加指定时刻运行的任务，f 将在 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，minute 与 second 必须是 0-59 之间的整数，默认为 0。 #Tasked::run_daily void run_daily(F&amp;amp;&amp;amp; f, int hour=0, int minute=0, int second=0); void run_daily(const F&amp;amp; f, int hour=0, int minute=0, int second=0); 添加每天指定时刻运行的周期性任务，f 将在每天的 hour:minute:second 时刻运行一次。 hour 必须是 0-23 之间的整数，默认为 0，minute 与 second 是 0-59 之间的整数，默认为 0。 #Tasked::run_every void run_every(F&amp;amp;&amp;amp; f, int n); void run_every(const F&amp;amp; f, int n); 添加每 n 秒运行一次的周期性任务。 #Tasked::run_in void run_in(F&amp;amp;&amp;amp; f, int n); void run_in(const F&amp;amp; f, int n); 添加 n 秒后运行一次的任务。 #Tasked::stop void stop(); 退出任务调度线程，析构函数中会自动调用此方法。 多次调用此方法是安全的。 #代码示例 Tasked s; // create and start the scheduler s.</description>
-    </item>
-    
-    <item>
-      <title>随机数</title>
-      <link>https://coostdocs.github.io/cn/co/random/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/random/</guid>
-      <description>include: co/random.h.
-#Random Random 类是一个速度极快的伪随机数生成器，可以连续无重复的生成 1 ~ 2G-2 之间的整数。
-#Random::Random Random(); explicit Random(uint32_t seed); 默认构造函数使用 1 作为种子数，第 2 个构造函数使用参数 seed 作为种子数。 #Random::next uint32_t next(); 返回下一个伪随机数，非线程安全。一旦种子数确定了，调用 next() 产生的随机序列就被完全决定了。
-示例
-Random r(7); int n = r.next(); </description>
-    </item>
-    
-    <item>
-      <title>LruMap</title>
-      <link>https://coostdocs.github.io/cn/co/lrumap/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/lrumap/</guid>
-      <description>include: co/lru_map.h.
-#LruMap template &amp;lt;typename K, typename V&amp;gt; class LruMap; LruMap 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 std::list、std::unordered_map 实现，内部元素是无序的。
-#LruMap::LruMap LruMap(); explicit LruMap(size_t capacity); 默认构造函数使用 1024 作为最大容量。 第二个构造函数以参数 capacity 作为最大容量。 #LruMap::begin iterator begin() const; 返回指向第一个元素的 iterator，当 LruMap 为空时，返回值与 LruMap::end() 相等。 #LruMap::clear void clear(); 此方法清空 LruMap 内的元素，size() 会变成 0，容量保持不变。 #LruMap::empty bool empty() const; 此方法判断 LruMap 是否为空。 #LruMap::end iterator end() const; 返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。当 LruMap 为空时，begin() 与 end() 相等。 #LruMap::erase void erase(iterator it); void erase(const key_type&amp;amp; key); 通过 iterator 或 key 删除元素。 #LruMap::find iterator find(const key_type&amp;amp; key) 此方法通过 key 查找元素，若找到则返回指向该元素的 iterator，否则返回值等于 end()。 #LruMap::insert template &amp;lt;typename Key, typename Val&amp;gt; void insert(Key&amp;amp;&amp;amp; key, Val&amp;amp;&amp;amp; value); 插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。 插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。 #LruMap::size size_t size() const; 此方法返回 LruMap 中的元素个数。 #LruMap::swap void swap(LruMap&amp;amp; x) noexcept; void swap(LruMap&amp;amp;&amp;amp; x) noexcept; 交换两个 LruMap 的内容，此操作仅交换内部指针、大小、容量等信息。 #代码示例 LruMap&amp;lt;int, int&amp;gt; m(128); // capacity: 128 auto it = m.</description>
-    </item>
-    
-    <item>
-      <title>Hash</title>
-      <link>https://coostdocs.github.io/cn/co/hash/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/hash/</guid>
-      <description>include: co/hash.h.
-#Hash #hash32 uint32 hash32(const void* s, size_t n); uint32 hash32(const char* s); uint32 hash32(const fastring&amp;amp; s) uint32 hash32(const std::string&amp;amp; s); 此函数返回 32 位的 murmur hash 值。 s 为指针时，一般要求是 sizeof(void*) 字节对齐的。 #hash64 uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp;amp; s); uint64 hash64(const std::string&amp;amp; s); 此函数返回 64 位的 murmur hash 值。 s 为指针时，一般要求是 8 字节对齐的。 #murmur_hash size_t murmur_hash(const void* s, size_t n); 此函数返回 size_t 类型的 hash 值，这个值在 64 位平台是 64 位的，在 32 位平台是 32 位的。 参数 s 一般要求是 sizeof(void*) 字节对齐的。 #md5 #md5digest void md5digest(const void* s, size_t n, char res[16]); fastring md5digest(const void* s, size_t n); fastring md5digest(const char* s); fastring md5digest(const fastring&amp;amp; s); fastring md5digest(const std::string&amp;amp; s); 计算字符串的 md5 值，结果为 16 字节的二进制字符串。 #md5sum void md5sum(const void* s, size_t n, char res[32]); fastring md5sum(const void* s, size_t n); fastring md5sum(const char* s); fastring md5sum(const fastring&amp;amp; s); fastring md5sum(const std::string&amp;amp; s); 计算字符串的 md5 值，结果为 32 字节、仅含十六进制字符(0-9,a-f)的字符串。 #Lower level APIs void md5_init(md5_ctx_t* ctx); void md5_update(md5_ctx_t* ctx, const void* s, size_t n); void md5_final(md5_ctx_t* ctx, uint8 res[16]); 上述 3 个 API 可用于增量计算 md5。</description>
-    </item>
-    
-    <item>
-      <title>文件路径(path)</title>
-      <link>https://coostdocs.github.io/cn/co/path/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/path/</guid>
-      <description>include: co/path.h.
-#path co/path 移植于 golang，路径分隔符必须为 &#39;/&#39;。
-#path::clean() fastring clean(const fastring&amp;amp; s); 返回路径的最短等价形式，路径中连续的分隔符会被清除掉。
-示例
-path::clean(&amp;#34;./x//y/&amp;#34;); // return &amp;#34;x/y&amp;#34; path::clean(&amp;#34;./x/..&amp;#34;); // return &amp;#34;.&amp;#34; path::clean(&amp;#34;./x/../..&amp;#34;); // return &amp;#34;..&amp;#34; #path::join() fastring join(const fastring&amp;amp; s, const fastring&amp;amp; t); template &amp;lt;typename ...S&amp;gt; fastring join(const S&amp;amp;... s); 第 1 个版本将两个 fastring 字符串拼接成一个完整的路径。
-第 2 个版本将任意数量的 fastring 字符串拼接成一个完整的路径。
-返回的路径是 path::clean() 处理后的结果。
-示例
-path::join(&amp;#34;x&amp;#34;, &amp;#34;y&amp;#34;, &amp;#34;z&amp;#34;); // return &amp;#34;x/y/z&amp;#34; path::join(&amp;#34;/x/&amp;#34;, &amp;#34;y&amp;#34;); // return &amp;#34;/x/y&amp;#34; #path::split() std::pair&amp;lt;fastring, fastring&amp;gt; split(const fastring&amp;amp; s); 将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。</description>
-    </item>
-    
-    <item>
-      <title>文件系统</title>
-      <link>https://coostdocs.github.io/cn/co/fs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/fs/</guid>
-      <description>include: co/fs.h.
-co/fs.h 最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 &#39;/&#39;。
-#元数据操作 #fs::exists bool exists(const char* path); bool exists(const fastring&amp;amp; path); bool exists(const std::string&amp;amp; path); 判断文件是否存在，参数 path 是文件或目录路径。 #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp;amp; path); int64 fsize(const std::string&amp;amp; path); 获取文件大小，文件不存在或其他错误返回 -1。 #fs::isdir bool isdir(const char* path); bool isdir(const fastring&amp;amp; path); bool isdir(const std::string&amp;amp; path); 判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。 #fs::mtime int64 mtime(const char* path); int64 mtime(const fastring&amp;amp; path); int64 mtime(const std::string&amp;amp; path); 获取文件的修改时间，文件不存在时返回 -1。 #fs::mkdir bool mkdir(const char* path, bool p=false); bool mkdir(const fastring&amp;amp; path, bool p=false); bool mkdir(const std::string&amp;amp; path, bool p=false); 创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。 参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 mkdir -p ，父目录不存在时，先创建父目录。 #fs::remove bool remove(const char* path, bool rf=false); bool remove(const fastring&amp;amp; path, bool rf=false); bool remove(const std::string&amp;amp; path, bool rf=false); 删除文件或目录，参数 path 是路径。 path 是目录时，参数 rf 表示是否强制删除，默认为 false，仅删除空目录。若 rf 为 true，则相当于 rm -rf，非空目录也会被删除。 path 是文件时，参数 rf 会被忽略。 #fs::rename bool rename(const char* from, const char* to); bool rename(const fastring&amp;amp; from, const fastring&amp;amp; to); bool rename(const std::string&amp;amp; from, const std::string&amp;amp; to); 重命名文件或目录，参数 from 是原路径，参数 to 是新路径。 参数 to 是目录时，windows 要求 to 和 from 在同一个盘符(drive) 下面。 一般建议在参数 to 指定的路径不存在时使用，详情可以参考 win32/MoveFile, linux/rename。 #fs::symlink bool symlink(const char* dst, const char* lnk); bool symlink(const fastring&amp;amp; dst, const fastring&amp;amp; lnk); bool symlink(const std::string&amp;amp; dst, const std::string&amp;amp; lnk); 创建软链接，参数 dst 是目标文件或目录的路径，参数 lnk 是软链接的路径。 此函数先调用 fs::remove(lnk) 删除旧的软链接，再创建新的软链接文件。 在 windows 平台，此函数需要 admin 权限。 #代码示例 bool x = fs::exists(path); // 判断文件是否存在 bool x = fs::isdir(path); // 判断文件是否为目录 int64 x = fs::mtime(path); // 获取文件的修改时间 int64 x = fs::fsize(path); // 获取文件的大小 fs::mkdir(&amp;#34;a/b&amp;#34;); // mkdir a/b fs::mkdir(&amp;#34;a/b&amp;#34;, true); // mkdir -p a/b fs::remove(&amp;#34;x/x.</description>
-    </item>
-    
-    <item>
-      <title>操作系统</title>
-      <link>https://coostdocs.github.io/cn/co/os/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/os/</guid>
-      <description>include: co/os.h.
-#os #os::cpunum int cpunum(); 返回系统 CPU 核数。 #os::cwd fastring cwd(); 返回当前工作目录 (current working directory)。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::daemon void daemon(); 将当前进程放到后台运行，仅支持 linux 平台。 #os::env fastring env(const char* name); bool env(const char* name, const char* value); 第 1 个版本，获取系统环境变量的值，参数 name 是环境变量名。 第 2 个版本，v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。 #os::exename fastring exename(); 返回当前进程名，不含路径。 #os::exepath fastring exepath(); 返回当前进程的完整路径。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::homedir fastring homedir(); 返回当前用户的 home 目录。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::pid int pid(); 返回当前进程的 id。 #os::signal typedef void (*sig_handler_t)(int); sig_handler_t signal(int sig, sig_handler_t handler, int flag=0); 设置信号处理函数，参数 sig 是信号值，参数 flag 是 SA_RESTART，SA_ONSTACK 等选项的组合。</description>
     </item>
     
     <item>
@@ -279,11 +120,12 @@ co/fs.h 最小限度的实现了常用的文件系统操作，不同平台路�
       
       <guid>https://coostdocs.github.io/cn/co/build/</guid>
       <description>#编译器要求 各平台需要安装的编译器如下：
-Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+ #xmake CO 推荐使用 xmake 作为构建工具。
+Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+ #xmake co 推荐使用 xmake 作为构建工具。
 #安装 xmake windows, mac 与 debian/ubuntu 可以直接去 xmake 的 release 页面下载安装包，其他系统请参考 xmake 的 Installation 说明。
-xmake 在 linux 上默认禁止 root 用户编译，ruki 说不安全，可以在 ~/.bashrc 中加上下面的一行，启用 root 编译:
-export XMAKE_ROOT=y #设置 xmake github 镜像代理 xmake 可能会从 github 上拉取三方库，国内 github 下载速度较慢，可以用下面的方式设置镜像代理：
-安装 xmake 2.5.4 以上版本。 执行 xmake show -l envs 命令查找 XMAKE_GLOBALDIR，在该环境变量指向的目录下面创建一个 pac.lua 文件，在文件里加上下面的代码： function mirror(url) return url:gsub(&amp;#34;github.com&amp;#34;, &amp;#34;hub.</description>
+#快速构建 在 co 根目录执行下述命令构建：
+xmake -a # 构建所有项目 (libco, gen, test, unitest) 若需要使用 HTTP 或 SSL 特性，则可以用下面的命令构建：
+xmake f --with_libcurl=true --with_openssl=true xmake -a 启用 HTTP 或 SSL 特性时，xmake 会自动从网络安装 libcurl 与 openssl，可能需要花点时间。
+命令行中的 -a 表示构建 co 中的所有项目，如果不加 -a，默认只会构建 libco。另外，可以用 -v 或 -vD 让 xmake 打印更详细的编译信息：</description>
     </item>
     
   </channel>
