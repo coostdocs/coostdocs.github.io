@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -881,8 +880,8 @@ https://github.com/alex-shpak/hugo-book
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/log.h">co/log.h</a>.</p>
 <h2 id="introduction"><a class="anchor" href="#introduction">#</a>Introduction</h2>
 <p><strong>co.log</strong> is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;     <span style="color:#998;font-style:italic">// level log
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>TLOG(<span style="color:#d14">&#34;topic&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>; <span style="color:#998;font-style:italic">// topic log
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello world&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// level log
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;topic&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// topic log
 </span></span></span></code></pre></div><h3 id="level-log"><a class="anchor" href="#level-log">#</a>Level Log</h3>
 <p>Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.</p>
 <blockquote class="book-hint warning">
@@ -928,7 +927,7 @@ https://github.com/alex-shpak/hugo-book
 </table>
 <h2 id="apis"><a class="anchor" href="#apis">#</a>APIs</h2>
 <h3 id="logexit"><a class="anchor" href="#logexit">#</a>log::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Write logs in the cache to the file and exit the log thread.</li>
 <li>This function is automatically called by <code>co.log</code> when the program exits normally.</li>
@@ -936,14 +935,14 @@ https://github.com/alex-shpak/hugo-book
 <li>When <code>co.log</code> captures <code>SIGINT, SIGTERM, SIGQUIT</code> or other similar signals, this function will be called before the program exits.</li>
 </ul>
 <h3 id="logset_write_cb"><a class="anchor" href="#logset_write_cb">#</a>log::set_write_cb</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb,
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> flags<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb,
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> flags<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>By default, <code>co.log</code> writes logs to a local file. Users can set a callback to write logs to different destinations through this API.</li>
 <li>The parameter <code>cb</code> is the callback. In the first version (for level log), cb has 2 parameters, a pointer to the log buffer and its length. In the second version (for TLOG), cb has 3 parameters, the first is the topic, the last two parameters are the same as in the 1st version. The buffer may contain multiple logs.</li>
@@ -967,7 +966,7 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="level-log-1"><a class="anchor" href="#level-log-1">#</a>Level Log</h2>
 <h3 id="basic-usages"><a class="anchor" href="#basic-usages">#</a>Basic usages</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DLOG  LOG  WLOG  ELOG  FLOG
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span>  <span class="n">LOG</span>  <span class="n">WLOG</span>  <span class="n">ELOG</span>  <span class="n">FLOG</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>The above 5 macros are used to print 5 levels of logs respectively, they are <strong>thread safe</strong>.</p>
@@ -988,17 +987,17 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>FLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is FATAL log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is FATAL log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="condition-log"><a class="anchor" href="#condition-log">#</a>Condition Log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_IF(cond) if (cond) DLOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_IF(cond) if (cond) LOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_IF(cond) if (cond) WLOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_IF(cond) if (cond) ELOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define FLOG_IF(cond) if (cond) FLOG
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_IF(cond) if (cond) DLOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_IF(cond) if (cond) LOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_IF(cond) if (cond) WLOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_IF(cond) if (cond) ELOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define FLOG_IF(cond) if (cond) FLOG
 </span></span></span></code></pre></div><ul>
 <li>The above 5 macros accept a conditional parameter cond, and only print the log when cond is true.</li>
 <li>The parameter cond can be any expression whose value is of type bool.</li>
@@ -1010,17 +1009,17 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>Example</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
-</span></span><span style="display:flex;"><span>DLOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span> LOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>WLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>ELOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>FLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">DLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> <span class="n">LOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="print-log-every-n-entries"><a class="anchor" href="#print-log-every-n-entries">#</a>Print log every N entries</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>The above macros print the log once every n entries.</p>
@@ -1038,16 +1037,16 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// Print every 32 items (1,33,65...)
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>DLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Print every 32 items (1,33,65...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="print-the-first-n-logs"><a class="anchor" href="#print-the-first-n-logs">#</a>Print the first N logs</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>The above macros print the first n logs.</p>
@@ -1065,14 +1064,14 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// print the first 10 logs
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>DLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// print the first 10 logs
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h2 id="tlog"><a class="anchor" href="#tlog">#</a>TLOG</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define TLOG(topic)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define TLOG_IF(topic, cond) if (cond) TLOG(topic)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define TLOG(topic)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define TLOG_IF(topic, cond) if (cond) TLOG(topic)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>The TLOG macro takes a parameter <code>topic</code>, which is a C-style string, and <strong>must have a static lifetime</strong>.</p>
@@ -1084,21 +1083,21 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>TLOG(<span style="color:#d14">&#34;xx&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>TLOG_IF(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#0086b3">true</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TLOG_IF</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h2 id="check-assertion"><a class="anchor" href="#check-assertion">#</a>CHECK Assertion</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK(cond) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#cond &#34;!&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NOTNULL(p) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#p&#34; mustn&#39;t be NULL! &#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define CHECK(cond) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#cond &#34;!&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NOTNULL(p) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#p&#34; mustn&#39;t be NULL! &#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>The above macros can be regarded as an enhanced version of <code>assert</code>, and they will not be cleared in DEBUG mode.</p>
@@ -1143,25 +1142,25 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
-</span></span><span style="display:flex;"><span>CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
-</span></span><span style="display:flex;"><span>CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;
-</span></span><span style="display:flex;"><span>CHECK_NE(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>; <span style="color:#998;font-style:italic">// s != -1
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>CHECK_GE(s, <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;  <span style="color:#998;font-style:italic">// s &gt;= 0
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>CHECK_GT(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>; <span style="color:#998;font-style:italic">// s &gt; -1
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m;
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">3</span>);
-</span></span><span style="display:flex;"><span>CHECK(it <span style="color:#000;font-weight:bold">!=</span> m.end()); <span style="color:#998;font-style:italic">// Cannot use CHECK_NE(it, m.end()), the compiler will report an error
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK_NE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span> <span class="c1">// s != -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>  <span class="c1">// s &gt;= 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GT</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span> <span class="c1">// s &gt; -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// Cannot use CHECK_NE(it, m.end()), the compiler will report an error
 </span></span></span></code></pre></div><h2 id="stack-trace"><a class="anchor" href="#stack-trace">#</a>Stack trace</h2>
 <p><code>co.log</code> will print the stack information when <code>CHECK</code> assertion failed, or an abnormal signal like <code>SIGSEGV</code> was caught. See details below:</p>
 <p><img src="https://coostdocs.github.io/images/stack.png" alt="stack" />(<a href="https://asciinema.org/a/435894">https://asciinema.org/a/435894</a>)</p>
 <p>To get the stack trace, you should compile with debug symbols (compile with <code>-g</code> for gcc, etc). And on linux and macosx, <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a> is required, make sure you have installed it on your system. On linux, <code>libbacktrace</code> may have been installed within gcc. You may find it in a directory like <code>/usr/lib/gcc/x86_64-linux-gnu/9</code>. Otherwise, you can install it by yourself as follow:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/ianlancetaylor/libbacktrace.git
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">cd</span> libbacktrace-master
-</span></span><span style="display:flex;"><span>./configure
-</span></span><span style="display:flex;"><span>make -j8
-</span></span><span style="display:flex;"><span>sudo make install
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git clone https://github.com/ianlancetaylor/libbacktrace.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> libbacktrace-master
+</span></span><span class="line"><span class="cl">./configure
+</span></span><span class="line"><span class="cl">make -j8
+</span></span><span class="line"><span class="cl">sudo make install
 </span></span></code></pre></div><h2 id="configuration"><a class="anchor" href="#configuration">#</a>Configuration</h2>
 <p><code>co.log</code> uses <a href="../flag/">co.flag</a> to define config items. The flags defined inside <code>co.log</code> are listed below. These config items are valid for both level log and TLOG unless otherwise specified.</p>
 <h3 id="log_dir"><a class="anchor" href="#log_dir">#</a>log_dir</h3>
@@ -1210,19 +1209,19 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="log-file"><a class="anchor" href="#log-file">#</a>Log file</h2>
 <h3 id="log-file-name"><a class="anchor" href="#log-file-name">#</a>Log file name</h3>
 <p><code>co.log</code> will write all levels of logs into the same file. By default, the program name is used as the log file name. For example, the log file of process xx is xx.log. When the log file reaches the maximum size (FLG_max_log_file_size), <code>co.log</code> will rename the log file and generate a new file. The log directory may contain the following files:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xx.log
-</span></span><span style="display:flex;"><span>xx_0523_16_12_54.970.log
-</span></span><span style="display:flex;"><span>xx_0523_16_13_12.921.log
-</span></span><span style="display:flex;"><span>xx_0523_16_15_05.264.log
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xx.log
+</span></span><span class="line"><span class="cl">xx_0523_16_12_54.970.log
+</span></span><span class="line"><span class="cl">xx_0523_16_13_12.921.log
+</span></span><span class="line"><span class="cl">xx_0523_16_15_05.264.log
 </span></span></code></pre></div><p><code>xx.log</code> is always the latest log file. When the number of files exceeds <code>FLG_max_log_file_num</code>, <code>co.log</code> will remove the oldest log file.</p>
 <p><code>fatal</code> logs will be additionally recorded in the <code>xx.fatal</code> file, <strong>co.log will not rename or delete the fatal log file</strong>.</p>
 <h3 id="log-format"><a class="anchor" href="#log-format">#</a>Log format</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>I0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>D0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:12<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>W0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:13<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>E0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:14<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>F0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:15<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span><span style="color:#099">0514</span> 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">I0514 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">D0514 11:15:30.123 <span class="m">1045</span> xx.cc:12<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">W0514 11:15:30.123 <span class="m">1045</span> xx.cc:13<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">E0514 11:15:30.123 <span class="m">1045</span> xx.cc:14<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">F0514 11:15:30.123 <span class="m">1045</span> xx.cc:15<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl"><span class="m">0514</span> 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
 </span></span></code></pre></div><ul>
 <li>Level log from left to right, it is the level, time (month to millisecond), thread id, file and line number, and the log content.</li>
 <li>The first letter of level log is the log level, <code>I</code> for info, <code>D</code> for debug, <code>W</code> for warning, <code>E</code> for error, <code>F</code> for fatal.</li>
@@ -1230,20 +1229,20 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h3 id="view-logs"><a class="anchor" href="#view-logs">#</a>View logs</h3>
 <p>On linux or mac, <code>grep</code>, <code>tail</code> and other commands can be used to view the logs.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep ^E xx.log
-</span></span><span style="display:flex;"><span>tail -F xx.log
-</span></span><span style="display:flex;"><span>tail -F xx.log | grep ^E
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep ^E xx.log
+</span></span><span class="line"><span class="cl">tail -F xx.log
+</span></span><span class="line"><span class="cl">tail -F xx.log <span class="p">|</span> grep ^E
 </span></span></code></pre></div><ul>
 <li>The first line uses <code>grep</code> to filter out the error logs in the file, <code>^E</code> means starts with the letter <code>E</code>.</li>
 <li>The second line uses the <code>tail -F</code> command to dynamically track the log file, here we should use the uppercase <code>F</code>, because xx.log may be renamed, and then generate a new xx.log file, <code>-F</code> make sure to follow the latest file by the name.</li>
 <li>In line 3, use <code>tail -F</code> in conjunction with <code>grep</code> to dynamically track the error logs in the log file.</li>
 </ul>
 <h2 id="build-and-run-the-test-program"><a class="anchor" href="#build-and-run-the-test-program">#</a>Build and run the test program</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b log                    <span style="color:#998;font-style:italic"># build log or log.exe</span>
-</span></span><span style="display:flex;"><span>xmake r log                     <span style="color:#998;font-style:italic"># run log or log.exe</span>
-</span></span><span style="display:flex;"><span>xmake r log -cout               <span style="color:#998;font-style:italic"># also log to terminal</span>
-</span></span><span style="display:flex;"><span>xmake r log -min_log_level<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>    <span style="color:#998;font-style:italic"># 0-4: debug,info,warning,error,fatal</span>
-</span></span><span style="display:flex;"><span>xmake r log -perf               <span style="color:#998;font-style:italic"># performance test</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b log                    <span class="c1"># build log or log.exe</span>
+</span></span><span class="line"><span class="cl">xmake r log                     <span class="c1"># run log or log.exe</span>
+</span></span><span class="line"><span class="cl">xmake r log -cout               <span class="c1"># also log to terminal</span>
+</span></span><span class="line"><span class="cl">xmake r log -min_log_level<span class="o">=</span><span class="m">1</span>    <span class="c1"># 0-4: debug,info,warning,error,fatal</span>
+</span></span><span class="line"><span class="cl">xmake r log -perf               <span class="c1"># performance test</span>
 </span></span></code></pre></div><ul>
 <li>Run <code>xmake -b log</code> in the root directory of coost to compile <a href="https://github.com/idealvin/coost/blob/master/test/log.cc">test/log.cc</a>, and a binary program named log or log.exe will be generated.</li>
 </ul>

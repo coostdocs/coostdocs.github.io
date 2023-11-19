@@ -39,8 +39,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -904,8 +903,8 @@ https://github.com/alex-shpak/hugo-book
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/log.h">co/log.h</a>.</p>
 <h2 id="简介"><a class="anchor" href="#%e7%ae%80%e4%bb%8b">#</a>简介</h2>
 <p><strong>co.log</strong> 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;     <span style="color:#998;font-style:italic">// level log
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>TLOG(<span style="color:#d14">&#34;topic&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>; <span style="color:#998;font-style:italic">// topic log
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello world&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// level log
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;topic&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// topic log
 </span></span></span></code></pre></div><h3 id="level-log"><a class="anchor" href="#level-log">#</a>Level Log</h3>
 <p>Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。</p>
 <blockquote class="book-hint warning">
@@ -951,7 +950,7 @@ https://github.com/alex-shpak/hugo-book
 </table>
 <h2 id="apis"><a class="anchor" href="#apis">#</a>APIs</h2>
 <h3 id="logexit"><a class="anchor" href="#logexit">#</a>log::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>将缓存中的日志写入文件，并退出后台写日志的线程。</li>
 <li>程序正常退出时，co.log 会自动调用此函数。</li>
@@ -959,14 +958,14 @@ https://github.com/alex-shpak/hugo-book
 <li>co.log 内部捕获到 <code>SIGINT, SIGTERM, SIGQUIT</code> 等信号时，会在程序退出前调用此函数。</li>
 </ul>
 <h3 id="logset_write_cb"><a class="anchor" href="#logset_write_cb">#</a>log::set_write_cb</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb,
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> flags<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_write_cb</span>(
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>, size_t)<span style="color:#000;font-weight:bold">&gt;&amp;</span> cb,
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> flags<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>co.log 默认将日志写到本地文件，用户可以调用此 API 自定义写日志的 callback，将日志写到不同的目标。</li>
 <li>参数 <code>cb</code> 是 callback。第 1 个版本用于 Level log，cb 带 2 个参数，表示日志 buffer 的地址及长度；第 2 个版本用于 Topic log(TLOG)，cb 带 3 个参数，第 1 个参数是 topic，后两个参数与第 1 个版本相同。buffer 中可能含有多条日志。</li>
@@ -990,7 +989,7 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="level-log-1"><a class="anchor" href="#level-log-1">#</a>Level Log</h2>
 <h3 id="基本用法"><a class="anchor" href="#%e5%9f%ba%e6%9c%ac%e7%94%a8%e6%b3%95">#</a>基本用法</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DLOG  LOG  WLOG  ELOG  FLOG
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span>  <span class="n">LOG</span>  <span class="n">WLOG</span>  <span class="n">ELOG</span>  <span class="n">FLOG</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>上面的 5 个宏分别用于打印 5 种不同级别的日志，它们是<strong>线程安全</strong>的。</p>
@@ -1011,17 +1010,17 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>FLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is FATAL log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is FATAL log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="条件日志"><a class="anchor" href="#%e6%9d%a1%e4%bb%b6%e6%97%a5%e5%bf%97">#</a>条件日志</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_IF(cond) if (cond) DLOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define  LOG_IF(cond) if (cond) LOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_IF(cond) if (cond) WLOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_IF(cond) if (cond) ELOG
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define FLOG_IF(cond) if (cond) FLOG
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_IF(cond) if (cond) DLOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define  LOG_IF(cond) if (cond) LOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_IF(cond) if (cond) WLOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_IF(cond) if (cond) ELOG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define FLOG_IF(cond) if (cond) FLOG
 </span></span></span></code></pre></div><ul>
 <li>上面的 5 个宏，接受一个条件参数 cond，当 cond 为 true 时才打印日志。</li>
 <li>参数 cond 可以是值为 bool 类型的任意表达式。</li>
@@ -1033,17 +1032,17 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>示例</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
-</span></span><span style="display:flex;"><span>DLOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span> LOG_IF(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ok: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>WLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>ELOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
-</span></span><span style="display:flex;"><span>FLOG_IF(s <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket ko: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> s;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">DLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> <span class="n">LOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="每-n-条打印一次日志"><a class="anchor" href="#%e6%af%8f-n-%e6%9d%a1%e6%89%93%e5%8d%b0%e4%b8%80%e6%ac%a1%e6%97%a5%e5%bf%97">#</a>每 N 条打印一次日志</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define  LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define  LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>上面的宏每 n 条打印一次日志。</p>
@@ -1061,16 +1060,16 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// 每 32 条打印一次 (1,33,65...)
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>DLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG_EVERY_N(<span style="color:#099">32</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 每 32 条打印一次 (1,33,65...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="打印前-n-条日志"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e5%89%8d-n-%e6%9d%a1%e6%97%a5%e5%bf%97">#</a>打印前 N 条日志</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define  LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define  LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>上面的宏打印前 n 条日志。</p>
@@ -1088,14 +1087,14 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// 打印前 10 条日志
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>DLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is DEBUG log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>LOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is INFO log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>WLOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is WARNING log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>ELOG_FIRST_N(<span style="color:#099">10</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;this is ERROR log &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 打印前 10 条日志
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ELOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h2 id="tlog"><a class="anchor" href="#tlog">#</a>TLOG</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define TLOG(topic)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define TLOG_IF(topic, cond) if (cond) TLOG(topic)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define TLOG(topic)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define TLOG_IF(topic, cond) if (cond) TLOG(topic)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>TLOG 宏带有一个参数 <code>topic</code>，它是一个 C 风格的字符串，<strong>需要具备静态生命周期</strong>。</p>
@@ -1107,21 +1106,21 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>TLOG(<span style="color:#d14">&#34;xx&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>TLOG_IF(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#0086b3">true</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TLOG_IF</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
 </span></span></code></pre></div><h2 id="check-断言"><a class="anchor" href="#check-%e6%96%ad%e8%a8%80">#</a>CHECK 断言</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK(cond) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34; #cond &#34;! &#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NOTNULL(p) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34; #p &#34; mustn&#39;t be NULL! &#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define CHECK(cond) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34; #cond &#34;! &#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NOTNULL(p) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34; #p &#34; mustn&#39;t be NULL! &#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
 </span></span></span></code></pre></div><ul>
 <li>
 <p>上面的宏可视为加强版的 <code>assert</code>，它们在 DEBUG 模式下也不会被清除。</p>
@@ -1166,25 +1165,25 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> s <span style="color:#000;font-weight:bold">=</span> socket();
-</span></span><span style="display:flex;"><span>CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
-</span></span><span style="display:flex;"><span>CHECK(s <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;
-</span></span><span style="display:flex;"><span>CHECK_NE(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;  <span style="color:#998;font-style:italic">// s != -1
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>CHECK_GE(s, <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;   <span style="color:#998;font-style:italic">// s &gt;= 0
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>CHECK_GT(s, <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;create socket failed&#34;</span>;  <span style="color:#998;font-style:italic">// s &gt; -1
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m;
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">3</span>);
-</span></span><span style="display:flex;"><span>CHECK(it <span style="color:#000;font-weight:bold">!=</span> m.end()); <span style="color:#998;font-style:italic">// 不能使用 CHECK_NE(it, m.end()), 编译器会报错
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK_NE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>  <span class="c1">// s != -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>   <span class="c1">// s &gt;= 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GT</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>  <span class="c1">// s &gt; -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// 不能使用 CHECK_NE(it, m.end()), 编译器会报错
 </span></span></span></code></pre></div><h2 id="打印堆栈信息"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e5%a0%86%e6%a0%88%e4%bf%a1%e6%81%af">#</a>打印堆栈信息</h2>
 <p>co.log 在 <code>CHECK</code> 断言失败或捕获到 <code>SIGSEGV</code> 等异常信号时，会打印函数调用栈，以方便定位问题，效果见下图：</p>
 <p><img src="https://coostdocs.github.io/images/stack.png" alt="stack" />(<a href="https://asciinema.org/a/435894">https://asciinema.org/a/435894</a>)</p>
 <p>此功能需要在编译时，加入调试信息，如 gcc 需要开启 <code>-g</code> 选项。在 linux 与 macosx 平台，还需要安装 <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a>，才能打印堆栈信息。在 linux 上，<code>libbacktrace</code> 可能已经集成到 gcc 里了，您也许可以在类似 <code>/usr/lib/gcc/x86_64-linux-gnu/9</code> 的目录中找到它。否则，您可以按下面的方式手动安装它：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/ianlancetaylor/libbacktrace.git
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">cd</span> libbacktrace-master
-</span></span><span style="display:flex;"><span>./configure
-</span></span><span style="display:flex;"><span>make -j8
-</span></span><span style="display:flex;"><span>sudo make install
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git clone https://github.com/ianlancetaylor/libbacktrace.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> libbacktrace-master
+</span></span><span class="line"><span class="cl">./configure
+</span></span><span class="line"><span class="cl">make -j8
+</span></span><span class="line"><span class="cl">sudo make install
 </span></span></code></pre></div><h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
 <p>co.log 使用 <a href="../flag/">co.flag</a> 定义配置项，下面列出的是 co.log 内部定义的 flag，这些配置项如无特别说明，对 level log 与 TLOG 均有效。</p>
 <h3 id="log_dir"><a class="anchor" href="#log_dir">#</a>log_dir</h3>
@@ -1233,19 +1232,19 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="日志文件"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6">#</a>日志文件</h2>
 <h3 id="日志文件名"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6%e5%90%8d">#</a>日志文件名</h3>
 <p>co.log 将所有级别的日志记录到同一个文件中，默认使用程序名作为日志文件名，如进程 xx 的日志文件是 xx.log。当日志文件达到最大大小 (FLG_max_log_file_size) 时，co.log 会重命名日志文件，并生成新文件。日志目录下面可能包含如下的文件：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xx.log
-</span></span><span style="display:flex;"><span>xx_0523_16_12_54.970.log
-</span></span><span style="display:flex;"><span>xx_0523_16_13_12.921.log
-</span></span><span style="display:flex;"><span>xx_0523_16_15_05.264.log
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xx.log
+</span></span><span class="line"><span class="cl">xx_0523_16_12_54.970.log
+</span></span><span class="line"><span class="cl">xx_0523_16_13_12.921.log
+</span></span><span class="line"><span class="cl">xx_0523_16_15_05.264.log
 </span></span></code></pre></div><p><code>xx.log</code> 始终是当前最新的日志文件。当文件数量超过 <code>FLG_max_log_file_num</code> 时，co.log 就会删除最旧的日志文件。</p>
 <p><code>fatal</code> 级别的日志，还会额外记录到 <code>xx.fatal</code> 文件中，<strong>co.log 不会重命名 fatal 日志文件，也不会删除它</strong>。</p>
 <h3 id="日志格式"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e6%a0%bc%e5%bc%8f">#</a>日志格式</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>I0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>D0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:12<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>W0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:13<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>E0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:14<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span>F0514 11:15:30.123 <span style="color:#099">1045</span> xx.cc:15<span style="color:#000;font-weight:bold">]</span> hello world
-</span></span><span style="display:flex;"><span><span style="color:#099">0514</span> 11:15:30.123 <span style="color:#099">1045</span> xx.cc:11<span style="color:#000;font-weight:bold">]</span> hello world
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">I0514 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">D0514 11:15:30.123 <span class="m">1045</span> xx.cc:12<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">W0514 11:15:30.123 <span class="m">1045</span> xx.cc:13<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">E0514 11:15:30.123 <span class="m">1045</span> xx.cc:14<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl">F0514 11:15:30.123 <span class="m">1045</span> xx.cc:15<span class="o">]</span> hello world
+</span></span><span class="line"><span class="cl"><span class="m">0514</span> 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
 </span></span></code></pre></div><ul>
 <li>Level log 从左到右依次是级别、时间(月份到毫秒)、线程id、日志代码所在文件与行数、日志内容。</li>
 <li>Level log 的第一个字母是日志级别，<code>I</code> 表示 info，<code>D</code> 表示 debug，<code>W</code> 表示 warning，<code>E</code> 表示 error，<code>F</code> 表示 fatal。</li>
@@ -1253,20 +1252,20 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h3 id="查看日志"><a class="anchor" href="#%e6%9f%a5%e7%9c%8b%e6%97%a5%e5%bf%97">#</a>查看日志</h3>
 <p>Linux、mac 等系统，可以用 <code>grep</code>，<code>tail</code> 等命令查看日志。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep ^E xx.log
-</span></span><span style="display:flex;"><span>tail -F xx.log
-</span></span><span style="display:flex;"><span>tail -F xx.log | grep ^E
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep ^E xx.log
+</span></span><span class="line"><span class="cl">tail -F xx.log
+</span></span><span class="line"><span class="cl">tail -F xx.log <span class="p">|</span> grep ^E
 </span></span></code></pre></div><ul>
 <li>第 1 行用 <code>grep</code> 过滤出文件中的错误日志，<code>^E</code> 表示以字母 <code>E</code> 开头。</li>
 <li>第 2 行用 <code>tail -F</code> 命令动态追踪日志文件，这里需要用大写的 <code>F</code>，因为 xx.log 可能被重命名，然后生成新的 xx.log 文件，<code>-F</code> 确保按文件名追踪到最新的日志文件。</li>
 <li>第 3 行用 <code>tail -F</code> 配合 <code>grep</code> 动态追踪日志文件中的错误日志。</li>
 </ul>
 <h2 id="构建及运行-colog-测试程序"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c-colog-%e6%b5%8b%e8%af%95%e7%a8%8b%e5%ba%8f">#</a>构建及运行 co.log 测试程序</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b log                   <span style="color:#998;font-style:italic"># build log or log.exe</span>
-</span></span><span style="display:flex;"><span>xmake r log                    <span style="color:#998;font-style:italic"># run log or log.exe</span>
-</span></span><span style="display:flex;"><span>xmake r log -cout              <span style="color:#998;font-style:italic"># also log to terminal</span>
-</span></span><span style="display:flex;"><span>xmake r log -min_log_level<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>   <span style="color:#998;font-style:italic"># 0-4: debug,info,warning,error,fatal </span>
-</span></span><span style="display:flex;"><span>xmake r log -perf              <span style="color:#998;font-style:italic"># performance test</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b log                   <span class="c1"># build log or log.exe</span>
+</span></span><span class="line"><span class="cl">xmake r log                    <span class="c1"># run log or log.exe</span>
+</span></span><span class="line"><span class="cl">xmake r log -cout              <span class="c1"># also log to terminal</span>
+</span></span><span class="line"><span class="cl">xmake r log -min_log_level<span class="o">=</span><span class="m">1</span>   <span class="c1"># 0-4: debug,info,warning,error,fatal </span>
+</span></span><span class="line"><span class="cl">xmake r log -perf              <span class="c1"># performance test</span>
 </span></span></code></pre></div><ul>
 <li>在 coost 根目录执行 <code>xmake -b log</code> 即可编译 <a href="https://github.com/idealvin/coost/blob/master/test/log.cc">test/log.cc</a> 测试代码，并生成 <code>log</code> 二进制文件。</li>
 </ul>

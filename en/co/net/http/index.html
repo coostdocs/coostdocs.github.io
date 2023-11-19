@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -901,7 +900,7 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="httpclient"><a class="anchor" href="#httpclient">#</a>http::Client</h2>
 <p><code>http::Client</code> is a coroutine-based HTTP client, which is implemented based on <a href="https://curl.se/libcurl/">libcurl</a>.</p>
 <h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">Client</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">Client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">serv_url</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Constructor, the parameter <code>serv_url</code> is the url address of the server, and its form is <code>protocol://host:port</code>, the following server urls are all ok:
 <ul>
@@ -914,33 +913,33 @@ https://github.com/alex-shpak/hugo-book
 <li>Connection is not established in the constructor.</li>
 </ul>
 <h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Client<span style="color:#000;font-weight:bold">::~</span>Client();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Client</span><span class="o">::~</span><span class="n">Client</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Destructor, close the connection, and release libcurl related resources.</li>
 </ul>
 <h3 id="clientadd_header"><a class="anchor" href="#clientadd_header">#</a>Client::add_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Add a HTTP header.</li>
 <li>Users can use this method to add headers before performing HTTP requests, and the added headers will be present in all subsequent requests.</li>
 <li>In the second version, the parameter val is an integer, which is automatically converted to string internally.</li>
 </ul>
 <h3 id="clientbody"><a class="anchor" href="#clientbody">#</a>Client::body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> body() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">body</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get the response body of the current HTTP request.</li>
 </ul>
 <h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Close the HTTP connection, must be called in coroutine.</li>
 <li>Once this method is called, the <code>http::Client</code> object can no longer be used until you reset the server url by calling <a href="#clientreset">reset()</a>.</li>
 </ul>
 <h3 id="clientdel"><a class="anchor" href="#clientdel">#</a>Client::del</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">del</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">del</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">del</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">del</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>HTTP <strong>DELETE</strong> request, must be called in coroutine.</li>
 <li>The parameter <code>url</code> must be a string beginning with <code>'/'</code>.</li>
@@ -948,25 +947,25 @@ https://github.com/alex-shpak/hugo-book
 <li>The third version is for DELETE requests without body.</li>
 </ul>
 <h3 id="clienteasy_handle"><a class="anchor" href="#clienteasy_handle">#</a>Client::easy_handle</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">easy_handle</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">easy_handle</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Return the easy handle of libcurl.</li>
 </ul>
 <h3 id="clientget"><a class="anchor" href="#clientget">#</a>Client::get</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">get</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>HTTP <strong>GET</strong> request, must be called in coroutine.</li>
 <li>The parameter <code>url</code> must be a string beginning with <code>/</code>.</li>
 </ul>
 <h3 id="clienthead"><a class="anchor" href="#clienthead">#</a>Client::head</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">head</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">head</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>HTTP <strong>HEAD</strong> request, must be called in coroutine.</li>
 <li>The parameter <code>url</code> must be a string beginning with <code>/</code>.</li>
 </ul>
 <h3 id="clientheader"><a class="anchor" href="#clientheader">#</a>Client::header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> header() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>The first version gets value of a HTTP header. If the header does not exist, an empty string is returned.</p>
@@ -978,11 +977,11 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;xx.com&#34;</span>);
-</span></span><span style="display:flex;"><span>c.get(<span style="color:#d14">&#34;/&#34;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">http</span><span class="o">::</span><span class="n">Client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;xx.com&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">(</span><span class="s">&#34;Content-Length&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="clientperform"><a class="anchor" href="#clientperform">#</a>Client::perform</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">perform</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">perform</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>Perform a HTTP request, get, post and other methods are actually implemented based on this method.</p>
@@ -994,170 +993,170 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> Client<span style="color:#000;font-weight:bold">::</span>post(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> data, size_t size) {
-</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POST, <span style="color:#099">1L</span>);
-</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_URL, make_url(url));
-</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDS, data);
-</span></span><span style="display:flex;"><span>    curl_easy_setopt(_ctx<span style="color:#000;font-weight:bold">-&gt;</span>easy, CURLOPT_POSTFIELDSIZE, (<span style="color:#458;font-weight:bold">long</span>)size);
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">this</span><span style="color:#000;font-weight:bold">-&gt;</span>perform();
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Client</span><span class="o">::</span><span class="n">post</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">curl_easy_setopt</span><span class="p">(</span><span class="n">_ctx</span><span class="o">-&gt;</span><span class="n">easy</span><span class="p">,</span> <span class="n">CURLOPT_POST</span><span class="p">,</span> <span class="mi">1L</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">curl_easy_setopt</span><span class="p">(</span><span class="n">_ctx</span><span class="o">-&gt;</span><span class="n">easy</span><span class="p">,</span> <span class="n">CURLOPT_URL</span><span class="p">,</span> <span class="n">make_url</span><span class="p">(</span><span class="n">url</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">curl_easy_setopt</span><span class="p">(</span><span class="n">_ctx</span><span class="o">-&gt;</span><span class="n">easy</span><span class="p">,</span> <span class="n">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">curl_easy_setopt</span><span class="p">(</span><span class="n">_ctx</span><span class="o">-&gt;</span><span class="n">easy</span><span class="p">,</span> <span class="n">CURLOPT_POSTFIELDSIZE</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">-&gt;</span><span class="n">perform</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="clientpost"><a class="anchor" href="#clientpost">#</a>Client::post</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">post</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">post</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">post</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>HTTP <strong>POST</strong> request, must be called in coroutine.</li>
 <li>The parameter <code>url</code> must be a string beginning with <code>/</code>.</li>
 </ul>
 <h3 id="clientput"><a class="anchor" href="#clientput">#</a>Client::put</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">put</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> path);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">put</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>HTTP <strong>PUT</strong> request, used to upload a file, must be called in coroutine.</li>
 <li>The parameter <code>url</code> must be a string beginning with <code>/</code>.</li>
 <li>The parameter <code>path</code> is path of the file to be uploaded.</li>
 </ul>
 <h3 id="clientremove_header"><a class="anchor" href="#clientremove_header">#</a>Client::remove_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove_header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>The headers added by <a href="#clientadd_header">add_header()</a> method will apply to all subsequent HTTP requests. If users do not want a header to appear in subsequent requests, this method can be called to remove the header.</li>
 </ul>
 <h3 id="clientreset"><a class="anchor" href="#clientreset">#</a>Client::reset</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> serv_url);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">serv_url</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Reset the server url.</li>
 </ul>
 <h3 id="clientresponse_code"><a class="anchor" href="#clientresponse_code">#</a>Client::response_code</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">response_code</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">response_code</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get the response code of the current HTTP request.</li>
 <li>Normally, the return value is a value between 100 and 511.</li>
 <li>If the HTTP request is not sent due to network error or other reasons, or no response from the server was received within the timeout period, this method returns 0, and <a href="#clientstrerror">strerror()</a> can be called to get the error message.</li>
 </ul>
 <h3 id="clientstatus"><a class="anchor" href="#clientstatus">#</a>Client::status</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">status</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">status</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Equal to <a href="#clientresponse_code">response_code()</a>.</li>
 </ul>
 <h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">strerror</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">strerror</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get the error message of the current HTTP request.</li>
 </ul>
 <h3 id="example"><a class="anchor" href="#example">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>    http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;https://github.com&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> r;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    c.get(<span style="color:#d14">&#34;/&#34;</span>);
-</span></span><span style="display:flex;"><span>    r <span style="color:#000;font-weight:bold">=</span> c.status();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;staus: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> r;
-</span></span><span style="display:flex;"><span>    LOG_IF(r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;error: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.strerror();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    c.get(<span style="color:#d14">&#34;/idealvin/co&#34;</span>);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    c.close();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(f);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">http</span><span class="o">::</span><span class="n">Client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;https://github.com&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">status</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;staus: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG_IF</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;error: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">strerror</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;body size: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">body</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;/idealvin/co&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;body size: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">body</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Content-Length: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">(</span><span class="s">&#34;Content-Length&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
 </span></span></code></pre></div><h2 id="httpreq"><a class="anchor" href="#httpreq">#</a>http::Req</h2>
 <p><code>http::Req</code> is an encapsulation of HTTP request, it is used in <a href="#httpserver">http::Server</a>.</p>
 <h3 id="reqreq"><a class="anchor" href="#reqreq">#</a>Req::Req</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Req() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Req</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Default constructor.</li>
 </ul>
 <h3 id="reqbody"><a class="anchor" href="#reqbody">#</a>Req::body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">body</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">body</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get the body data in the HTTP request.</li>
 <li>It returns a pointer, <strong>not null-terminated</strong>. Users must call <a href="#reqbody_size">body_size()</a> to get its length.</li>
 </ul>
 <h3 id="reqbody_size"><a class="anchor" href="#reqbody_size">#</a>Req::body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">body_size</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">body_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns length of the HTTP request body.</li>
 </ul>
 <h3 id="reqheader"><a class="anchor" href="#reqheader">#</a>Req::header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get value of a HTTP header. If the header does not exist, an empty string is returned.</li>
 </ul>
 <h3 id="reqis_method_xxx"><a class="anchor" href="#reqis_method_xxx">#</a>Req::is_method_xxx</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_get</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_head</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_post</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_put</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_delete</span>() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">is_method_options</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_head</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_post</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_put</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_delete</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_method_options</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine the method type of the HTTP request.</li>
 </ul>
 <h3 id="reqmethod"><a class="anchor" href="#reqmethod">#</a>Req::method</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Method <span style="color:#900;font-weight:bold">method</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Method</span> <span class="nf">method</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns the HTTP request method, the return value is one of <code>kGet, kHead, kPost, kPut, kDelete, kOptions</code>.</li>
 </ul>
 <h3 id="requrl"><a class="anchor" href="#requrl">#</a>Req::url</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> url() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">url</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns a reference to the url in the HTTP request. This value is part of the start line of the HTTP request.</li>
 </ul>
 <h3 id="reqversion"><a class="anchor" href="#reqversion">#</a>Req::version</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Version <span style="color:#900;font-weight:bold">version</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Version</span> <span class="nf">version</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns version in the HTTP request. The return value is one of <code>http::kHTTP10</code> or <code>http::kHTTP11</code>. Currently, HTTP/2.0 is not supported.</li>
 </ul>
 <h2 id="httpres"><a class="anchor" href="#httpres">#</a>http::Res</h2>
 <p><code>http::Res</code> class is the encapsulation of HTTP response, it is used in <a href="#httpserver">http::Server</a>.</p>
 <h3 id="resres"><a class="anchor" href="#resres">#</a>Res::Res</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Res();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Res</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Default constructor.</li>
 </ul>
 <h3 id="resadd_header"><a class="anchor" href="#resadd_header">#</a>Res::add_header</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> val);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">add_header</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#458;font-weight:bold">int</span> val);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_header</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Add a HTTP header.</li>
 </ul>
 <h3 id="resset_body"><a class="anchor" href="#resset_body">#</a>Res::set_body</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_body</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_body</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_body</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_body</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Set the body part of the HTTP response.</li>
 <li>The parameter <code>s</code> is the body data, and the parameter <code>n</code> is the length of <code>s</code>. In the second version, <code>s</code> ends with <code>'\0'</code>.</li>
 </ul>
 <h3 id="resset_status"><a class="anchor" href="#resset_status">#</a>Res::set_status</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set_status</span>(<span style="color:#458;font-weight:bold">int</span> status);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_status</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Set the HTTP response code, this value is generally between 100 and 511.</li>
 </ul>
 <h2 id="httpserver"><a class="anchor" href="#httpserver">#</a>http::Server</h2>
 <p><code>http::Server</code> is a coroutine-based HTTP server. It supports HTTPS. To use HTTPS, you need to install openssl first.</p>
 <h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>The default constructor, users don&rsquo;t need to care.</li>
 </ul>
 <h3 id="serveron_req"><a class="anchor" href="#serveron_req">#</a>Server::on_req</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> f);
-</span></span><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;&amp;</span> f)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span>Server<span style="color:#000;font-weight:bold">&amp;</span> on_req(<span style="color:#458;font-weight:bold">void</span> (T<span style="color:#000;font-weight:bold">::*</span>f)(<span style="color:#000;font-weight:bold">const</span> Req<span style="color:#000;font-weight:bold">&amp;</span>, Res<span style="color:#000;font-weight:bold">&amp;</span>), T<span style="color:#000;font-weight:bold">*</span> o);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_req</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="n">Req</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Res</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;&amp;</span> <span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_req</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="n">Req</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Res</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_req</span><span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="n">f</span><span class="p">)(</span><span class="k">const</span> <span class="n">Req</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Res</span><span class="o">&amp;</span><span class="p">),</span> <span class="n">T</span><span class="o">*</span> <span class="n">o</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Set a callback for handling a HTTP request.</li>
 <li>In the third version, the parameter <code>f</code> is a method in class <code>T</code>, and the parameter <code>o</code> is a pointer to type <code>T</code>.</li>
 <li>When the server receives a HTTP request, it will call the callback set by this method to handle the request.</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="o">=</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ca</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Start the HTTP server, this method will not block the current thread.</li>
 <li>The parameter <code>ip</code> is the server ip, which can be an IPv4 or IPv6 address, and the parameter <code>port</code> is the server port.</li>
@@ -1165,36 +1164,36 @@ https://github.com/alex-shpak/hugo-book
 <li>Starting from v3.0, the server no longer depends on the <code>http::Server</code> object after startup.</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Added since v2.0.2.</li>
 <li>Exit the HTTP server, close the listening socket, and no longer receive new connections.</li>
 <li>Since v3.0, after the HTTP server exits, previously established connections will be reset in the future.</li>
 </ul>
 <h3 id="example-1"><a class="anchor" href="#example-1">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">cb</span>(<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
-</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">200</span>);
-</span></span><span style="display:flex;"><span>            res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
-</span></span><span style="display:flex;"><span>        } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">404</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>        res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// http
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// https
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>
-</span></span><span style="display:flex;"><span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">cb</span><span class="p">(</span><span class="k">const</span> <span class="n">http</span><span class="o">::</span><span class="n">Req</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">http</span><span class="o">::</span><span class="n">Res</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">is_method_get</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">url</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;/hello&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_body</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">405</span><span class="p">);</span> <span class="c1">// method not allowed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// http
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">http</span><span class="o">::</span><span class="n">Server</span><span class="p">().</span><span class="n">on_req</span><span class="p">(</span><span class="n">cb</span><span class="p">).</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// https
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">http</span><span class="o">::</span><span class="n">Server</span><span class="p">().</span><span class="n">on_req</span><span class="p">(</span><span class="n">cb</span><span class="p">).</span><span class="n">start</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="s">&#34;privkey.pem&#34;</span><span class="p">,</span> <span class="s">&#34;certificate.pem&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><h2 id="static-web-server"><a class="anchor" href="#static-web-server">#</a>Static web server</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;.&#34;</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#458;font-weight:bold">int</span> port<span style="color:#000;font-weight:bold">=</span><span style="color:#099">80</span>);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">easy</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> root_dir, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">easy</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">root_dir</span><span class="o">=</span><span class="s">&#34;.&#34;</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="o">=</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">easy</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">root_dir</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ca</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>Start a static web server, the parameter <code>root_dir</code> is the root directory of the web server.</p>
@@ -1212,61 +1211,61 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// root dir of web server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/http.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;.&#34;</span><span class="p">,</span> <span class="s">&#34;root dir&#34;</span><span class="p">);</span> <span class="c1">// root dir of web server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">so</span><span class="o">::</span><span class="n">easy</span><span class="p">(</span><span class="n">FLG_d</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="c1">// mum never have to worry again
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="config-items"><a class="anchor" href="#config-items">#</a>Config items</h2>
 <p>Coost uses <a href="../../flag/">co.flag</a> to define config items for HTTP.</p>
 <h3 id="http_conn_timeout"><a class="anchor" href="#http_conn_timeout">#</a>http_conn_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_conn_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 connect timeout in ms for http client&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_conn_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 connect timeout in ms for http client&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Connect timeout in milliseconds for http::Client.</li>
 </ul>
 <h3 id="http_timeout"><a class="anchor" href="#http_timeout">#</a>http_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send or recv timeout in ms for http client&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 send or recv timeout in ms for http client&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Receive and send timeout (libcurl does not distinguish between receive and send timeout) in milliseconds for http::Client.</li>
 </ul>
 <h3 id="http_recv_timeout"><a class="anchor" href="#http_recv_timeout">#</a>http_recv_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_recv_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 recv timeout in ms for http server&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_recv_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 recv timeout in ms for http server&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Recv timeout in milliseconds for http::Server.</li>
 </ul>
 <h3 id="http_send_timeout"><a class="anchor" href="#http_send_timeout">#</a>http_send_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_send_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send timeout in ms for http server&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_send_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 send timeout in ms for http server&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Send timeout in milliseconds for http::Server.</li>
 </ul>
 <h3 id="http_conn_idle_sec"><a class="anchor" href="#http_conn_idle_sec">#</a>http_conn_idle_sec</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 http server may close the con...&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_conn_idle_sec</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s">&#34;#2 http server may close the con...&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Timeout in seconds for http::Server to keep an idle connection. If the server does not receive data from the client within this time, it may close the connection.</li>
 </ul>
 <h3 id="http_log"><a class="anchor" href="#http_log">#</a>http_log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(http_log, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;#2 enable http server log if true&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">http_log</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="s">&#34;#2 enable http server log if true&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>For http::Server, whether to print logs, the default is true.</li>
 <li>The log in http::Server will print the header part of HTTP request and response.</li>
 </ul>
 <h3 id="http_max_idle_conn"><a class="anchor" href="#http_max_idle_conn">#</a>http_max_idle_conn</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_idle_conn, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#2 max idle connections for http server&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_max_idle_conn</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="s">&#34;#2 max idle connections for http server&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>For http::Server, maximum number of idle connections. When this number is exceeded, some idle connections will be closed.</li>
 </ul>
 <h3 id="http_max_body_size"><a class="anchor" href="#http_max_body_size">#</a>http_max_body_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_body_size, <span style="color:#099">8</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#2 max size of http body, default: 8M&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_max_body_size</span><span class="p">,</span> <span class="mi">8</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#34;#2 max size of http body, default: 8M&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>The maximum body length supported by http::Server, the default is 8M.</li>
 </ul>
 <h3 id="http_max_header_size"><a class="anchor" href="#http_max_header_size">#</a>http_max_header_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(http_max_header_size, <span style="color:#099">4096</span>, <span style="color:#d14">&#34;#2 max size of http header&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">http_max_header_size</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="s">&#34;#2 max size of http header&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>The maximum header (the entire HTTP header) length supported by http::Server, the default is 4k.</li>
 </ul>

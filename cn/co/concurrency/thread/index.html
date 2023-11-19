@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -877,7 +876,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="cothread_id"><a class="anchor" href="#cothread_id">#</a>co::thread_id</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>uint32 <span style="color:#900;font-weight:bold">thread_id</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">thread_id</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>返回当前线程的 id 值。</li>
 </ul>
@@ -888,100 +887,100 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">sync_event</span>(<span style="color:#458;font-weight:bold">bool</span> manual_reset<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>, <span style="color:#458;font-weight:bold">bool</span> signaled<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">sync_event</span><span class="p">(</span><span class="kt">bool</span> <span class="n">manual_reset</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">signaled</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>构造函数，参数 <code>manual_reset</code> 表示是否手动将同步状态设置成未同步，参数 <code>signaled</code> 表示初始状态是否为同步状态。</li>
 </ul>
 <h4 id="sync_eventreset"><a class="anchor" href="#sync_eventreset">#</a>sync_event::reset</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>将事件设置成未同步状态。</li>
 <li>当构造函数中 <code>manual_reset</code> 为 true 时，用户在调用 <a href="#sync_eventwait">wait()</a> 后需要手动调用此方法，将事件设置成未同步状态。</li>
 </ul>
 <h4 id="sync_eventsignal"><a class="anchor" href="#sync_eventsignal">#</a>sync_event::signal</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">signal</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">signal</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>产生同步信号，将事件设置成同步状态。</li>
 </ul>
 <h4 id="sync_eventwait"><a class="anchor" href="#sync_eventwait">#</a>sync_event::wait</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> wait();
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">bool</span> wait(uint32 ms);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span> <span class="n">wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 一直等待直到事件变成同步状态。</li>
 <li>2, 等待直到事件变成同步状态或超时。参数 <code>ms</code> 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。</li>
 <li>当构造函数中 <code>manual_reset</code> 为 false 时，<a href="#sync_eventwait">wait()</a> 结束时会自动将事件设置成未同步状态。</li>
 </ul>
 <h4 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> manual_reset <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">false</span>;
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>sync_event ev(manual_reset);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f1</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(<span style="color:#099">1000</span>)) {
-</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: timedout..&#34;</span>;
-</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f1: event signaled..&#34;</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (manual_reset) ev.reset();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f2</span>() {
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;f2: send a signal..&#34;</span>;
-</span></span><span style="display:flex;"><span>    ev.signal();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f1).detach();
-</span></span><span style="display:flex;"><span>    std<span style="color:#000;font-weight:bold">::</span><span style="color:#000;font-weight:bold">thread</span>(f2).detach();
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">manual_reset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">sync_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">manual_reset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f1: timedout..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f1: event signaled..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">manual_reset</span><span class="p">)</span> <span class="n">ev</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f2</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f2: send a signal..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ev</span><span class="p">.</span><span class="n">signal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">f1</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">f2</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="cotls"><a class="anchor" href="#cotls">#</a>co::tls</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">tls</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">tls</span><span class="p">;</span>
 </span></span></code></pre></div><p><code>co::tls</code> 对系统的 <strong>thread local</strong> 接口进行封装。</p>
 <blockquote class="book-hint warning">
   v3.0.1 中移除了 <code>thread_ptr</code>，取而代之提供了 <code>co::tls</code>。
 </blockquote>
 
 <h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>tls();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">tls</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>构造函数，分配系统资源及初始化。</li>
 </ul>
 <h4 id="tlsget"><a class="anchor" href="#tlsget">#</a>tls::get</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回当前线程拥有的指针值。</li>
 </ul>
 <h4 id="tlsset"><a class="anchor" href="#tlsset">#</a>tls::set</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">set</span>(T<span style="color:#000;font-weight:bold">*</span> p);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>设置当前线程拥有的指针值。</li>
 </ul>
 <h4 id="tlsoperator-"><a class="anchor" href="#tlsoperator-">#</a>tls::operator-&gt;</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回当前线程拥有的指针值。</li>
 </ul>
 <h4 id="tlsoperator"><a class="anchor" href="#tlsoperator">#</a>tls::operator*</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回当前线程拥有指针所指向对象的引用。</li>
 </ul>
 <h4 id="operator"><a class="anchor" href="#operator">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断当前线程所拥有的指针是否等于 <code>p</code>。</li>
 </ul>
 <h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断当前线程所拥有的指针是否不等于 <code>p</code>。</li>
 </ul>
 <h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>当前线程所拥有的指针不是 NULL 时，返回 true，否则返回 false。</li>
 </ul>

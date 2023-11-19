@@ -27,8 +27,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -851,63 +850,63 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> mutex();
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> mutex(mutex<span style="color:#000;font-weight:bold">&amp;&amp;</span> m);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> mutex(<span style="color:#000;font-weight:bold">const</span> mutex<span style="color:#000;font-weight:bold">&amp;</span> m);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">mutex</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">mutex</span><span class="p">(</span><span class="n">mutex</span><span class="o">&amp;&amp;</span> <span class="n">m</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">mutex</span><span class="p">(</span><span class="k">const</span> <span class="n">mutex</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, default constructor.</li>
 <li>2, move constructor.</li>
 <li>3, copy constructor, only increases the internal reference count by 1.</li>
 </ul>
 <h3 id="lock"><a class="anchor" href="#lock">#</a>lock</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">lock</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">lock</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Acquire the lock, will block until the lock is acquired.</li>
 </ul>
 <h3 id="try_lock"><a class="anchor" href="#try_lock">#</a>try_lock</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">try_lock</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">try_lock</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Acquire the lock, will not block, return true when the lock is successfully acquired, otherwise return false.</li>
 </ul>
 <h3 id="unlock"><a class="anchor" href="#unlock">#</a>unlock</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">unlock</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">unlock</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Release the lock, usually called by the coroutine or thread that previously obtained the lock.</li>
 </ul>
 <h2 id="comutex_guard"><a class="anchor" href="#comutex_guard">#</a>co::mutex_guard</h2>
 <h3 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">mutex_guard</span>(co<span style="color:#000;font-weight:bold">::</span>mutex<span style="color:#000;font-weight:bold">&amp;</span> m);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">mutex_guard</span>(co<span style="color:#000;font-weight:bold">::</span>mutex<span style="color:#000;font-weight:bold">*</span> m);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">mutex_guard</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">mutex</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">mutex_guard</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">mutex</span><span class="o">*</span> <span class="n">m</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Call <code>m.lock()</code> to acquire the lock, the parameter <code>m</code> is a reference or pointer of the <code>co::mutex</code> class.</li>
 </ul>
 <h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>mutex_guard();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">mutex_guard</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Release the lock acquired in the constructor.</li>
 </ul>
 <h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>mutex g_m;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> g_v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>mutex_guard g(g_m);
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">++</span>g_v;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>     flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>     go(f);
-</span></span><span style="display:flex;"><span>     go(f);
-</span></span><span style="display:flex;"><span>     f();
-</span></span><span style="display:flex;"><span>     f();
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">100</span>);
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;g_v: &#34;</span>, g_v);
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/cout.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">mutex</span> <span class="n">g_m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">g_v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">mutex_guard</span> <span class="n">g</span><span class="p">(</span><span class="n">g_m</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="o">++</span><span class="n">g_v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">f</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">     <span class="n">f</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;g_v: &#34;</span><span class="p">,</span> <span class="n">g_v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div></article>
  
       

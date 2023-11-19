@@ -35,8 +35,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -958,33 +957,33 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="快速上手"><a class="anchor" href="#%e5%bf%ab%e9%80%9f%e4%b8%8a%e6%89%8b">#</a>快速上手</h2>
 <h3 id="编译"><a class="anchor" href="#%e7%bc%96%e8%af%91">#</a>编译</h3>
 <p>建议安装 <a href="https://github.com/xmake-io/xmake">xmake</a>，在 coost 根目录执行如下命令构建所有子项目：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake -a
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">xmake -a
 </span></span></code></pre></div><p>如果需要使用 http::Client, SSL 或 HTTPS 特性，则可以用下面的命令构建：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake f --with_libcurl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span> --with_openssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
-</span></span><span style="display:flex;"><span>xmake -a
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">xmake f --with_libcurl<span class="o">=</span><span class="nb">true</span> --with_openssl<span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">xmake -a
 </span></span></code></pre></div><p>xmake 会自动从网络安装 libcurl 与 openssl，视网络情况，这个过程可能会较慢。<code>xmake -a</code> 会编译 <a href="https://github.com/idealvin/coost/tree/master/src">libco</a>, <a href="https://github.com/idealvin/coost/tree/master/gen">gen</a>, <a href="https://github.com/idealvin/coost/tree/master/unitest">unitest</a> 以及 <a href="https://github.com/idealvin/coost/tree/master/test">test</a> 目录下面的所有测试代码。编译完后可以执行如下命令，运行 coost 中的测试程序：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake r unitest
-</span></span><span style="display:flex;"><span>xmake r flag
-</span></span><span style="display:flex;"><span>xmake r log -cout
-</span></span><span style="display:flex;"><span>xmake r co
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">xmake r unitest
+</span></span><span class="line"><span class="cl">xmake r flag
+</span></span><span class="line"><span class="cl">xmake r log -cout
+</span></span><span class="line"><span class="cl">xmake r co
 </span></span></code></pre></div><h3 id="使用-coost-开发-c-项目"><a class="anchor" href="#%e4%bd%bf%e7%94%a8-coost-%e5%bc%80%e5%8f%91-c-%e9%a1%b9%e7%9b%ae">#</a>使用 coost 开发 C++ 项目</h3>
 <p>最简单的，可以直接包含 <a href="https://github.com/idealvin/coost/blob/master/include/co/all.h">co/all.h</a>，使用 coost 中的所有特性。如果担心影响编译速度，也可以只包含需要用到的头文件，如包含 <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>，可以使用 flag, log 以及协程相关的所有特性。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/all.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>DEF_string(s, <span style="color:#d14">&#34;nice&#34;</span>, <span style="color:#d14">&#34;xxx&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s;
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/all.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;nice&#34;</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>coost 中的部分组件用 flag 定义配置项，因此一般需要在 main 函数开头调用 <code>flag::parse()</code> 解析命令行参数。</p>
 <h2 id="性能"><a class="anchor" href="#%e6%80%a7%e8%83%bd">#</a>性能</h2>
 <h3 id="内存分配器"><a class="anchor" href="#%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d%e5%99%a8">#</a>内存分配器</h3>
 <p>ptmalloc、jemalloc、tcmalloc 以及 mimalloc 等内存分配器，小内存释放后大概率不会归还给操作系统，这可能<strong>造成释放大量小内存后内存占用量却始终不降的疑似内存泄漏的现象</strong>。为解决此问题，coost 设计了一个专用的内存分配器，在兼顾性能的同时，会尽可能多的将释放的内存归还给系统，有利于降低程序的内存占用量，在实测中也取得了良好的效果。</p>
 <p><a href="https://github.com/idealvin/coost/blob/master/test/mem.cc">co/test</a> 中提供了简单的测试代码，可以执行如下命令编译及运行：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake b mem
-</span></span><span style="display:flex;"><span>xmake r mem -t <span style="color:#099">4</span> -s
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">xmake b mem
+</span></span><span class="line"><span class="cl">xmake r mem -t <span class="m">4</span> -s
 </span></span></code></pre></div><p><code>-t</code> 指定线程数量，<code>-s</code> 表示与系统内存分配器进行对比。下面是在不同系统中的测试结果(4线程)：</p>
 <table>
 <thead>
@@ -1154,152 +1153,152 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="核心组件"><a class="anchor" href="#%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6">#</a>核心组件</h2>
 <h3 id="面向玄学编程"><a class="anchor" href="#%e9%9d%a2%e5%90%91%e7%8e%84%e5%ad%a6%e7%bc%96%e7%a8%8b">#</a>面向玄学编程</h3>
 <p><a href="https://github.com/idealvin/coost/blob/master/include/co/god.h">co/god.h</a> 提供模板相关的一些功能。模板用到深处有点玄，有些 C++ 程序员称之为面向玄学编程。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/god.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>    god<span style="color:#000;font-weight:bold">::</span>bless_no_bugs();
-</span></span><span style="display:flex;"><span>    god<span style="color:#000;font-weight:bold">::</span>align_up<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#099">8</span><span style="color:#000;font-weight:bold">&gt;</span>(<span style="color:#099">31</span>); <span style="color:#998;font-style:italic">// -&gt; 32
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    god<span style="color:#000;font-weight:bold">::</span>is_same<span style="color:#000;font-weight:bold">&lt;</span>T, <span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">bool</span><span style="color:#000;font-weight:bold">&gt;</span>(); <span style="color:#998;font-style:italic">// T is int or bool?
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/god.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">god</span><span class="o">::</span><span class="n">bless_no_bugs</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">god</span><span class="o">::</span><span class="n">align_up</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">31</span><span class="p">);</span> <span class="c1">// -&gt; 32
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">god</span><span class="o">::</span><span class="n">is_same</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">bool</span><span class="o">&gt;</span><span class="p">();</span> <span class="c1">// T is int or bool?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></div><h3 id="flag"><a class="anchor" href="#flag">#</a>flag</h3>
 <p><strong><a href="../../co/flag/">flag</a></strong> 是一个简单易用的命令行参数与配置文件解析库，coost 中的一些组件用它定义配置项。</p>
 <p>每个 <strong>flag(配置项)</strong> 都有一个默认值，在缺省情况下，程序可以按默认配置参数运行。用户也可以从<strong>命令行或配置文件</strong>传入参数，在需要配置文件时，还可以用 <code>-mkconf</code> <strong>自动生成配置文件</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// xx.cc
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>DEF_bool(x, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;x&#34;</span>);
-</span></span><span style="display:flex;"><span>DEF_bool(debug, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;dbg&#34;</span>, d);
-</span></span><span style="display:flex;"><span>DEF_uint32(u, <span style="color:#099">0</span>, <span style="color:#d14">&#34;xxx&#34;</span>);
-</span></span><span style="display:flex;"><span>DEF_string(s, <span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;x: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_x;
-</span></span><span style="display:flex;"><span>    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;y: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_y;
-</span></span><span style="display:flex;"><span>    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;debug: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_debug;
-</span></span><span style="display:flex;"><span>    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;u: &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_u;
-</span></span><span style="display:flex;"><span>    COUT <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;|&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> FLG_s.size();
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// xx.cc
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/cout.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;x&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;dbg&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">COUT</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;x: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">COUT</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;y: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">COUT</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;debug: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_debug</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">COUT</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;u: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_u</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">COUT</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_s</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;|&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>上述代码中 <code>DEF_</code> 开头的宏定义了 4 个 flag，每个 flag 对应一个全局变量，变量名是 <code>FLG_</code> 加 flag 名，其中 flag <code>debug</code> 还有一个别名 <code>d</code>。上述代码编译后，可以按如下方式运行：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>./xx                  <span style="color:#998;font-style:italic"># 按默认配置运行</span>
-</span></span><span style="display:flex;"><span>./xx -x -s good       <span style="color:#998;font-style:italic"># x -&gt; true, s -&gt; &#34;good&#34;</span>
-</span></span><span style="display:flex;"><span>./xx -debug           <span style="color:#998;font-style:italic"># debug -&gt; true</span>
-</span></span><span style="display:flex;"><span>./xx -xd              <span style="color:#998;font-style:italic"># x -&gt; true, debug -&gt; true</span>
-</span></span><span style="display:flex;"><span>./xx -u 8k            <span style="color:#998;font-style:italic"># u -&gt; 8192, 整数可带单位(k,m,g,t,p), 不分大小写</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>./xx -mkconf          <span style="color:#998;font-style:italic"># 自动生成配置文件 xx.conf</span>
-</span></span><span style="display:flex;"><span>./xx xx.conf          <span style="color:#998;font-style:italic"># 从配置文件传入参数</span>
-</span></span><span style="display:flex;"><span>./xx -conf xx.conf    <span style="color:#998;font-style:italic"># 与上同</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">./xx                  <span class="c1"># 按默认配置运行</span>
+</span></span><span class="line"><span class="cl">./xx -x -s good       <span class="c1"># x -&gt; true, s -&gt; &#34;good&#34;</span>
+</span></span><span class="line"><span class="cl">./xx -debug           <span class="c1"># debug -&gt; true</span>
+</span></span><span class="line"><span class="cl">./xx -xd              <span class="c1"># x -&gt; true, debug -&gt; true</span>
+</span></span><span class="line"><span class="cl">./xx -u 8k            <span class="c1"># u -&gt; 8192, 整数可带单位(k,m,g,t,p), 不分大小写</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">./xx -mkconf          <span class="c1"># 自动生成配置文件 xx.conf</span>
+</span></span><span class="line"><span class="cl">./xx xx.conf          <span class="c1"># 从配置文件传入参数</span>
+</span></span><span class="line"><span class="cl">./xx -conf xx.conf    <span class="c1"># 与上同</span>
 </span></span></code></pre></div><h3 id="log"><a class="anchor" href="#log">#</a>log</h3>
 <p><strong><a href="../../co/log/">log</a></strong> 是一个高性能日志组件，coost 中的一些组件用它打印日志。</p>
 <p>log 支持两种类型的日志：一种是 level log，分为 debug, info, warning, error, fatal 5 个级别，<strong>打印 fatal 级别的日志会终止程序的运行</strong>；另一种是 topic log，日志按 topic 分类，不同 topic 的日志写入不同的文件。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/log.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    TLOG(<span style="color:#d14">&#34;xx&#34;</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;s&#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>; <span style="color:#998;font-style:italic">// topic log
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    DLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// debug
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;   <span style="color:#998;font-style:italic">// info
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    WLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// warning
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    ELOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// error
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    FLOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello &#34;</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">23</span>;  <span style="color:#998;font-style:italic">// fatal
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/log.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;s&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// topic log
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>  <span class="c1">// debug
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>   <span class="c1">// info
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">WLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>  <span class="c1">// warning
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ELOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>  <span class="c1">// error
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">FLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>  <span class="c1">// fatal
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>log 还提供了一系列 <code>CHECK</code> 宏，可以视为加强版的 <code>assert</code>，它们在 debug 模式下也不会被清除。CHECK 断言失败时，log 会打印函数调用栈信息，然后终止程序的运行。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p <span style="color:#000;font-weight:bold">=</span> malloc(<span style="color:#099">32</span>);
-</span></span><span style="display:flex;"><span>CHECK(p <span style="color:#000;font-weight:bold">!=</span> <span style="color:#0086b3">NULL</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;malloc failed..&#34;</span>;
-</span></span><span style="display:flex;"><span>CHECK_NE(p, <span style="color:#0086b3">NULL</span>) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;malloc failed..&#34;</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;malloc failed..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHECK_NE</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;malloc failed..&#34;</span><span class="p">;</span>
 </span></span></code></pre></div><h3 id="unitest"><a class="anchor" href="#unitest">#</a>unitest</h3>
 <p><a href="../../co/unitest/">unitest</a> 是一个简单易用的单元测试框架，coost 中的很多组件用它写单元测试代码，为 coost 的稳定性提供了重要保障。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/os.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">namespace</span> test {
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>DEF_test(os) {
-</span></span><span style="display:flex;"><span>    DEF_case(homedir) {
-</span></span><span style="display:flex;"><span>        EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DEF_case(cpunum) {
-</span></span><span style="display:flex;"><span>        EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>} <span style="color:#998;font-style:italic">// namespace test
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">homedir</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EXPECT_NE</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">(),</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">cpunum</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EXPECT_GT</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// namespace test
 </span></span></span></code></pre></div><p>上面是一个简单的例子，<code>DEF_test</code> 宏定义了一个测试单元，实际上就是一个函数。<code>DEF_case</code> 宏定义了测试用例，每个测试用例实际上就是一个代码块。main 函数一般只需要下面几行：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    unitest<span style="color:#000;font-weight:bold">::</span>run_tests();
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unitest</span><span class="o">::</span><span class="n">run_tests</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p><a href="https://github.com/idealvin/coost/tree/master/unitest">unitest</a> 目录下面是 coost 中的单元测试代码，编译后可执行下述命令运行：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>xmake r unitest      <span style="color:#998;font-style:italic"># 运行所有单元测试用例</span>
-</span></span><span style="display:flex;"><span>xmake r unitest -os  <span style="color:#998;font-style:italic"># 仅运行 os 单元中的测试用例</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">xmake r unitest      <span class="c1"># 运行所有单元测试用例</span>
+</span></span><span class="line"><span class="cl">xmake r unitest -os  <span class="c1"># 仅运行 os 单元中的测试用例</span>
 </span></span></code></pre></div><h3 id="基准测试"><a class="anchor" href="#%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95">#</a>基准测试</h3>
 <p><a href="../../co/benchmark/">benchmark</a> 是一个简单易用的基准测试框架。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/benchmark.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/mem.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>BM_group(malloc) {
-</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    BM_add(<span style="color:#000;font-weight:bold">::</span>malloc)(
-</span></span><span style="display:flex;"><span>        p <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">::</span>malloc(<span style="color:#099">32</span>);
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    BM_use(p);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    BM_add(co<span style="color:#000;font-weight:bold">::</span>alloc)(
-</span></span><span style="display:flex;"><span>        p <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>alloc(<span style="color:#099">32</span>);
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    BM_use(p);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    bm<span style="color:#000;font-weight:bold">::</span>run_benchmarks();
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/benchmark.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/mem.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">BM_group</span><span class="p">(</span><span class="n">malloc</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">BM_add</span><span class="p">(</span><span class="o">::</span><span class="n">malloc</span><span class="p">)(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">=</span> <span class="o">::</span><span class="n">malloc</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BM_use</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">BM_add</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">alloc</span><span class="p">)(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">alloc</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BM_use</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bm</span><span class="o">::</span><span class="n">run_benchmarks</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>上例中，<code>BM_group</code> 定义了一个测试组，<code>BM_add</code> 添加了两个需要进行比较的测试用例，<code>BM_use</code> 防止编译器将测试代码优化掉。</p>
 <p>基准测试结果以 markdown table 格式输出，如下所示：
 <img src="../../../images/bm.png" alt="bm.png" /></p>
 <h3 id="json"><a class="anchor" href="#json">#</a>JSON</h3>
 <p>coost v3.0 中，<strong><a href="https://github.com/idealvin/coost/blob/master/include/co/json.h">Json</a></strong> 采用<strong>流畅(fluent)接口设计</strong>，用起来更加方便。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// {&#34;a&#34;:23,&#34;b&#34;:false,&#34;s&#34;:&#34;123&#34;,&#34;v&#34;:[1,2,3],&#34;o&#34;:{&#34;xx&#34;:0}}
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>Json x <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>    { <span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">23</span> },
-</span></span><span style="display:flex;"><span>    { <span style="color:#d14">&#34;b&#34;</span>, <span style="color:#0086b3">false</span> },
-</span></span><span style="display:flex;"><span>    { <span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;123&#34;</span> },
-</span></span><span style="display:flex;"><span>    { <span style="color:#d14">&#34;v&#34;</span>, {<span style="color:#099">1</span>,<span style="color:#099">2</span>,<span style="color:#099">3</span>} },
-</span></span><span style="display:flex;"><span>    { <span style="color:#d14">&#34;o&#34;</span>, {
-</span></span><span style="display:flex;"><span>        {<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#099">0</span>}
-</span></span><span style="display:flex;"><span>    }},
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// equal to x
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>Json y <span style="color:#000;font-weight:bold">=</span> Json()
-</span></span><span style="display:flex;"><span>    .add_member(<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#099">23</span>)
-</span></span><span style="display:flex;"><span>    .add_member(<span style="color:#d14">&#34;b&#34;</span>, <span style="color:#0086b3">false</span>)
-</span></span><span style="display:flex;"><span>    .add_member(<span style="color:#d14">&#34;s&#34;</span>, <span style="color:#d14">&#34;123&#34;</span>)
-</span></span><span style="display:flex;"><span>    .add_member(<span style="color:#d14">&#34;v&#34;</span>, Json().push_back(<span style="color:#099">1</span>).push_back(<span style="color:#099">2</span>).push_back(<span style="color:#099">3</span>))
-</span></span><span style="display:flex;"><span>    .add_member(<span style="color:#d14">&#34;o&#34;</span>, Json().add_member(<span style="color:#d14">&#34;xx&#34;</span>, <span style="color:#099">0</span>));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x.get(<span style="color:#d14">&#34;a&#34;</span>).as_int();       <span style="color:#998;font-style:italic">// 23
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;s&#34;</span>).as_string();    <span style="color:#998;font-style:italic">// &#34;123&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;s&#34;</span>).as_int();       <span style="color:#998;font-style:italic">// 123, string -&gt; int
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;v&#34;</span>, <span style="color:#099">0</span>).as_int();    <span style="color:#998;font-style:italic">// 1
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;v&#34;</span>, <span style="color:#099">2</span>).as_int();    <span style="color:#998;font-style:italic">// 3
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;o&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>).as_int(); <span style="color:#998;font-style:italic">// 0
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>x[<span style="color:#d14">&#34;a&#34;</span>] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">23</span>;          <span style="color:#998;font-style:italic">// true
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x[<span style="color:#d14">&#34;s&#34;</span>] <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;123&#34;</span>;       <span style="color:#998;font-style:italic">// true
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>x.get(<span style="color:#d14">&#34;o&#34;</span>, <span style="color:#d14">&#34;xx&#34;</span>) <span style="color:#000;font-weight:bold">!=</span> <span style="color:#099">0</span>; <span style="color:#998;font-style:italic">// false
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// {&#34;a&#34;:23,&#34;b&#34;:false,&#34;s&#34;:&#34;123&#34;,&#34;v&#34;:[1,2,3],&#34;o&#34;:{&#34;xx&#34;:0}}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">23</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;123&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;v&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// equal to x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Json</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;123&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;v&#34;</span><span class="p">,</span> <span class="n">Json</span><span class="p">().</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span>       <span class="c1">// 23
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">).</span><span class="n">as_string</span><span class="p">();</span>    <span class="c1">// &#34;123&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span>       <span class="c1">// 123, string -&gt; int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;v&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span>    <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;v&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span>    <span class="c1">// 3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">23</span><span class="p">;</span>          <span class="c1">// true
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#34;123&#34;</span><span class="p">;</span>       <span class="c1">// true
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// false
 </span></span></span></code></pre></div><h3 id="协程"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b">#</a>协程</h3>
 <p>coost 实现了类似 golang 中 goroutine 的协程机制，它有如下特性：</p>
 <ul>
@@ -1308,37 +1307,37 @@ https://github.com/alex-shpak/hugo-book
 <li>各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程。</li>
 <li>支持<a href="../../co/concurrency/coroutine/event/">协程同步事件</a>、<a href="../../co/concurrency/coroutine/mutex/">协程锁</a>、<a href="../../co/concurrency/coroutine/chan/">channel</a>、<a href="../../co/concurrency/coroutine/wg/">waitgroup</a> 等协程同步机制。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>wait_group wg;
-</span></span><span style="display:flex;"><span>    wg.add(<span style="color:#099">2</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    go([wg](){
-</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello world&#34;</span>;
-</span></span><span style="display:flex;"><span>        wg.done();
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    go([wg](){
-</span></span><span style="display:flex;"><span>        LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;hello again&#34;</span>;
-</span></span><span style="display:flex;"><span>        wg.done();
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    wg.wait();
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">wait_group</span> <span class="n">wg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wg</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([</span><span class="n">wg</span><span class="p">](){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello world&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">wg</span><span class="p">.</span><span class="n">done</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([</span><span class="n">wg</span><span class="p">](){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello again&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">wg</span><span class="p">.</span><span class="n">done</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">wg</span><span class="p">.</span><span class="n">wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>上面的代码中，<code>go()</code> 创建的协程会根据默认策略分配到不同的调度线程中。用户也可以自行控制协程的调度：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// run f1 and f2 in the same scheduler
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">auto</span> s <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>next_sched();
-</span></span><span style="display:flex;"><span>s<span style="color:#000;font-weight:bold">-&gt;</span>go(f1);
-</span></span><span style="display:flex;"><span>s<span style="color:#000;font-weight:bold">-&gt;</span>go(f2);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// run f in all schedulers
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">for</span> (<span style="color:#000;font-weight:bold">auto</span><span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#900;font-weight:bold">s</span> : co<span style="color:#000;font-weight:bold">::</span>scheds()) {
-</span></span><span style="display:flex;"><span>    s<span style="color:#000;font-weight:bold">-&gt;</span>go(f);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// run f1 and f2 in the same scheduler
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">next_sched</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">-&gt;</span><span class="n">go</span><span class="p">(</span><span class="n">f1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">-&gt;</span><span class="n">go</span><span class="p">(</span><span class="n">f2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// run f in all schedulers
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">s</span> <span class="p">:</span> <span class="n">co</span><span class="o">::</span><span class="n">scheds</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="网络编程"><a class="anchor" href="#%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">#</a>网络编程</h3>
 <p>coost 提供了一套基于协程的网络编程框架：</p>
 <ul>
@@ -1346,69 +1345,69 @@ https://github.com/alex-shpak/hugo-book
 <li><a href="../../co/net/tcp/">TCP</a>、<a href="../../co/net/http/">HTTP</a>、<a href="../../co/net/rpc/">RPC</a> 等高层网络编程组件，兼容 IPv6，同时支持 SSL，用起来比 socket API 更方便。</li>
 </ul>
 <p><strong>RPC server</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/rpc.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/time.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    rpc<span style="color:#000;font-weight:bold">::</span>Server()
-</span></span><span style="display:flex;"><span>        .add_service(<span style="color:#000;font-weight:bold">new</span> xx<span style="color:#000;font-weight:bold">::</span>HelloWorldImpl)
-</span></span><span style="display:flex;"><span>        .start(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;/xx&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (;;) sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">80000</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rpc.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/time.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc</span><span class="o">::</span><span class="n">Server</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">add_service</span><span class="p">(</span><span class="k">new</span> <span class="n">xx</span><span class="o">::</span><span class="n">HelloWorldImpl</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="s">&#34;/xx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(;;)</span> <span class="n">sleep</span><span class="o">::</span><span class="n">sec</span><span class="p">(</span><span class="mi">80000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>rpc::Server 同时支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 RPC 服务：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl http://127.0.0.1:7788/xx --request POST --data <span style="color:#d14">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl http://127.0.0.1:7788/xx --request POST --data <span class="s1">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
 </span></span></code></pre></div><p><strong>静态 web server</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/flag.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/http.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>DEF_string(d, <span style="color:#d14">&#34;.&#34;</span>, <span style="color:#d14">&#34;root dir&#34;</span>); <span style="color:#998;font-style:italic">// docroot for the web server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    so<span style="color:#000;font-weight:bold">::</span>easy(FLG_d.c_str()); <span style="color:#998;font-style:italic">// mum never have to worry again
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/http.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;.&#34;</span><span class="p">,</span> <span class="s">&#34;root dir&#34;</span><span class="p">);</span> <span class="c1">// docroot for the web server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">so</span><span class="o">::</span><span class="n">easy</span><span class="p">(</span><span class="n">FLG_d</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="c1">// mum never have to worry again
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p><strong>HTTP server</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">cb</span>(<span style="color:#000;font-weight:bold">const</span> http<span style="color:#000;font-weight:bold">::</span>Req<span style="color:#000;font-weight:bold">&amp;</span> req, http<span style="color:#000;font-weight:bold">::</span>Res<span style="color:#000;font-weight:bold">&amp;</span> res) {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> (req.is_method_get()) {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (req.url() <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;/hello&#34;</span>) {
-</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">200</span>);
-</span></span><span style="display:flex;"><span>            res.set_body(<span style="color:#d14">&#34;hello world&#34;</span>);
-</span></span><span style="display:flex;"><span>        } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>            res.set_status(<span style="color:#099">404</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>        res.set_status(<span style="color:#099">405</span>); <span style="color:#998;font-style:italic">// method not allowed
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// http
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(<span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">80</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// https
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>http<span style="color:#000;font-weight:bold">::</span>Server().on_req(cb).start(
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;0.0.0.0&#34;</span>, <span style="color:#099">443</span>, <span style="color:#d14">&#34;privkey.pem&#34;</span>, <span style="color:#d14">&#34;certificate.pem&#34;</span>
-</span></span><span style="display:flex;"><span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">cb</span><span class="p">(</span><span class="k">const</span> <span class="n">http</span><span class="o">::</span><span class="n">Req</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">http</span><span class="o">::</span><span class="n">Res</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">is_method_get</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">url</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;/hello&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_body</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">405</span><span class="p">);</span> <span class="c1">// method not allowed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// http
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">http</span><span class="o">::</span><span class="n">Server</span><span class="p">().</span><span class="n">on_req</span><span class="p">(</span><span class="n">cb</span><span class="p">).</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// https
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">http</span><span class="o">::</span><span class="n">Server</span><span class="p">().</span><span class="n">on_req</span><span class="p">(</span><span class="n">cb</span><span class="p">).</span><span class="n">start</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="s">&#34;privkey.pem&#34;</span><span class="p">,</span> <span class="s">&#34;certificate.pem&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><p><strong>HTTP client</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>    http<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;https://github.com&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    c.get(<span style="color:#d14">&#34;/&#34;</span>);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;response code: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.status();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;body size: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.body().size();
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;Content-Length: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header(<span style="color:#d14">&#34;Content-Length&#34;</span>);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> c.header();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    c.post(<span style="color:#d14">&#34;/hello&#34;</span>, <span style="color:#d14">&#34;data xxx&#34;</span>);
-</span></span><span style="display:flex;"><span>    LOG <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;response code: &#34;</span><span style="color:#000;font-weight:bold">&lt;&lt;</span> c.status();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(f);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">http</span><span class="o">::</span><span class="n">Client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;https://github.com&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;response code: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">status</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;body size: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">body</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Content-Length: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">(</span><span class="s">&#34;Content-Length&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">header</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="s">&#34;data xxx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;response code: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">status</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
 </span></span></code></pre></div></article>
  
       

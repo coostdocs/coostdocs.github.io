@@ -27,8 +27,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -838,22 +837,22 @@ https://github.com/alex-shpak/hugo-book
   <article class="markdown"><h2 id="coroutine-based-network-programming-model"><a class="anchor" href="#coroutine-based-network-programming-model">#</a>Coroutine based network programming model</h2>
 <p>It is easy to write high-concurrency and high-performance network programs with coroutine. Although a coroutine may block, the scheduling thread can quickly switch between a large number of coroutines. Therefore, to achieve high concurrency, we just need to create more coroutines.</p>
 <h3 id="network-model-for-tcp-server"><a class="anchor" href="#network-model-for-tcp-server">#</a>Network model for TCP server</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(<span style="color:#458;font-weight:bold">int</span> fd) {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>recv(fd, ...);  <span style="color:#998;font-style:italic">// recv request from client
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);       <span style="color:#998;font-style:italic">// process the request
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(fd, ...);  <span style="color:#998;font-style:italic">// send response to client
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">server_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>accept(...);
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) go(on_connection, fd);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(server_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_connection</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">...);</span>  <span class="c1">// recv request from client
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>       <span class="c1">// process the request
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">...);</span>  <span class="c1">// send response to client
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">server_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">accept</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">go</span><span class="p">(</span><span class="n">on_connection</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">server_fun</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>One coroutine for each connection.</li>
 <li>In one coroutine, call <code>co::accept()</code> to accept client connections.</li>
@@ -861,34 +860,34 @@ https://github.com/alex-shpak/hugo-book
 <li><code>on_connection()</code> is the coroutine function for handling connections, receiving, processing and sending data are performed in a synchronous manner in the coroutine, and we do not need any asynchronous callback.</li>
 </ul>
 <h3 id="network-model-for-tcp-client"><a class="anchor" href="#network-model-for-tcp-client">#</a>Network model for TCP client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>connected) co<span style="color:#000;font-weight:bold">::</span>connect(...);  <span style="color:#998;font-style:italic">// connect to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(...);                     <span style="color:#998;font-style:italic">// send request to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>recv(...);                     <span style="color:#998;font-style:italic">// recv response from the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);                      <span style="color:#998;font-style:italic">// process the response
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) co<span style="color:#000;font-weight:bold">::</span>close(...);          <span style="color:#998;font-style:italic">// close the connection
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(client_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">connected</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">connect</span><span class="p">(...);</span>  <span class="c1">// connect to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(...);</span>                     <span class="c1">// send request to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(...);</span>                     <span class="c1">// recv response from the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>                      <span class="c1">// process the response
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">over</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(...);</span>          <span class="c1">// close the connection
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>Connecting, sending, recving and processing data are performed in a synchronous manner in the coroutine.</li>
 </ul>
 <p>In actual applications, <a href="../../concurrency/coroutine/pool/">co::pool</a> is generally used as a connection pool to avoid creating too many connections:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool g_p;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>pool_guard<span style="color:#000;font-weight:bold">&lt;</span>Connection<span style="color:#000;font-weight:bold">&gt;</span> conn(g_p);  <span style="color:#998;font-style:italic">// get a idle connection from the pool
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>send(...);                       <span style="color:#998;font-style:italic">// send request to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>recv(...);                       <span style="color:#998;font-style:italic">// recv response from the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);                          <span style="color:#998;font-style:italic">// process the response
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) conn<span style="color:#000;font-weight:bold">-&gt;</span>close(...);            <span style="color:#998;font-style:italic">// close the connection
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(client_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">g_p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">Connection</span><span class="o">&gt;</span> <span class="n">conn</span><span class="p">(</span><span class="n">g_p</span><span class="p">);</span>  <span class="c1">// get a idle connection from the pool
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">conn</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(...);</span>                       <span class="c1">// send request to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">conn</span><span class="o">-&gt;</span><span class="n">recv</span><span class="p">(...);</span>                       <span class="c1">// recv response from the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>                          <span class="c1">// process the response
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">over</span><span class="p">)</span> <span class="n">conn</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">(...);</span>            <span class="c1">// close the connection
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
 </span></span></code></pre></div></article>
  
       

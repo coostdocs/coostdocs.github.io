@@ -31,8 +31,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -944,93 +943,93 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h2 id="colru_map"><a class="anchor" href="#colru_map">#</a>co::lru_map</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> K, <span style="color:#000;font-weight:bold">typename</span> V<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">lru_map</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">K</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">lru_map</span><span class="p">;</span>
 </span></span></code></pre></div><p><code>co::lru_map</code> 是基于 LRU (least recently used) 策略实现的 map，当 map 中元素数量达到上限时，优先替换掉最近最少使用的数据。它基于 <code>co::hash_map</code> 与 <code>co::list</code> 实现，内部元素是无序的。</p>
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> lru_map();
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> lru_map(size_t capacity);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">lru_map</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="k">explicit</span> <span class="n">lru_map</span><span class="p">(</span><span class="n">size_t</span> <span class="n">capacity</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 默认构造函数，使用 1024 作为最大容量。</li>
 <li>2, 使用参数 <code>capacity</code> 作为最大容量。</li>
 </ul>
 <h3 id="begin"><a class="anchor" href="#begin">#</a>begin</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回指向第一个元素的 iterator，当 lru_map 为空时，返回值与 <a href="#lru_mapend">end()</a> 相等。</li>
 </ul>
 <h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">clear</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>清空 lru_map 内的元素，size 会变成 0，容量保持不变。</li>
 </ul>
 <h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断 lru_map 是否为空。</li>
 </ul>
 <h3 id="end"><a class="anchor" href="#end">#</a>end</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回指向最后一个元素的下一个位置的 iterator，它本身并不指向任何元素。</li>
 </ul>
 <h3 id="erase"><a class="anchor" href="#erase">#</a>erase</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(iterator it);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">erase</span>(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">iterator</span> <span class="n">it</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="k">const</span> <span class="n">key_type</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>通过 iterator 或 key 删除元素。</li>
 </ul>
 <h3 id="find"><a class="anchor" href="#find">#</a>find</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator find(<span style="color:#000;font-weight:bold">const</span> key_type<span style="color:#000;font-weight:bold">&amp;</span> key)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="n">find</span><span class="p">(</span><span class="k">const</span> <span class="n">key_type</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">)</span>
 </span></span></code></pre></div><ul>
 <li>查找 <code>key</code> 对应的元素。</li>
 </ul>
 <h3 id="insert"><a class="anchor" href="#insert">#</a>insert</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> Key, <span style="color:#000;font-weight:bold">typename</span> Val<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> insert(Key<span style="color:#000;font-weight:bold">&amp;&amp;</span> key, Val<span style="color:#000;font-weight:bold">&amp;&amp;</span> value);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Key</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Val</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">insert</span><span class="p">(</span><span class="n">Key</span><span class="o">&amp;&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="n">Val</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>插入元素，仅当 key 不存在时，才会插入新元素。若 key 已经存在，则不会进行任何操作。</li>
 <li>插入元素时，若元素数量已经达到最大容量，则会删除最近最少访问的元素。</li>
 </ul>
 <h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 lru_map 中的元素个数。</li>
 </ul>
 <h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(lru_map<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(lru_map<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">lru_map</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">lru_map</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>交换两个 lru_map 的内容，此操作仅交换内部指针、大小、容量等信息。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>lru_map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> m(<span style="color:#099">128</span>); <span style="color:#998;font-style:italic">// capacity: 128
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">auto</span> it <span style="color:#000;font-weight:bold">=</span> m.find(<span style="color:#099">1</span>);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">if</span> (it <span style="color:#000;font-weight:bold">==</span> m.end()) {
-</span></span><span style="display:flex;"><span>    m.insert(<span style="color:#099">1</span>, <span style="color:#099">23</span>);
-</span></span><span style="display:flex;"><span>} <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>    it<span style="color:#000;font-weight:bold">-&gt;</span>second <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">23</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>m.erase(it);  <span style="color:#998;font-style:italic">// erase by iterator
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.erase(<span style="color:#099">1</span>);   <span style="color:#998;font-style:italic">// erase by key
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>m.clear();    <span style="color:#998;font-style:italic">// clear the map
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">lru_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">(</span><span class="mi">128</span><span class="p">);</span> <span class="c1">// capacity: 128
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span>  <span class="c1">// erase by iterator
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">m</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>   <span class="c1">// erase by key
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">m</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>    <span class="c1">// clear the map
 </span></span></span></code></pre></div><h2 id="covector"><a class="anchor" href="#covector">#</a>co::vector</h2>
 <p>C++ 标准库中 <code>std::vector&lt;bool&gt;</code> 是个不太明智的设计，为此，coost 单独实现了 <code>co::vector</code>。</p>
 <h3 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">constexpr</span> vector() <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#000;font-weight:bold">explicit</span> vector(size_t cap);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> vector(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> vector(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> vector(std<span style="color:#000;font-weight:bold">::</span>initializer_list<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> vector(T<span style="color:#000;font-weight:bold">*</span> p, size_t n);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> It<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span>   vector(It beg, It end);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#099">8.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> X<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span>   vector(size_t n, X<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="k">constexpr</span> <span class="n">vector</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="k">explicit</span> <span class="n">vector</span><span class="p">(</span><span class="n">size_t</span> <span class="n">cap</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">vector</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">vector</span><span class="p">(</span><span class="n">vector</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">vector</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="n">vector</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">7.</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">It</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">vector</span><span class="p">(</span><span class="n">It</span> <span class="n">beg</span><span class="p">,</span> <span class="n">It</span> <span class="n">end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">8.</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">vector</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">X</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 默认构造函数，构造一个空的 vector，size 与 capacity 均为 0。</li>
 <li>2, <strong>构造一个空的 vector</strong>，capacity 为 <code>cap</code>。</li>
@@ -1043,26 +1042,26 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <blockquote class="book-hint warning">
   <p>构造函数 2 与 <code>std::vector</code> 中相应版本的行为是不同的，若要构建 <code>n</code> 个默认值构成的 vector，可以使用构造函数 8(第 2 个参数传 0)：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> v(<span style="color:#099">32</span>, <span style="color:#099">0</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span></span></code></pre></div>
 </blockquote>
 
 <ul>
 <li>示例</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> a(<span style="color:#099">32</span>);         <span style="color:#998;font-style:italic">// size: 0, capacity: 32
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> b <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span> };  <span style="color:#998;font-style:italic">// [1,2]
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v(<span style="color:#099">8</span>, <span style="color:#099">0</span>);       <span style="color:#998;font-style:italic">// 包含 8 个 0
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> s(<span style="color:#099">8</span>, <span style="color:#099">0</span>);  <span style="color:#998;font-style:italic">// 包含 8 个空的 fastring 对象
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>         <span class="c1">// size: 0, capacity: 32
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">};</span>  <span class="c1">// [1,2]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>       <span class="c1">// 包含 8 个 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// 包含 8 个空的 fastring 对象
 </span></span></span></code></pre></div><h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>vector();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">vector</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>释放内存，析构后 vector 变为空对象。</li>
 </ul>
 <h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> vector<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">=</span>(std<span style="color:#000;font-weight:bold">::</span>initializer_list<span style="color:#000;font-weight:bold">&lt;</span>T<span style="color:#000;font-weight:bold">&gt;</span> x);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">vector</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>赋值操作。</p>
@@ -1071,16 +1070,16 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v;
-</span></span><span style="display:flex;"><span>v <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span> };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> x;
-</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> v;
-</span></span><span style="display:flex;"><span>x <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>move(v);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
 <h3 id="back"><a class="anchor" href="#back">#</a>back</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> back();
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> back() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 vector 中最后一个元素的引用。</li>
 </ul>
@@ -1089,8 +1088,8 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="front"><a class="anchor" href="#front">#</a>front</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> front();
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> front() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">front</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 vector 第一个元素的引用。</li>
 </ul>
@@ -1099,8 +1098,8 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator[]</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span>[](size_t n) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 vector 中第 <code>n</code> 个元素的引用。</li>
 </ul>
@@ -1110,76 +1109,76 @@ https://github.com/alex-shpak/hugo-book
 
 <h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
 <h3 id="begin-1"><a class="anchor" href="#begin-1">#</a>begin</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">begin</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回指向第一个元素的 iterator。</li>
 </ul>
 <h3 id="end-1"><a class="anchor" href="#end-1">#</a>end</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>iterator <span style="color:#900;font-weight:bold">end</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">end</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 end iterator。</li>
 </ul>
 <h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
 <h3 id="capacity"><a class="anchor" href="#capacity">#</a>capacity</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">capacity</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">capacity</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 vector 的容量。</li>
 </ul>
 <h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">data</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">data</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回指向 vector 内部元素的指针。</li>
 </ul>
 <h3 id="empty-1"><a class="anchor" href="#empty-1">#</a>empty</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">empty</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断 vector 是否为空。</li>
 </ul>
 <h3 id="size-1"><a class="anchor" href="#size-1">#</a>size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回 vector 中元素个数。</li>
 </ul>
 <h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
 <h3 id="clear-1"><a class="anchor" href="#clear-1">#</a>clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">clear</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>清空 vector，size 变为 0，capacity 不变。</li>
 </ul>
 <h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reserve</span>(size_t n);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reserve</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>调整 vector 的容量，确保容量至少是 <code>n</code>。</li>
 <li>当 <code>n</code> 小于原来的容量时，则保持容量不变。</li>
 </ul>
 <h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>销毁 vector 中所有元素，并释放内存。</li>
 </ul>
 <h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">resize</span>(size_t n);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>将 vector 的 size 调整为 <code>n</code>。</li>
 <li>当 <code>n</code> 大于原来的 size 时，用默认元素值填充扩展的部分。</li>
 </ul>
 <h3 id="swap-1"><a class="anchor" href="#swap-1">#</a>swap</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(vector<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">swap</span>(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">noexcept</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">vector</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>交换两个 vector，仅交换内部指针、容量、大小。</li>
 </ul>
 <h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>———————————</h3>
 <h3 id="append"><a class="anchor" href="#append">#</a>append</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">void</span> append(T<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> <span style="color:#458;font-weight:bold">void</span> append(size_t n, <span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">*</span> p, size_t n);
-</span></span><span style="display:flex;"><span><span style="color:#099">5.</span> <span style="color:#458;font-weight:bold">void</span> append(<span style="color:#000;font-weight:bold">const</span> vector<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#099">6.</span> <span style="color:#458;font-weight:bold">void</span> append(vector<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#099">7.</span> <span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> It<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> append(It beg, It end);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="n">vector</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">7.</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">It</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">void</span> <span class="n">append</span><span class="p">(</span><span class="n">It</span> <span class="n">beg</span><span class="p">,</span> <span class="n">It</span> <span class="n">end</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>添加元素到 vector 尾部。</p>
@@ -1203,14 +1202,14 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> a[<span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>, <span style="color:#099">4</span> };
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v;
-</span></span><span style="display:flex;"><span>v.append(<span style="color:#099">7</span>);
-</span></span><span style="display:flex;"><span>v.append(v);
-</span></span><span style="display:flex;"><span>v.append(a, <span style="color:#099">4</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="emplace_back"><a class="anchor" href="#emplace_back">#</a>emplace_back</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> ... X<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> emplace_back(X<span style="color:#000;font-weight:bold">&amp;&amp;</span> ... x);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span> <span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">emplace_back</span><span class="p">(</span><span class="n">X</span><span class="o">&amp;&amp;</span> <span class="p">...</span> <span class="n">x</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>在 vector 尾部插入新元素，该元素由参数 <code>x...</code> 构建。</p>
@@ -1219,16 +1218,16 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span>fastring<span style="color:#000;font-weight:bold">&gt;</span> v;
-</span></span><span style="display:flex;"><span>v.emplace_back(<span style="color:#099">4</span>, <span style="color:#d14">&#39;x&#39;</span>); <span style="color:#998;font-style:italic">// append(&#34;xxxx&#34;)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span> <span class="c1">// append(&#34;xxxx&#34;)
 </span></span></span></code></pre></div><h3 id="push_back"><a class="anchor" href="#push_back">#</a>push_back</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x);
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push_back</span>(T<span style="color:#000;font-weight:bold">&amp;&amp;</span> x);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">push_back</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">push_back</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>添加元素 <code>x</code> 到 vector 尾部。</li>
 </ul>
 <h3 id="pop_back"><a class="anchor" href="#pop_back">#</a>pop_back</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T <span style="color:#900;font-weight:bold">pop_back</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span> <span class="nf">pop_back</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>取出并返回 vector 尾部的元素。</li>
 </ul>
@@ -1237,7 +1236,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="remove"><a class="anchor" href="#remove">#</a>remove</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove</span>(size_t n);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>删除第 <code>n</code> 个元素，并将最后一个元素移动到所删除元素的位置。</p>
@@ -1246,11 +1245,11 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>vector<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> v <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>, <span style="color:#099">4</span> };
-</span></span><span style="display:flex;"><span>v.remove(<span style="color:#099">1</span>);  <span style="color:#998;font-style:italic">// v -&gt; [1, 4, 3]
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>v.remove(<span style="color:#099">2</span>);  <span style="color:#998;font-style:italic">// v -&gt; [1, 4]
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="c1">// v -&gt; [1, 4, 3]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">v</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>  <span class="c1">// v -&gt; [1, 4]
 </span></span></span></code></pre></div><h3 id="remove_back"><a class="anchor" href="#remove_back">#</a>remove_back</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">remove_back</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove_back</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>删除 vector 尾部的元素，vector 为空时不进行任何操作。</li>
 </ul>

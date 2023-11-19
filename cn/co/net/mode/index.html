@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -854,22 +853,22 @@ https://github.com/alex-shpak/hugo-book
 <p>协程可以用同步的方式，实现高并发、高性能的网络程序。协程虽然会阻塞，但调度线程可以在大量的协程间快速切换，因此要实现高并发，只需要创建大量的协程即可。</p>
 <p>以 TCP 程序为例，服务端一般采用一个连接一个协程的模式，为每个客户端连接创建新的协程，在协程中处理连接上的数据。客户端没必要一个连接一个协程，一般使用连接池，多个协程共用连接池中的连接。</p>
 <h3 id="服务端网络模型"><a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e7%ab%af%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b">#</a>服务端网络模型</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">on_connection</span>(<span style="color:#458;font-weight:bold">int</span> fd) {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>recv(fd, ...);  <span style="color:#998;font-style:italic">// recv request from client
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);       <span style="color:#998;font-style:italic">// process the request
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(fd, ...);  <span style="color:#998;font-style:italic">// send response to client
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">server_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> co<span style="color:#000;font-weight:bold">::</span>accept(...);
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) go(on_connection, fd);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(server_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_connection</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">...);</span>  <span class="c1">// recv request from client
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>       <span class="c1">// process the request
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">...);</span>  <span class="c1">// send response to client
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">server_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">accept</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">go</span><span class="p">(</span><span class="n">on_connection</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">server_fun</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>服务端采用一个连接一个协程的模型。</li>
 <li>在一个协程中，调用 <code>co::accept()</code> 接受客户端连接。</li>
@@ -877,34 +876,34 @@ https://github.com/alex-shpak/hugo-book
 <li><code>on_connection()</code> 是处理连接的协程函数，接收、处理与发送数据，在该协程中以完全同步的方式进行，不需要任何异步回调。</li>
 </ul>
 <h3 id="客户端网络模型"><a class="anchor" href="#%e5%ae%a2%e6%88%b7%e7%ab%af%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b">#</a>客户端网络模型</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>connected) co<span style="color:#000;font-weight:bold">::</span>connect(...);  <span style="color:#998;font-style:italic">// connect to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>send(...);                     <span style="color:#998;font-style:italic">// send request to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        co<span style="color:#000;font-weight:bold">::</span>recv(...);                     <span style="color:#998;font-style:italic">// recv response from the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);                      <span style="color:#998;font-style:italic">// process the response
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) co<span style="color:#000;font-weight:bold">::</span>close(...);          <span style="color:#998;font-style:italic">// close the connection
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(client_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">connected</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">connect</span><span class="p">(...);</span>  <span class="c1">// connect to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(...);</span>                     <span class="c1">// send request to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(...);</span>                     <span class="c1">// recv response from the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>                      <span class="c1">// process the response
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">over</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(...);</span>          <span class="c1">// close the connection
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>建立连接，发送、接收、处理数据，在协程中以完全同步的方式进行。</li>
 </ul>
 <p>实际应用中，一般使用 <a href="../concurrency/coroutine/pool/">co::pool</a> 作为连接池，以避免创建过多的连接：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool g_p;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>pool_guard<span style="color:#000;font-weight:bold">&lt;</span>Connection<span style="color:#000;font-weight:bold">&gt;</span> conn(g_p);  <span style="color:#998;font-style:italic">// get a idle connection from the pool
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>send(...);                       <span style="color:#998;font-style:italic">// send request to the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        conn<span style="color:#000;font-weight:bold">-&gt;</span>recv(...);                       <span style="color:#998;font-style:italic">// recv response from the server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        process(...);                          <span style="color:#998;font-style:italic">// process the response
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (over) conn<span style="color:#000;font-weight:bold">-&gt;</span>close(...);            <span style="color:#998;font-style:italic">// close the connection
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(client_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">g_p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">Connection</span><span class="o">&gt;</span> <span class="n">conn</span><span class="p">(</span><span class="n">g_p</span><span class="p">);</span>  <span class="c1">// get a idle connection from the pool
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">conn</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(...);</span>                       <span class="c1">// send request to the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">conn</span><span class="o">-&gt;</span><span class="n">recv</span><span class="p">(...);</span>                       <span class="c1">// recv response from the server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">process</span><span class="p">(...);</span>                          <span class="c1">// process the response
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">over</span><span class="p">)</span> <span class="n">conn</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">(...);</span>            <span class="c1">// close the connection
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
 </span></span></code></pre></div></article>
  
       

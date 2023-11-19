@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -861,51 +860,51 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">explicit</span> event(<span style="color:#458;font-weight:bold">bool</span> manual_reset<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>, <span style="color:#458;font-weight:bold">bool</span> signaled<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> event(event<span style="color:#000;font-weight:bold">&amp;&amp;</span> e);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> event(<span style="color:#000;font-weight:bold">const</span> event<span style="color:#000;font-weight:bold">&amp;</span> e);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="k">explicit</span> <span class="n">event</span><span class="p">(</span><span class="kt">bool</span> <span class="n">manual_reset</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">signaled</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">event</span><span class="p">(</span><span class="n">event</span><span class="o">&amp;&amp;</span> <span class="n">e</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">event</span><span class="p">(</span><span class="k">const</span> <span class="n">event</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 与线程中的 <a href="../../thread/#cosync_event">co::sync_event</a> 类似。</li>
 <li>2, 移动构造函数。</li>
 <li>3, 拷贝构造函数，仅将内部引用计数加 1。</li>
 </ul>
 <h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">reset</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>将事件重置为未同步状态。</li>
 </ul>
 <h3 id="signal"><a class="anchor" href="#signal">#</a>signal</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">signal</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">signal</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>产生同步信号，将事件设置成同步状态。</li>
 <li>所有 waiting 状态的协程或线程会被唤醒。若当前并没有 waiting 状态的协程或线程，则下一个调用 <a href="#wait">wait()</a> 方法的协程或线程会立即返回。</li>
 </ul>
 <h3 id="wait"><a class="anchor" href="#wait">#</a>wait</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#458;font-weight:bold">void</span> wait() <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> <span style="color:#458;font-weight:bold">bool</span> wait(uint32 ms) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span> <span class="n">wait</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>1, 等待直到事件变成同步状态。</li>
 <li>2, 等待直到事件变成同步状态或超时。参数 <code>ms</code> 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。</li>
 <li>当构造函数中 <code>manual_reset</code> 为 false 时，<a href="#wait">wait()</a> 结束时会自动将事件设置成未同步状态。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>event ev;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">// capture by value,
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// as data on stack may be overwritten by other coroutines.
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    go([ev](){
-</span></span><span style="display:flex;"><span>        ev.signal();
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ev.wait(<span style="color:#099">100</span>);  <span style="color:#998;font-style:italic">// wait for 100 ms
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>   
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">event</span> <span class="n">ev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// capture by value,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// as data on stack may be overwritten by other coroutines.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">go</span><span class="p">([</span><span class="n">ev</span><span class="p">](){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ev</span><span class="p">.</span><span class="n">signal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  <span class="c1">// wait for 100 ms
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div></article>
  
       

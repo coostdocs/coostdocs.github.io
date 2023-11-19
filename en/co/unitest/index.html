@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -858,30 +857,30 @@ https://github.com/alex-shpak/hugo-book
 <p><strong>co.unitest</strong> is a unit testing framework, similar to <a href="https://github.com/google/googletest">google gtest</a>, but easier to use.</p>
 <h3 id="test-units-and-test-cases"><a class="anchor" href="#test-units-and-test-cases">#</a>Test Units and Test Cases</h3>
 <p>A test program can be divided into multiple test units according to functions or modules, and there can be multiple test cases under each test unit. For example, a test unit can be defined for a class (or module) in C++, and a test case can be defined for each method in the class (or module).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_test(test_name) {
-</span></span><span style="display:flex;"><span>    DEF_case(a) {
-</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic">// write test code here
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    DEF_case(b) {
-</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic">// write test code here
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// write test code here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// write test code here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>In the above example, <code>DEF_test</code> defines a test unit (actually defines a function), and <code>DEF_case</code> defines the test case, a test case is actually a code block in the function.</p>
 <h3 id="def_test"><a class="anchor" href="#def_test">#</a>DEF_test</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_test(_name_) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    DEF_bool(_name_, false, &#34;enable this test if true&#34;); \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    ... \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    void _co_ut_##_name_(unitest::xx::Test&amp; _t_)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DEF_test(_name_) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    DEF_bool(_name_, false, &#34;enable this test if true&#34;); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    ... \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    void _co_ut_##_name_(unitest::xx::Test&amp; _t_)
 </span></span></span></code></pre></div><ul>
 <li>The <code>DEF_test</code> macro is used to define a test unit, and the parameter <code>_name_</code> is the name of the test unit.</li>
 <li>The first line of the macro defines a bool flag, which is the switch of the test unit. For example, <code>DEF_test(os)</code> defines a test unit os, and we can use <code>-os</code> in command line to enable test cases in this unit.</li>
 <li>The last line of the macro defines the function corresponding to the test unit.</li>
 </ul>
 <h3 id="def_case"><a class="anchor" href="#def_case">#</a>DEF_case</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define DEF_case(name) \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    _t_.c = #name; \
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">    cout &lt;&lt; &#34; case &#34; &lt;&lt; #name &lt;&lt; &#39;:&#39; &lt;&lt; endl;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DEF_case(name) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    _t_.c = #name; \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    cout &lt;&lt; &#34; case &#34; &lt;&lt; #name &lt;&lt; &#39;:&#39; &lt;&lt; endl;
 </span></span></span></code></pre></div><ul>
 <li>The <code>DEF_case</code> macro is used to define a test case in the test unit. The parameter <code>name</code> is the name of the test case. It must be used inside the function defined by <code>DEF_test</code>.</li>
 <li>The name of a test unit must be albe to use as part of the class name or variable name. The test case name does not have this restriction. For example, <code>DEF_case(sched.Copool)</code> is also reasonable.</li>
@@ -889,13 +888,13 @@ https://github.com/alex-shpak/hugo-book
 <li>DEF_test may not contain any DEF_case. In this case, <code>co.unitest</code> will create a default test case.</li>
 </ul>
 <h3 id="expect-assertion"><a class="anchor" href="#expect-assertion">#</a>EXPECT assertion</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT(x) ...
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_EQ(x, y) EXPECT_OP(x, y, ==, &#34;EQ&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_NE(x, y) EXPECT_OP(x, y, !=, &#34;NE&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GE(x, y) EXPECT_OP(x, y, &gt;=, &#34;GE&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LE(x, y) EXPECT_OP(x, y, &lt;=, &#34;LE&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_GT(x, y) EXPECT_OP(x, y, &gt;, &#34;GT&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#define EXPECT_LT(x, y) EXPECT_OP(x, y, &lt;, &#34;LT&#34;)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define EXPECT(x) ...
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_EQ(x, y) EXPECT_OP(x, y, ==, &#34;EQ&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_NE(x, y) EXPECT_OP(x, y, !=, &#34;NE&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_GE(x, y) EXPECT_OP(x, y, &gt;=, &#34;GE&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_LE(x, y) EXPECT_OP(x, y, &lt;=, &#34;LE&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_GT(x, y) EXPECT_OP(x, y, &gt;, &#34;GT&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define EXPECT_LT(x, y) EXPECT_OP(x, y, &lt;, &#34;LT&#34;)
 </span></span></span></code></pre></div><ul>
 <li><code>EXPECT</code> asserts that <code>x</code> is true, and x can be any expression with a value of type bool.</li>
 <li><code>EXPECT_EQ</code> asserts <code>x == y</code>.</li>
@@ -908,60 +907,60 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="write-test-code"><a class="anchor" href="#write-test-code">#</a>Write test code</h2>
 <h3 id="test-code-example"><a class="anchor" href="#test-code-example">#</a>Test code example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/unitest.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/os.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>DEF_test(os) {
-</span></span><span style="display:flex;"><span>    DEF_case(homedir) {
-</span></span><span style="display:flex;"><span>        EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DEF_case(pid) {
-</span></span><span style="display:flex;"><span>        EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DEF_case(cpunum) {
-</span></span><span style="display:flex;"><span>        EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>    unitest<span style="color:#000;font-weight:bold">::</span>run_tests();
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">homedir</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EXPECT_NE</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">(),</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EXPECT_GE</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">DEF_case</span><span class="p">(</span><span class="n">cpunum</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EXPECT_GT</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unitest</span><span class="o">::</span><span class="n">run_tests</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ul>
 <li>The above code defines a test unit named os, and os has 3 test cases.</li>
 <li>When running the test program, you can use <code>-os</code> in the command line to enable this unit test.</li>
 <li>In the main function, you need call <code>flag::parse()</code> to parse the command line parameters, and then call the <code>run_tests()</code> method provided by <code>co.unitest</code> to run the unit test code.</li>
 </ul>
 <h3 id="default-test-case"><a class="anchor" href="#default-test-case">#</a>Default test case</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_test(os) {
-</span></span><span style="display:flex;"><span>    EXPECT_NE(os<span style="color:#000;font-weight:bold">::</span>homedir(), <span style="color:#d14">&#34;&#34;</span>);
-</span></span><span style="display:flex;"><span>    EXPECT_GE(os<span style="color:#000;font-weight:bold">::</span>pid(), <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>    EXPECT_GT(os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">os</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">EXPECT_NE</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">(),</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">EXPECT_GE</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">EXPECT_GT</span><span class="p">(</span><span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ul>
 <li>The above code does not contain any DEF_case, <code>co.unitest</code> will create a default test case named <code>default</code>.</li>
 <li>For more complex test codes, it is generally not recommended to use the default test cases. It is better to divide them into different cases so that the code looks clearer.</li>
 </ul>
 <h2 id="build-and-run-the-test-program"><a class="anchor" href="#build-and-run-the-test-program">#</a>Build and run the test program</h2>
 <h3 id="build-the-unitest-code"><a class="anchor" href="#build-the-unitest-code">#</a>Build the unitest code</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b unitest
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b unitest
 </span></span></code></pre></div><ul>
 <li>Run the above command in the root directory of coost to compile the unit test code in <a href="https://github.com/idealvin/coost/tree/master/unitest">co/unitest</a> and generate the <code>unitest</code> binary program .</li>
 </ul>
 <h3 id="run-all-test-cases"><a class="anchor" href="#run-all-test-cases">#</a>Run all test cases</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake r unitest
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake r unitest
 </span></span></code></pre></div><ul>
 <li>Run all test cases by default.</li>
 </ul>
 <h3 id="run-test-cases-in-specified-test-units"><a class="anchor" href="#run-test-cases-in-specified-test-units">#</a>Run test cases in specified test units</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Run only test cases in the os test unit</span>
-</span></span><span style="display:flex;"><span>xmake r unitest -os
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Run test cases in the os or json test units</span>
-</span></span><span style="display:flex;"><span>xmake r unitest -os -json
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Run only test cases in the os test unit</span>
+</span></span><span class="line"><span class="cl">xmake r unitest -os
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Run test cases in the os or json test units</span>
+</span></span><span class="line"><span class="cl">xmake r unitest -os -json
 </span></span></code></pre></div><h3 id="test-result-example"><a class="anchor" href="#test-result-example">#</a>Test result example</h3>
 <ul>
 <li>All tests passed</li>

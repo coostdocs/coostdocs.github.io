@@ -27,8 +27,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -854,7 +853,7 @@ https://github.com/alex-shpak/hugo-book
   <article class="markdown"><h2 id="配置"><a class="anchor" href="#%e9%85%8d%e7%bd%ae">#</a>配置</h2>
 <p>Coost 使用 <code>co.flag</code> 定义了协程相关的配置项，配置详细用法请参考 <a href="../../../flag/">co.flag 文档</a>。</p>
 <h3 id="co_hook_log"><a class="anchor" href="#co_hook_log">#</a>co_hook_log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(co_hook_log, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;&gt;&gt;#1 print log for API hooks&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">co_hook_log</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&gt;&gt;#1 print log for API hooks&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>打印 API hook 相关的日志，默认为 false。</li>
 </ul>
@@ -863,7 +862,7 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="co_sched_log"><a class="anchor" href="#co_sched_log">#</a>co_sched_log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(co_sched_log, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;&gt;&gt;#1 print logs for coroutine schedulers&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">co_sched_log</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&gt;&gt;#1 print logs for coroutine schedulers&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>打印协程调度相关的调试日志，默认为 false。</li>
 </ul>
@@ -872,17 +871,17 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="co_sched_num"><a class="anchor" href="#co_sched_num">#</a>co_sched_num</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(co_sched_num, os<span style="color:#000;font-weight:bold">::</span>cpunum(), <span style="color:#d14">&#34;&gt;&gt;#1 number of coroutine schedulers&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">co_sched_num</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">(),</span> <span class="s">&#34;&gt;&gt;#1 number of coroutine schedulers&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>协程调度线程的数量，默认为系统 CPU 核数。目前的实现中，这个值最大也是系统 CPU 核数。</li>
 </ul>
 <h3 id="co_stack_num"><a class="anchor" href="#co_stack_num">#</a>co_stack_num</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(co_stack_num, <span style="color:#099">8</span>, <span style="color:#d14">&#34;&gt;&gt;#1 number of stacks per scheduler, must be power of 2&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">co_stack_num</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#34;&gt;&gt;#1 number of stacks per scheduler, must be power of 2&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>v3.0.1 新增，每个协程调度器的共享协程栈数量，<strong>该值必须是 2 的幂</strong>，默认为 8。</li>
 </ul>
 <h3 id="co_stack_size"><a class="anchor" href="#co_stack_size">#</a>co_stack_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_uint32(co_stack_size, <span style="color:#099">1024</span> <span style="color:#000;font-weight:bold">*</span> <span style="color:#099">1024</span>, <span style="color:#d14">&#34;&gt;&gt;#1 size of the stack shared by coroutines&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">co_stack_size</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span> <span class="s">&#34;&gt;&gt;#1 size of the stack shared by coroutines&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>协程栈大小，默认为 1M。</li>
 </ul>

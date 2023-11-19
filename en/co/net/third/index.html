@@ -27,8 +27,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -845,30 +844,30 @@ https://github.com/alex-shpak/hugo-book
 <p>API hook simply intercepts system API requests. If the request is in coroutine and uses a blocking socket, modify the socket to non-blocking mode. When the socket is unreadable or unwritable, use <code>co::io_event</code> or the lower-level APIs in coost to wait for the I/O event. When the I/O event arrives, wake up the coroutine and call the system&rsquo;s native socket API to complete the I/O operation.</p>
 <h3 id="using-non-blocking-apis"><a class="anchor" href="#using-non-blocking-apis">#</a>Using non-blocking APIs</h3>
 <p>The following is the <code>recv</code> method implemented based on openssl&rsquo;s non-blocking API:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(S<span style="color:#000;font-weight:bold">*</span> s, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
-</span></span><span style="display:flex;"><span>     CHECK(co<span style="color:#000;font-weight:bold">::</span>sched()) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
-</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> r, e;
-</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> fd <span style="color:#000;font-weight:bold">=</span> SSL_get_fd((SSL<span style="color:#000;font-weight:bold">*</span>)s);
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">if</span> (fd <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">do</span> {
-</span></span><span style="display:flex;"><span>         ERR_clear_error();
-</span></span><span style="display:flex;"><span>         r <span style="color:#000;font-weight:bold">=</span> SSL_read((SSL<span style="color:#000;font-weight:bold">*</span>)s, buf, n);
-</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> r; <span style="color:#998;font-style:italic">// success
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>         <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span>         e <span style="color:#000;font-weight:bold">=</span> SSL_get_error((SSL<span style="color:#000;font-weight:bold">*</span>)s, r);
-</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_READ) {
-</span></span><span style="display:flex;"><span>             co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_read);
-</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>         } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (e <span style="color:#000;font-weight:bold">==</span> SSL_ERROR_WANT_WRITE) {
-</span></span><span style="display:flex;"><span>             co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, co<span style="color:#000;font-weight:bold">::</span>ev_write);
-</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>         } <span style="color:#000;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">return</span> r;
-</span></span><span style="display:flex;"><span>         }
-</span></span><span style="display:flex;"><span>     } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="n">S</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">CHECK</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">sched</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;must be called in coroutine..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="kt">int</span> <span class="n">r</span><span class="p">,</span> <span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">SSL_get_fd</span><span class="p">((</span><span class="n">SSL</span><span class="o">*</span><span class="p">)</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="n">ERR_clear_error</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">         <span class="n">r</span> <span class="o">=</span> <span class="n">SSL_read</span><span class="p">((</span><span class="n">SSL</span><span class="o">*</span><span class="p">)</span><span class="n">s</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">r</span><span class="p">;</span> <span class="c1">// success
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">         <span class="n">e</span> <span class="o">=</span> <span class="n">SSL_get_error</span><span class="p">((</span><span class="n">SSL</span><span class="o">*</span><span class="p">)</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="n">SSL_ERROR_WANT_READ</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">             <span class="n">co</span><span class="o">::</span><span class="n">io_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">ev_read</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">ms</span><span class="p">))</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="n">SSL_ERROR_WANT_WRITE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">             <span class="n">co</span><span class="o">::</span><span class="n">io_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">ev_write</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">ms</span><span class="p">))</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">             <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span>
+</span></span><span class="line"><span class="cl">     <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The whole process is relatively simple. The underlying socket must be <strong>non-blocking</strong>. When <code>SSL_read</code> generates <code>SSL_ERROR_WANT_READ</code> error, use <code>co::io_event</code> to wait for the read event. When <code>SSL_ERROR_WANT_WRITE</code> error occurs, use <code>co:: io_event</code> to wait for the write event, when <code>wait()</code> returns normally, it means the socket is readable or writable, continue to call <code>SSL_read</code> to complete the I/O operation.</p>
 </article>
  

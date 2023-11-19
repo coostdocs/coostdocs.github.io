@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -895,16 +894,16 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h2 id="rpcservice"><a class="anchor" href="#rpcservice">#</a>rpc::Service</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Service</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">public</span><span style="color:#000;font-weight:bold">:</span>
-</span></span><span style="display:flex;"><span>    Service() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">~</span>Service() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">typedef</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Json<span style="color:#000;font-weight:bold">&amp;</span>, Json<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;</span> Fun;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">name</span>() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, Fun<span style="color:#000;font-weight:bold">&gt;&amp;</span> methods() <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Service</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">Service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Fun</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">name</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
 <li>接口类，它表示一个 RPC service，一个 RPC server 中可以包含多个 service。</li>
 <li>方法 <code>name()</code> 返回 service 名，<code>methods()</code> 返回所有的 RPC 接口及其业务处理函数。</li>
@@ -912,23 +911,23 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="rpcserver"><a class="anchor" href="#rpcserver">#</a>rpc::Server</h2>
 <h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Server();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>默认构造函数，用户不需要关心。</li>
 </ul>
 <h3 id="serveradd_service"><a class="anchor" href="#serveradd_service">#</a>Server::add_service</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> Server<span style="color:#000;font-weight:bold">&amp;</span> add_service(<span style="color:#000;font-weight:bold">const</span> std<span style="color:#000;font-weight:bold">::</span>shared_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Service<span style="color:#000;font-weight:bold">&gt;&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Server</span><span class="o">&amp;</span> <span class="n">add_service</span><span class="p">(</span><span class="n">rpc</span><span class="o">::</span><span class="n">Service</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Server</span><span class="o">&amp;</span> <span class="n">add_service</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Service</span><span class="o">&gt;&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>添加 service，1 中参数 s 必须是用 operator new 动态创建的。</li>
 <li>用户可以多次调用此方法，添加多个 service，不同 service 必须有不同的名字。</li>
 </ul>
 <h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">start</span>(
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port,
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> url<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;/&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> key<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ca<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ca</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>启动 RPC server，此方法不会阻塞当前线程。</li>
 <li>参数 ip 是服务 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务端口。</li>
@@ -937,7 +936,7 @@ https://github.com/alex-shpak/hugo-book
 <li>从 v3.0 开始，server 启动后就不再依赖于 <code>rpc::Server</code> 对象。</li>
 </ul>
 <h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">exit</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>v2.0.3 新增。</li>
 <li>退出 RPC server，关闭 listening socket，不再接收新的连接。</li>
@@ -946,12 +945,12 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="rpc-server-示例"><a class="anchor" href="#rpc-server-%e7%a4%ba%e4%be%8b">#</a>RPC server 示例</h2>
 <h3 id="定义-proto-文件"><a class="anchor" href="#%e5%ae%9a%e4%b9%89-proto-%e6%96%87%e4%bb%b6">#</a>定义 proto 文件</h3>
 <p>下面是一个简单的 proto 文件 hello_world.proto:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>package xx
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>service HelloWorld {
-</span></span><span style="display:flex;"><span>    hello
-</span></span><span style="display:flex;"><span>    world
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">xx</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">service</span> <span class="n">HelloWorld</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hello</span>
+</span></span><span class="line"><span class="cl">    <span class="n">world</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ul>
 <li><strong>package</strong> 定义包名，在 C++ 中对应为 namespace。</li>
 <li><strong>service</strong> 定义一个 RPC service，该 service 提供 hello, world 两个方法。</li>
@@ -964,92 +963,92 @@ https://github.com/alex-shpak/hugo-book
 
 <h3 id="生成-service-代码"><a class="anchor" href="#%e7%94%9f%e6%88%90-service-%e4%bb%a3%e7%a0%81">#</a>生成 service 代码</h3>
 <p><a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> 是 coost 提供的代码生成工具，它可以生成 service 相关代码。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xmake -b gen             <span style="color:#998;font-style:italic"># 构建 gen</span>
-</span></span><span style="display:flex;"><span>cp gen /usr/local/bin    <span style="color:#998;font-style:italic"># 将 gen 放到 /usr/local/bin 目录</span>
-</span></span><span style="display:flex;"><span>gen hello_world.proto    <span style="color:#998;font-style:italic"># 生成代码</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b gen             <span class="c1"># 构建 gen</span>
+</span></span><span class="line"><span class="cl">cp gen /usr/local/bin    <span class="c1"># 将 gen 放到 /usr/local/bin 目录</span>
+</span></span><span class="line"><span class="cl">gen hello_world.proto    <span class="c1"># 生成代码</span>
 </span></span></code></pre></div><p>生成的文件 hello_world.h 如下:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// Autogenerated.
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// DO NOT EDIT. All changes will be undone.
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#pragma once
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/rpc.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">namespace</span> xx {
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">HelloWorld</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">public</span> rpc<span style="color:#000;font-weight:bold">::</span>Service {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">public</span><span style="color:#000;font-weight:bold">:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">typedef</span> std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(Json<span style="color:#000;font-weight:bold">&amp;</span>, Json<span style="color:#000;font-weight:bold">&amp;</span>)<span style="color:#000;font-weight:bold">&gt;</span> Fun;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    HelloWorld() {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">using</span> std<span style="color:#000;font-weight:bold">::</span>placeholders<span style="color:#000;font-weight:bold">::</span>_1;
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">using</span> std<span style="color:#000;font-weight:bold">::</span>placeholders<span style="color:#000;font-weight:bold">::</span>_2;
-</span></span><span style="display:flex;"><span>        _methods[<span style="color:#d14">&#34;HelloWorld.hello&#34;</span>] <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>bind(<span style="color:#000;font-weight:bold">&amp;</span>HelloWorld<span style="color:#000;font-weight:bold">::</span>hello, <span style="color:#000;font-weight:bold">this</span>, _1, _2);
-</span></span><span style="display:flex;"><span>        _methods[<span style="color:#d14">&#34;HelloWorld.world&#34;</span>] <span style="color:#000;font-weight:bold">=</span> std<span style="color:#000;font-weight:bold">::</span>bind(<span style="color:#000;font-weight:bold">&amp;</span>HelloWorld<span style="color:#000;font-weight:bold">::</span>world, <span style="color:#000;font-weight:bold">this</span>, _1, _2);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">~</span>HelloWorld() {}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">name</span>() <span style="color:#000;font-weight:bold">const</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;HelloWorld&#34;</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">const</span> co<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, Fun<span style="color:#000;font-weight:bold">&gt;&amp;</span> methods() <span style="color:#000;font-weight:bold">const</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">return</span> _methods;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">hello</span>(Json<span style="color:#000;font-weight:bold">&amp;</span> req, Json<span style="color:#000;font-weight:bold">&amp;</span> res) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">world</span>(Json<span style="color:#000;font-weight:bold">&amp;</span> req, Json<span style="color:#000;font-weight:bold">&amp;</span> res) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">private</span><span style="color:#000;font-weight:bold">:</span>
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>map<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span>, Fun<span style="color:#000;font-weight:bold">&gt;</span> _methods;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>} <span style="color:#998;font-style:italic">// xx
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Autogenerated.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// DO NOT EDIT. All changes will be undone.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rpc.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">xx</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HelloWorld</span> <span class="o">:</span> <span class="k">public</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Service</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Fun</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">HelloWorld</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">placeholders</span><span class="o">::</span><span class="n">_1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">placeholders</span><span class="o">::</span><span class="n">_2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_methods</span><span class="p">[</span><span class="s">&#34;HelloWorld.hello&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">HelloWorld</span><span class="o">::</span><span class="n">hello</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">_1</span><span class="p">,</span> <span class="n">_2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_methods</span><span class="p">[</span><span class="s">&#34;HelloWorld.world&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">HelloWorld</span><span class="o">::</span><span class="n">world</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">_1</span><span class="p">,</span> <span class="n">_2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">HelloWorld</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">name</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;HelloWorld&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">_methods</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;</span> <span class="n">_methods</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// xx
 </span></span></span></code></pre></div><ul>
 <li>可以看到，HelloWorld 类继承于 <a href="#rpcservice">rpc::Service</a>，它已经实现了 <code>rpc::Service</code> 类中的 <code>name()</code> 与 <code>methods()</code> 方法。</li>
 <li>用户只需要继承 HelloWorld 类，实现 hello 与 world 两个方法即可。</li>
 </ul>
 <h3 id="业务实现"><a class="anchor" href="#%e4%b8%9a%e5%8a%a1%e5%ae%9e%e7%8e%b0">#</a>业务实现</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;hello_world.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">namespace</span> xx {
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">HelloWorldImpl</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">public</span> HelloWorld {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">public</span><span style="color:#000;font-weight:bold">:</span>
-</span></span><span style="display:flex;"><span>    HelloWorldImpl() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#000;font-weight:bold">~</span>HelloWorldImpl() <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">default</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">hello</span>(Json<span style="color:#000;font-weight:bold">&amp;</span> req, Json<span style="color:#000;font-weight:bold">&amp;</span> res) {
-</span></span><span style="display:flex;"><span>        res <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>            { <span style="color:#d14">&#34;result&#34;</span>, {
-</span></span><span style="display:flex;"><span>                { <span style="color:#d14">&#34;hello&#34;</span>, <span style="color:#099">23</span> }
-</span></span><span style="display:flex;"><span>            }}
-</span></span><span style="display:flex;"><span>        };
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">world</span>(Json<span style="color:#000;font-weight:bold">&amp;</span> req, Json<span style="color:#000;font-weight:bold">&amp;</span> res) {
-</span></span><span style="display:flex;"><span>        res <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>            { <span style="color:#d14">&#34;error&#34;</span>, <span style="color:#d14">&#34;not supported&#34;</span>}
-</span></span><span style="display:flex;"><span>        };
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>} <span style="color:#998;font-style:italic">// xx
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;hello_world.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">xx</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HelloWorldImpl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">HelloWorld</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HelloWorldImpl</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">HelloWorldImpl</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="s">&#34;result&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span> <span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mi">23</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="s">&#34;error&#34;</span><span class="p">,</span> <span class="s">&#34;not supported&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// xx
 </span></span></span></code></pre></div><ul>
 <li>上面只是一个很简单的例子，实际应用中，一般需要根据 req 中的参数，进行相应的业务处理，然后填充 res。</li>
 </ul>
 <h3 id="启动-rpc-server"><a class="anchor" href="#%e5%90%af%e5%8a%a8-rpc-server">#</a>启动 RPC server</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>    flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    rpc<span style="color:#000;font-weight:bold">::</span>Server()
-</span></span><span style="display:flex;"><span>        .add_service(<span style="color:#000;font-weight:bold">new</span> xx<span style="color:#000;font-weight:bold">::</span>HelloWorldImpl)
-</span></span><span style="display:flex;"><span>        .start(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, <span style="color:#d14">&#34;/xx&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (;;) sleep<span style="color:#000;font-weight:bold">::</span>sec(<span style="color:#099">80000</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc</span><span class="o">::</span><span class="n">Server</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">add_service</span><span class="p">(</span><span class="k">new</span> <span class="n">xx</span><span class="o">::</span><span class="n">HelloWorldImpl</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="s">&#34;/xx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(;;)</span> <span class="n">sleep</span><span class="o">::</span><span class="n">sec</span><span class="p">(</span><span class="mi">80000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ul>
 <li>先调 <a href="#serveradd_service">add_service()</a> 添加 service，再调用 <a href="#serverstart">start()</a> 启动 server。</li>
 </ul>
@@ -1059,8 +1058,8 @@ https://github.com/alex-shpak/hugo-book
 
 <h3 id="用-curl-调用-rpc-服务"><a class="anchor" href="#%e7%94%a8-curl-%e8%b0%83%e7%94%a8-rpc-%e6%9c%8d%e5%8a%a1">#</a>用 curl 调用 RPC 服务</h3>
 <p>在 v3.0 版本中，RPC 框架支持 HTTP 协议，因此可以用 <code>curl</code> 命令调用 RPC 服务：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://127.0.0.1:7788/xx --request POST --data <span style="color:#d14">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
-</span></span><span style="display:flex;"><span>curl http://127.0.0.1:7788/xx --request POST --data <span style="color:#d14">&#39;{&#34;api&#34;:&#34;HelloWorld.hello&#34;}&#39;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://127.0.0.1:7788/xx --request POST --data <span class="s1">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">curl http://127.0.0.1:7788/xx --request POST --data <span class="s1">&#39;{&#34;api&#34;:&#34;HelloWorld.hello&#34;}&#39;</span>
 </span></span></code></pre></div><ul>
 <li>上面用 curl 给 RPC 服务发送 POST 请求，参数为 JSON 字符串，需要提供一个 <code>api</code> 字段，指明调用的 RPC 方法。</li>
 <li><code>&quot;ping&quot;</code> 是 RPC 框架内置的方法，一般用于测试或发送心跳。</li>
@@ -1068,8 +1067,8 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h2 id="rpcclient"><a class="anchor" href="#rpcclient">#</a>rpc::Client</h2>
 <h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> Client(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> ip, <span style="color:#458;font-weight:bold">int</span> port, <span style="color:#458;font-weight:bold">bool</span> use_ssl<span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> Client(<span style="color:#000;font-weight:bold">const</span> Client<span style="color:#000;font-weight:bold">&amp;</span> c);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_ssl</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="n">Client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 参数 ip 可以是域名、IPv4 或 IPv6 地址；参数 port 是服务端口；参数 use_ssl 表示是否启用 SSL 传输，默认为 false。</li>
 <li>2, 拷贝构造函数。</li>
@@ -1079,12 +1078,12 @@ https://github.com/alex-shpak/hugo-book
 </blockquote>
 
 <h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Client<span style="color:#000;font-weight:bold">::~</span>Client();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Client</span><span class="o">::~</span><span class="n">Client</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>析构函数，关闭连接。</li>
 </ul>
 <h3 id="clientcall"><a class="anchor" href="#clientcall">#</a>Client::call</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">call</span>(<span style="color:#000;font-weight:bold">const</span> Json<span style="color:#000;font-weight:bold">&amp;</span> req, Json<span style="color:#000;font-weight:bold">&amp;</span> res);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">call</span><span class="p">(</span><span class="k">const</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>执行 RPC 请求，必须在协程中调用。</li>
 <li>参数 <code>req</code> 中必须带有 <code>&quot;api&quot;</code> 字段，该字段的值一般为 <code>&quot;service.method&quot;</code> 形式。</li>
@@ -1093,62 +1092,62 @@ https://github.com/alex-shpak/hugo-book
 <li>此方法在发送 RPC 请求前，会检查连接状态，未连接时，先建立连接。</li>
 </ul>
 <h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>关闭连接，多次调用此函数是安全的。</li>
 </ul>
 <h3 id="clientping"><a class="anchor" href="#clientping">#</a>Client::ping</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">ping</span>();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">ping</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>给 RPC server 发送 <code>ping</code> 请求，一般用于测试或发送心跳。</li>
 </ul>
 <h2 id="rpc-client-示例"><a class="anchor" href="#rpc-client-%e7%a4%ba%e4%be%8b">#</a>RPC client 示例</h2>
 <h3 id="直接使用-rpcclient"><a class="anchor" href="#%e7%9b%b4%e6%8e%a5%e4%bd%bf%e7%94%a8-rpcclient">#</a>直接使用 rpc::Client</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(use_ssl, <span style="color:#0086b3">false</span>, <span style="color:#d14">&#34;use ssl if true&#34;</span>);
-</span></span><span style="display:flex;"><span>DEF_int32(n, <span style="color:#099">3</span>, <span style="color:#d14">&#34;request num&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    rpc<span style="color:#000;font-weight:bold">::</span>Client c(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>, FLG_use_ssl);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> FLG_n; <span style="color:#000;font-weight:bold">++</span>i) {
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>Json req <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>            {<span style="color:#d14">&#34;api&#34;</span>, <span style="color:#d14">&#34;HelloWorld.hello&#34;</span>}
-</span></span><span style="display:flex;"><span>        };
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>Json res;
-</span></span><span style="display:flex;"><span>        c.call(req, res);
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">1000</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    c.close();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(client_fun);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">use_ssl</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;use ssl if true&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;request num&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="n">FLG_use_ssl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">FLG_n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="s">&#34;api&#34;</span><span class="p">,</span> <span class="s">&#34;HelloWorld.hello&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>上面的例子中，client 每隔 1 秒向服务端发送一个 RPC 请求。</li>
 </ul>
 <h3 id="使用连接池-copool"><a class="anchor" href="#%e4%bd%bf%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0-copool">#</a>使用连接池 co::pool</h3>
 <p>当客户端需要建立大量连接时，可以用 <a href="../../concurrency/coroutine/pool/">co::pool</a> 管理这些连接。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>unique_ptr<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> proto;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool pool(
-</span></span><span style="display:flex;"><span>    []() { <span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> rpc<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#000;font-weight:bold">*</span>proto); },
-</span></span><span style="display:flex;"><span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) { <span style="color:#000;font-weight:bold">delete</span> (rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">*</span>) p; }
-</span></span><span style="display:flex;"><span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">client_fun</span>() {
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>pool_guard<span style="color:#000;font-weight:bold">&lt;</span>rpc<span style="color:#000;font-weight:bold">::</span>Client<span style="color:#000;font-weight:bold">&gt;</span> c(pool);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>) {
-</span></span><span style="display:flex;"><span>        c<span style="color:#000;font-weight:bold">-&gt;</span>ping();
-</span></span><span style="display:flex;"><span>        co<span style="color:#000;font-weight:bold">::</span>sleep(<span style="color:#099">3000</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>proto.reset(<span style="color:#000;font-weight:bold">new</span> rpc<span style="color:#000;font-weight:bold">::</span>Client(<span style="color:#d14">&#34;127.0.0.1&#34;</span>, <span style="color:#099">7788</span>));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">8</span>; <span style="color:#000;font-weight:bold">++</span>i) {
-</span></span><span style="display:flex;"><span>    go(client_fun);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">proto</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">pool</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[]()</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">new</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="o">*</span><span class="n">proto</span><span class="p">);</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="p">(</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">pool</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="o">-&gt;</span><span class="n">ping</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">proto</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ul>
 <li>上面的例子，使用 co::pool 保存客户端，多个协程可以共享这些客户端。</li>
 <li>co::pool 的 ccb 使用拷贝构造的方式从 proto 复制一个客户端连接。</li>
@@ -1156,37 +1155,37 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="配置项"><a class="anchor" href="#%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>配置项</h2>
 <p>coost 使用 <a href="../../flag/">co.flag</a> 定义了 RPC 相关的配置项。</p>
 <h3 id="rpc_conn_idle_sec"><a class="anchor" href="#rpc_conn_idle_sec">#</a>rpc_conn_idle_sec</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_conn_idle_sec, <span style="color:#099">180</span>, <span style="color:#d14">&#34;#2 connection may be closed if no data...&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_conn_idle_sec</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s">&#34;#2 connection may be closed if no data...&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>rpc::Server 空闲连接超时时间，单位为秒。一个连接在此时间内没有收到任何数据，server 可能会关闭此连接。</li>
 </ul>
 <h3 id="rpc_conn_timeout"><a class="anchor" href="#rpc_conn_timeout">#</a>rpc_conn_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_conn_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 connect timeout in ms&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_conn_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 connect timeout in ms&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>rpc::Client 连接超时时间，单位为毫秒。</li>
 </ul>
 <h3 id="rpc_log"><a class="anchor" href="#rpc_log">#</a>rpc_log</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_bool(rpc_log, <span style="color:#0086b3">true</span>, <span style="color:#d14">&#34;#2 enable rpc log if true&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">rpc_log</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="s">&#34;#2 enable rpc log if true&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>是否打印 RPC 日志，默认为 true，rpc::Server 与 rpc::Client 会打印 RPC 请求与响应。</li>
 </ul>
 <h3 id="rpc_max_idle_conn"><a class="anchor" href="#rpc_max_idle_conn">#</a>rpc_max_idle_conn</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_max_idle_conn, <span style="color:#099">128</span>, <span style="color:#d14">&#34;#2 max idle connections&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_max_idle_conn</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="s">&#34;#2 max idle connections&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>rpc::Server 最大空闲连接数，默认为 128，超过这个数量时，server 会关闭部分空闲连接。</li>
 </ul>
 <h3 id="rpc_max_msg_size"><a class="anchor" href="#rpc_max_msg_size">#</a>rpc_max_msg_size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_max_msg_size, <span style="color:#099">8</span> <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">20</span>, <span style="color:#d14">&#34;#2 max size of rpc message, default: 8M&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_max_msg_size</span><span class="p">,</span> <span class="mi">8</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#34;#2 max size of rpc message, default: 8M&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>RPC 消息的最大长度，默认为 8M。</li>
 </ul>
 <h3 id="rpc_recv_timeout"><a class="anchor" href="#rpc_recv_timeout">#</a>rpc_recv_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_recv_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 recv timeout in ms&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_recv_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 recv timeout in ms&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>RPC 接收超时时间，单位为毫秒。</li>
 </ul>
 <h3 id="rpc_send_timeout"><a class="anchor" href="#rpc_send_timeout">#</a>rpc_send_timeout</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>DEF_int32(rpc_send_timeout, <span style="color:#099">3000</span>, <span style="color:#d14">&#34;#2 send timeout in ms&#34;</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_send_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 send timeout in ms&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>RPC 发送超时时间，单位为毫秒。</li>
 </ul>

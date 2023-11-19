@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -855,51 +854,51 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
 <h2 id="co_ev_t"><a class="anchor" href="#co_ev_t">#</a>co::_ev_t</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">enum</span> <span style="color:#458;font-weight:bold">_ev_t</span> {
-</span></span><span style="display:flex;"><span>    ev_read <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>,
-</span></span><span style="display:flex;"><span>    ev_write <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="nc">_ev_t</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ev_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ev_write</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
 <li>I/O 事件类型，<code>ev_read</code> 表示读，<code>ev_write</code> 表示写。</li>
 </ul>
 <h2 id="coio_event"><a class="anchor" href="#coio_event">#</a>co::io_event</h2>
 <p><code>co::io_event</code> 用于<strong>将非阻塞 I/O 转换为同步方式</strong>。用户在<strong>协程</strong>中对一个 <strong>non-blocking socket</strong> 进行 I/O 操作，当 socket 不可读或不可写时，用户调用 <code>co::io_event</code> 的 <code>wait()</code> 方法挂起协程，等待 I/O 事件；当 socket 变为可读或可写时，调度线程唤醒该协程，继续 I/O 操作。</p>
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> io_event(sock_t fd, _ev_t ev);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> io_event(sock_t fd, <span style="color:#458;font-weight:bold">int</span> n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>);  <span style="color:#998;font-style:italic">// for windows only
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">io_event</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="n">_ev_t</span> <span class="n">ev</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">io_event</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// for windows only
 </span></span></span></code></pre></div><ul>
 <li>1, <strong>参数 fd 是一个 non-blocking socket</strong>，参数 ev 是 <code>ev_read</code> 或 <code>ev_write</code> 中的一种。调用 <code>wait()</code> 方法会在 socket 上等待 <code>ev</code> 指定的 I/O 事件，<code>wait()</code> 成功返回时，需要用户调用 <code>recv</code>, <code>send</code> 等函数完成 I/O 操作。<strong>在 windows 平台，fd 必须是 TCP socket</strong>(对于 UDP，很难用 IOCP 模拟 epoll 或 kqueue 的行为)。</li>
 <li>2, 仅适用于 windows，<code>fd</code> 可以是 UDP socket，但用户需要手动调用 <code>WSARecvFrom</code>, <code>WSASendTo</code> 等函数向 IOCP 发送 overlapped I/O 请求，然后调用 <code>wait()</code> 方法，当 <code>wait()</code> 成功返回时，表示 IOCP 已经帮用户完成了 I/O 操作。具体的用法此处不详述，代码中有详细的注释，建议直接参考 <a href="https://github.com/idealvin/coost/blob/master/include/co/co/io_event.h">co::io_event 的源码</a>，以及 windows 上 <a href="https://github.com/idealvin/coost/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto 的实现</a>。</li>
 </ul>
 <h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>io_event();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">io_event</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>析构函数，从 epoll 或 kqueue 中移除之前注册的 I/O 事件。</li>
 </ul>
 <h3 id="wait"><a class="anchor" href="#wait">#</a>wait</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">wait</span>(uint32 ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>此方法等待 socket 上的 I/O 事件，参数 <code>ms</code> 是超时时间，单位为毫秒，默认为 -1，永不超时。</li>
 <li>此方法阻塞，直到 I/O 事件到来，或者超时、发生错误。</li>
 <li>此方法成功时返回 true，超时或发生错误时返回 false。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">auto</span> sched <span style="color:#000;font-weight:bold">=</span> xx<span style="color:#000;font-weight:bold">::</span>gSched;
-</span></span><span style="display:flex;"><span>    CHECK(sched) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, ev_read);
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">do</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> (<span style="color:#458;font-weight:bold">int</span>) __sys_api(recv)(fd, buf, n, <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">return</span> r;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">==</span> EWOULDBLOCK <span style="color:#000;font-weight:bold">||</span> errno <span style="color:#000;font-weight:bold">==</span> EAGAIN) {
-</span></span><span style="display:flex;"><span>            <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>        } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">!=</span> EINTR) {
-</span></span><span style="display:flex;"><span>            <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="k">auto</span> <span class="n">sched</span> <span class="o">=</span> <span class="n">xx</span><span class="o">::</span><span class="n">gSched</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CHECK</span><span class="p">(</span><span class="n">sched</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;must be called in coroutine..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">io_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">ev_read</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">__sys_api</span><span class="p">(</span><span class="n">recv</span><span class="p">)(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EWOULDBLOCK</span> <span class="o">||</span> <span class="n">errno</span> <span class="o">==</span> <span class="n">EAGAIN</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">ms</span><span class="p">))</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EINTR</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>上面的例子是 <code>co::recv</code> 的实现，调用原生 recv 方法产生 EWOULDBLOCK 或 EAGAIN 错误时，用 co::io_event 等待读事件，wait() 正常返回时表示 socket 可读，继续调用原生 recv 方法完成读操作。</p>
 </article>
  

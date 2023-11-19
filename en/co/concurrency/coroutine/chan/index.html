@@ -29,8 +29,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -844,81 +843,81 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
 <h2 id="cochan"><a class="anchor" href="#cochan">#</a>co::chan</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">chan</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">chan</span><span class="p">;</span>
 </span></span></code></pre></div><p><code>co::chan</code> is a template class, which is similar to the channel in golang and is used to pass data between coroutines.</p>
 <blockquote class="book-hint info">
   Since v3.0.1, <code>co::chan</code> can be used in <strong>coroutines or non-coroutines</strong>, and can store values ​​of non-POD types such as <code>std::string</code>.
 </blockquote>
 
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> <span style="color:#000;font-weight:bold">explicit</span> chan(uint32 cap<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>, uint32 ms<span style="color:#000;font-weight:bold">=</span>(uint32)<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> chan(chan<span style="color:#000;font-weight:bold">&amp;&amp;</span> c);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> chan(<span style="color:#000;font-weight:bold">const</span> chan<span style="color:#000;font-weight:bold">&amp;</span> c);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="k">explicit</span> <span class="n">chan</span><span class="p">(</span><span class="n">uint32</span> <span class="n">cap</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uint32</span> <span class="n">ms</span><span class="o">=</span><span class="p">(</span><span class="n">uint32</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">chan</span><span class="p">(</span><span class="n">chan</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">chan</span><span class="p">(</span><span class="k">const</span> <span class="n">chan</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, <code>cap</code> is the maximum capacity of the internal queue, the default is 1. Parameter <code>ms</code> is the timeout for read and write operations in milliseconds, the default is -1 and never timed out.</li>
 <li>2, the move constructor.</li>
 <li>3, the copy constructor, only increases the internal reference count by 1.</li>
 </ul>
 <h3 id="close"><a class="anchor" href="#close">#</a>close</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">close</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Close the channel. After closing, the channel cannot be written, but can be read.</li>
 </ul>
 <h3 id="done"><a class="anchor" href="#done">#</a>done</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">done</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">done</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Check whether the read or write operation is successfully completed.</li>
 </ul>
 <h3 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>If the channel is closed, returns false, otherwise returns true.</li>
 </ul>
 <h3 id="operator"><a class="anchor" href="#operator">#</a>operator&laquo;</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>chan<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(<span style="color:#000;font-weight:bold">const</span> T<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">const</span>;
-</span></span><span style="display:flex;"><span>chan<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&lt;&lt;</span>(T<span style="color:#000;font-weight:bold">&amp;&amp;</span> x) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">chan</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">chan</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Write element <code>x</code>.</li>
 <li>This method blocks until the write operation completes or times out. You can call the <a href="#done">done()</a> method to determine whether the write operation is completed successfully.</li>
 <li>If the channel is closed, the write operation will fail and this method will return immediately.</li>
 </ul>
 <h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator&raquo;</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>chan<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">&gt;&gt;</span>(T<span style="color:#000;font-weight:bold">&amp;</span> x) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">chan</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Read an element from the channel.</li>
 <li>This method blocks until the read operation completes or times out. You can call the <a href="#done">done()</a> method to determine whether the read operation is completed successfully.</li>
 <li>If the channel is closed and there is no element in the channel, the read operation will fail and this method will return immediately.</li>
 </ul>
 <h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/co.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&#34;co/cout.h&#34;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch;
-</span></span><span style="display:flex;"><span>     go([ch]() { ch <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">7</span>; });
-</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>     ch <span style="color:#000;font-weight:bold">&gt;&gt;</span> v;
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;v: &#34;</span>, v);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">g</span>() {
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>chan<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">&gt;</span> ch(<span style="color:#099">32</span>, <span style="color:#099">500</span>);
-</span></span><span style="display:flex;"><span>     go([ch]() {
-</span></span><span style="display:flex;"><span>         ch <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#099">7</span>;
-</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ch.done()) co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;write to channel timeout..&#34;</span>);
-</span></span><span style="display:flex;"><span>     });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>     <span style="color:#458;font-weight:bold">int</span> v <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>     ch <span style="color:#000;font-weight:bold">&gt;&gt;</span> v;
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">if</span> (ch.done()) co<span style="color:#000;font-weight:bold">::</span>print(<span style="color:#d14">&#34;v: &#34;</span>, v);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">**</span> argv) {
-</span></span><span style="display:flex;"><span>     flag<span style="color:#000;font-weight:bold">::</span>parse(argc, argv);
-</span></span><span style="display:flex;"><span>     f();
-</span></span><span style="display:flex;"><span>     g();
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/cout.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">chan</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">go</span><span class="p">([</span><span class="n">ch</span><span class="p">]()</span> <span class="p">{</span> <span class="n">ch</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">     <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ch</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;v: &#34;</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">g</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">chan</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ch</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">go</span><span class="p">([</span><span class="n">ch</span><span class="p">]()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="n">ch</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ch</span><span class="p">.</span><span class="n">done</span><span class="p">())</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;write to channel timeout..&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ch</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="k">if</span> <span class="p">(</span><span class="n">ch</span><span class="p">.</span><span class="n">done</span><span class="p">())</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;v: &#34;</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">f</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">     <span class="n">g</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div></article>
  
       

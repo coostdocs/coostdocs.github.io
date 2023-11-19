@@ -27,8 +27,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -840,51 +839,51 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
 <h2 id="co_ev_t"><a class="anchor" href="#co_ev_t">#</a>co::_ev_t</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">enum</span> <span style="color:#458;font-weight:bold">_ev_t</span> {
-</span></span><span style="display:flex;"><span>     ev_read <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>,
-</span></span><span style="display:flex;"><span>     ev_write <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="nc">_ev_t</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ev_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ev_write</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
 <li>Type of I/O event.</li>
 </ul>
 <h2 id="coio_event"><a class="anchor" href="#coio_event">#</a>co::io_event</h2>
 <p><code>co::io_event</code> is used to <strong>convert non-blocking I/O to synchronous mode</strong>. The user performs I/O operations on a <strong>non-blocking socket</strong> in <strong>coroutine</strong>. When the socket is unreadable or unwritable, the user calls the <code>wait()</code> method of <code>co::io_event</code> to suspend the coroutine and wait for the I/O event; When the socket becomes readable or writable, the scheduling thread will wake up the coroutine again and continue the I/O operation.</p>
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> io_event(sock_t fd, _ev_t ev);
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> io_event(sock_t fd, <span style="color:#458;font-weight:bold">int</span> n<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>); <span style="color:#998;font-style:italic">// for windows only
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">io_event</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="n">_ev_t</span> <span class="n">ev</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">io_event</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// for windows only
 </span></span></span></code></pre></div><ul>
 <li>1, parameter <code>fd</code> is a <strong>non-blocking socket</strong>, parameter <code>ev</code> is <code>ev_read</code> or <code>ev_write</code>. Calling the <code>wait()</code> method will wait for the I/O event specified by <code>ev</code> on the socket. When <code>wait()</code> returns successfully, the user needs to call <code>recv</code>, <code>send</code> or other API to complete the I/O operation. <strong>On windows, fd must be a TCP socket</strong> (for UDP, it is difficult to simulate the behavior of epoll or kqueue with IOCP).</li>
 <li>2, for windows only. <code>fd</code> can be a UDP socket, but users need to manually call <code>WSARecvFrom</code>, <code>WSASendTo</code> or other API to send overlapped I/O requests to IOCP, and then call the <code>wait()</code> method, when <code>wait()</code> returns successfully, it means that IOCP has completed the I/O operation. The specific usage is not detailed here. There are detailed comments in the code. It is recommended to refer directly to the source code of <a href="https://github.com/idealvin/coost/blob/master/include/co/co/io_event.h">co::io_event</a>, and the implementation of <a href="https://github.com/idealvin/coost/blob/master/src/co/sock_win.cc">co::accept, co::connect, co::recvfrom, co::sendto</a> on windows.</li>
 </ul>
 <h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>io_event();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">io_event</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Removes previously registered I/O events from epoll or kqueue.</li>
 </ul>
 <h3 id="wait"><a class="anchor" href="#wait">#</a>wait</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">wait</span>(uint32 ms<span style="color:#000;font-weight:bold">=-</span><span style="color:#099">1</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>This method waits for the I/O event on the socket. The parameter <code>ms</code> is the timeout in milliseconds. The default is -1 and never times out.</li>
 <li>This method blocks until the I/O event arrives, or times out or an error occurs.</li>
 <li>This method returns true on success, false on timeout or error.</li>
 </ul>
 <h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">recv</span>(sock_t fd, <span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> buf, <span style="color:#458;font-weight:bold">int</span> n, <span style="color:#458;font-weight:bold">int</span> ms) {
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">auto</span> sched <span style="color:#000;font-weight:bold">=</span> xx<span style="color:#000;font-weight:bold">::</span>gSched;
-</span></span><span style="display:flex;"><span>     CHECK(sched) <span style="color:#000;font-weight:bold">&lt;&lt;</span> <span style="color:#d14">&#34;must be called in coroutine..&#34;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>     co<span style="color:#000;font-weight:bold">::</span>io_event ev(fd, ev_read);
-</span></span><span style="display:flex;"><span>     <span style="color:#000;font-weight:bold">do</span> {
-</span></span><span style="display:flex;"><span>         <span style="color:#458;font-weight:bold">int</span> r <span style="color:#000;font-weight:bold">=</span> (<span style="color:#458;font-weight:bold">int</span>) __sys_api(recv)(fd, buf, n, <span style="color:#099">0</span>);
-</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (r <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">return</span> r;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>         <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">==</span> EWOULDBLOCK <span style="color:#000;font-weight:bold">||</span> errno <span style="color:#000;font-weight:bold">==</span> EAGAIN) {
-</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>ev.wait(ms)) <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>         } <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">if</span> (errno <span style="color:#000;font-weight:bold">!=</span> EINTR) {
-</span></span><span style="display:flex;"><span>             <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
-</span></span><span style="display:flex;"><span>         }
-</span></span><span style="display:flex;"><span>     } <span style="color:#000;font-weight:bold">while</span> (<span style="color:#0086b3">true</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="k">const</span> <span class="k">auto</span> <span class="n">sched</span> <span class="o">=</span> <span class="n">xx</span><span class="o">::</span><span class="n">gSched</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">CHECK</span><span class="p">(</span><span class="n">sched</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;must be called in coroutine..&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="n">co</span><span class="o">::</span><span class="n">io_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">ev_read</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">__sys_api</span><span class="p">(</span><span class="n">recv</span><span class="p">)(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EWOULDBLOCK</span> <span class="o">||</span> <span class="n">errno</span> <span class="o">==</span> <span class="n">EAGAIN</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">ms</span><span class="p">))</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EINTR</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">}</span>
+</span></span><span class="line"><span class="cl">     <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div></article>
  
       

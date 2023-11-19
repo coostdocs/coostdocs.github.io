@@ -39,8 +39,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -880,10 +879,10 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="copool"><a class="anchor" href="#copool">#</a>co::pool</h2>
 <p><code>co::pool</code> 是一种通用的协程池，它是<strong>协程安全</strong>的，内部存储 <code>void*</code> 类型的指针，可以用作连接池、内存池或其他用途的缓存。</p>
 <h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#099">1.</span> pool();
-</span></span><span style="display:flex;"><span><span style="color:#099">2.</span> pool(pool<span style="color:#000;font-weight:bold">&amp;&amp;</span> p);
-</span></span><span style="display:flex;"><span><span style="color:#099">3.</span> pool(<span style="color:#000;font-weight:bold">const</span> pool<span style="color:#000;font-weight:bold">&amp;</span> p);
-</span></span><span style="display:flex;"><span><span style="color:#099">4.</span> pool(std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>()<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> ccb, std<span style="color:#000;font-weight:bold">::</span>function<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">void</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&gt;&amp;&amp;</span> dcb, size_t cap<span style="color:#000;font-weight:bold">=</span>(size_t)<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">pool</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">pool</span><span class="p">(</span><span class="n">pool</span><span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">pool</span><span class="p">(</span><span class="k">const</span> <span class="n">pool</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">pool</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*</span><span class="p">()</span><span class="o">&gt;&amp;&amp;</span> <span class="n">ccb</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;&amp;&amp;</span> <span class="n">dcb</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">cap</span><span class="o">=</span><span class="p">(</span><span class="n">size_t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>1, 默认构造函数，与 4 相比，<code>ccb</code> 与 <code>dcb</code> 为 NULL。</p>
@@ -907,26 +906,26 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">T</span> {};
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool p(
-</span></span><span style="display:flex;"><span>    []() { <span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> T; }, <span style="color:#998;font-style:italic">// ccb
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) { <span style="color:#000;font-weight:bold">delete</span> (T<span style="color:#000;font-weight:bold">*</span>) p; }, <span style="color:#998;font-style:italic">// dcb
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">T</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">p</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[]()</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">new</span> <span class="n">T</span><span class="p">;</span> <span class="p">},</span> <span class="c1">// ccb
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span> <span class="p">},</span> <span class="c1">// dcb
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="clear"><a class="anchor" href="#clear">#</a>clear</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">clear</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">clear</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>清空 pool，可以在任何地方调用。</li>
 <li>如果设置了 <code>dcb</code>，会用 <code>dcb</code> 销毁 pool 中的元素。</li>
 </ul>
 <h3 id="pop"><a class="anchor" href="#pop">#</a>pop</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">pop</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">pop</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>从 pool 中取出一个元素，<strong>必须在协程中调用</strong>。</li>
 <li>pool 为空时，若 <code>ccb</code> 不是 NULL，则调用 <code>ccb()</code> 创建一个元素并返回，否则返回 NULL。</li>
 <li>此方法是协程安全的，不需要加锁。</li>
 </ul>
 <h3 id="push"><a class="anchor" href="#push">#</a>push</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">push</span>(<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> e) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">e</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>将元素放回 pool 中，<strong>必须在协程中调用</strong>。</li>
 <li>参数 e 为 NULL 时，直接忽略。</li>
@@ -935,73 +934,73 @@ https://github.com/alex-shpak/hugo-book
 <li>此方法是协程安全的，不需要加锁。</li>
 </ul>
 <h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>size_t <span style="color:#900;font-weight:bold">size</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回当前线程的 pool 大小，<strong>必须在协程中调用</strong>。</li>
 </ul>
 <h2 id="copool_guard"><a class="anchor" href="#copool_guard">#</a>co::pool_guard</h2>
 <p><code>co::pool_guard</code> 在构造时自动从 <code>co::pool</code> 取出元素，析构时自动将元素放回 <code>co::pool</code>。同时，它还重载了 <code>operator-&gt;</code>，可以像智能指针一样使用它。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> T<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">pool_guard</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">pool_guard</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>参数 T 是 <code>co::pool</code> 中指针所指向的实际类型。</li>
 </ul>
 <h3 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">pool_guard</span>(co<span style="color:#000;font-weight:bold">::</span>pool<span style="color:#000;font-weight:bold">&amp;</span> p);
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#900;font-weight:bold">pool_guard</span>(co<span style="color:#000;font-weight:bold">::</span>pool<span style="color:#000;font-weight:bold">*</span> p);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">pool_guard</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">pool</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">pool_guard</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">pool</span><span class="o">*</span> <span class="n">p</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>从 <code>co::pool</code> 中取出一个元素，参数 <code>p</code> 是 <code>co::pool</code> 类的引用或指针。</li>
 </ul>
 <h3 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">~</span>pool_guard();
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">pool_guard</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>将构造函数中获取的元素，放回 <code>co::pool</code> 中。</li>
 </ul>
 <h3 id="get"><a class="anchor" href="#get">#</a>get</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">get</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>获取从 <code>co::pool</code> 中取出的指针。</li>
 </ul>
 <h3 id="operator-"><a class="anchor" href="#operator-">#</a>operator-&gt;</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">-&gt;</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回从 <code>co::pool</code> 中取出的指针。</li>
 </ul>
 <h3 id="operator"><a class="anchor" href="#operator">#</a>operator*</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T<span style="color:#000;font-weight:bold">&amp;</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">*</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>返回内部指针所指向对象的引用。</li>
 </ul>
 <h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator==</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">==</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断内部指针是否等于 p。</li>
 </ul>
 <h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator!=</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">operator</span><span style="color:#000;font-weight:bold">!=</span>(T<span style="color:#000;font-weight:bold">*</span> p) <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>判断内部指针是否不等于 p。</li>
 </ul>
 <h3 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">explicit</span> <span style="color:#000;font-weight:bold">operator</span> <span style="color:#900;font-weight:bold">bool</span>() <span style="color:#000;font-weight:bold">const</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>若内部指针不是 NULL，返回 true，否则返回 false。</li>
 </ul>
 <h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Redis</span>;  <span style="color:#998;font-style:italic">// assume class Redis is a connection to the redis server
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>co<span style="color:#000;font-weight:bold">::</span>pool p(
-</span></span><span style="display:flex;"><span>    []() { <span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span>) <span style="color:#000;font-weight:bold">new</span> Redis; }, <span style="color:#998;font-style:italic">// ccb
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    [](<span style="color:#458;font-weight:bold">void</span><span style="color:#000;font-weight:bold">*</span> p) { <span style="color:#000;font-weight:bold">delete</span> (Redis<span style="color:#000;font-weight:bold">*</span>) p; }, <span style="color:#998;font-style:italic">// dcb
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#099">8192</span>                                <span style="color:#998;font-style:italic">// cap
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">f</span>() {
-</span></span><span style="display:flex;"><span>    co<span style="color:#000;font-weight:bold">::</span>pool_guard<span style="color:#000;font-weight:bold">&lt;</span>Redis<span style="color:#000;font-weight:bold">&gt;</span> rds(p);
-</span></span><span style="display:flex;"><span>    rds<span style="color:#000;font-weight:bold">-&gt;</span>get(<span style="color:#d14">&#34;xx&#34;</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>go(f);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Redis</span><span class="p">;</span>  <span class="c1">// assume class Redis is a connection to the redis server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">p</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[]()</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">new</span> <span class="n">Redis</span><span class="p">;</span> <span class="p">},</span> <span class="c1">// ccb
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="p">(</span><span class="n">Redis</span><span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span> <span class="p">},</span> <span class="c1">// dcb
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="mi">8192</span>                                <span class="c1">// cap
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">Redis</span><span class="o">&gt;</span> <span class="n">rds</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rds</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
 </span></span></code></pre></div><p>上面的例子相当于 redis 连接池。如果使用 CLS 机制，一个协程一个连接，则 100 万协程需要建立 100 万连接，消耗较大。但使用 pool 机制，100 万协程可能只需要共用少量的连接。pool 机制比 CLS 更高效、更合理，这是 coost 不支持 CLS 的原因。</p>
 </article>
  

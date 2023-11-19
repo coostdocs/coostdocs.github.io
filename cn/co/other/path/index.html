@@ -39,8 +39,7 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-<link href='//cdn.bootcss.com/highlight.js/11.1.0/styles/github.min.css'
-  rel='stylesheet' type='text/css' />
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
 
 
 </head>
@@ -868,9 +867,9 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="path"><a class="anchor" href="#path">#</a>path</h2>
 <p>此部分功能移植于 <a href="https://github.com/golang/go/blob/master/src/path/path.go">golang</a>，路径分隔符必须为 <code>/</code>。</p>
 <h3 id="pathclean"><a class="anchor" href="#pathclean">#</a>path::clean</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">clean</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">clean</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">clean</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>返回路径的最短等价形式，路径中连续的分隔符会被清除掉。</p>
@@ -879,13 +878,13 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>clean(<span style="color:#d14">&#34;&#34;</span>);            <span style="color:#998;font-style:italic">// &#34;.&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>clean(<span style="color:#d14">&#34;./x//y/&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;x/y&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>clean(<span style="color:#d14">&#34;./x/..&#34;</span>);      <span style="color:#998;font-style:italic">// &#34;.&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>clean(<span style="color:#d14">&#34;./x/../..&#34;</span>);   <span style="color:#998;font-style:italic">// &#34;..&#34;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>            <span class="c1">// &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x//y/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;x/y&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/..&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">);</span>   <span class="c1">// &#34;..&#34;
 </span></span></span></code></pre></div><h3 id="pathjoin"><a class="anchor" href="#pathjoin">#</a>path::join</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">template</span><span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">typename</span> ...S<span style="color:#000;font-weight:bold">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">inline</span> fastring join(S<span style="color:#000;font-weight:bold">&amp;&amp;</span>... s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">S</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">fastring</span> <span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>将任意数量的字符串拼接成一个完整的路径，返回 <a href="#pathclean">path::clean</a> 处理后的结果。</p>
@@ -897,13 +896,13 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>join(<span style="color:#d14">&#34;&#34;</span>, <span style="color:#d14">&#34;&#34;</span>);         <span style="color:#998;font-style:italic">// &#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>join(<span style="color:#d14">&#34;x&#34;</span>, <span style="color:#d14">&#34;y&#34;</span>, <span style="color:#d14">&#34;z&#34;</span>);  <span style="color:#998;font-style:italic">// &#34;x/y/z&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>join(<span style="color:#d14">&#34;/x/&#34;</span>, <span style="color:#d14">&#34;y&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;/x/y&#34;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>         <span class="c1">// &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">,</span> <span class="s">&#34;z&#34;</span><span class="p">);</span>  <span class="c1">// &#34;x/y/z&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/x/y&#34;
 </span></span></span></code></pre></div><h3 id="pathsplit"><a class="anchor" href="#pathsplit">#</a>path::split</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>pair<span style="color:#000;font-weight:bold">&lt;</span>fastring, fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>pair<span style="color:#000;font-weight:bold">&lt;</span>fastring, fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>std<span style="color:#000;font-weight:bold">::</span>pair<span style="color:#000;font-weight:bold">&lt;</span>fastring, fastring<span style="color:#000;font-weight:bold">&gt;</span> split(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。</p>
@@ -915,14 +914,14 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;/&#34;</span>);     <span style="color:#998;font-style:italic">// -&gt; { &#34;/&#34;, &#34;&#34; }
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;/a&#34;</span>);    <span style="color:#998;font-style:italic">// -&gt; { &#34;/&#34;, &#34;a&#34; }
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;/a/&#34;</span>);   <span style="color:#998;font-style:italic">// -&gt; { &#34;/a/&#34;, &#34;&#34; }
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>split(<span style="color:#d14">&#34;/a/b&#34;</span>);  <span style="color:#998;font-style:italic">// -&gt; { &#34;/a/&#34;, &#34;b&#34; }
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>     <span class="c1">// -&gt; { &#34;/&#34;, &#34;&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>    <span class="c1">// -&gt; { &#34;/&#34;, &#34;a&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>   <span class="c1">// -&gt; { &#34;/a/&#34;, &#34;&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>  <span class="c1">// -&gt; { &#34;/a/&#34;, &#34;b&#34; }
 </span></span></span></code></pre></div><h3 id="pathdir"><a class="anchor" href="#pathdir">#</a>path::dir</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">dir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">dir</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">dir</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>返回路径的目录部分，返回值是 <a href="#pathclean">path::clean</a> 处理后的结果。</p>
@@ -931,15 +930,15 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>dir(<span style="color:#d14">&#34;a&#34;</span>);      <span style="color:#998;font-style:italic">// &#34;.&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>dir(<span style="color:#d14">&#34;a/&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;a&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>dir(<span style="color:#d14">&#34;/&#34;</span>);      <span style="color:#998;font-style:italic">// &#34;/&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>dir(<span style="color:#d14">&#34;/a&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;/&#34;;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>dir(<span style="color:#d14">&#34;/a/&#34;</span>);    <span style="color:#998;font-style:italic">// &#34;/a&#34;;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;a&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>      <span class="c1">// &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>    <span class="c1">// &#34;/a&#34;;
 </span></span></span></code></pre></div><h3 id="pathbase"><a class="anchor" href="#pathbase">#</a>path::base</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">base</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">base</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">base</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>返回路径最后的一个元素。</p>
@@ -957,15 +956,15 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>base(<span style="color:#d14">&#34;&#34;</span>);      <span style="color:#998;font-style:italic">// &#34;.&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>base(<span style="color:#d14">&#34;/&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;/&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>base(<span style="color:#d14">&#34;/a/&#34;</span>);   <span style="color:#998;font-style:italic">// &#34;a&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>base(<span style="color:#d14">&#34;/a&#34;</span>);    <span style="color:#998;font-style:italic">// &#34;a&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>base(<span style="color:#d14">&#34;/a/b&#34;</span>);  <span style="color:#998;font-style:italic">// &#34;b&#34;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>   <span class="c1">// &#34;a&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>    <span class="c1">// &#34;a&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>  <span class="c1">// &#34;b&#34;
 </span></span></span></code></pre></div><h3 id="pathext"><a class="anchor" href="#pathext">#</a>path::ext</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">ext</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s, size_t n);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">ext</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span><span style="color:#000;font-weight:bold">*</span> s);
-</span></span><span style="display:flex;"><span>fastring <span style="color:#900;font-weight:bold">ext</span>(<span style="color:#000;font-weight:bold">const</span> fastring<span style="color:#000;font-weight:bold">&amp;</span> s);
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>返回路径中的文件扩展名。</p>
@@ -974,10 +973,10 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>path<span style="color:#000;font-weight:bold">::</span>ext(<span style="color:#d14">&#34;/a.c&#34;</span>);   <span style="color:#998;font-style:italic">// &#34;.c&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>ext(<span style="color:#d14">&#34;a/b&#34;</span>);    <span style="color:#998;font-style:italic">// &#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>ext(<span style="color:#d14">&#34;/a.c/&#34;</span>);  <span style="color:#998;font-style:italic">// &#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>path<span style="color:#000;font-weight:bold">::</span>ext(<span style="color:#d14">&#34;a.&#34;</span>);     <span style="color:#998;font-style:italic">// &#34;.&#34;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c&#34;</span><span class="p">);</span>   <span class="c1">// &#34;.c&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">);</span>    <span class="c1">// &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c/&#34;</span><span class="p">);</span>  <span class="c1">// &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a.&#34;</span><span class="p">);</span>     <span class="c1">// &#34;.&#34;
 </span></span></span></code></pre></div></article>
  
       
