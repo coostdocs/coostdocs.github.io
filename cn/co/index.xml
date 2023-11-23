@@ -31,7 +31,7 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
 示例
 #include &amp;#34;co/god.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; int main(int argc, char** argv) { god::bless_no_bugs(); co::print(&amp;#34;hello world&amp;#34;); return 0; } #god::cast template&amp;lt;typename To, typename From&amp;gt; constexpr To cast(From&amp;amp;&amp;amp; f) { return (To) std::forward&amp;lt;From&amp;gt;(f); } 万能转换，将 From 类型转换为 To 类型，To 可以是引用。
 示例
-int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A&amp;#39; god::cast&amp;lt;char&amp;amp;&amp;gt;(i) = &amp;#39;a&amp;#39;; // 将 i 的低字节设置为 &amp;#39;a&amp;#39; #&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; #god::align_down 1.</description>
+int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A&amp;#39; god::cast&amp;lt;char&amp;amp;&amp;gt;(i) = &amp;#39;a&amp;#39;; // 将 i 的低字节设置为 &amp;#39;a&amp;#39; #——————————— #god::align_down 1.</description>
     </item>
     
     <item>
@@ -41,7 +41,7 @@ int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A
       
       <guid>https://coostdocs.github.io/cn/co/mem/</guid>
       <description>include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &amp;lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; #co::make template&amp;lt;typename T, typename.</description>
+#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &amp;lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #——————————— #co::make template&amp;lt;typename T, typename.</description>
     </item>
     
     <item>
@@ -110,7 +110,7 @@ co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既�
 由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
 object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
 {&amp;#34;a&amp;#34;:1, &amp;#34;b&amp;#34;:false, &amp;#34;s&amp;#34;:&amp;#34;xxx&amp;#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
-#Json #Json::Json 1. Json() noexcept; 2. Json(decltype(nullptr)) noexcept; 3. Json(Json&amp;amp;&amp;amp; v) noexcept; 4.</description>
+#global #json::array Json array(); 此函数在 namespace json 下，它返回一个空的 array 对象。 #json::object Json object(); 此函数在 namespace json 下，它返回一个空的 object 对象。 #json::parse Json parse(const char* s, size_t n); Json parse(const char* s); Json parse(const fastring&amp;amp; s); Json parse(const std::string&amp;amp; s); 从 JSON 字符串解析 Json 对象。 此函数不是 Json 类中的方法，而是定义于 namespace json 下的函数。 此函数返回一个 Json 对象，解析失败时，返回 null 对象。 #co::Json #constructor 1.</description>
     </item>
     
     <item>
@@ -126,6 +126,18 @@ Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+ #xmake co 推荐使用 xmake �
 xmake -a # 构建所有项目 (libco, gen, test, unitest) 若需要使用 HTTP 或 SSL 特性，则可以用下面的命令构建：
 xmake f --with_libcurl=true --with_openssl=true xmake -a 启用 HTTP 或 SSL 特性时，xmake 会自动从网络安装 libcurl 与 openssl，可能需要花点时间。
 命令行中的 -a 表示构建 co 中的所有项目，如果不加 -a，默认只会构建 libco。另外，可以用 -v 或 -vD 让 xmake 打印更详细的编译信息：</description>
+    </item>
+    
+    <item>
+      <title>FAQ</title>
+      <link>https://coostdocs.github.io/cn/co/faq/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/faq/</guid>
+      <description>#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
+int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：</description>
     </item>
     
   </channel>

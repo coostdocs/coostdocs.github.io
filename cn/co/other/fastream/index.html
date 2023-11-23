@@ -21,15 +21,15 @@ fastream s; // 空对象, 未分配内存 fastream s(1024); // 预分配 1k 内�
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/other/fastream/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+<meta property="article:modified_time" content="2023-11-23T19:26:25+08:00" />
 
 <title>fastream | Documents for Coost</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/fastream/" title="fastream">
-<link rel="stylesheet" href="../../../../book.min.1e076dd51b902c98b19726f75e8c6a47852539df7ed47234d11e926c0e7bcf4f.css" integrity="sha256-Hgdt1RuQLJixlyb3XoxqR4UlOd9&#43;1HI00R6SbA57z08=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../../book.min.cdbdbf8bee42a06d96b071e52c1c574315b327ea7b5262cce5cb1c20fcbb889b.css" integrity="sha256-zb2/i&#43;5CoG2WsHHlLBxXQxWzJ&#43;p7UmLM5cscIPy7iJs=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.a0184848556cfcb224a0c209fda99921c7011447c8faf7f5949993c9b8121a34.js" integrity="sha256-oBhISFVs/LIkoMIJ/amZIccBFEfI&#43;vf1lJmTybgSGjQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.4f163bb0f6a1a72b3c21c6afd2976563a5be327188b19c8d99d3ee1629879159.js" integrity="sha256-TxY7sPahpys8Icav0pdlY6W&#43;MnGIsZyNmdPuFimHkVk=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -778,6 +778,62 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/faq/" class="">FAQ</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Blog</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9b9605d3de07fd872f009e6826d02619" class="toggle"  />
+    <label for="section-9b9605d3de07fd872f009e6826d02619" class="flex justify-between">
+      <a role="button" class="">2023</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+    
+  </ul>
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -978,11 +1034,15 @@ https://github.com/alex-shpak/hugo-book
 <h3 id="c_str"><a class="anchor" href="#c_str">#</a>c_str</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">c_str</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>此方法获取等效的 C 字符串。</li>
-<li>此方法在 fastream 末尾加上一个 &lsquo;\0&rsquo;，它不会改变 fastream 的 size 及内容，但有可能导致内部重新分配内存。</li>
+<li>此方法获取等效的 C 风格字符串 (<code>\0</code>结尾)。</li>
 </ul>
+<blockquote class="book-hint warning">
+  通过 <code>c_str()</code> 访问的字符数组是只读的，不可进行写操作。
+</blockquote>
+
 <h3 id="data"><a class="anchor" href="#data">#</a>data</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">data</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="nf">data</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">data</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>此方法与 <a href="#c_str">c_str()</a> 类似，但不保证字符串以 &lsquo;\0&rsquo; 结尾。</li>
 </ul>
@@ -1024,7 +1084,7 @@ https://github.com/alex-shpak/hugo-book
 <h3 id="ensure"><a class="anchor" href="#ensure">#</a>ensure</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">ensure</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>此方法确保 fastream 剩余的内存容量能容纳至少 n 个字符。</li>
+<li>此方法确保 fastream 剩余的内存能容纳至少 n 个字符。</li>
 </ul>
 <h3 id="reserve"><a class="anchor" href="#reserve">#</a>reserve</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reserve</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
@@ -1038,13 +1098,14 @@ https://github.com/alex-shpak/hugo-book
 <li>v2.0.3 新增。清空 fastream 并释放内存。</li>
 </ul>
 <h3 id="resize"><a class="anchor" href="#resize">#</a>resize</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">resize</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span> <span class="n">resize</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">void</span> <span class="n">resize</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>
 <p>此方法将 fastream 的 size 设置为 n。</p>
 </li>
 <li>
-<p>当 n 大于原来的 size 时，此操作将 size 扩大到 n，但不会用 &lsquo;\0&rsquo; 填充扩展的部分。</p>
+<p>当 n 大于原来的 size 时，此操作将 size 扩大到 n。<strong>1 中扩展的部分，内容是未定义的；2 中会用字符 <code>c</code> 填充扩展的部分。</strong></p>
 </li>
 <li>
 <p>示例</p>
@@ -1055,6 +1116,10 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>    <span class="c1">// s -&gt; &#34;hel&#34;
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>  <span class="c1">// c 是不确定的随机值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>       <span class="c1">// c 是 &#39;\0&#39;
 </span></span></span></code></pre></div><h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -1078,25 +1143,24 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="mf">5.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="k">const</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="mf">6.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">7.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">7.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">8.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">signed</span> <span class="kt">char</span> <span class="n">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="mf">9.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">8.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">9.</span>  <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">signed</span> <span class="kt">char</span> <span class="n">v</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">11.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint16</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">12.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">13.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">10.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint16</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">11.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="mf">12.</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
 <li>1, 追加长度为 n 的字节序列。</li>
 <li>2-4, 追加字符串 s。</li>
 <li>5, 追加 fastream，s 可以是进行 append 操作的 fastream 对象本身。</li>
-<li>6-7, 追加 n 个字符 c。</li>
-<li>8-10, 追加单个字符 c。</li>
-<li>11-13, 等价于 <code>append(&amp;v, sizeof(v))</code>。</li>
+<li>6, 追加 n 个字符 c。</li>
+<li>7-9, 追加单个字符 c。</li>
+<li>10-12, 等价于 <code>append(&amp;v, sizeof(v))</code>。</li>
 </ul>
-<blockquote class="book-hint info">
-  从 v3.0.1 开始，1-2 参数 s 可以与 fastream 内部内存重叠。
+<blockquote class="book-hint warn">
+  从 v3.0.1 开始，1-2 参数 s 可以与 fastream 内部内存重叠。<br>
+v3.0.2 移除了 <code>fastream&amp; append(char c, size_t n);</code>。
 </blockquote>
 
 <ul>
@@ -1111,7 +1175,6 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>    <span class="c1">// 追加 8 字节
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">);</span>       <span class="c1">// 追加单个字符
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="sc">&#39;c&#39;</span><span class="p">);</span>  <span class="c1">// 追加 100 个 &#39;c&#39;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>  <span class="c1">// 追加 100 个 &#39;c&#39;
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>     <span class="c1">// 追加 4 字节
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>         <span class="c1">// 追加 4 字节, 与上同
@@ -1267,9 +1330,9 @@ coost 提供 <code>dp::_1, dp::_2, ..., dp::_16, dp::_n</code>，用于设置浮
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | September 9, 2023' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/91dfe8174c5eabd33fae33ce825a08524ccdf5d5" title='最后修改者 idealvin | 2023/11/23' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>September 9, 2023</span>
+      <span>2023/11/23</span>
     </a>
   </div>
 

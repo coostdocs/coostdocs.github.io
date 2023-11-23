@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
+int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="FAQ" />
+<meta property="og:description" content="#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
+int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/co/faq/" /><meta property="article:section" content="co" />
+
+<meta property="article:modified_time" content="2023-11-23T19:25:59+08:00" />
+
+<title>FAQ | Documents for Coost</title>
+<link rel="manifest" href="../../../manifest.json">
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="../../../book.min.cdbdbf8bee42a06d96b071e52c1c574315b327ea7b5262cce5cb1c20fcbb889b.css" integrity="sha256-zb2/i&#43;5CoG2WsHHlLBxXQxWzJ&#43;p7UmLM5cscIPy7iJs=" crossorigin="anonymous">
+  <script defer src="../../../flexsearch.min.js"></script>
+  <script defer src="../../../cn.search.min.4f163bb0f6a1a72b3c21c6afd2976563a5be327188b19c8d99d3ee1629879159.js" integrity="sha256-TxY7sPahpys8Icav0pdlY6W&#43;MnGIsZyNmdPuFimHkVk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='../../../css/github.css' rel='stylesheet' type='text/css' />
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../cn/"><span>Documents for Coost</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/announce/" class="">声明</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/co/" class="">简介</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/contact/" class="">联系</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/about/sponsor/" class="">赞助💕</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/god/" class="">面向玄学</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
+    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
+      <a role="button" class="">协程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/basic/" class="">基本概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/api/" class="">APIs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/chan/" class="">channel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/event/" class="">同步事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/io_event/" class="">IO 事件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/mutex/" class="">互斥锁</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/wg/" class="">wait group</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/pool/" class="">协程池</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/concurrency/coroutine/conf/" class="">配置项</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/mode/" class="">网络编程模式</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/third/" class="">使用三方网络库</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/http/" class="">HTTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/fastring/" class="">fastring</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/fastream/" class="">fastream</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/str/" class="">string utility</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/hash/" class="">Hash</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/path/" class="">文件路径(path)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/faq/" class=" active">FAQ</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Blog</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9b9605d3de07fd872f009e6826d02619" class="toggle"  />
+    <label for="section-9b9605d3de07fd872f009e6826d02619" class="flex justify-between">
+      <a role="button" class="">2023</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>FAQ</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faq">FAQ</a>
+      <ul>
+        <li><a href="#如何修改配置项的值">如何修改配置项的值？</a></li>
+        <li><a href="#程序启动时如何指定配置文件">程序启动时如何指定配置文件？</a></li>
+        <li><a href="#如何使用-flag-别名">如何使用 flag 别名？</a></li>
+        <li><a href="#如何配置日志模块">如何配置日志模块？</a></li>
+        <li><a href="#如何设置-json-中的小数位数">如何设置 JSON 中的小数位数？</a></li>
+        <li><a href="#如何实现-json-与结构体互转">如何实现 JSON 与结构体互转？</a></li>
+        <li><a href="#频繁创建销毁线程导致内存泄露">频繁创建、销毁线程导致内存泄露？</a></li>
+        <li><a href="#如何设置协程调度线程的数量">如何设置协程调度线程的数量？</a></li>
+        <li><a href="#创建协程的数量是否有限制">创建协程的数量是否有限制？</a></li>
+        <li><a href="#协程是否会出现栈溢出">协程是否会出现栈溢出？</a></li>
+        <li><a href="#协程共享栈在使用上有哪些限制">协程共享栈在使用上有哪些限制？</a></li>
+        <li><a href="#协程中可以使用三方网络库吗">协程中可以使用三方网络库吗？</a></li>
+        <li><a href="#如何将主线程变成协程调度线程">如何将主线程变成协程调度线程？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="faq"><a class="anchor" href="#faq">#</a>FAQ</h1>
+<h2 id="如何修改配置项的值"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%9a%84%e5%80%bc">#</a>如何修改配置项的值？</h2>
+<p><strong><a href="../flag/">flag</a></strong> 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以<strong>通过命令行参数或配置文件修改配置项的值</strong>。命令行中的用法见<a href="../flag/#%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%ad%e4%bd%bf%e7%94%a8-flag">命令行中使用 flag</a>，配置文件的用法见<a href="../flag/#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">配置文件</a>。需要注意，<strong>修改配置项需要在 main 函数开头调用 <a href="../flag/#flagparse">flag::parse</a> 解析命令行参数</strong>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>用户也可以通过 API <a href="../flag/#flagset_value">flag::set_value</a> 修改配置项的值：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;co_sched_num&#34;</span><span class="p">,</span> <span class="s">&#34;2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="s">&#34;v3.1.4&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote class="book-hint info">
+  <code>flag::set_value</code> 在 <code>flag::parse</code> 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。
+</blockquote>
+
+<h2 id="程序启动时如何指定配置文件"><a class="anchor" href="#%e7%a8%8b%e5%ba%8f%e5%90%af%e5%8a%a8%e6%97%b6%e5%a6%82%e4%bd%95%e6%8c%87%e5%ae%9a%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>程序启动时如何指定配置文件？</h2>
+<p>用户使用 <a href="../flag/">flag</a> 定义配置项后，程序启动时可用如下方式指定配置文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="p">.</span><span class="o">/</span><span class="n">xx</span> <span class="n">xx</span><span class="p">.</span><span class="n">conf</span>          <span class="err">#</span> <span class="err">此种情况，配置文件名需要以</span> <span class="p">.</span><span class="n">conf</span> <span class="err">或</span> <span class="n">config</span> <span class="err">结尾</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="o">/</span><span class="n">xx</span> <span class="o">-</span><span class="n">conf</span> <span class="n">xx</span><span class="p">.</span><span class="n">conf</span>    <span class="err">#</span> <span class="err">此种情况，配置文件名没有上述限制</span>
+</span></span></code></pre></div><p>注意 main 函数开头需要调用 <a href="../flag/#flagparse">flag::parse</a> 方法。另外，用户<strong>可以用 <code>-mkconf</code> 自动生成配置文件</strong>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 自动生成配置文件 xx.conf</span>
+</span></span><span class="line"><span class="cl">./xx -mkconf
+</span></span></code></pre></div><h2 id="如何使用-flag-别名"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-flag-%e5%88%ab%e5%90%8d">#</a>如何使用 flag 别名？</h2>
+<p><a href="../flag/">flag</a> 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名取代原名。flag 别名有两种用法，第一种是在定义 flag 时指定别名：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span>          <span class="c1">// 无别名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>       <span class="c1">// 别名 d
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">dbg</span><span class="p">);</span>  <span class="c1">// 两个别名: d, dbg
+</span></span></span></code></pre></div><p>还有一种情况，flag 已经定义，且用户无法修改 flag 的定义时，可以用 <a href="../flag/#flagalias">flag::alias</a> 设置别名，如 coost 内部定义了 string 类型的 flag <code>version</code>，用户可以用如下方式给它设置别名：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">alias</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote class="book-hint warning">
+  <code>flag::alias</code> 须在 <code>flag::parse</code> 前调用。
+</blockquote>
+
+<h2 id="如何配置日志模块"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e9%85%8d%e7%bd%ae%e6%97%a5%e5%bf%97%e6%a8%a1%e5%9d%97">#</a>如何配置日志模块？</h2>
+<p>coost 日志模块使用 <a href="../flag/">flag</a> 定义配置项，具体的配置项见 <a href="../log/#%e9%85%8d%e7%bd%ae%e9%a1%b9">log 参考文档</a>。用户可以在命令行参数或配置文件中修改这些配置项的值，具体用法见 <a href="../flag/">flag 参考文档</a>。</p>
+<h2 id="如何设置-json-中的小数位数"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e8%ae%be%e7%bd%ae-json-%e4%b8%ad%e7%9a%84%e5%b0%8f%e6%95%b0%e4%bd%8d%e6%95%b0">#</a>如何设置 JSON 中的小数位数？</h2>
+<p><a href="../json/">co::Json</a> 的 <a href="../json/jsonstr">str</a> 方法有个参数 <code>mdp</code>，可用于指定最大有效小数位数(默认是 16):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mf">3.14159</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="mf">1.2345e-5</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>   <span class="c1">// {&#34;a&#34;:3.14159,&#34;b&#34;:1.2345e-5}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>  <span class="c1">// {&#34;a&#34;:3.14,&#34;b&#34;:1.23e-5}
+</span></span></span></code></pre></div><h2 id="如何实现-json-与结构体互转"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e5%ae%9e%e7%8e%b0-json-%e4%b8%8e%e7%bb%93%e6%9e%84%e4%bd%93%e4%ba%92%e8%bd%ac">#</a>如何实现 JSON 与结构体互转？</h2>
+<p>coost v3.0.1 基于 flex 与 <a href="https://invisible-island.net/byacc/">byacc</a> 重写了代码生成工具 <a href="https://github.com/idealvin/coost/tree/master/gen">gen</a>，可以根据 proto 文件中结构体的定义，自动生成 JSON 与结构体互转的代码，代码示例见 <a href="https://github.com/idealvin/coost/tree/master/test/j2s">j2s</a>。</p>
+<h2 id="频繁创建销毁线程导致内存泄露"><a class="anchor" href="#%e9%a2%91%e7%b9%81%e5%88%9b%e5%bb%ba%e9%94%80%e6%af%81%e7%ba%bf%e7%a8%8b%e5%af%bc%e8%87%b4%e5%86%85%e5%ad%98%e6%b3%84%e9%9c%b2">#</a>频繁创建、销毁线程导致内存泄露？</h2>
+<p><strong>频繁创建、销毁线程是设计上的错误。</strong></p>
+<p>coost 中使用了 TLS (线程局部存储)，频繁创建、销毁线程时，一些 TLS 资源在线程退出时并不会自动销毁，从而导致内存泄露。</p>
+<p>尽管 C++ 标准中的 <code>thread_local</code>，可以保证 TLS 对象在线程退出时自动析构，但是<strong>在线程退出时析构 TLS 对象并不总是正确的行为</strong>，如基于 TLS 实现的内存分配器，一个线程退出时，该线程中分配的内存，可能还在被其他线程使用，这个时候释放该线程的 TLS 资源，可能会导致程序崩溃。</p>
+<h2 id="如何设置协程调度线程的数量"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e8%ae%be%e7%bd%ae%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e7%ba%bf%e7%a8%8b%e7%9a%84%e6%95%b0%e9%87%8f">#</a>如何设置协程调度线程的数量？</h2>
+<p>coost 中协程支持多线程调度，默认线程数为系统 CPU 核数，用户可以通过配置项(flag) <code>co_sched_num</code> 设置该值，<strong>该值最大不能超过系统 CPU 核数</strong>。配置用法可参考<a href="#%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%9a%84%e5%80%bc">如何修改配置项的值</a>。</p>
+<h2 id="创建协程的数量是否有限制"><a class="anchor" href="#%e5%88%9b%e5%bb%ba%e5%8d%8f%e7%a8%8b%e7%9a%84%e6%95%b0%e9%87%8f%e6%98%af%e5%90%a6%e6%9c%89%e9%99%90%e5%88%b6">#</a>创建协程的数量是否有限制？</h2>
+<p>创建协程的数量仅受限于系统物理资源(主要是内存)。coost 协程采用共用栈的实现方式，实际内存占用量较少。Linux 上的简单测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。</p>
+<h2 id="协程是否会出现栈溢出"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e6%98%af%e5%90%a6%e4%bc%9a%e5%87%ba%e7%8e%b0%e6%a0%88%e6%ba%a2%e5%87%ba">#</a>协程是否会出现栈溢出？</h2>
+<p>coost 协程默认栈大小为 <code>1M</code>，足够大，一般不会出现栈溢出。如果 1M 不够，用户可<a href="../concurrency/coroutine/conf/#co_stack_size">通过配置项改大一些</a>。</p>
+<h2 id="协程共享栈在使用上有哪些限制"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e5%85%b1%e4%ba%ab%e6%a0%88%e5%9c%a8%e4%bd%bf%e7%94%a8%e4%b8%8a%e6%9c%89%e5%93%aa%e4%ba%9b%e9%99%90%e5%88%b6">#</a>协程共享栈在使用上有哪些限制？</h2>
+<p><strong>协程中不要直接访问其他协程中的局部变量</strong>，因为共享栈上的局部变量可能被覆盖。</p>
+<h2 id="协程中可以使用三方网络库吗"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e4%b8%ad%e5%8f%af%e4%bb%a5%e4%bd%bf%e7%94%a8%e4%b8%89%e6%96%b9%e7%bd%91%e7%bb%9c%e5%ba%93%e5%90%97">#</a>协程中可以使用三方网络库吗？</h2>
+<p>coost 协程 hook 了系统 socket 相关 API，可以在协程中直接使用 mysql、redis 等三方网络库。详情见<a href="../net/third/">协程中使用三方网络库</a>。</p>
+<h2 id="如何将主线程变成协程调度线程"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e5%b0%86%e4%b8%bb%e7%ba%bf%e7%a8%8b%e5%8f%98%e6%88%90%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e7%ba%bf%e7%a8%8b">#</a>如何将主线程变成协程调度线程？</h2>
+<p>coost 中调度线程默认是独立于主线程运行的，可借助 <a href="../concurrency/coroutine/api/#comain_sched">co::main_sched</a> 将主线程设置为协程调度线程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/cout.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;main thread id: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">thread_id</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">main_sched</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">go</span><span class="p">([]{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;thread: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">thread_id</span><span class="p">(),</span> <span class="s">&#34; sched: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">sched_id</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">loop</span><span class="p">();</span> <span class="c1">// loop forever
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// fake return
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><blockquote class="book-hint warning">
+  须在<strong>创建协程之前</strong>调用 <code>co::main_sched</code> (该方法返回指向 <code>MainSched</code> 的指针) 将主线程标记为调度线程，创建协程后，再调用 <code>MainSched</code> 的 <code>loop</code> 方法启动该协程调度器。
+</blockquote>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../cn/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../en/" class="flex align-center">
+        <img src="../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/7d5b63304ef7892c06d8290f587ff6c526722417" title='最后修改者 idealvin | 2023/11/23' target="_blank" rel="noopener">
+      <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2023/11/23</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/co/faq.md" target="_blank" rel="noopener">
+      <img src="../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '11f9ff9ca43804d70b32',
+    clientSecret: '07e2bd5b09a1654e7942a7698c3ec164e7566177',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false,
+    proxy: 'https:\/\/cors-anywhere.azm.workers.dev\/https:\/\/github.com\/login\/oauth\/access_token'
+  })
+  gitalk.render('gitalk-container');
+</script></div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faq">FAQ</a>
+      <ul>
+        <li><a href="#如何修改配置项的值">如何修改配置项的值？</a></li>
+        <li><a href="#程序启动时如何指定配置文件">程序启动时如何指定配置文件？</a></li>
+        <li><a href="#如何使用-flag-别名">如何使用 flag 别名？</a></li>
+        <li><a href="#如何配置日志模块">如何配置日志模块？</a></li>
+        <li><a href="#如何设置-json-中的小数位数">如何设置 JSON 中的小数位数？</a></li>
+        <li><a href="#如何实现-json-与结构体互转">如何实现 JSON 与结构体互转？</a></li>
+        <li><a href="#频繁创建销毁线程导致内存泄露">频繁创建、销毁线程导致内存泄露？</a></li>
+        <li><a href="#如何设置协程调度线程的数量">如何设置协程调度线程的数量？</a></li>
+        <li><a href="#创建协程的数量是否有限制">创建协程的数量是否有限制？</a></li>
+        <li><a href="#协程是否会出现栈溢出">协程是否会出现栈溢出？</a></li>
+        <li><a href="#协程共享栈在使用上有哪些限制">协程共享栈在使用上有哪些限制？</a></li>
+        <li><a href="#协程中可以使用三方网络库吗">协程中可以使用三方网络库吗？</a></li>
+        <li><a href="#如何将主线程变成协程调度线程">如何将主线程变成协程调度线程？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

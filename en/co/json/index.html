@@ -15,15 +15,15 @@ A collection consisting of a series of key/value pairs. This type of structure i
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/json/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+<meta property="article:modified_time" content="2023-11-23T19:26:25+08:00" />
 
 <title>JSON | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/json/" title="JSON">
-<link rel="stylesheet" href="../../../book.min.1e076dd51b902c98b19726f75e8c6a47852539df7ed47234d11e926c0e7bcf4f.css" integrity="sha256-Hgdt1RuQLJixlyb3XoxqR4UlOd9&#43;1HI00R6SbA57z08=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../book.min.cdbdbf8bee42a06d96b071e52c1c574315b327ea7b5262cce5cb1c20fcbb889b.css" integrity="sha256-zb2/i&#43;5CoG2WsHHlLBxXQxWzJ&#43;p7UmLM5cscIPy7iJs=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.d4d896d01b283cf5918849641072036b521954a93d4d2b490adb1f70fa5d444f.js" integrity="sha256-1NiW0BsoPPWRiElkEHIDa1IZVKk9TStJCtsfcPpdRE8=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.0d32128d3d724eba79cf6c00c8e570bfc9c785e6617b9adc0fa987ea55b53a21.js" integrity="sha256-DTISjT1yTrp5z2wAyOVwv8nHheZhe5rcD6mH6lW1OiE=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -819,67 +819,71 @@ https://github.com/alex-shpak/hugo-book
     <li>
       <ul>
         <li><a href="#basic-concepts">Basic concepts</a></li>
-        <li><a href="#json">Json</a>
+        <li><a href="#global">global</a>
           <ul>
-            <li><a href="#jsonjson">Json::Json</a></li>
             <li><a href="#jsonarray">json::array</a></li>
             <li><a href="#jsonobject">json::object</a></li>
-            <li><a href="#jsonoperator">Json::operator=</a></li>
-            <li><a href="#jsondup">Json::dup</a></li>
+            <li><a href="#jsonparse">json::parse</a></li>
+          </ul>
+        </li>
+        <li><a href="#cojson">co::Json</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#dup">dup</a></li>
             <li><a href="#heading">———————————</a></li>
-            <li><a href="#jsonis_null">Json::is_null</a></li>
-            <li><a href="#jsonis_bool">Json::is_bool</a></li>
-            <li><a href="#jsonis_int">Json::is_int</a></li>
-            <li><a href="#jsonis_double">Json::is_double</a></li>
-            <li><a href="#jsonis_string">Json::is_string</a></li>
-            <li><a href="#jsonis_array">Json::is_array</a></li>
-            <li><a href="#jsonis_object">Json::is_object</a></li>
+            <li><a href="#is_null">is_null</a></li>
+            <li><a href="#is_bool">is_bool</a></li>
+            <li><a href="#is_int">is_int</a></li>
+            <li><a href="#is_double">is_double</a></li>
+            <li><a href="#is_string">is_string</a></li>
+            <li><a href="#is_array">is_array</a></li>
+            <li><a href="#is_object">is_object</a></li>
             <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#jsonas_bool">Json::as_bool</a></li>
-            <li><a href="#jsonas_int">Json::as_int</a></li>
-            <li><a href="#jsonas_double">Json::as_double</a></li>
-            <li><a href="#jsonas_string">Json::as_string</a></li>
-            <li><a href="#jsonas_c_str">Json::as_c_str</a></li>
-            <li><a href="#jsonget">Json::get</a></li>
-            <li><a href="#jsonset">Json::set</a></li>
+            <li><a href="#as_bool">as_bool</a></li>
+            <li><a href="#as_int">as_int</a></li>
+            <li><a href="#as_double">as_double</a></li>
+            <li><a href="#as_string">as_string</a></li>
+            <li><a href="#as_c_str">as_c_str</a></li>
+            <li><a href="#get">get</a></li>
+            <li><a href="#set">set</a></li>
             <li><a href="#example">Example</a></li>
             <li><a href="#heading-2">———————————</a></li>
-            <li><a href="#jsonoperator-1">Json::operator==</a></li>
-            <li><a href="#jsonoperator-2">Json::operator!=</a></li>
+            <li><a href="#operator-1">operator==</a></li>
+            <li><a href="#operator-2">operator!=</a></li>
             <li><a href="#example-1">Example</a></li>
             <li><a href="#heading-3">———————————</a></li>
-            <li><a href="#jsonadd_member">Json::add_member</a></li>
-            <li><a href="#jsonerase">Json::erase</a></li>
-            <li><a href="#jsonpush_back">Json::push_back</a></li>
-            <li><a href="#jsonremove">Json::remove</a></li>
-            <li><a href="#jsonreset">Json::reset</a></li>
-            <li><a href="#jsonswap">Json::swap</a></li>
+            <li><a href="#add_member">add_member</a></li>
+            <li><a href="#erase">erase</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#remove">remove</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#swap">swap</a></li>
             <li><a href="#heading-4">———————————</a></li>
-            <li><a href="#jsonoperator-3">Json::operator[]</a></li>
-            <li><a href="#jsonhas_member">Json::has_member</a></li>
-            <li><a href="#jsonsize">Json::size</a></li>
-            <li><a href="#jsonempty">Json::empty</a></li>
-            <li><a href="#jsonstring_size">Json::string_size</a></li>
-            <li><a href="#jsonarray_size">Json::array_size</a></li>
-            <li><a href="#jsonobject_size">Json::object_size</a></li>
+            <li><a href="#operator-3">operator[]</a></li>
+            <li><a href="#has_member">has_member</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#string_size">string_size</a></li>
+            <li><a href="#array_size">array_size</a></li>
+            <li><a href="#object_size">object_size</a></li>
             <li><a href="#heading-5">———————————</a></li>
-            <li><a href="#jsonstr">Json::str</a></li>
-            <li><a href="#jsonpretty">Json::pretty</a></li>
-            <li><a href="#jsondbg">Json::dbg</a></li>
-            <li><a href="#jsonparse_from">Json::parse_from</a></li>
-            <li><a href="#jsonparse">json::parse</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#pretty">pretty</a></li>
+            <li><a href="#dbg">dbg</a></li>
+            <li><a href="#parse_from">parse_from</a></li>
             <li><a href="#example-2">Example</a></li>
             <li><a href="#heading-6">———————————</a></li>
-            <li><a href="#jsonbegin">Json::begin</a></li>
-            <li><a href="#jsonend">Json::end</a></li>
-            <li><a href="#jsoniterator">Json::iterator</a>
+            <li><a href="#begin">begin</a></li>
+            <li><a href="#end">end</a></li>
+            <li><a href="#iterator">iterator</a>
               <ul>
-                <li><a href="#iteratoroperator">iterator::operator==</a></li>
-                <li><a href="#iteratoroperator-1">iterator::operator!=</a></li>
-                <li><a href="#iteratoroperator-2">iterator::operator++</a></li>
-                <li><a href="#iteratoroperator-3">iterator::operator*</a></li>
-                <li><a href="#iteratorkey">iterator::key</a></li>
-                <li><a href="#iteratorvalue">iterator::value</a></li>
+                <li><a href="#operator-4">operator==</a></li>
+                <li><a href="#operator-5">operator!=</a></li>
+                <li><a href="#operator-6">operator++</a></li>
+                <li><a href="#operator-7">operator*</a></li>
+                <li><a href="#key">key</a></li>
+                <li><a href="#value">value</a></li>
               </ul>
             </li>
             <li><a href="#traversing-the-json">Traversing the Json</a></li>
@@ -913,8 +917,29 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="p">{</span><span class="s">&#34;a&#34;</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="o">:</span><span class="nb">false</span><span class="p">,</span> <span class="s">&#34;s&#34;</span><span class="o">:</span><span class="s">&#34;xxx&#34;</span><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 </span></span></code></pre></div><p>By definition, object and array can be nested, which can represent complex data structures such as trees.</p>
-<h2 id="json"><a class="anchor" href="#json">#</a>Json</h2>
-<h3 id="jsonjson"><a class="anchor" href="#jsonjson">#</a>Json::Json</h3>
+<h2 id="global"><a class="anchor" href="#global">#</a>global</h2>
+<h3 id="jsonarray"><a class="anchor" href="#jsonarray">#</a>json::array</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">array</span><span class="p">();</span>
+</span></span></code></pre></div><ul>
+<li>This function is in namespace json, it returns an empty array.</li>
+</ul>
+<h3 id="jsonobject"><a class="anchor" href="#jsonobject">#</a>json::object</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">object</span><span class="p">();</span>
+</span></span></code></pre></div><ul>
+<li>This function is in namespace json, it returns an empty object.</li>
+</ul>
+<h3 id="jsonparse"><a class="anchor" href="#jsonparse">#</a>json::parse</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li>Parse Json from a JSON string.</li>
+<li>This function is not a method in the Json class, but a function defined in <code>namespace json</code>.</li>
+<li>This function returns a Json object, when the parsing failed, it returns null.</li>
+</ul>
+<h2 id="cojson"><a class="anchor" href="#cojson">#</a>co::Json</h2>
+<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"> <span class="mf">1.</span> <span class="n">Json</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"> <span class="mf">2.</span> <span class="n">Json</span><span class="p">(</span><span class="k">decltype</span><span class="p">(</span><span class="k">nullptr</span><span class="p">))</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -961,45 +986,35 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">a</span><span class="p">;</span>          <span class="c1">// null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="nf">b</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span> <span class="c1">// null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// bool
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>   <span class="c1">// double
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// integer
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">f</span> <span class="o">=</span> <span class="s">&#34;xx&#34;</span><span class="p">;</span>   <span class="c1">// string
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">a</span><span class="p">;</span>          <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">b</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span> <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// bool
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>   <span class="c1">// double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// integer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">f</span> <span class="o">=</span> <span class="s">&#34;xx&#34;</span><span class="p">;</span>   <span class="c1">// string
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>  <span class="c1">// g -&gt; [1, 2, 3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">};</span> <span class="c1">// h -&gt; [&#34;a&#34;, &#34;b&#34;]
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>  <span class="c1">// g -&gt; [1, 2, 3]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">};</span> <span class="c1">// h -&gt; [&#34;a&#34;, &#34;b&#34;]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">i</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// i -&gt; { &#34;a&#34;: &#34;b&#34; }
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">i</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// i -&gt; { &#34;a&#34;: &#34;b&#34; }
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">j</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// j -&gt; {&#34;a&#34;: 1, &#34;b&#34;: [1,2,3]}
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">j</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// j -&gt; {&#34;a&#34;: 1, &#34;b&#34;: [1,2,3]}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">x</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>            <span class="c1">// i -&gt; null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="nf">y</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">j</span><span class="p">));</span> <span class="c1">// j -&gt; null
-</span></span></span></code></pre></div><h3 id="jsonarray"><a class="anchor" href="#jsonarray">#</a>json::array</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">array</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>This function is in namespace json, it returns an empty array.</li>
-</ul>
-<h3 id="jsonobject"><a class="anchor" href="#jsonobject">#</a>json::object</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">object</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>This function is in namespace json, it returns an empty object.</li>
-</ul>
-<h3 id="jsonoperator"><a class="anchor" href="#jsonoperator">#</a>Json::operator=</h3>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>            <span class="c1">// i -&gt; null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">y</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">j</span><span class="p">));</span> <span class="c1">// j -&gt; null
+</span></span></span></code></pre></div><h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Assignment, the 2 methods above are equal, <code>v</code> is moved to the calling Json object, and <strong>becomes a null object after the operation</strong>.</li>
 </ul>
-<h3 id="jsondup"><a class="anchor" href="#jsondup">#</a>Json::dup</h3>
+<h3 id="dup"><a class="anchor" href="#dup">#</a>dup</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">dup</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>
@@ -1009,48 +1024,48 @@ https://github.com/alex-shpak/hugo-book
 <p>示例</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span> <span class="c1">// x -&gt; [1,2,3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span> <span class="c1">// x -&gt; [1,2,3]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>       <span class="c1">// x -&gt; null, y -&gt; [1,2,3]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">z</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">dup</span><span class="p">();</span> <span class="c1">// y:[1,2,3], z -&gt; [1,2,3]
 </span></span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
-<h3 id="jsonis_null"><a class="anchor" href="#jsonis_null">#</a>Json::is_null</h3>
+<h3 id="is_null"><a class="anchor" href="#is_null">#</a>is_null</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_null</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is null.</li>
 </ul>
-<h3 id="jsonis_bool"><a class="anchor" href="#jsonis_bool">#</a>Json::is_bool</h3>
+<h3 id="is_bool"><a class="anchor" href="#is_bool">#</a>is_bool</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is bool type.</li>
 </ul>
-<h3 id="jsonis_int"><a class="anchor" href="#jsonis_int">#</a>Json::is_int</h3>
+<h3 id="is_int"><a class="anchor" href="#is_int">#</a>is_int</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_int</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is integer type.</li>
 </ul>
-<h3 id="jsonis_double"><a class="anchor" href="#jsonis_double">#</a>Json::is_double</h3>
+<h3 id="is_double"><a class="anchor" href="#is_double">#</a>is_double</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is double type.</li>
 </ul>
-<h3 id="jsonis_string"><a class="anchor" href="#jsonis_string">#</a>Json::is_string</h3>
+<h3 id="is_string"><a class="anchor" href="#is_string">#</a>is_string</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is string type.</li>
 </ul>
-<h3 id="jsonis_array"><a class="anchor" href="#jsonis_array">#</a>Json::is_array</h3>
+<h3 id="is_array"><a class="anchor" href="#is_array">#</a>is_array</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_array</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is array type.</li>
 </ul>
-<h3 id="jsonis_object"><a class="anchor" href="#jsonis_object">#</a>Json::is_object</h3>
+<h3 id="is_object"><a class="anchor" href="#is_object">#</a>is_object</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_object</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether the Json is object type.</li>
 </ul>
 <h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
-<h3 id="jsonas_bool"><a class="anchor" href="#jsonas_bool">#</a>Json::as_bool</h3>
+<h3 id="as_bool"><a class="anchor" href="#as_bool">#</a>as_bool</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">as_bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get value of bool type.</li>
@@ -1058,7 +1073,7 @@ https://github.com/alex-shpak/hugo-book
 <li>For string type, returns true if the value is <code>&quot;true&quot;</code> or <code>&quot;1&quot;</code>, otherwise returns false.</li>
 <li>For other non-bool types, return false.</li>
 </ul>
-<h3 id="jsonas_int"><a class="anchor" href="#jsonas_int">#</a>Json::as_int</h3>
+<h3 id="as_int"><a class="anchor" href="#as_int">#</a>as_int</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">as_int</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">int32</span> <span class="nf">as_int32</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">as_int64</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
@@ -1067,7 +1082,7 @@ https://github.com/alex-shpak/hugo-book
 <li>For bool, double or string types, the result is automatically converted to an integer.</li>
 <li>For other non-integer types, 0 is returned.</li>
 </ul>
-<h3 id="jsonas_double"><a class="anchor" href="#jsonas_double">#</a>Json::as_double</h3>
+<h3 id="as_double"><a class="anchor" href="#as_double">#</a>as_double</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">double</span> <span class="nf">as_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Get value of double type. Return 0 if the Json object calling this method is not double type.</li>
@@ -1075,20 +1090,19 @@ https://github.com/alex-shpak/hugo-book
 <li>For bool, int or string types, the result is automatically converted to double type.</li>
 <li>For other non-double types, 0 is returned.</li>
 </ul>
-<h3 id="jsonas_string"><a class="anchor" href="#jsonas_string">#</a>Json::as_string</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">as_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<h3 id="as_string"><a class="anchor" href="#as_string">#</a>as_string</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">as_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>This method returns a C-style string ending with <code>'\0'</code>, and the user can also call the <code>string_size()</code> method to get the length of the string.</li>
 <li>Get value of string type, return fastring.</li>
-<li>For non-string types, this method is equal to <a href="#jsonstr">Json::str()</a>, and the result will be automatically converted to string type.</li>
+<li>For non-string types, this method is equal to <a href="#str">str()</a>, and the result will be automatically converted to string type.</li>
 </ul>
-<h3 id="jsonas_c_str"><a class="anchor" href="#jsonas_c_str">#</a>Json::as_c_str</h3>
+<h3 id="as_c_str"><a class="anchor" href="#as_c_str">#</a>as_c_str</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">as_c_str</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>Returns a null-terminated C-style string, <a href="#jsonstring_size">string_size()</a> can be called to get its length.</li>
+<li>Returns a null-terminated C-style string, <a href="#string_size">string_size()</a> can be called to get its length.</li>
 <li>For non-string types, return an empty string.</li>
 </ul>
-<h3 id="jsonget"><a class="anchor" href="#jsonget">#</a>Json::get</h3>
+<h3 id="get"><a class="anchor" href="#get">#</a>get</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
@@ -1101,7 +1115,7 @@ https://github.com/alex-shpak/hugo-book
 <li>3, get the JSON value corresponding to <code>key</code>, if the JSON object called this method is not of type object, or <code>key</code> does not exist, the returned result will refer to a null object.</li>
 <li>4, can take any number of parameters, each parameter is an index or a key. When it encounters the first invalid index or non-existing key, it returns immediately, and the return result will refer to a null object.</li>
 </ul>
-<h3 id="jsonset"><a class="anchor" href="#jsonset">#</a>Json::set</h3>
+<h3 id="set"><a class="anchor" href="#set">#</a>set</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">set</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">*</span><span class="k">this</span> <span class="o">=</span> <span class="n">Json</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">));</span>
@@ -1114,7 +1128,7 @@ https://github.com/alex-shpak/hugo-book
 <li>The last parameter of <code>set</code> is the value to be set, other parameters are index or key.</li>
 </ul>
 <h3 id="example"><a class="anchor" href="#example">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">7</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">}</span> <span class="p">},</span>
@@ -1129,12 +1143,12 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 2
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// x -&gt; {&#34;a&#34;:1,&#34;b&#34;:[0,1,2],&#34;c&#34;:{&#34;d&#34;:[&#34;oo&#34;]}}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="n">Json</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">}));</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">}));</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;oo&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
-<h3 id="jsonoperator-1"><a class="anchor" href="#jsonoperator-1">#</a>Json::operator==</h3>
+<h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator==</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
@@ -1148,7 +1162,7 @@ https://github.com/alex-shpak/hugo-book
 <li>Check if the value of the Json object is equal to <code>v</code>.</li>
 <li>If the type of the Json object is different from <code>v</code>, return false directly.</li>
 </ul>
-<h3 id="jsonoperator-2"><a class="anchor" href="#jsonoperator-2">#</a>Json::operator!=</h3>
+<h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator!=</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
@@ -1163,7 +1177,7 @@ https://github.com/alex-shpak/hugo-book
 <li>If the type of the Json object is different from <code>v</code>, return true directly.</li>
 </ul>
 <h3 id="example-1"><a class="anchor" href="#example-1">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">},</span>
@@ -1174,7 +1188,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;b&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// true
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#34;xx&#34;</span><span class="p">;</span>  <span class="c1">// true
 </span></span></span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
-<h3 id="jsonadd_member"><a class="anchor" href="#jsonadd_member">#</a>Json::add_member</h3>
+<h3 id="add_member"><a class="anchor" href="#add_member">#</a>add_member</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
@@ -1197,16 +1211,16 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// r -&gt; {&#34;a&#34;:1}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">);</span>  <span class="c1">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">);</span> <span class="c1">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3, &#34;s&#34;:&#34;xx&#34;}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>                        <span class="c1">// r -&gt; null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span> <span class="c1">// r -&gt; {&#34;o&#34;:{&#34;x&#34;:3}}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; {&#34;o&#34;:1,&#34;k&#34;:2}
-</span></span></span></code></pre></div><h3 id="jsonerase"><a class="anchor" href="#jsonerase">#</a>Json::erase</h3>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>                            <span class="c1">// r -&gt; null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span> <span class="c1">// r -&gt; {&#34;o&#34;:{&#34;x&#34;:3}}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; {&#34;o&#34;:1,&#34;k&#34;:2}
+</span></span></span></code></pre></div><h3 id="erase"><a class="anchor" href="#erase">#</a>erase</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
@@ -1214,7 +1228,7 @@ https://github.com/alex-shpak/hugo-book
 <li>The first two, erase the ith element from an array.</li>
 <li>The third, erase the element by <code>key</code> from an object.</li>
 </ul>
-<h3 id="jsonpush_back"><a class="anchor" href="#jsonpush_back">#</a>Json::push_back</h3>
+<h3 id="push_back"><a class="anchor" href="#push_back">#</a>push_back</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
@@ -1228,15 +1242,15 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>    <span class="c1">// r -&gt; [1]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">3.3</span><span class="p">);</span>  <span class="c1">// r -&gt; [1, 3.3]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">);</span> <span class="c1">// r -&gt; [1, 3.3, &#34;xx&#34;]
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>  <span class="c1">// r -&gt; null, x -&gt; [[1, 3.3, &#34;xx&#34;]]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Json</span><span class="p">().</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span> <span class="c1">// r -&gt; [[1,2]]
-</span></span></span></code></pre></div><h3 id="jsonremove"><a class="anchor" href="#jsonremove">#</a>Json::remove</h3>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span> <span class="c1">// r -&gt; [[1,2]]
+</span></span></span></code></pre></div><h3 id="remove"><a class="anchor" href="#remove">#</a>remove</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
@@ -1245,19 +1259,19 @@ https://github.com/alex-shpak/hugo-book
 <li>The third, remove the element by <code>key</code> from an object.</li>
 <li>The last element will be moved to the position where the element was removed.</li>
 </ul>
-<h3 id="jsonreset"><a class="anchor" href="#jsonreset">#</a>Json::reset</h3>
+<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>Reset the Json object to null.</li>
 </ul>
-<h3 id="jsonswap"><a class="anchor" href="#jsonswap">#</a>Json::swap</h3>
+<h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Swap the contents of two Json objects.</li>
 </ul>
 <h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>———————————</h3>
-<h3 id="jsonoperator-3"><a class="anchor" href="#jsonoperator-3">#</a>Json::operator[]</h3>
+<h3 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator[]</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
@@ -1278,14 +1292,14 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">7</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">}</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">].</span><span class="n">as_int</span><span class="p">();</span>    <span class="c1">// 7
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;x&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 1
-</span></span></span></code></pre></div><h3 id="jsonhas_member"><a class="anchor" href="#jsonhas_member">#</a>Json::has_member</h3>
+</span></span></span></code></pre></div><h3 id="has_member"><a class="anchor" href="#has_member">#</a>has_member</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">has_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>
@@ -1298,10 +1312,10 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">has_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">);</span> <span class="c1">// true
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">has_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">);</span> <span class="c1">// false
-</span></span></span></code></pre></div><h3 id="jsonsize"><a class="anchor" href="#jsonsize">#</a>Json::size</h3>
+</span></span></span></code></pre></div><h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>
@@ -1317,7 +1331,7 @@ https://github.com/alex-shpak/hugo-book
 <p>Example</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
@@ -1327,28 +1341,28 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;x&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 0
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 5
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 3
-</span></span></span></code></pre></div><h3 id="jsonempty"><a class="anchor" href="#jsonempty">#</a>Json::empty</h3>
+</span></span></span></code></pre></div><h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Check whether the Json is empty, which is equal to <code>size() == 0</code>.</li>
 </ul>
-<h3 id="jsonstring_size"><a class="anchor" href="#jsonstring_size">#</a>Json::string_size</h3>
+<h3 id="string_size"><a class="anchor" href="#string_size">#</a>string_size</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">string_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Return the length of the string type. Return 0 if the Json calling this method is not string type.</li>
 </ul>
-<h3 id="jsonarray_size"><a class="anchor" href="#jsonarray_size">#</a>Json::array_size</h3>
+<h3 id="array_size"><a class="anchor" href="#array_size">#</a>array_size</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">array_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Return the number of elements of array type. Return 0 if the Json calling this method is not array type.</li>
 </ul>
-<h3 id="jsonobject_size"><a class="anchor" href="#jsonobject_size">#</a>Json::object_size</h3>
+<h3 id="object_size"><a class="anchor" href="#object_size">#</a>object_size</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">object_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Return the number of elements of object type. Return 0 if the Json calling this method is not object type.</li>
 </ul>
 <h3 id="heading-5"><a class="anchor" href="#heading-5">#</a>———————————</h3>
-<h3 id="jsonstr"><a class="anchor" href="#jsonstr">#</a>Json::str</h3>
+<h3 id="str"><a class="anchor" href="#str">#</a>str</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">str</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
@@ -1359,22 +1373,22 @@ https://github.com/alex-shpak/hugo-book
 <li>The 3rd version returns a JSON string.</li>
 <li>The parameter <code>mdp</code> is short for <code>max decimal places</code>, which means the maximum number of decimal places for float point numbers.</li>
 </ul>
-<h3 id="jsonpretty"><a class="anchor" href="#jsonpretty">#</a>Json::pretty</h3>
+<h3 id="pretty"><a class="anchor" href="#pretty">#</a>pretty</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">pretty</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">pretty</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">pretty</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Like the str(), but convert Json to a more beautiful JSON string.</li>
 </ul>
-<h3 id="jsondbg"><a class="anchor" href="#jsondbg">#</a>Json::dbg</h3>
+<h3 id="dbg"><a class="anchor" href="#dbg">#</a>dbg</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">dbg</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">dbg</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dbg</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>Convert Json to a debug string, like <code>Json::str()</code>, but will truncate string type to the first 32 bytes if its length exceeds 512 bytes.</li>
-<li>This method is generally used to print logs. In some cases, the Json object may contain a long string, such as the base64 encoding of a picture. At such cases, use <code>Json::dbg()</code> instead of <code>Json::str()</code> to avoid printing too many significant logs.</li>
+<li>Convert Json to a debug string, like <code>str()</code>, but will truncate string type to the first 32 bytes if its length exceeds 512 bytes.</li>
+<li>This method is generally used to print logs. In some cases, the Json object may contain a long string, such as the base64 encoding of a picture. At such cases, use <code>dbg()</code> instead of <code>str()</code> to avoid printing too many significant logs.</li>
 </ul>
-<h3 id="jsonparse_from"><a class="anchor" href="#jsonparse_from">#</a>Json::parse_from</h3>
+<h3 id="parse_from"><a class="anchor" href="#parse_from">#</a>parse_from</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
@@ -1385,18 +1399,8 @@ https://github.com/alex-shpak/hugo-book
 <li>When the parsing is successful, it returns true, otherwise it returns false.</li>
 <li>When the parsing fails, the calling Json becomes null.</li>
 </ul>
-<h3 id="jsonparse"><a class="anchor" href="#jsonparse">#</a>json::parse</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Parse Json from a JSON string.</li>
-<li>This function is not a method in the Json class, but a function defined in <code>namespace json</code>.</li>
-<li>This function returns a Json object, when the parsing failed, it returns null.</li>
-</ul>
 <h3 id="example-2"><a class="anchor" href="#example-2">#</a>Example</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
@@ -1405,64 +1409,64 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">dbg</span><span class="p">();</span>          <span class="c1">// print json debug string
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>                <span class="c1">// the same as above, but is  more efficient
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">parse_from</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">parse_from</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">v</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">v</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="heading-6"><a class="anchor" href="#heading-6">#</a>———————————</h3>
-<h3 id="jsonbegin"><a class="anchor" href="#jsonbegin">#</a>Json::begin</h3>
+<h3 id="begin"><a class="anchor" href="#begin">#</a>begin</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns the beginning iterator.</li>
 <li>The Json calling this method must be array, object or null.</li>
-<li>When the Json is empty, the return value is equal to <code>Json::end()</code>.</li>
-<li>If the Json calling this method is not array or object type, the return value is equal to <a href="#jsonend">Json::end()</a>.</li>
+<li>When the Json is empty, the return value is equal to <code>end()</code>.</li>
+<li>If the Json calling this method is not array or object type, the return value is equal to <a href="#end">end()</a>.</li>
 </ul>
-<h3 id="jsonend"><a class="anchor" href="#jsonend">#</a>Json::end</h3>
+<h3 id="end"><a class="anchor" href="#end">#</a>end</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="n">iterator</span><span class="o">::</span><span class="n">End</span><span class="o">&amp;</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Returns a fake end iterator.</li>
-<li>The return value is actually not an iterator object, but a iterator can be compared with it. If an iterator is equal to <code>Json::end()</code>, it means that there is no more element.</li>
+<li>The return value is actually not an iterator object, but a iterator can be compared with it. If an iterator is equal to <code>end()</code>, it means that there is no more element.</li>
 </ul>
-<h3 id="jsoniterator"><a class="anchor" href="#jsoniterator">#</a>Json::iterator</h3>
-<h4 id="iteratoroperator"><a class="anchor" href="#iteratoroperator">#</a>iterator::operator==</h4>
+<h3 id="iterator"><a class="anchor" href="#iterator">#</a>iterator</h3>
+<h4 id="operator-4"><a class="anchor" href="#operator-4">#</a>operator==</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">End</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine whether a iterator is equal to <code>End</code>, End is the fake end iterator.</li>
 </ul>
-<h4 id="iteratoroperator-1"><a class="anchor" href="#iteratoroperator-1">#</a>iterator::operator!=</h4>
+<h4 id="operator-5"><a class="anchor" href="#operator-5">#</a>operator!=</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">End</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Determine if a iterator is not equal to <code>End</code>, End is the fake end iterator.</li>
 </ul>
-<h4 id="iteratoroperator-2"><a class="anchor" href="#iteratoroperator-2">#</a>iterator::operator++</h4>
+<h4 id="operator-6"><a class="anchor" href="#operator-6">#</a>operator++</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
 <li>The prefix operator++.</li>
 </ul>
-<h4 id="iteratoroperator-3"><a class="anchor" href="#iteratoroperator-3">#</a>iterator::operator*</h4>
+<h4 id="operator-7"><a class="anchor" href="#operator-7">#</a>operator*</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>Overload <code>operator*</code>, this method <strong>only applies to iterator of array type</strong>.</li>
 <li>When Json is an array, the iterator points to the elements in the array.</li>
 </ul>
-<h4 id="iteratorkey"><a class="anchor" href="#iteratorkey">#</a>iterator::key</h4>
+<h4 id="key"><a class="anchor" href="#key">#</a>key</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">key</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>This method <strong>only applies to iterator of object type</strong>.</li>
 <li>When Json is an object, the iterator points to the key-value pair in the object, and this method returns the key.</li>
 </ul>
-<h4 id="iteratorvalue"><a class="anchor" href="#iteratorvalue">#</a>iterator::value</h4>
+<h4 id="value"><a class="anchor" href="#value">#</a>value</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
 <li>This method <strong>only applies to iterator of object type</strong>.</li>
 <li>When Json is an object, the iterator points to the key-value pair in the object, and this method returns the value.</li>
 </ul>
 <h3 id="traversing-the-json"><a class="anchor" href="#traversing-the-json">#</a>Traversing the Json</h3>
-<p>co/json supports traversing a Json of type array or object by iterator:</p>
+<p>co.json supports traversing a Json of type array or object by iterator:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// {&#34;i&#34;:7, &#34;s&#34;:&#34;xx&#34;, &#34;a&#34;:[123, true, &#34;nice&#34;]}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">7</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
@@ -1474,26 +1478,26 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// array
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">];</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="performance-tips"><a class="anchor" href="#performance-tips">#</a>Performance tips</h2>
 <p>Some users may add members in the following way:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#34;hello world&#34;</span><span class="p">;</span>
 </span></span></code></pre></div><p>Although the above code works, the efficiency may be not so good. The <code>operator[]</code> will first look up the key, which may be slow. It is generally recommended to use <strong>add_member()</strong> instead:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">);</span>
 </span></span></code></pre></div><p>Or construct a Json like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><p>For read-only operations, it is recommended to replace <code>operator[]</code> with <a href="#jsonget">get()</a>, which has no side effects.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
+</span></span></code></pre></div><p>For read-only operations, it is recommended to replace <code>operator[]</code> with <a href="#get">get()</a>, which has no side effects.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 1
 </span></span></span></code></pre></div></article>
  
@@ -1547,9 +1551,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='Last modified by idealvin | September 9, 2023' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/91dfe8174c5eabd33fae33ce825a08524ccdf5d5" title='Last modified by idealvin | 2023/11/23' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>September 9, 2023</span>
+      <span>2023/11/23</span>
     </a>
   </div>
 
@@ -1625,67 +1629,71 @@ https://github.com/alex-shpak/hugo-book
     <li>
       <ul>
         <li><a href="#basic-concepts">Basic concepts</a></li>
-        <li><a href="#json">Json</a>
+        <li><a href="#global">global</a>
           <ul>
-            <li><a href="#jsonjson">Json::Json</a></li>
             <li><a href="#jsonarray">json::array</a></li>
             <li><a href="#jsonobject">json::object</a></li>
-            <li><a href="#jsonoperator">Json::operator=</a></li>
-            <li><a href="#jsondup">Json::dup</a></li>
+            <li><a href="#jsonparse">json::parse</a></li>
+          </ul>
+        </li>
+        <li><a href="#cojson">co::Json</a>
+          <ul>
+            <li><a href="#constructor">constructor</a></li>
+            <li><a href="#operator">operator=</a></li>
+            <li><a href="#dup">dup</a></li>
             <li><a href="#heading">———————————</a></li>
-            <li><a href="#jsonis_null">Json::is_null</a></li>
-            <li><a href="#jsonis_bool">Json::is_bool</a></li>
-            <li><a href="#jsonis_int">Json::is_int</a></li>
-            <li><a href="#jsonis_double">Json::is_double</a></li>
-            <li><a href="#jsonis_string">Json::is_string</a></li>
-            <li><a href="#jsonis_array">Json::is_array</a></li>
-            <li><a href="#jsonis_object">Json::is_object</a></li>
+            <li><a href="#is_null">is_null</a></li>
+            <li><a href="#is_bool">is_bool</a></li>
+            <li><a href="#is_int">is_int</a></li>
+            <li><a href="#is_double">is_double</a></li>
+            <li><a href="#is_string">is_string</a></li>
+            <li><a href="#is_array">is_array</a></li>
+            <li><a href="#is_object">is_object</a></li>
             <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#jsonas_bool">Json::as_bool</a></li>
-            <li><a href="#jsonas_int">Json::as_int</a></li>
-            <li><a href="#jsonas_double">Json::as_double</a></li>
-            <li><a href="#jsonas_string">Json::as_string</a></li>
-            <li><a href="#jsonas_c_str">Json::as_c_str</a></li>
-            <li><a href="#jsonget">Json::get</a></li>
-            <li><a href="#jsonset">Json::set</a></li>
+            <li><a href="#as_bool">as_bool</a></li>
+            <li><a href="#as_int">as_int</a></li>
+            <li><a href="#as_double">as_double</a></li>
+            <li><a href="#as_string">as_string</a></li>
+            <li><a href="#as_c_str">as_c_str</a></li>
+            <li><a href="#get">get</a></li>
+            <li><a href="#set">set</a></li>
             <li><a href="#example">Example</a></li>
             <li><a href="#heading-2">———————————</a></li>
-            <li><a href="#jsonoperator-1">Json::operator==</a></li>
-            <li><a href="#jsonoperator-2">Json::operator!=</a></li>
+            <li><a href="#operator-1">operator==</a></li>
+            <li><a href="#operator-2">operator!=</a></li>
             <li><a href="#example-1">Example</a></li>
             <li><a href="#heading-3">———————————</a></li>
-            <li><a href="#jsonadd_member">Json::add_member</a></li>
-            <li><a href="#jsonerase">Json::erase</a></li>
-            <li><a href="#jsonpush_back">Json::push_back</a></li>
-            <li><a href="#jsonremove">Json::remove</a></li>
-            <li><a href="#jsonreset">Json::reset</a></li>
-            <li><a href="#jsonswap">Json::swap</a></li>
+            <li><a href="#add_member">add_member</a></li>
+            <li><a href="#erase">erase</a></li>
+            <li><a href="#push_back">push_back</a></li>
+            <li><a href="#remove">remove</a></li>
+            <li><a href="#reset">reset</a></li>
+            <li><a href="#swap">swap</a></li>
             <li><a href="#heading-4">———————————</a></li>
-            <li><a href="#jsonoperator-3">Json::operator[]</a></li>
-            <li><a href="#jsonhas_member">Json::has_member</a></li>
-            <li><a href="#jsonsize">Json::size</a></li>
-            <li><a href="#jsonempty">Json::empty</a></li>
-            <li><a href="#jsonstring_size">Json::string_size</a></li>
-            <li><a href="#jsonarray_size">Json::array_size</a></li>
-            <li><a href="#jsonobject_size">Json::object_size</a></li>
+            <li><a href="#operator-3">operator[]</a></li>
+            <li><a href="#has_member">has_member</a></li>
+            <li><a href="#size">size</a></li>
+            <li><a href="#empty">empty</a></li>
+            <li><a href="#string_size">string_size</a></li>
+            <li><a href="#array_size">array_size</a></li>
+            <li><a href="#object_size">object_size</a></li>
             <li><a href="#heading-5">———————————</a></li>
-            <li><a href="#jsonstr">Json::str</a></li>
-            <li><a href="#jsonpretty">Json::pretty</a></li>
-            <li><a href="#jsondbg">Json::dbg</a></li>
-            <li><a href="#jsonparse_from">Json::parse_from</a></li>
-            <li><a href="#jsonparse">json::parse</a></li>
+            <li><a href="#str">str</a></li>
+            <li><a href="#pretty">pretty</a></li>
+            <li><a href="#dbg">dbg</a></li>
+            <li><a href="#parse_from">parse_from</a></li>
             <li><a href="#example-2">Example</a></li>
             <li><a href="#heading-6">———————————</a></li>
-            <li><a href="#jsonbegin">Json::begin</a></li>
-            <li><a href="#jsonend">Json::end</a></li>
-            <li><a href="#jsoniterator">Json::iterator</a>
+            <li><a href="#begin">begin</a></li>
+            <li><a href="#end">end</a></li>
+            <li><a href="#iterator">iterator</a>
               <ul>
-                <li><a href="#iteratoroperator">iterator::operator==</a></li>
-                <li><a href="#iteratoroperator-1">iterator::operator!=</a></li>
-                <li><a href="#iteratoroperator-2">iterator::operator++</a></li>
-                <li><a href="#iteratoroperator-3">iterator::operator*</a></li>
-                <li><a href="#iteratorkey">iterator::key</a></li>
-                <li><a href="#iteratorvalue">iterator::value</a></li>
+                <li><a href="#operator-4">operator==</a></li>
+                <li><a href="#operator-5">operator!=</a></li>
+                <li><a href="#operator-6">operator++</a></li>
+                <li><a href="#operator-7">operator*</a></li>
+                <li><a href="#key">key</a></li>
+                <li><a href="#value">value</a></li>
               </ul>
             </li>
             <li><a href="#traversing-the-json">Traversing the Json</a></li>
