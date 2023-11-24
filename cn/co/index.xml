@@ -52,10 +52,11 @@ int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A
       <guid>https://coostdocs.github.io/cn/co/flag/</guid>
       <description>include: co/flag.h.
 #基本概念 co.flag 是一个命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
-#flag 变量 co.flag 中的宏定义的全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
+#flag 变量 co.flag 中的宏定义的配置项，实际上是全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
 DEF_int32(x, 0, &amp;#34;xxx&amp;#34;); // int32 FLG_x = 0; co.flag 支持 7 种类型的 flag 变量：
 bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=23，在配置文件中可以用 x = 23，设置一个新的值。
-#command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。为了方便，下面可能将 flag 与 flag 变量统一称为 flag。</description>
+#command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。
+为了方便，本文档中可能将 command line flag、flag 变量统一称为 flag。 co.</description>
     </item>
     
     <item>
@@ -134,10 +135,11 @@ xmake f --with_libcurl=true --with_openssl=true xmake -a 启用 HTTP 或 SSL 特
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/faq/</guid>
-      <description>#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
-int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
-int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
-./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：</description>
+      <description>#FAQ #如何修改配置项的值？ flag 是 coost 中的配置管理组件，它定义的配置项(也称flag)，可以通过命令行参数或配置文件修改，具体用法见命令行中使用 flag及配置文件。
+使用 flag 库需要在 main 函数开头调用 flag::parse 解析命令行参数。 另外也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
+# 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：</description>
     </item>
     
   </channel>

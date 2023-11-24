@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
-int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
-int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
-./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：">
+<meta name="description" content="#FAQ #如何修改配置项的值？ flag 是 coost 中的配置管理组件，它定义的配置项(也称flag)，可以通过命令行参数或配置文件修改，具体用法见命令行中使用 flag及配置文件。
+使用 flag 库需要在 main 函数开头调用 flag::parse 解析命令行参数。 另外也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
+# 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="FAQ" />
-<meta property="og:description" content="#FAQ #如何修改配置项的值？ flag 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以通过命令行参数或配置文件修改配置项的值。命令行中的用法见命令行中使用 flag，配置文件的用法见配置文件。需要注意，修改配置项需要在 main 函数开头调用 flag::parse 解析命令行参数。
-int main(int argc, char** argv) { flag::parse(argc, argv); return 0; } 用户也可以通过 API flag::set_value 修改配置项的值：
-int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
-./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：" />
+<meta property="og:description" content="#FAQ #如何修改配置项的值？ flag 是 coost 中的配置管理组件，它定义的配置项(也称flag)，可以通过命令行参数或配置文件修改，具体用法见命令行中使用 flag及配置文件。
+使用 flag 库需要在 main 函数开头调用 flag::parse 解析命令行参数。 另外也可以通过 API flag::set_value 修改配置项的值：
+int main(int argc, char** argv) { flag::set_value(&#34;co_sched_num&#34;, &#34;2&#34;); flag::set_value(&#34;version&#34;, &#34;v3.1.4&#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
+./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
+# 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/faq/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-11-23T19:25:59+08:00" />
+<meta property="article:modified_time" content="2023-11-24T19:43:16+08:00" />
 
 <title>FAQ | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="../../../book.min.cdbdbf8bee42a06d96b071e52c1c574315b327ea7b5262cce5cb1c20fcbb889b.css" integrity="sha256-zb2/i&#43;5CoG2WsHHlLBxXQxWzJ&#43;p7UmLM5cscIPy7iJs=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../book.min.e708de46a8fb53e5d61c5b4f5a338f124135857a30daa7ea95f0cfd8b8b29d1a.css" integrity="sha256-5wjeRqj7U&#43;XWHFtPWjOPEkE1hXow2qfqlfDP2LiynRo=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.b7f0d1b5c83c8926d0200d89de1752382f810a79e2e223e96476660976e27f8b.js" integrity="sha256-t/DRtcg8iSbQIA2J3hdSOC&#43;BCnni4iPpZHZmCXbif4s=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.2a82465bfb65c195dc4955d13cbdac0e44bf78d660a9ddccd8a70172bdf8f256.js" integrity="sha256-KoJGW/tlwZXcSVXRPL2sDkS/eNZgqd3M2KcBcr348lY=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -885,7 +887,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#协程是否会出现栈溢出">协程是否会出现栈溢出？</a></li>
         <li><a href="#协程共享栈在使用上有哪些限制">协程共享栈在使用上有哪些限制？</a></li>
         <li><a href="#协程中可以使用三方网络库吗">协程中可以使用三方网络库吗？</a></li>
-        <li><a href="#如何将主线程变成协程调度线程">如何将主线程变成协程调度线程？</a></li>
+        <li><a href="#主线程可以设置成协程调度线程吗">主线程可以设置成协程调度线程吗？</a></li>
       </ul>
     </li>
   </ul>
@@ -902,12 +904,12 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><h1 id="faq"><a class="anchor" href="#faq">#</a>FAQ</h1>
 <h2 id="如何修改配置项的值"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%9a%84%e5%80%bc">#</a>如何修改配置项的值？</h2>
-<p><strong><a href="../flag/">flag</a></strong> 是 coost 提供的命令行参数与配置文件解析库。coost 中的日志、协程、网络等模块使用 flag 定义了一些配置项，用户可以<strong>通过命令行参数或配置文件修改配置项的值</strong>。命令行中的用法见<a href="../flag/#%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%ad%e4%bd%bf%e7%94%a8-flag">命令行中使用 flag</a>，配置文件的用法见<a href="../flag/#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">配置文件</a>。需要注意，<strong>修改配置项需要在 main 函数开头调用 <a href="../flag/#flagparse">flag::parse</a> 解析命令行参数</strong>。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>用户也可以通过 API <a href="../flag/#flagset_value">flag::set_value</a> 修改配置项的值：</p>
+<p><strong><a href="../flag/">flag</a></strong> 是 coost 中的配置管理组件，它定义的配置项(也称flag)，可以<strong>通过命令行参数或配置文件修改</strong>，具体用法见<a href="../flag/#%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%ad%e4%bd%bf%e7%94%a8-flag">命令行中使用 flag</a>及<a href="../flag/#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">配置文件</a>。</p>
+<blockquote class="book-hint warning">
+  使用 flag 库需要在 main 函数开头调用 <a href="../flag/#flagparse">flag::parse</a> 解析命令行参数。
+</blockquote>
+
+<p>另外也可以通过 API <a href="../flag/#flagset_value">flag::set_value</a> 修改配置项的值：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;co_sched_num&#34;</span><span class="p">,</span> <span class="s">&#34;2&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="s">&#34;v3.1.4&#34;</span><span class="p">);</span>
@@ -915,7 +917,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><blockquote class="book-hint info">
-  <code>flag::set_value</code> 在 <code>flag::parse</code> 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。
+  此处 <code>flag::set_value</code> 在 <code>flag::parse</code> 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。
 </blockquote>
 
 <h2 id="程序启动时如何指定配置文件"><a class="anchor" href="#%e7%a8%8b%e5%ba%8f%e5%90%af%e5%8a%a8%e6%97%b6%e5%a6%82%e4%bd%95%e6%8c%87%e5%ae%9a%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>程序启动时如何指定配置文件？</h2>
@@ -926,11 +928,11 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 自动生成配置文件 xx.conf</span>
 </span></span><span class="line"><span class="cl">./xx -mkconf
 </span></span></code></pre></div><h2 id="如何使用-flag-别名"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-flag-%e5%88%ab%e5%90%8d">#</a>如何使用 flag 别名？</h2>
-<p><a href="../flag/">flag</a> 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名取代原名。flag 别名有两种用法，第一种是在定义 flag 时指定别名：</p>
+<p><a href="../flag/">flag</a> 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span>          <span class="c1">// 无别名
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>       <span class="c1">// 别名 d
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">dbg</span><span class="p">);</span>  <span class="c1">// 两个别名: d, dbg
-</span></span></span></code></pre></div><p>还有一种情况，flag 已经定义，且用户无法修改 flag 的定义时，可以用 <a href="../flag/#flagalias">flag::alias</a> 设置别名，如 coost 内部定义了 string 类型的 flag <code>version</code>，用户可以用如下方式给它设置别名：</p>
+</span></span></span></code></pre></div><p>还有一种情况，flag 已经定义，且用户无法修改该定义时，可以用 <a href="../flag/#flagalias">flag::alias</a> 设置别名，如 coost 内部定义的 string 类型的 flag <code>version</code>，用户可以用如下方式给它设置别名：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">alias</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
@@ -954,19 +956,19 @@ https://github.com/alex-shpak/hugo-book
 <p>coost v3.0.1 基于 flex 与 <a href="https://invisible-island.net/byacc/">byacc</a> 重写了代码生成工具 <a href="https://github.com/idealvin/coost/tree/master/gen">gen</a>，可以根据 proto 文件中结构体的定义，自动生成 JSON 与结构体互转的代码，代码示例见 <a href="https://github.com/idealvin/coost/tree/master/test/j2s">j2s</a>。</p>
 <h2 id="频繁创建销毁线程导致内存泄露"><a class="anchor" href="#%e9%a2%91%e7%b9%81%e5%88%9b%e5%bb%ba%e9%94%80%e6%af%81%e7%ba%bf%e7%a8%8b%e5%af%bc%e8%87%b4%e5%86%85%e5%ad%98%e6%b3%84%e9%9c%b2">#</a>频繁创建、销毁线程导致内存泄露？</h2>
 <p><strong>频繁创建、销毁线程是设计上的错误。</strong></p>
-<p>coost 中使用了 TLS (线程局部存储)，频繁创建、销毁线程时，一些 TLS 资源在线程退出时并不会自动销毁，从而导致内存泄露。</p>
+<p>coost 中使用了 TLS (线程局部存储)，频繁创建、销毁线程，一些 TLS 资源在线程退出时并不会自动销毁，从而导致内存泄露。</p>
 <p>尽管 C++ 标准中的 <code>thread_local</code>，可以保证 TLS 对象在线程退出时自动析构，但是<strong>在线程退出时析构 TLS 对象并不总是正确的行为</strong>，如基于 TLS 实现的内存分配器，一个线程退出时，该线程中分配的内存，可能还在被其他线程使用，这个时候释放该线程的 TLS 资源，可能会导致程序崩溃。</p>
 <h2 id="如何设置协程调度线程的数量"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e8%ae%be%e7%bd%ae%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e7%ba%bf%e7%a8%8b%e7%9a%84%e6%95%b0%e9%87%8f">#</a>如何设置协程调度线程的数量？</h2>
 <p>coost 中协程支持多线程调度，默认线程数为系统 CPU 核数，用户可以通过配置项(flag) <code>co_sched_num</code> 设置该值，<strong>该值最大不能超过系统 CPU 核数</strong>。配置用法可参考<a href="#%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e9%a1%b9%e7%9a%84%e5%80%bc">如何修改配置项的值</a>。</p>
 <h2 id="创建协程的数量是否有限制"><a class="anchor" href="#%e5%88%9b%e5%bb%ba%e5%8d%8f%e7%a8%8b%e7%9a%84%e6%95%b0%e9%87%8f%e6%98%af%e5%90%a6%e6%9c%89%e9%99%90%e5%88%b6">#</a>创建协程的数量是否有限制？</h2>
 <p>创建协程的数量仅受限于系统物理资源(主要是内存)。coost 协程采用共用栈的实现方式，实际内存占用量较少。Linux 上的简单测试显示 1000 万协程只用了 2.8G 内存(仅供参考)。</p>
 <h2 id="协程是否会出现栈溢出"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e6%98%af%e5%90%a6%e4%bc%9a%e5%87%ba%e7%8e%b0%e6%a0%88%e6%ba%a2%e5%87%ba">#</a>协程是否会出现栈溢出？</h2>
-<p>coost 协程默认栈大小为 <code>1M</code>，足够大，一般不会出现栈溢出。如果 1M 不够，用户可<a href="../concurrency/coroutine/conf/#co_stack_size">通过配置项改大一些</a>。</p>
+<p>coost 协程默认栈大小为 <code>1M</code>，足够大，一般不会出现栈溢出。如果 1M 不够，可以<a href="../concurrency/coroutine/conf/#co_stack_size">通过配置项改大一些</a>。</p>
 <h2 id="协程共享栈在使用上有哪些限制"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e5%85%b1%e4%ba%ab%e6%a0%88%e5%9c%a8%e4%bd%bf%e7%94%a8%e4%b8%8a%e6%9c%89%e5%93%aa%e4%ba%9b%e9%99%90%e5%88%b6">#</a>协程共享栈在使用上有哪些限制？</h2>
 <p><strong>协程中不要直接访问其他协程中的局部变量</strong>，因为共享栈上的局部变量可能被覆盖。</p>
 <h2 id="协程中可以使用三方网络库吗"><a class="anchor" href="#%e5%8d%8f%e7%a8%8b%e4%b8%ad%e5%8f%af%e4%bb%a5%e4%bd%bf%e7%94%a8%e4%b8%89%e6%96%b9%e7%bd%91%e7%bb%9c%e5%ba%93%e5%90%97">#</a>协程中可以使用三方网络库吗？</h2>
 <p>coost 协程 hook 了系统 socket 相关 API，可以在协程中直接使用 mysql、redis 等三方网络库。详情见<a href="../net/third/">协程中使用三方网络库</a>。</p>
-<h2 id="如何将主线程变成协程调度线程"><a class="anchor" href="#%e5%a6%82%e4%bd%95%e5%b0%86%e4%b8%bb%e7%ba%bf%e7%a8%8b%e5%8f%98%e6%88%90%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e7%ba%bf%e7%a8%8b">#</a>如何将主线程变成协程调度线程？</h2>
+<h2 id="主线程可以设置成协程调度线程吗"><a class="anchor" href="#%e4%b8%bb%e7%ba%bf%e7%a8%8b%e5%8f%af%e4%bb%a5%e8%ae%be%e7%bd%ae%e6%88%90%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e7%ba%bf%e7%a8%8b%e5%90%97">#</a>主线程可以设置成协程调度线程吗？</h2>
 <p>coost 中调度线程默认是独立于主线程运行的，可借助 <a href="../concurrency/coroutine/api/#comain_sched">co::main_sched</a> 将主线程设置为协程调度线程：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/cout.h&#34;</span><span class="cp">
@@ -985,7 +987,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// fake return
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></div><blockquote class="book-hint warning">
-  须在<strong>创建协程之前</strong>调用 <code>co::main_sched</code> (该方法返回指向 <code>MainSched</code> 的指针) 将主线程标记为调度线程，创建协程后，再调用 <code>MainSched</code> 的 <code>loop</code> 方法启动该协程调度器。
+  须在<strong>创建协程之前</strong>调用 <code>co::main_sched</code> (该方法返回 <code>MainSched</code> 指针) 将主线程标记为调度线程，创建协程后，再调用 <code>MainSched</code> 的 <code>loop</code> 方法启动该协程调度器。
 </blockquote>
 
 </article>
@@ -1038,9 +1040,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/7d5b63304ef7892c06d8290f587ff6c526722417" title='最后修改者 idealvin | 2023/11/23' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/ce01c6996c572d4e74c775c7bed93b4eb14638a3" title='最后修改者 idealvin | 2023/11/24' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2023/11/23</span>
+      <span>2023/11/24</span>
     </a>
   </div>
 
@@ -1127,7 +1129,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#协程是否会出现栈溢出">协程是否会出现栈溢出？</a></li>
         <li><a href="#协程共享栈在使用上有哪些限制">协程共享栈在使用上有哪些限制？</a></li>
         <li><a href="#协程中可以使用三方网络库吗">协程中可以使用三方网络库吗？</a></li>
-        <li><a href="#如何将主线程变成协程调度线程">如何将主线程变成协程调度线程？</a></li>
+        <li><a href="#主线程可以设置成协程调度线程吗">主线程可以设置成协程调度线程吗？</a></li>
       </ul>
     </li>
   </ul>
