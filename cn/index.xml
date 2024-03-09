@@ -6,6 +6,18 @@
     <description>Recent content on Documents for Coost</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>co::vector 中的一个隐藏 bug</title>
+      <link>https://coostdocs.github.io/cn/blog/2023/hbov/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/blog/2023/hbov/</guid>
+      <description>最近有用户反馈了一个 bug，使用 co::vector 时程序崩溃了。
+拿用户提供的代码在 mac 上跑了下，没问题，又在 linux 上试了下，复现了。重新编译 debug 版本的 coost 及用户程序，再用 gdb 启动该程序，挂掉后用 bt 命令查看堆栈信息，发现是 co::vector&amp;lt;std::string&amp;gt; 析构时崩溃的。从用户的代码看，只是往 vector 里逐个添加了 2000 个字符串，并没有其他操作。
+想起之前在实现 co::chan 时遇到的一个问题，猜测可能是同一个问题，将 std::string 换成 coost 中的 fastring，重新编译，程序可以正常运行，验证了我的猜测。
+程序崩溃有两个原因，</description>
+    </item>
+    
+    <item>
       <title>coost 的设计原则</title>
       <link>https://coostdocs.github.io/cn/blog/2023/dpoc/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -133,11 +145,10 @@ co 中的 socket API 必须使用 non-blocking socket，在 windows 平台还要
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/about/co/</guid>
-      <description>#文档付费声明 本文档采取付费阅读模式，每个用户可支付 59￥，获得本文档永久阅读权。感谢您的支持。
-支付页面
-#coost 简介 coost 是一个兼具性能与易用性的跨平台 C++ 基础库，其目标是打造一把 C++ 开发神器，让 C++ 编程变得简单、轻松、愉快。
+      <description>#coost 简介 coost 是一个兼具性能与易用性的跨平台 C++ 基础库，其目标是打造一把 C++ 开发神器，让 C++ 编程变得简单、轻松、愉快。
 coost 简称为 co，曾被称为小型 boost 库，与 boost 相比，coost 小而精美，在 linux 与 mac 上编译出来的静态库仅 1M 左右大小，却包含了不少强大的功能：
-命令行与配置文件解析(flag) 高性能日志库(log) 单元测试框架 基准测试框架 go-style 协程 基于协程的网络编程框架 基于 JSON 的 RPC 框架 原子操作(atomic) 高效字符流(fastream) 高效字符串(fastring) 字符串操作(str) 时间库(time) 线程库(thread) 定时任务调度器 面向玄学编程 高效 JSON 库 hash 库 path 库 文件系统操作(fs) 系统操作(os) 高性能内存分配器 #coost 发展历程 2013-2015 年，Alvin(idealvin) 在使用 google gflags、glog、gtest 等时，感到有些繁琐，就自己动手实现了相应的功能，即现今 coost 中的 flag、log、unitest 等组件。</description>
+命令行与配置文件解析(flag) 高性能日志库(log) 单元测试框架 基准测试框架 go-style 协程 基于协程的网络编程框架 基于 JSON 的 RPC 框架 原子操作(atomic) 高效字符流(fastream) 高效字符串(fastring) 字符串操作(str) 时间库(time) 线程库(thread) 定时任务调度器 面向玄学编程 高效 JSON 库 hash 库 path 库 文件系统操作(fs) 系统操作(os) 高性能内存分配器 #coost 发展历程 2013-2015 年，Alvin(idealvin) 在使用 google gflags、glog、gtest 等时，感到有些繁琐，就自己动手实现了相应的功能，即现今 coost 中的 flag、log、unitest 等组件。
+2015-2018 年，Alvin 将自研的这套基础库引入实际项目中，供自己与同事使用，大幅度提升了 C++ 开发效率，coost 也得以经受工业项目的检验，并在实践中不断完善、扩充新的功能。</description>
     </item>
     
     <item>
