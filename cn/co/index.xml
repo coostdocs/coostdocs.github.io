@@ -11,27 +11,12 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/def/</guid>
-      <description>include: co/def.h.
-#typedefs #定长整数类型 co/def.h 定义了如下的 8 种整数类型：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
-#macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
-#DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C++ 类中的拷贝构造函数与赋值操作。
-示例 class T { public: T(); DISALLOW_COPY_AND_ASSIGN(T); }; #__arch64, __arch32 64位系统上，__arch64 定义为 1；32位系统上，__arch32 定义为 1。</description>
-    </item>
-    
-    <item>
-      <title>面向玄学</title>
-      <link>https://coostdocs.github.io/cn/co/god/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/god/</guid>
-      <description>include: co/god.h.
-#god god 模块提供了一些与模板相关的功能，模板用到深处有点玄，一些 C++ 程序员将之称为面向玄学编程。
-#god::bless_no_bugs void bless_no_bugs(); 祈求老天保佑代码无 bug，线程安全，可任意调用。
-示例
-#include &amp;#34;co/god.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; int main(int argc, char** argv) { god::bless_no_bugs(); co::print(&amp;#34;hello world&amp;#34;); return 0; } #god::cast template&amp;lt;typename To, typename From&amp;gt; constexpr To cast(From&amp;amp;&amp;amp; f) { return (To) std::forward&amp;lt;From&amp;gt;(f); } 万能转换，将 From 类型转换为 To 类型，To 可以是引用。
-示例
-int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A&amp;#39; god::cast&amp;lt;char&amp;amp;&amp;gt;(i) = &amp;#39;a&amp;#39;; // 将 i 的低字节设置为 &amp;#39;a&amp;#39; #——————————— #god::align_down 1.</description>
+      <description>#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
+只依赖 &amp;lt;stdint.h&amp;gt; 和 &amp;lt;stddef.h&amp;gt;，不依赖 coost 其它组件。
+#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
+这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
     </item>
     
     <item>
@@ -40,8 +25,13 @@ int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/mem/</guid>
-      <description>include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &amp;lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #——————————— #co::make template&amp;lt;typename T, typename.</description>
+      <description>#头文件 #include &amp;#34;co/mem.h&amp;#34; API 在 co 命名空间。
+_ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
+内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+#概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
+分配器把内存按大小分为三个等级：
+等级 大小范围 对齐 小内存 &amp;lt;= S（S 小于 4K） 16 字节对齐 中等内存 &amp;lt;= 128K 4K 对齐 大内存 &amp;gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &amp;gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) + 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&amp;lt;T&amp;gt;(args) template&amp;lt;typename T, typename.</description>
     </item>
     
     <item>
@@ -50,13 +40,12 @@ int i = 65; char c = god::cast&amp;lt;char&amp;gt;(i); // c -&amp;gt; &amp;#39;A
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/flag/</guid>
-      <description>include: co/flag.h.
-#基本概念 co.flag 是一个命令行参数及配置文件解析库，其原理很简单，代码中定义全局变量，然后在程序启动时解析命令行参数或配置文件，修改这些全局变量的值。
-#flag 变量 co.flag 中的宏定义的配置项，实际上是全局变量，称为 flag 变量。如下面的代码定义了一个 flag 变量，变量名是 FLG_x。
-DEF_int32(x, 0, &amp;#34;xxx&amp;#34;); // int32 FLG_x = 0; co.flag 支持 7 种类型的 flag 变量：
-bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一个默认值，用户可以通过命令行参数或配置文件修改 flag 变量的值。如前面定义的 FLG_x，在命令行中可以用 -x=23，在配置文件中可以用 x = 23，设置一个新的值。
-#command line flag 命令行参数中，以 -x=y 的形式出现，其中 x 被称为一个 command line flag(以下简称为 flag)。命令行中的 flag x 对应代码中的全局变量 FLG_x，命令行中的 -x=y 就相当于将 FLG_x 的值设置为 y。
-为了方便，本文档中可能将 command line flag、flag 变量统一称为 flag。 co.</description>
+      <description>#头文件 #include &amp;lt;co/flag.h&amp;gt; 如果同时使用日志，可以只包含 co/log.h，它已包含 co/flag.h。
+API 在 flag 命名空间。
+#概述 flag 提供命令行参数与配置文件解析功能，coost 中所有组件的配置项都通过 flag 定义。
+定义 flag 即定义全局变量，变量名是 FLG_&amp;lt;name&amp;gt;； 支持命令行参数与配置文件两种方式； 命令行中支持 -help 打印帮助信息、-mkconf 生成配置文件、-version 显示程序版本； #定义 flag #DEF 宏 DEF_bool(name, value, help, ...); DEF_int32(name, value, help, ...); DEF_int64(name, value, help, ...); DEF_uint32(name, value, help, ...); DEF_uint64(name, value, help, ...); DEF_double(name, value, help, ...); DEF_string(name, value, help, ...); 定义后通过全局变量访问，例如 FLG_name。
+类型对应关系：
+宏 类型 内部标识 DEF_bool bool &#39;b&#39; DEF_int32 int32 &#39;i&#39; DEF_int64 int64 &#39;I&#39; DEF_uint32 uint32 &#39;u&#39; DEF_uint64 uint64 &#39;U&#39; DEF_double double &#39;d&#39; DEF_string co::string&amp;amp; &#39;s&#39; #DEC 宏 DEC_bool(name); DEC_int32(name); DEC_int64(name); DEC_uint32(name); DEC_uint64(name); DEC_double(name); DEC_string(name); 用于跨文件声明，类型必须与 DEF_xxx 一致，否则同一项目中编译会报错。</description>
     </item>
     
     <item>
@@ -65,14 +54,16 @@ bool, int32, int64, uint32, uint64, double, string 每个 flag 变量都有一�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/log/</guid>
-      <description>include: co/log.h.
-#简介 co.log 是 coost 提供的高性能日志库，支持两种类型的日志，level log 与 topic log(TLOG)，它像下面这样打印日志：
-LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log #Level Log Level log 分为 debug, info, warning, error, fatal 5 个级别，并提供一系列的宏，用于打印不同级别的日志。
-打印 fatal 级别的日志会终止程序的运行，co.log 还会试图在程序退出前打印函数调用栈信息，以方便排查程序崩溃的原因。 此类型的日志会写入同一个文件中，一般用于打印调试信息。
-#Topic Log Topic log(TLOG) 没有级别之分，而是按主题分类。
-此类型的日志，按主题写入不同的文件，一般用于打印业务日志，按业务功能划分，便于日志管理。
-#性能 co.log 内部采用异步的实现方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一次性写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。下表是不同平台单线程连续打印 100 万条(每条 50 字节左右) info 日志的测试结果：
-platform glog co.log win2012 HHD 1.6MB/s 180MB/s win10 SSD 3.</description>
+      <description>#头文件 #include &amp;lt;co/log.h&amp;gt; co/log.h 已经包含 co/flag.h。
+API 在 log 命名空间。
+#初始化与关闭 log 内部使用 flag 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 main 函数开头调用：
+flag::parse(argc, argv); 关闭 API：
+void log::close(); 说明：
+用户一般不需要显示调用此 API。 调用此函数，会刷新日志缓冲，退出日志线程。 #打印日志 使用如下函数打印不同级别的日志：
+log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 说明：
+日志函数是线程安全的； 日志函数接受任意数量的参数； 参数可以是 co::string::operator&amp;lt;&amp;lt; 支持的任意类型； 日志函数自动在尾部添加换行符； fatal 级别的日志会终止程序运行。 示例：
+log::info(&amp;#34;hello &amp;#34;, false, &amp;#39; &amp;#39;, 23); 支持的参数类型有：
+bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符类型：char, signed char, unsigned char； 字符串类型：const char*, std::string, co::string； 指针类型：void*, T*，输出 0x 开头的十六进制值； STL 容器类型：std::vector, std::map, co::vector, co::map 等，需要包含 co/stl.</description>
     </item>
     
     <item>

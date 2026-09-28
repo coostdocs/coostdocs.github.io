@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/def.h.
-#typedefs #定长整数类型 co/def.h 定义了如下的 8 种整数类型：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
-#macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
-#DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C&#43;&#43; 类中的拷贝构造函数与赋值操作。
-示例 class T { public: T(); DISALLOW_COPY_AND_ASSIGN(T); }; #__arch64, __arch32 64位系统上，__arch64 定义为 1；32位系统上，__arch32 定义为 1。">
+<meta name="description" content="#头文件 #include &#34;co/def.h&#34; coost 很多组件都会包含这个头文件。
+只依赖 &lt;stdint.h&gt; 和 &lt;stddef.h&gt;，不依赖 coost 其它组件。
+#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
+这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &gt;&gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &gt;&gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &gt;&gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &gt;&gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="基本定义" />
-<meta property="og:description" content="include: co/def.h.
-#typedefs #定长整数类型 co/def.h 定义了如下的 8 种整数类型：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。
-#macros #整型最大、最小值 MAX_UINT8 MAX_UINT16 MAX_UINT32 MAX_UINT64 MAX_INT8 MAX_INT16 MAX_INT32 MAX_INT64 MIN_INT8 MIN_INT16 MIN_INT32 MIN_INT64 这些宏分别表示 8 种整数类型的最大、最小值。
-#DISALLOW_COPY_AND_ASSIGN 这个宏用于禁止 C&#43;&#43; 类中的拷贝构造函数与赋值操作。
-示例 class T { public: T(); DISALLOW_COPY_AND_ASSIGN(T); }; #__arch64, __arch32 64位系统上，__arch64 定义为 1；32位系统上，__arch32 定义为 1。" />
+<meta property="og:description" content="#头文件 #include &#34;co/def.h&#34; coost 很多组件都会包含这个头文件。
+只依赖 &lt;stdint.h&gt; 和 &lt;stddef.h&gt;，不依赖 coost 其它组件。
+#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
+这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &gt;&gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &gt;&gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &gt;&gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &gt;&gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/def/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+<meta property="article:modified_time" content="2026-09-28T23:58:52+08:00" />
 
 <title>基本定义 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -27,7 +27,7 @@ typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/def/" title="Basic Definitions">
 <link rel="stylesheet" href="../../../book.min.e708de46a8fb53e5d61c5b4f5a338f124135857a30daa7ea95f0cfd8b8b29d1a.css" integrity="sha256-5wjeRqj7U&#43;XWHFtPWjOPEkE1hXow2qfqlfDP2LiynRo=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.804d8d060991126eb6cce642a48d1ed5fb609ed38ca78387c2345930f3327322.js" integrity="sha256-gE2NBgmREm62zOZCpI0e1ftgntOMp4OHwjRZMPMycyI=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.2359f83da36a1e1800b29b0e609754291c60ee0e27341bce7acc1cad50ff75a3.js" integrity="sha256-I1n4PaNqHhgAspsOYJdUKRxg7g4nNBvOeswcrVD/daM=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -154,19 +154,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../cn/co/def/" class=" active">基本定义</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/god/" class="">面向玄学</a>
   
 
         </li>
@@ -891,21 +878,20 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#typedefs">typedefs</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#整型别名">整型别名</a></li>
+        <li><a href="#整型极值常量">整型极值常量</a></li>
+        <li><a href="#缓存行大小">缓存行大小</a></li>
+        <li><a href="#架构宏">架构宏</a></li>
+        <li><a href="#宏">宏</a>
           <ul>
-            <li><a href="#定长整数类型">定长整数类型</a></li>
+            <li><a href="#__cacheline_aligned"><code>__cacheline_aligned</code></a></li>
+            <li><a href="#__forceinline"><code>__forceinline</code></a></li>
+            <li><a href="#__unlikely"><code>__unlikely</code></a></li>
           </ul>
         </li>
-        <li><a href="#macros">macros</a>
-          <ul>
-            <li><a href="#整型最大最小值">整型最大、最小值</a></li>
-            <li><a href="#disallow_copy_and_assign">DISALLOW_COPY_AND_ASSIGN</a></li>
-            <li><a href="#__arch64-__arch32">__arch64, __arch32</a></li>
-            <li><a href="#__forceinline">__forceinline</a></li>
-            <li><a href="#__thread">__thread</a></li>
-            <li><a href="#unlikely">unlikely</a></li>
-          </ul>
-        </li>
+        <li><a href="#示例">示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
@@ -920,10 +906,13 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/def.h">co/def.h</a>.</p>
-<h2 id="typedefs"><a class="anchor" href="#typedefs">#</a>typedefs</h2>
-<h3 id="定长整数类型"><a class="anchor" href="#%e5%ae%9a%e9%95%bf%e6%95%b4%e6%95%b0%e7%b1%bb%e5%9e%8b">#</a>定长整数类型</h3>
-<p><code>co/def.h</code> 定义了如下的 8 种整数类型：</p>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/def.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>coost 很多组件都会包含这个头文件。</p>
+<p>只依赖 <code>&lt;stdint.h&gt;</code> 和 <code>&lt;stddef.h&gt;</code>，不依赖 coost 其它组件。</p>
+<hr>
+<h2 id="整型别名"><a class="anchor" href="#%e6%95%b4%e5%9e%8b%e5%88%ab%e5%90%8d">#</a>整型别名</h2>
+<p>以下类型别名定义在<strong>全局命名空间</strong>，不在 <code>co</code> 命名空间：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">int8_t</span>  <span class="n">int8</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">int16_t</span> <span class="n">int16</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">int32_t</span> <span class="n">int32</span><span class="p">;</span>
@@ -932,62 +921,165 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">uint16_t</span> <span class="n">uint16</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">uint32_t</span> <span class="n">uint32</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">uint64_t</span> <span class="n">uint64</span><span class="p">;</span>
-</span></span></code></pre></div><p>这些类型在不同平台的长度是一致的，不存在可移植性问题。<a href="https://google.github.io/styleguide/cppguide.html#Integer_Types">Google Code Style</a> 建议除了 int，不要使用 short, long, long long 等内置整数类型。</p>
-<h2 id="macros"><a class="anchor" href="#macros">#</a>macros</h2>
-<h3 id="整型最大最小值"><a class="anchor" href="#%e6%95%b4%e5%9e%8b%e6%9c%80%e5%a4%a7%e6%9c%80%e5%b0%8f%e5%80%bc">#</a>整型最大、最小值</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">MAX_UINT8</span>  <span class="n">MAX_UINT16</span>  <span class="n">MAX_UINT32</span>  <span class="n">MAX_UINT64</span>
-</span></span><span class="line"><span class="cl"><span class="n">MAX_INT8</span>   <span class="n">MAX_INT16</span>   <span class="n">MAX_INT32</span>   <span class="n">MAX_INT64</span>
-</span></span><span class="line"><span class="cl"><span class="n">MIN_INT8</span>   <span class="n">MIN_INT16</span>   <span class="n">MIN_INT32</span>   <span class="n">MIN_INT64</span>
-</span></span></code></pre></div><p>这些宏分别表示 8 种整数类型的最大、最小值。</p>
-<h3 id="disallow_copy_and_assign"><a class="anchor" href="#disallow_copy_and_assign">#</a>DISALLOW_COPY_AND_ASSIGN</h3>
-<p>这个宏用于禁止 C++ 类中的拷贝构造函数与赋值操作。</p>
+</span></span></code></pre></div><p>说明：</p>
 <ul>
-<li>示例</li>
+<li>这些别名在 coost 中广泛使用，例如 <code>co::rand()</code> 返回 <code>uint32</code>，<code>co::now.ns()</code> 返回 <code>int64</code>。</li>
+<li>因为定义在全局命名空间，所以直接写 <code>int32</code>、<code>uint64</code> 即可，不需要 <code>co::</code> 前缀。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">T</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">DISALLOW_COPY_AND_ASSIGN</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><h3 id="__arch64-__arch32"><a class="anchor" href="#__arch64-__arch32">#</a>__arch64, __arch32</h3>
-<p>64位系统上，<code>__arch64</code> 定义为 1；32位系统上，<code>__arch32</code> 定义为 1。</p>
-<ul>
-<li>示例</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#if __arch64
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kr">inline</span> <span class="n">size_t</span> <span class="nf">murmur_hash</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">murmur_hash64</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<hr>
+<h2 id="整型极值常量"><a class="anchor" href="#%e6%95%b4%e5%9e%8b%e6%9e%81%e5%80%bc%e5%b8%b8%e9%87%8f">#</a>整型极值常量</h2>
+<p>定义在 <code>co</code> 命名空间，均为 <code>constexpr</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">co</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">uint8</span>  <span class="n">max_uint8</span>  <span class="o">=</span> <span class="p">(</span><span class="n">uint8</span><span class="p">)</span>  <span class="o">~</span><span class="p">((</span><span class="n">uint8</span><span class="p">)</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">uint16</span> <span class="n">max_uint16</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint16</span><span class="p">)</span> <span class="o">~</span><span class="p">((</span><span class="n">uint16</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">uint32</span> <span class="n">max_uint32</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint32</span><span class="p">)</span> <span class="o">~</span><span class="p">((</span><span class="n">uint32</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">uint64</span> <span class="n">max_uint64</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span> <span class="o">~</span><span class="p">((</span><span class="n">uint64</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int8</span>  <span class="n">max_int8</span>  <span class="o">=</span> <span class="p">(</span><span class="n">int8</span><span class="p">)</span>  <span class="p">(</span><span class="n">max_uint8</span>  <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int16</span> <span class="n">max_int16</span> <span class="o">=</span> <span class="p">(</span><span class="n">int16</span><span class="p">)</span> <span class="p">(</span><span class="n">max_uint16</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int32</span> <span class="n">max_int32</span> <span class="o">=</span> <span class="p">(</span><span class="n">int32</span><span class="p">)</span> <span class="p">(</span><span class="n">max_uint32</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int64</span> <span class="n">max_int64</span> <span class="o">=</span> <span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="p">(</span><span class="n">max_uint64</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int8</span>  <span class="n">min_int8</span>  <span class="o">=</span> <span class="p">(</span><span class="n">int8</span><span class="p">)</span>  <span class="o">~</span><span class="n">max_int8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int16</span> <span class="n">min_int16</span> <span class="o">=</span> <span class="p">(</span><span class="n">int16</span><span class="p">)</span> <span class="o">~</span><span class="n">max_int16</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int32</span> <span class="n">min_int32</span> <span class="o">=</span> <span class="p">(</span><span class="n">int32</span><span class="p">)</span> <span class="o">~</span><span class="n">max_int32</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">int64</span> <span class="n">min_int64</span> <span class="o">=</span> <span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="o">~</span><span class="n">max_int64</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// co
+</span></span></span></code></pre></div><hr>
+<h2 id="缓存行大小"><a class="anchor" href="#%e7%bc%93%e5%ad%98%e8%a1%8c%e5%a4%a7%e5%b0%8f">#</a>缓存行大小</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">co</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#if defined(__s390x__)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">constexpr</span> <span class="kt">int</span> <span class="n">cache_line_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#elif defined(__powerpc64__) || defined(_M_PPC64)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">constexpr</span> <span class="kt">int</span> <span class="n">cache_line_size</span> <span class="o">=</span> <span class="mi">128</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#elif defined(__aarch64__) || defined(_M_ARM64)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">constexpr</span> <span class="kt">int</span> <span class="n">cache_line_size</span> <span class="o">=</span> <span class="mi">128</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="cp">#else
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kr">inline</span> <span class="n">size_t</span> <span class="nf">murmur_hash</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">murmur_hash32</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">constexpr</span> <span class="kt">int</span> <span class="n">cache_line_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="cp">#endif
-</span></span></span></code></pre></div><h3 id="__forceinline"><a class="anchor" href="#__forceinline">#</a>__forceinline</h3>
-<p><a href="https://docs.microsoft.com/en-us/cpp/cpp/inline-functions-cpp?view=vs-2019#inline-__inline-and-__forceinline">__forceinline</a> 是 VS 中的关键字，放在函数定义开头，强制内联函数，linux 与 mac 平台用下面的宏模拟：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define __forceinline __attribute__((always_inline))
-</span></span></span></code></pre></div><h3 id="__thread"><a class="anchor" href="#__thread">#</a>__thread</h3>
-<p><a href="https://gcc.gnu.org/onlinedocs/gcc-4.7.4/gcc/Thread-Local.html">__thread</a> 是 gcc/clang 中的关键字，用于支持 <a href="https://wiki.osdev.org/Thread_Local_Storage">TLS</a>，windows 平台用下面的宏模拟：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define __thread __declspec(thread)
-</span></span></span></code></pre></div><ul>
-<li>示例</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// get id of the current thread
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">__forceinline</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">gettid</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">__thread</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">id</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">id</span> <span class="o">=</span> <span class="n">__gettid</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="unlikely"><a class="anchor" href="#unlikely">#</a>unlikely</h3>
-<p>这个宏用于分支选择优化，仅支持 gcc/clang。</p>
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// co
+</span></span></span></code></pre></div><p>各架构对应值：</p>
+<table>
+<thead>
+<tr>
+<th>架构</th>
+<th>缓存行大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__s390x__</code></td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>__powerpc64__</code> / <code>_M_PPC64</code></td>
+<td>128</td>
+</tr>
+<tr>
+<td><code>__aarch64__</code> / <code>_M_ARM64</code></td>
+<td>128</td>
+</tr>
+<tr>
+<td>其它（x86、x64 等）</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="架构宏"><a class="anchor" href="#%e6%9e%b6%e6%9e%84%e5%ae%8f">#</a>架构宏</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#if SIZE_MAX == UINT64_MAX
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __arch64 1
+</span></span></span><span class="line"><span class="cl"><span class="cp">#elif SIZE_MAX == UINT32_MAX
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __arch32 1
+</span></span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp">#error &#34;platform not supported&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>说明：</p>
 <ul>
-<li>示例</li>
+<li>64 位平台定义 <code>__arch64</code>；</li>
+<li>32 位平台定义 <code>__arch32</code>；</li>
+<li>其它情况编译期报错。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 与 if (v == 0) 逻辑上等价，但提示编译器 v == 0 的可能性较小
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">unlikey</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;v == 0&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<hr>
+<h2 id="宏"><a class="anchor" href="#%e5%ae%8f">#</a>宏</h2>
+<h3 id="__cacheline_aligned"><a class="anchor" href="#__cacheline_aligned">#</a><code>__cacheline_aligned</code></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef __cacheline_aligned
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __cacheline_aligned alignas(co::cache_line_size)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>用于让变量或结构体按缓存行对齐。</p>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">__cacheline_aligned</span> <span class="n">Foo</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h3 id="__forceinline"><a class="anchor" href="#__forceinline">#</a><code>__forceinline</code></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef _MSC_VER
+</span></span></span><span class="line"><span class="cl"><span class="cp">#ifndef __forceinline
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __forceinline __attribute__((always_inline))
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp">#ifndef __thread
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __thread __declspec(thread)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>非 MSVC：<code>__forceinline</code> 定义为 <code>__attribute__((always_inline))</code>。</li>
+<li>MSVC：<code>__thread</code> 定义为 <code>__declspec(thread)</code>。
+<ul>
+<li>注意：MSVC 分支里没有定义 <code>__forceinline</code>，因为 MSVC 本身就有 <code>__forceinline</code> 关键字。</li>
+</ul>
+</li>
+</ul>
+<h3 id="__unlikely"><a class="anchor" href="#__unlikely">#</a><code>__unlikely</code></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef __unlikely
+</span></span></span><span class="line"><span class="cl"><span class="cp">#if (defined(__GNUC__) &amp;&amp; __GNUC__ &gt;= 3) || defined(__clang__)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __unlikely(x) (__builtin_expect(!!(x), 0))
+</span></span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __unlikely(x) (x)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>在 GCC 3+ / Clang 上，<code>__unlikely(x)</code> 使用 <code>__builtin_expect</code>，提示编译器 <code>x</code> 为假的概率更高。</li>
+<li>其它编译器上，<code>__unlikely(x)</code> 直接等于 <code>x</code>。</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>coost 只提供了 <code>__unlikely</code>，没有提供 <code>__likely</code>。</li>
+</ul>
+<hr>
+<h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/def.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;max_uint32 = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">max_uint32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;max_int32  = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">max_int32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;min_int32  = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">min_int32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;cache_line_size = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">cache_line_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#if defined(__arch64)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;arch: 64-bit&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#elif defined(__arch32)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;arch: 32-bit&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div></article>
+</span></span></code></pre></div><hr>
+<h2 id="注意事项"><a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a>注意事项</h2>
+<ul>
+<li>整型类型别名 <code>int8</code>、<code>uint32</code> 等定义在全局命名空间，不是 <code>co</code> 命名空间。</li>
+<li>整型极值常量在 <code>co</code> 命名空间。</li>
+<li><code>co::cache_line_size</code> 是编译期常量，随架构变化。</li>
+<li><code>__cacheline_aligned</code> 可用于变量或结构体对齐。</li>
+<li><code>__forceinline</code> 在非 MSVC 平台定义为 <code>__attribute__((always_inline))</code>。</li>
+<li>MSVC 平台额外定义 <code>__thread</code> 为 <code>__declspec(thread)</code>。</li>
+<li>coost 只提供 <code>__unlikely</code>，没有 <code>__likely</code>。</li>
+</ul>
+</article>
  
       
 
@@ -1039,9 +1131,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | 2023/09/09' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/11fa6e3d3f318244d250a6e98d65ad9f1bb31313" title='最后修改者 idealvin | 2026/09/28' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2023/09/09</span>
+      <span>2026/09/28</span>
     </a>
   </div>
 
@@ -1116,21 +1208,20 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#typedefs">typedefs</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#整型别名">整型别名</a></li>
+        <li><a href="#整型极值常量">整型极值常量</a></li>
+        <li><a href="#缓存行大小">缓存行大小</a></li>
+        <li><a href="#架构宏">架构宏</a></li>
+        <li><a href="#宏">宏</a>
           <ul>
-            <li><a href="#定长整数类型">定长整数类型</a></li>
+            <li><a href="#__cacheline_aligned"><code>__cacheline_aligned</code></a></li>
+            <li><a href="#__forceinline"><code>__forceinline</code></a></li>
+            <li><a href="#__unlikely"><code>__unlikely</code></a></li>
           </ul>
         </li>
-        <li><a href="#macros">macros</a>
-          <ul>
-            <li><a href="#整型最大最小值">整型最大、最小值</a></li>
-            <li><a href="#disallow_copy_and_assign">DISALLOW_COPY_AND_ASSIGN</a></li>
-            <li><a href="#__arch64-__arch32">__arch64, __arch32</a></li>
-            <li><a href="#__forceinline">__forceinline</a></li>
-            <li><a href="#__thread">__thread</a></li>
-            <li><a href="#unlikely">unlikely</a></li>
-          </ul>
-        </li>
+        <li><a href="#示例">示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>

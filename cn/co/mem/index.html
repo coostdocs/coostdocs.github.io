@@ -3,15 +3,25 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #——————————— #co::make template&lt;typename T, typename.">
+<meta name="description" content="#头文件 #include &#34;co/mem.h&#34; API 在 co 命名空间。
+_ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
+内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+#概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
+分配器把内存按大小分为三个等级：
+等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) &#43; 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="内存分配" />
-<meta property="og:description" content="include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, 分配 size 字节的内存。 2, 分配 size 字节的内存，内存边界是 align 字节对齐的(align &lt;= 1024)。 第 2 个版本中，align 必须是 2 的幂，且不能超过 1024。 #co::free void free(void* p, size_t size); 释放 co::alloc 或 co::realloc 分配的内存，size 是所分配内存的大小。 co::free 不同于系统提供的 ::free，需要额外带上一个 size 参数。 #co::realloc void* realloc(void* p, size_t old_size, size_t new_size); 重新分配内存，old_size 是之前的内存大小，new_size 是新的大小，后者必须大于前者。 #co::zalloc void* zalloc(size_t size); 分配 size 字节的内存，并将内存清零。 #——————————— #co::make template&lt;typename T, typename." />
+<meta property="og:description" content="#头文件 #include &#34;co/mem.h&#34; API 在 co 命名空间。
+_ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
+内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+#概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
+分配器把内存按大小分为三个等级：
+等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) &#43; 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/mem/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-11-23T19:26:25+08:00" />
+<meta property="article:modified_time" content="2026-09-28T23:58:52+08:00" />
 
 <title>内存分配 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -19,7 +29,7 @@
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/mem/" title="Memory Allocation">
 <link rel="stylesheet" href="../../../book.min.e708de46a8fb53e5d61c5b4f5a338f124135857a30daa7ea95f0cfd8b8b29d1a.css" integrity="sha256-5wjeRqj7U&#43;XWHFtPWjOPEkE1hXow2qfqlfDP2LiynRo=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.804d8d060991126eb6cce642a48d1ed5fb609ed38ca78387c2345930f3327322.js" integrity="sha256-gE2NBgmREm62zOZCpI0e1ftgntOMp4OHwjRZMPMycyI=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.2359f83da36a1e1800b29b0e609754291c60ee0e27341bce7acc1cad50ff75a3.js" integrity="sha256-I1n4PaNqHhgAspsOYJdUKRxg7g4nNBvOeswcrVD/daM=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -146,19 +156,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../cn/co/def/" class="">基本定义</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/god/" class="">面向玄学</a>
   
 
         </li>
@@ -883,54 +880,25 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#基础分配函数">基础分配函数</a>
           <ul>
-            <li><a href="#coalloc">co::alloc</a></li>
-            <li><a href="#cofree">co::free</a></li>
-            <li><a href="#corealloc">co::realloc</a></li>
-            <li><a href="#cozalloc">co::zalloc</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#comake">co::make</a></li>
-            <li><a href="#codel">co::del</a></li>
-            <li><a href="#comake_rootic">co::make_rootic</a></li>
-            <li><a href="#comake_static">co::make_static</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#coshared">co::shared</a>
-              <ul>
-                <li><a href="#constructor">constructor</a></li>
-                <li><a href="#destructor">destructor</a></li>
-                <li><a href="#operator">operator=</a></li>
-                <li><a href="#get">get</a></li>
-                <li><a href="#operator-">operator-&gt;</a></li>
-                <li><a href="#operator-1">operator*</a></li>
-                <li><a href="#operator-2">operator==</a></li>
-                <li><a href="#operator-3">operator!=</a></li>
-                <li><a href="#operator-bool">operator bool</a></li>
-                <li><a href="#ref_count">ref_count</a></li>
-                <li><a href="#reset">reset</a></li>
-                <li><a href="#swap">swap</a></li>
-                <li><a href="#use_count">use_count</a></li>
-              </ul>
-            </li>
-            <li><a href="#comake_shared">co::make_shared</a></li>
-            <li><a href="#counique">co::unique</a>
-              <ul>
-                <li><a href="#constructor-1">constructor</a></li>
-                <li><a href="#destructor-1">destructor</a></li>
-                <li><a href="#operator-4">operator=</a></li>
-                <li><a href="#get-1">get</a></li>
-                <li><a href="#operator--1">operator-&gt;</a></li>
-                <li><a href="#operator-5">operator*</a></li>
-                <li><a href="#operator-6">operator==</a></li>
-                <li><a href="#operator-7">operator!=</a></li>
-                <li><a href="#operator-bool-1">operator bool</a></li>
-                <li><a href="#reset-1">reset</a></li>
-                <li><a href="#swap-1">swap</a></li>
-              </ul>
-            </li>
-            <li><a href="#comake_unique">co::make_unique</a></li>
+            <li><a href="#关键约束">关键约束</a></li>
+            <li><a href="#线程安全">线程安全</a></li>
           </ul>
         </li>
+        <li><a href="#静态对象构造">静态对象构造</a>
+          <ul>
+            <li><a href="#使用方式">使用方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#counique">co::unique</a></li>
+        <li><a href="#coshared">co::shared</a></li>
+        <li><a href="#unique--shared-的构造约束">unique / shared 的构造约束</a></li>
+        <li><a href="#costl_allocator">co::stl_allocator</a></li>
+        <li><a href="#与标准库的关系">与标准库的关系</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
@@ -945,276 +913,298 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/mem.h">co/mem.h</a>.</p>
-<h3 id="coalloc"><a class="anchor" href="#coalloc">#</a>co::alloc</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span><span class="o">*</span> <span class="n">alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">void</span><span class="o">*</span> <span class="n">alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">align</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 分配 <code>size</code> 字节的内存。</li>
-<li>2, 分配 <code>size</code> 字节的内存，内存边界是 <code>align</code> 字节对齐的(align &lt;= 1024)。</li>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/mem.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间。</p>
+<p><code>_</code> 开头的 API 一般是 coost 内部使用的，不建议用户调用。</p>
+<p>内部通过 <code>co::xx::MemInit</code> 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。</p>
+<hr>
+<h2 id="概述"><a class="anchor" href="#%e6%a6%82%e8%bf%b0">#</a>概述</h2>
+<p>coost 内存分配器与 glibc 不同：<strong>内部不保存所分配内存的大小</strong>，因此释放时需要用户传入大小。</p>
+<p>分配器把内存按大小分为三个等级：</p>
+<table>
+<thead>
+<tr>
+<th>等级</th>
+<th>大小范围</th>
+<th>对齐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小内存</td>
+<td><code>&lt;= S</code>（S 小于 4K）</td>
+<td>16 字节对齐</td>
+</tr>
+<tr>
+<td>中等内存</td>
+<td><code>&lt;= 128K</code></td>
+<td>4K 对齐</td>
+</tr>
+<tr>
+<td>大内存</td>
+<td><code>&gt; 128K</code></td>
+<td>页对齐，直接 <code>mmap</code> / <code>VirtualAlloc</code></td>
+</tr>
+</tbody>
+</table>
+<p>说明：</p>
+<ul>
+<li><code>co::free(p, n)</code> 根据 <code>n</code> 判断内存属于哪一类，再回收。</li>
+<li>因此 <code>n</code> 要求与 <code>alloc</code> / <code>realloc</code> 时传入的 size 一致。</li>
+<li>传错 <code>n</code> 可能导致未定义行为。</li>
+<li>coost 分配的内存至少是 16 字节对齐。</li>
 </ul>
-<blockquote class="book-hint warning">
-  第 2 个版本中，<code>align</code> 必须是 2 的幂，且不能超过 1024。
-</blockquote>
-
-<h3 id="cofree"><a class="anchor" href="#cofree">#</a>co::free</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">free</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>释放 <a href="#coalloc">co::alloc</a> 或 <a href="#corealloc">co::realloc</a> 分配的内存，<code>size</code> 是所分配内存的大小。</li>
-</ul>
-<blockquote class="book-hint warning">
-  <code>co::free</code> 不同于系统提供的 <code>::free</code>，需要额外带上一个 <code>size</code> 参数。
-</blockquote>
-
-<h3 id="corealloc"><a class="anchor" href="#corealloc">#</a>co::realloc</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">realloc</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">new_size</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>重新分配内存，<code>old_size</code> 是之前的内存大小，<code>new_size</code> 是新的大小，<strong>后者必须大于前者</strong>。</li>
-</ul>
-<h3 id="cozalloc"><a class="anchor" href="#cozalloc">#</a>co::zalloc</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">zalloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>分配 <code>size</code> 字节的内存，并将内存清零。</li>
-</ul>
-<h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
-<h3 id="comake"><a class="anchor" href="#comake">#</a>co::make</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">make</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>调用 <a href="#coalloc">co::alloc</a> 分配内存，并用参数 <code>args</code> 在所分配的内存上构建 <code>T</code> 类型的对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="codel"><a class="anchor" href="#codel">#</a>co::del</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">void</span> <span class="n">del</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="o">=</span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">));</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>销毁 <a href="#comake">co::make</a> 创建的对象，并释放内存。</p>
-</li>
-<li>
-<p>参数 <code>n</code> 是 <code>p</code> 所指向对象的内存大小，默认为 <code>sizeof(T)</code>。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">del</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="comake_rootic"><a class="anchor" href="#comake_rootic">#</a>co::make_rootic</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">make_rootic</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>与 <a href="#comake_static">co::make_static</a> 类似，只是该函数创建的静态对象比 <code>co::make_static</code> 创建的静态对象后析构。</li>
-</ul>
-<h3 id="comake_static"><a class="anchor" href="#comake_static">#</a>co::make_static</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">make_static</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>用参数 <code>args</code> 创建 <code>T</code> 类型的静态对象，所创建的静态对象在程序退出时会自动销毁。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span> <span class="o">=</span> <span class="o">*</span><span class="n">co</span><span class="o">::</span><span class="n">make_static</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
-<h3 id="coshared"><a class="anchor" href="#coshared">#</a>co::shared</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">shared</span><span class="p">;</span>
-</span></span></code></pre></div><p>与 <code>std::shared_ptr</code> 类似，但有些细微区别。</p>
-<h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="k">constexpr</span> <span class="n">shared</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="k">constexpr</span> <span class="n">shared</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">shared</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">shared</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+<hr>
+<h2 id="基础分配函数"><a class="anchor" href="#%e5%9f%ba%e7%a1%80%e5%88%86%e9%85%8d%e5%87%bd%e6%95%b0">#</a>基础分配函数</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">shared</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="n">shared</span><span class="p">(</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>1-2, 创建空的 <code>shared</code> 对象。</li>
-<li>3, 拷贝构造函数，若 <code>x</code> 不是空对象，则将内部引用计数加 1。</li>
-<li>4, 移动构造函数，对象构造完成后，<code>x</code> 变为空对象。</li>
-<li>5-6, 从 <code>shared&lt;X&gt;</code> 对象构建 <code>shared&lt;T&gt;</code> 对象，<code>T</code> 是 <code>X</code> 的基类，且 <code>T</code> 的析构函数是 virtual 的。</li>
-</ul>
-<blockquote class="book-hint warning">
-  <code>co::shared</code> 对象不能直接从 <code>T*</code> 指针构建，coost 提供 <a href="#comake_shared">co::make_shared</a> 用于构建 <code>co::shared</code> 对象。
-</blockquote>
-
-<h4 id="destructor"><a class="anchor" href="#destructor">#</a>destructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">shared</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>若对象非空，则将内部引用计数减 1，引用计数减至 0 时会销毁内部的对象，并释放内存。</li>
-</ul>
-<h4 id="operator"><a class="anchor" href="#operator">#</a>operator=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>赋值操作。</li>
-<li>3-4, 用 <code>shared&lt;X&gt;</code> 类型的值对 <code>shared&lt;T&gt;</code> 类型的对象进行赋值，<code>T</code> 是 <code>X</code> 的基类，且 <code>T</code> 的析构函数是 virtual 的。</li>
-</ul>
-<h4 id="get"><a class="anchor" href="#get">#</a>get</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取内部对象的指针。</li>
-</ul>
-<h4 id="operator-"><a class="anchor" href="#operator-">#</a>operator-&gt;</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>重载 <code>operator-&gt;</code>，返回内部对象的指针。</li>
-</ul>
-<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator*</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>重载 <code>operator*</code>，返回内部对象的引用。</li>
-</ul>
-<h4 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断内部对象的指针值是否与 <code>p</code> 相等。</li>
-</ul>
-<h4 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断内部对象的指针值是否与 <code>p</code> 不相等。</li>
-</ul>
-<h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>内部指针为NULL时返回 false，否则返回 true。</li>
-</ul>
-<h4 id="ref_count"><a class="anchor" href="#ref_count">#</a>ref_count</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">ref_count</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取内部对象的引用计数。</li>
-</ul>
-<h4 id="reset"><a class="anchor" href="#reset">#</a>reset</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>若内部指针不为 NULL，则将引用计数减 1(减至 0 时销毁内部对象)，再将内部指针设置为 NULL。</li>
-</ul>
-<h4 id="swap"><a class="anchor" href="#swap">#</a>swap</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>交换 <code>co::shared</code> 对象的内部指针。</li>
-</ul>
-<h4 id="use_count"><a class="anchor" href="#use_count">#</a>use_count</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">use_count</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>与 <a href="#ref_count">ref_count</a> 等价。</li>
-</ul>
-<h3 id="comake_shared"><a class="anchor" href="#comake_shared">#</a>co::make_shared</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">make_shared</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>用参数 <code>args</code> 创建 <code>shared&lt;T&gt;</code> 类型的对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">23</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="counique"><a class="anchor" href="#counique">#</a>co::unique</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">unique</span><span class="p">;</span>
-</span></span></code></pre></div><p>与 <code>std::unique_ptr</code> 类似，但有些细微区别。</p>
-<h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="k">constexpr</span> <span class="n">unique</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="k">constexpr</span> <span class="n">unique</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// @align: must be power of 2, and its maximum value is 256
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">align</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>1-2, 创建空的 <code>unique</code> 对象。</li>
-<li>3-4, 将 <code>x</code> 内部的指针转移到所构建的 <code>unique</code> 对象中，<code>x</code> 内部指针变为 NULL。</li>
-<li>5-6, 从 <code>unique&lt;X&gt;</code> 对象构建 <code>unique&lt;T&gt;</code> 对象，<code>T</code> 是 <code>X</code> 的基类，且 <code>T</code> 的析构函数是 virtual 的。</li>
+</span></span><span class="line"><span class="cl"><span class="c1">// @p: may be NULL
+</span></span></span><span class="line"><span class="cl"><span class="c1">// @n: MUST be the same as the size used in alloc or realloc
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">free</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// @p: may be NULL
+</span></span></span><span class="line"><span class="cl"><span class="c1">// @o: old size, must be the same as the size used in alloc() or a previous realloc()
+</span></span></span><span class="line"><span class="cl"><span class="c1">// @n: new size, must be greater than @o
+</span></span></span><span class="line"><span class="cl"><span class="c1">// return: may be the same as @p, or NULL on failure
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">realloc</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">o</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// alloc and zero-clear
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">zalloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">zalloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">align</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// virtual alloc, page-aligned and zero-cleared
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">valloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// virtual free
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">vfree</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">strdup</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="关键约束"><a class="anchor" href="#%e5%85%b3%e9%94%ae%e7%ba%a6%e6%9d%9f">#</a>关键约束</h3>
+<ul>
+<li><code>co::free(p, n)</code> 的 <code>n</code> 必须与分配时一致，否则未定义行为。</li>
+<li><code>co::realloc(p, o, n)</code> 要求 <code>n &gt; o</code>，即只能扩张。
+<ul>
+<li>实际应用中 <code>realloc</code> 一般也只用于扩张。</li>
+<li>失败时返回 <code>nullptr</code>，原来的 <code>p</code> 不受影响，仍然有效。</li>
 </ul>
-<blockquote class="book-hint warning">
-  <code>co::unique</code> 对象不能直接从 <code>T*</code> 指针构建，coost 提供 <a href="#comake_unique">co::make_unique</a> 用于构建 <code>co::unique</code> 对象。
-</blockquote>
-
-<h4 id="destructor-1"><a class="anchor" href="#destructor-1">#</a>destructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">unique</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>销毁内部对象，并释放内存。</li>
-</ul>
-<h4 id="operator-4"><a class="anchor" href="#operator-4">#</a>operator=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>赋值操作。</li>
-<li>3-4, 用 <code>unique&lt;X&gt;</code> 类型的值对 <code>unique&lt;T&gt;</code> 类型的对象进行赋值，<code>T</code> 是 <code>X</code> 的基类，且 <code>T</code> 的析构函数是 virtual 的。</li>
-</ul>
-<h4 id="get-1"><a class="anchor" href="#get-1">#</a>get</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取内部对象的指针。</li>
-</ul>
-<h4 id="operator--1"><a class="anchor" href="#operator--1">#</a>operator-&gt;</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>重载 <code>operator-&gt;</code>，返回内部对象的指针。</li>
-</ul>
-<h4 id="operator-5"><a class="anchor" href="#operator-5">#</a>operator*</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>重载 <code>operator*</code>，返回内部对象的引用。</li>
-</ul>
-<h4 id="operator-6"><a class="anchor" href="#operator-6">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断内部对象的指针值是否与 <code>p</code> 相等。</li>
-</ul>
-<h4 id="operator-7"><a class="anchor" href="#operator-7">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断内部对象的指针值是否与 <code>p</code> 不相等。</li>
-</ul>
-<h4 id="operator-bool-1"><a class="anchor" href="#operator-bool-1">#</a>operator bool</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>内部指针为NULL时返回 false，否则返回 true。</li>
-</ul>
-<h4 id="reset-1"><a class="anchor" href="#reset-1">#</a>reset</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>销毁内部对象，并释放内存。</li>
-</ul>
-<h4 id="swap-1"><a class="anchor" href="#swap-1">#</a>swap</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>交换 <code>co::unique</code> 对象的内部指针。</li>
-</ul>
-<h3 id="comake_unique"><a class="anchor" href="#comake_unique">#</a>co::make_unique</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">unique</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">make_unique</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>用参数 <code>args</code> 创建 <code>unique&lt;T&gt;</code> 类型的对象。</p>
 </li>
-<li>
-<p>示例</p>
-</li>
+<li><code>align</code> 必须是 2 的幂，最大值是 256，有 <code>runtime_assert</code> 保证。</li>
+<li><code>valloc</code> / <code>vfree</code>：
+<ul>
+<li>分配按页对齐的内存，内容清零；</li>
+<li><code>n</code> 不必是页大小的整数倍，系统 API 会自动 round up；</li>
+<li>释放时 <code>n</code> 必须与分配时一致；</li>
+<li>一般用于不需要 <code>realloc</code> 的大内存。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">23</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span></code></pre></div></article>
+</li>
+<li><code>strdup</code> 返回的内存由 coost 分配器管理，释放时用：
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="线程安全"><a class="anchor" href="#%e7%ba%bf%e7%a8%8b%e5%ae%89%e5%85%a8">#</a>线程安全</h3>
+<ul>
+<li><code>alloc</code> / <code>free</code> / <code>realloc</code> 是线程安全的。</li>
+</ul>
+<hr>
+<h2 id="静态对象构造"><a class="anchor" href="#%e9%9d%99%e6%80%81%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0">#</a>静态对象构造</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// make static object, which will be destructed automatically at exit
+</span></span></span><span class="line"><span class="cl"><span class="c1">//   - T* p = co::make_static&lt;T&gt;(args)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">make_static</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// make non-dependent static object at the root level
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">make_rootic</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
+</span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>创建静态对象，返回的指针由 coost 管理，程序退出时自动析构，<strong>用户不需要也不能手动 free 或 delete</strong>。</li>
+<li><code>make_rootic</code> 慎用，它创建的静态对象总是在最后析构，一般用于创建无依赖的静态对象。</li>
+</ul>
+<h3 id="使用方式"><a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f">#</a>使用方式</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 用户应使用：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_static</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+</span></span></code></pre></div><hr>
+<h2 id="counique"><a class="anchor" href="#counique">#</a>co::unique</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">unique</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">unique</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">unique</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">unique</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">unique</span><span class="p">(</span><span class="k">const</span> <span class="n">unique</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 跨类型转换：要求 T 是 X 的基类，且 T 有虚析构函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">unique</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">unique</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>   <span class="c1">// runtime_assert(_p)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>    <span class="c1">// runtime_assert(_p)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">reset</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">unique</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">union</span> <span class="p">{</span> <span class="n">T</span><span class="o">*</span> <span class="n">_p</span><span class="p">;</span> <span class="n">uint32</span><span class="o">*</span> <span class="n">_s</span><span class="p">;</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">unique</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
+</span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>类似 <code>std::unique_ptr</code>。</li>
+<li>只支持移动语义，保证 <code>unique</code> 中的对象始终由唯一一个 <code>unique</code> 对象管理。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;*s = &#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">);</span>
+</span></span></code></pre></div><hr>
+<h2 id="coshared"><a class="anchor" href="#coshared">#</a>co::shared</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">shared</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">shared</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">shared</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">shared</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">shared</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">shared</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 跨类型转换：要求 T 是 X 的基类，且 T 有虚析构函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">shared</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">shared</span><span class="p">(</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">X</span><span class="o">&gt;</span> <span class="n">shared</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">X</span><span class="o">&gt;&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">reset</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">ref_count</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">use_count</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">shared</span><span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">union</span> <span class="p">{</span> <span class="n">T</span><span class="o">*</span> <span class="n">_p</span><span class="p">;</span> <span class="n">uint32</span><span class="o">*</span> <span class="n">_s</span><span class="p">;</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">shared</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
+</span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>与 <code>std::shared_ptr</code> 类似。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">t</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span>
+</span></span></code></pre></div><h2 id="unique--shared-的构造约束"><a class="anchor" href="#unique--shared-%e7%9a%84%e6%9e%84%e9%80%a0%e7%ba%a6%e6%9d%9f">#</a>unique / shared 的构造约束</h2>
+<p><code>co::unique&lt;T&gt;</code> 和 <code>co::shared&lt;T&gt;</code> <strong>不允许</strong>从动态分配的内存直接构造，只能使用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+</span></span></code></pre></div><h2 id="costl_allocator"><a class="anchor" href="#costl_allocator">#</a>co::stl_allocator</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">stl_allocator</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">value_type</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">size_type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">size_t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">difference_type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">ptrdiff_t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">propagate_on_container_move_assignment</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">is_always_equal</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span><span class="o">*</span> <span class="n">pointer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span> <span class="k">const</span><span class="o">*</span> <span class="n">const_pointer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">reference</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">const_reference</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">stl_allocator</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stl_allocator</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span> <span class="n">stl_allocator</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#if (__cplusplus &gt;= 201703L) </span><span class="c1">// C++17
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">T</span><span class="o">*</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">pointer</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">deallocate</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_type</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="p">,</span> <span class="k">class</span> <span class="err">...</span><span class="nc">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">construct</span><span class="p">(</span><span class="n">U</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">Args</span><span class="o">&amp;&amp;</span> <span class="p">...</span><span class="n">args</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">destroy</span><span class="p">(</span><span class="n">U</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="nc">rebind</span> <span class="p">{</span> <span class="k">using</span> <span class="n">other</span> <span class="o">=</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pointer</span> <span class="nf">address</span><span class="p">(</span><span class="n">reference</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">const_pointer</span> <span class="nf">address</span><span class="p">(</span><span class="n">const_reference</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">size_type</span> <span class="nf">max_size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>说明：</p>
+<ul>
+<li>用于 STL 容器，替代 <code>std::allocator</code>。</li>
+<li><code>co/stl.h</code> 提供常用的 STL 容器，内存分配器已替换为 <code>co::stl_allocator</code>。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">stl_allocator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span></code></pre></div><hr>
+<h2 id="与标准库的关系"><a class="anchor" href="#%e4%b8%8e%e6%a0%87%e5%87%86%e5%ba%93%e7%9a%84%e5%85%b3%e7%b3%bb">#</a>与标准库的关系</h2>
+<ul>
+<li>coost 分配器<strong>不能替代</strong>全局 <code>operator new</code> / <code>operator delete</code>。</li>
+<li><code>co::free</code> 需要带内存大小，<code>co::realloc</code> 需要带 old size，与 <code>new</code> / <code>delete</code> 语义不同。</li>
+<li>用 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放，反之亦然。</li>
+<li><code>co::stl_allocator</code> 与 <code>std::allocator</code> 接口兼容，但底层使用 coost 分配器。</li>
+</ul>
+<hr>
+<h2 id="注意事项"><a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a>注意事项</h2>
+<ul>
+<li><code>co::free(p, n)</code> 的 <code>n</code> 必须与分配时一致，否则未定义行为。</li>
+<li><code>co::realloc(p, o, n)</code> 要求 <code>n &gt; o</code>；失败时返回 <code>nullptr</code>，原 <code>p</code> 仍有效。</li>
+<li><code>co::alloc(n, align)</code> 的 <code>align</code> 必须是 2 的幂，最大 256。</li>
+<li><code>co::strdup</code> 返回的内存需用 <code>co::free(s, strlen(s) + 1)</code> 释放。</li>
+<li><code>_</code> 开头的 API 是 coost 内部使用的，不建议用户调用。</li>
+<li><code>co::unique&lt;T&gt;</code> 只支持移动语义。</li>
+<li><code>co::shared&lt;T&gt;</code> 与 <code>std::shared_ptr</code> 语义一致，引用计数线程安全，不支持 <code>weak_ptr</code>。</li>
+<li><code>co::stl_allocator&lt;T&gt;</code> 用于替代 <code>std::allocator</code>。</li>
+<li>用 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放。</li>
+</ul>
+</article>
  
       
 
@@ -1266,9 +1256,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/91dfe8174c5eabd33fae33ce825a08524ccdf5d5" title='最后修改者 idealvin | 2023/11/23' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/11fa6e3d3f318244d250a6e98d65ad9f1bb31313" title='最后修改者 idealvin | 2026/09/28' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2023/11/23</span>
+      <span>2026/09/28</span>
     </a>
   </div>
 
@@ -1343,54 +1333,25 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#基础分配函数">基础分配函数</a>
           <ul>
-            <li><a href="#coalloc">co::alloc</a></li>
-            <li><a href="#cofree">co::free</a></li>
-            <li><a href="#corealloc">co::realloc</a></li>
-            <li><a href="#cozalloc">co::zalloc</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#comake">co::make</a></li>
-            <li><a href="#codel">co::del</a></li>
-            <li><a href="#comake_rootic">co::make_rootic</a></li>
-            <li><a href="#comake_static">co::make_static</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#coshared">co::shared</a>
-              <ul>
-                <li><a href="#constructor">constructor</a></li>
-                <li><a href="#destructor">destructor</a></li>
-                <li><a href="#operator">operator=</a></li>
-                <li><a href="#get">get</a></li>
-                <li><a href="#operator-">operator-&gt;</a></li>
-                <li><a href="#operator-1">operator*</a></li>
-                <li><a href="#operator-2">operator==</a></li>
-                <li><a href="#operator-3">operator!=</a></li>
-                <li><a href="#operator-bool">operator bool</a></li>
-                <li><a href="#ref_count">ref_count</a></li>
-                <li><a href="#reset">reset</a></li>
-                <li><a href="#swap">swap</a></li>
-                <li><a href="#use_count">use_count</a></li>
-              </ul>
-            </li>
-            <li><a href="#comake_shared">co::make_shared</a></li>
-            <li><a href="#counique">co::unique</a>
-              <ul>
-                <li><a href="#constructor-1">constructor</a></li>
-                <li><a href="#destructor-1">destructor</a></li>
-                <li><a href="#operator-4">operator=</a></li>
-                <li><a href="#get-1">get</a></li>
-                <li><a href="#operator--1">operator-&gt;</a></li>
-                <li><a href="#operator-5">operator*</a></li>
-                <li><a href="#operator-6">operator==</a></li>
-                <li><a href="#operator-7">operator!=</a></li>
-                <li><a href="#operator-bool-1">operator bool</a></li>
-                <li><a href="#reset-1">reset</a></li>
-                <li><a href="#swap-1">swap</a></li>
-              </ul>
-            </li>
-            <li><a href="#comake_unique">co::make_unique</a></li>
+            <li><a href="#关键约束">关键约束</a></li>
+            <li><a href="#线程安全">线程安全</a></li>
           </ul>
         </li>
+        <li><a href="#静态对象构造">静态对象构造</a>
+          <ul>
+            <li><a href="#使用方式">使用方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#counique">co::unique</a></li>
+        <li><a href="#coshared">co::shared</a></li>
+        <li><a href="#unique--shared-的构造约束">unique / shared 的构造约束</a></li>
+        <li><a href="#costl_allocator">co::stl_allocator</a></li>
+        <li><a href="#与标准库的关系">与标准库的关系</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
