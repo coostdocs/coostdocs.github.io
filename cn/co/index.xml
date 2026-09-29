@@ -6,20 +6,6 @@
     <description>Recent content in 参考文档 on Documents for Coost</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/co/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>基本定义</title>
-      <link>https://coostdocs.github.io/cn/co/def/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/def/</guid>
-      <description>#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
-只依赖 &amp;lt;stdint.h&amp;gt; 和 &amp;lt;stddef.h&amp;gt;，不依赖 coost 其它组件。
-#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
-这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
-namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
-    </item>
-    
-    <item>
       <title>内存分配</title>
       <link>https://coostdocs.github.io/cn/co/mem/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -131,6 +117,20 @@ xmake f --with_libcurl=true --with_openssl=true xmake -a 启用 HTTP 或 SSL 特
 int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
 ./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
 # 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://coostdocs.github.io/cn/co/def/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/def/</guid>
+      <description>weight: 1 title: &amp;ldquo;基本定义&amp;rdquo;
+#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
+#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
+这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
     </item>
     
   </channel>
