@@ -9,7 +9,7 @@ _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
 #概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
 分配器把内存按大小分为三个等级：
 等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
-co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename.">
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="内存分配" />
 <meta property="og:description" content="#头文件 #include &#34;co/mem.h&#34; API 在 co 命名空间。
 _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
@@ -17,11 +17,11 @@ _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
 #概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
 分配器把内存按大小分为三个等级：
 等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
-co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename." />
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/mem/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2026-09-29T10:53:05+08:00" />
+<meta property="article:modified_time" content="2026-09-29T11:14:41+08:00" />
 
 <title>内存分配 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -29,7 +29,7 @@ co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要�
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/mem/" title="Memory Allocation">
 <link rel="stylesheet" href="../../../book.min.e708de46a8fb53e5d61c5b4f5a338f124135857a30daa7ea95f0cfd8b8b29d1a.css" integrity="sha256-5wjeRqj7U&#43;XWHFtPWjOPEkE1hXow2qfqlfDP2LiynRo=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.d17aa8167ccc71ba3b8f754523dd1b4890965ec5206145395484aca90281cf6a.js" integrity="sha256-0XqoFnzMcbo7j3VFI90bSJCWXsUgYUU5VISsqQKBz2o=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.b14263bbf15c2d3e9494a2fb11079b3cc954a0e377c0fcfb12eb2734e6e2d7dc.js" integrity="sha256-sUJju/FcLT6UlKL7EQebPMlUoON3wPz7EusnNObi19w=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -960,7 +960,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">free</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// @p: may be NULL
-</span></span></span><span class="line"><span class="cl"><span class="c1">// @o: old size, must be the same as the size used in alloc() or a previous realloc()
+</span></span></span><span class="line"><span class="cl"><span class="c1">// @o: old size, must be the same as the size used in alloc() or realloc()
 </span></span></span><span class="line"><span class="cl"><span class="c1">// @n: new size, must be greater than @o
 </span></span></span><span class="line"><span class="cl"><span class="c1">// return: may be the same as @p, or NULL on failure
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">realloc</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">o</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
@@ -1206,7 +1206,7 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/fcbc663a39b51f7e97e47be93525ee4999dd10cd" title='最后修改者 idealvin | 2026/09/29' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/84f417448590e233adbf3693d7e623bd887b6907" title='最后修改者 idealvin | 2026/09/29' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
       <span>2026/09/29</span>
     </a>
@@ -1230,14 +1230,14 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-<script src="//cdn.bootcss.com/highlight.js/11.1.0/highlight.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
 
 
 
-<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/cpp.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/bash.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/lua.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
 <script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
 
 
@@ -1251,8 +1251,8 @@ https://github.com/alex-shpak/hugo-book
   <div class="book-comments">
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css">
-<script src="//cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js"></script>
+<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/gitalk/1.7.2/gitalk.min.css">
+<script src="//cdn.bootcdn.net/ajax/libs/gitalk/1.7.2/gitalk.min.js"></script>
 <div id="gitalk-container"></div>
 <script type="text/javascript">
   var gitalk = new Gitalk({
