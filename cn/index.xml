@@ -46,8 +46,7 @@ enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel
       <guid>https://coostdocs.github.io/cn/co/def/</guid>
       <description>#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
 #整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
-这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
 namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
     </item>
     
@@ -383,11 +382,11 @@ str::cat(&amp;#34;hello&amp;#34;, &amp;#39; &amp;#39;, 23); // -&amp;gt; &amp;#3
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/unitest/</guid>
-      <description>include: co/unitest.h.
-#基本概念 co.unitest 是一个单元测试框架，与 google gtest 类似，但更简单易用。
-#测试单元与测试用例 一个测试程序可以按功能或模块划分为多个测试单元，每个测试单元下面可以有多个测试用例。如可以给 C++ 中的一个类(或模块)定义一个测试单元，类(或模块)中的每个方法定义一个测试用例。
-DEF_test(test_name) { DEF_case(a) { // write test code here } DEF_case(b) { // write test code here } } 上面的例子中，DEF_test 定义了一个测试单元(实际上就是定义了一个函数)，DEF_case 则定义了测试用例，一个测试用例就相当于函数内的一个代码块。
-#DEF_test #define DEF_test(_name_) \ DEF_bool(_name_, false, &amp;#34;enable this test if true&amp;#34;); \ ... \ void _co_ut_##_name_(unitest::xx::Test&amp;amp; _t_) DEF_test 宏用于定义测试单元，参数 _name_ 是测试单元的名字。 宏的第一行定义了一个 bool 类型的 flag 变量，是该测试单元的开关。如 DEF_test(os) 定义了一个测试单元 os，命令行参数中可以用 -os 指定运行 os 中的测试代码 宏的最后一行定义测试单元对应的函数。 #DEF_case #define DEF_case(name) \ _t_.</description>
+      <description>#头文件 #include &amp;#34;co/unitest.h&amp;#34; #API 公开函数只有一个，在 co 命名空间：
+int co::run_unitests(); // 返回失败的 case 数量 运行代码中定义的单元测试，返回失败的测试用例数； main 一般是固定写法： #include &amp;#34;co/unitest.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } 说明：
+必须调用 flag::parse，否则测试单元对应的 flag 无法生效。 失败的测试用例会在最后统一汇总。 #定义测试单元 DEF_test(name) { // 测试代码 } 说明：
+定义一个测试单元，实际相当于一个函数； name 必须是合法的 flag 名 / 变量名； 程序中可以有多个 DEF_test，只要 name 不重复。 #定义测试用例 DEF_case(name) { // 用例代码 } 说明：
+定义测试用例，相当于 DEF_test 所定义函数中的代码块； name 只要求能转成字符串，不要求是合法变量名，可重复。 DEF_case 内部只是设置当前 case 名并打印： DEF_test 定义的函数中可以不包含任何 DEF_case，这时会创建一个默认的测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) EXPECT_NE(x, y) EXPECT_GE(x, y) EXPECT_LE(x, y) EXPECT_GT(x, y) EXPECT_LT(x, y) 说明：</description>
     </item>
     
     <item>
