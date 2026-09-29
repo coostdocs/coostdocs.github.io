@@ -5,23 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="#头文件 #include &#34;co/mem.h&#34; API 在 co 命名空间。
 _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
-内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+内部通过静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
 #概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
 分配器把内存按大小分为三个等级：
 等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
-co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) &#43; 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename.">
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="内存分配" />
 <meta property="og:description" content="#头文件 #include &#34;co/mem.h&#34; API 在 co 命名空间。
 _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
-内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+内部通过静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
 #概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
 分配器把内存按大小分为三个等级：
 等级 大小范围 对齐 小内存 &lt;= S（S 小于 4K） 16 字节对齐 中等内存 &lt;= 128K 4K 对齐 大内存 &gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
-co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) &#43; 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename." />
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) &#43; 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&lt;T&gt;(args) template&lt;typename T, typename." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/mem/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2026-09-28T23:58:52+08:00" />
+<meta property="article:modified_time" content="2026-09-29T10:53:05+08:00" />
 
 <title>内存分配 | Documents for Coost</title>
 <link rel="manifest" href="../../../manifest.json">
@@ -29,7 +29,7 @@ co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要�
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/mem/" title="Memory Allocation">
 <link rel="stylesheet" href="../../../book.min.e708de46a8fb53e5d61c5b4f5a338f124135857a30daa7ea95f0cfd8b8b29d1a.css" integrity="sha256-5wjeRqj7U&#43;XWHFtPWjOPEkE1hXow2qfqlfDP2LiynRo=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.be70d5d59649f1978a05b7c9776930fd7e4ad3b3ff258d67476092b4a24b3d94.js" integrity="sha256-vnDV1ZZJ8ZeKBbfJd2kw/X5K07P/JY1nR2CStKJLPZQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.d17aa8167ccc71ba3b8f754523dd1b4890965ec5206145395484aca90281cf6a.js" integrity="sha256-0XqoFnzMcbo7j3VFI90bSJCWXsUgYUU5VISsqQKBz2o=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -147,6 +147,19 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
     
       
         <li>
@@ -752,19 +765,6 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../cn/co/def/" class="">Def</a>
-  
-
-        </li>
-      
-    
   </ul>
 
         </li>
@@ -885,14 +885,9 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#基础分配函数">基础分配函数</a>
           <ul>
             <li><a href="#关键约束">关键约束</a></li>
-            <li><a href="#线程安全">线程安全</a></li>
           </ul>
         </li>
-        <li><a href="#静态对象构造">静态对象构造</a>
-          <ul>
-            <li><a href="#使用方式">使用方式</a></li>
-          </ul>
-        </li>
+        <li><a href="#静态对象构造">静态对象构造</a></li>
         <li><a href="#counique">co::unique</a></li>
         <li><a href="#coshared">co::shared</a></li>
         <li><a href="#unique--shared-的构造约束">unique / shared 的构造约束</a></li>
@@ -917,8 +912,7 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/mem.h&#34;</span><span class="cp">
 </span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间。</p>
 <p><code>_</code> 开头的 API 一般是 coost 内部使用的，不建议用户调用。</p>
-<p>内部通过 <code>co::xx::MemInit</code> 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。</p>
-<hr>
+<p>内部通过静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。</p>
 <h2 id="概述"><a class="anchor" href="#%e6%a6%82%e8%bf%b0">#</a>概述</h2>
 <p>coost 内存分配器与 glibc 不同：<strong>内部不保存所分配内存的大小</strong>，因此释放时需要用户传入大小。</p>
 <p>分配器把内存按大小分为三个等级：</p>
@@ -955,7 +949,6 @@ https://github.com/alex-shpak/hugo-book
 <li>传错 <code>n</code> 可能导致未定义行为。</li>
 <li>coost 分配的内存至少是 16 字节对齐。</li>
 </ul>
-<hr>
 <h2 id="基础分配函数"><a class="anchor" href="#%e5%9f%ba%e7%a1%80%e5%88%86%e9%85%8d%e5%87%bd%e6%95%b0">#</a>基础分配函数</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
@@ -985,6 +978,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="kt">char</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">strdup</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
 </span></span></code></pre></div><h3 id="关键约束"><a class="anchor" href="#%e5%85%b3%e9%94%ae%e7%ba%a6%e6%9d%9f">#</a>关键约束</h3>
 <ul>
+<li>上述 API 都是线程安全的。</li>
 <li><code>co::free(p, n)</code> 的 <code>n</code> 必须与分配时一致，否则未定义行为。</li>
 <li><code>co::realloc(p, o, n)</code> 要求 <code>n &gt; o</code>，即只能扩张。
 <ul>
@@ -992,24 +986,17 @@ https://github.com/alex-shpak/hugo-book
 <li>失败时返回 <code>nullptr</code>，原来的 <code>p</code> 不受影响，仍然有效。</li>
 </ul>
 </li>
-<li><code>align</code> 必须是 2 的幂，最大值是 256，有 <code>runtime_assert</code> 保证。</li>
+<li><code>align</code> 必须是 2 的幂，最大值是 256 保证。</li>
 <li><code>valloc</code> / <code>vfree</code>：
 <ul>
 <li>分配按页对齐的内存，内容清零；</li>
 <li><code>n</code> 不必是页大小的整数倍，系统 API 会自动 round up；</li>
 <li>释放时 <code>n</code> 必须与分配时一致；</li>
-<li>一般用于不需要 <code>realloc</code> 的大内存。</li>
+<li>一般用于不需要 <code>realloc</code> 的大块内存。</li>
 </ul>
 </li>
-<li><code>strdup</code> 返回的内存由 coost 分配器管理，释放时用：
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div></li>
+<li><code>strdup</code> 返回的内存由 coost 分配器管理，释放时用 <code>co::free(s, strlen(s) + 1)</code>：</li>
 </ul>
-<h3 id="线程安全"><a class="anchor" href="#%e7%ba%bf%e7%a8%8b%e5%ae%89%e5%85%a8">#</a>线程安全</h3>
-<ul>
-<li><code>alloc</code> / <code>free</code> / <code>realloc</code> 是线程安全的。</li>
-</ul>
-<hr>
 <h2 id="静态对象构造"><a class="anchor" href="#%e9%9d%99%e6%80%81%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0">#</a>静态对象构造</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// make static object, which will be destructed automatically at exit
 </span></span></span><span class="line"><span class="cl"><span class="c1">//   - T* p = co::make_static&lt;T&gt;(args)
@@ -1021,14 +1008,12 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span><span class="o">*</span> <span class="n">co</span><span class="o">::</span><span class="n">make_rootic</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">);</span>
 </span></span></code></pre></div><p>说明：</p>
 <ul>
-<li>创建静态对象，返回的指针由 coost 管理，程序退出时自动析构，<strong>用户不需要也不能手动 free 或 delete</strong>。</li>
+<li>创建静态对象，返回的指针由 coost 管理，程序退出时自动析构，<strong>用户不需要、也不能手动 free 或 delete</strong>。</li>
 <li><code>make_rootic</code> 慎用，它创建的静态对象总是在最后析构，一般用于创建无依赖的静态对象。</li>
 </ul>
-<h3 id="使用方式"><a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f">#</a>使用方式</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 用户应使用：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_static</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span></code></pre></div><hr>
-<h2 id="counique"><a class="anchor" href="#counique">#</a>co::unique</h2>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">g_s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_static</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="counique"><a class="anchor" href="#counique">#</a>co::unique</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">unique</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">unique</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -1071,10 +1056,12 @@ https://github.com/alex-shpak/hugo-book
 <li>只支持移动语义，保证 <code>unique</code> 中的对象始终由唯一一个 <code>unique</code> 对象管理。</li>
 </ul>
 <p>示例：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;*s = &#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><hr>
-<h2 id="coshared"><a class="anchor" href="#coshared">#</a>co::shared</h2>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// move 语义，s -&gt; nullptr
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span></code></pre></div><h2 id="coshared"><a class="anchor" href="#coshared">#</a>co::shared</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">shared</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">constexpr</span> <span class="nf">shared</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -1115,94 +1102,57 @@ https://github.com/alex-shpak/hugo-book
 </span></span></code></pre></div><p>说明：</p>
 <ul>
 <li>与 <code>std::shared_ptr</code> 类似。</li>
+<li>若内部持有的指针为 <code>nullptr</code>，拷贝并不会增加引用计数。</li>
 </ul>
 <p>示例：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span>
-</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">t</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span>
-</span></span></code></pre></div><h2 id="unique--shared-的构造约束"><a class="anchor" href="#unique--shared-%e7%9a%84%e6%9e%84%e9%80%a0%e7%ba%a6%e6%9d%9f">#</a>unique / shared 的构造约束</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sc">&#39;x&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span> <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 拷贝，增加引用计数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;use_count = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span> <span class="c1">// 2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 空对象内部指针为 nullptr, 拷贝不形成共享
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// *x == 7, y == nullptr
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span> <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">use_count</span><span class="p">());</span> <span class="c1">// 0
+</span></span></span></code></pre></div><h2 id="unique--shared-的构造约束"><a class="anchor" href="#unique--shared-%e7%9a%84%e6%9e%84%e9%80%a0%e7%ba%a6%e6%9d%9f">#</a>unique / shared 的构造约束</h2>
 <p><code>co::unique&lt;T&gt;</code> 和 <code>co::shared&lt;T&gt;</code> <strong>不允许</strong>从动态分配的内存直接构造，只能使用：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
 </span></span></code></pre></div><h2 id="costl_allocator"><a class="anchor" href="#costl_allocator">#</a>co::stl_allocator</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">stl_allocator</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">value_type</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">size_type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">size_t</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">difference_type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">ptrdiff_t</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">propagate_on_container_move_assignment</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">is_always_equal</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span><span class="o">*</span> <span class="n">pointer</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span> <span class="k">const</span><span class="o">*</span> <span class="n">const_pointer</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">reference</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">value_type</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">const_reference</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">stl_allocator</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stl_allocator</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span> <span class="n">stl_allocator</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="cp">#if (__cplusplus &gt;= 201703L) </span><span class="c1">// C++17
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">T</span><span class="o">*</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="cp">#else
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">pointer</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">size_type</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="cp">#endif
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">deallocate</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_type</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="p">,</span> <span class="k">class</span> <span class="err">...</span><span class="nc">Args</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">construct</span><span class="p">(</span><span class="n">U</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">Args</span><span class="o">&amp;&amp;</span> <span class="p">...</span><span class="n">args</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">destroy</span><span class="p">(</span><span class="n">U</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">U</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="nc">rebind</span> <span class="p">{</span> <span class="k">using</span> <span class="n">other</span> <span class="o">=</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">;</span> <span class="p">};</span>
-</span></span><span class="line"><span class="cl">    <span class="n">pointer</span> <span class="nf">address</span><span class="p">(</span><span class="n">reference</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">const_pointer</span> <span class="nf">address</span><span class="p">(</span><span class="n">const_reference</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">size_type</span> <span class="nf">max_size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">stl_allocator</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>用于 STL 容器，替代 <code>std::allocator</code>。</li>
-<li><code>co/stl.h</code> 提供常用的 STL 容器，内存分配器已替换为 <code>co::stl_allocator</code>。</li>
-</ul>
+<p>用于替换 STL 容器中的 <code>std::allocator</code>。</p>
+<p><code>co/stl.h</code> 提供常用的 STL 容器，内存分配器已替换为 <code>co::stl_allocator</code>。</p>
 <p>示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">stl_allocator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</span></span></code></pre></div><hr>
-<h2 id="与标准库的关系"><a class="anchor" href="#%e4%b8%8e%e6%a0%87%e5%87%86%e5%ba%93%e7%9a%84%e5%85%b3%e7%b3%bb">#</a>与标准库的关系</h2>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/stl.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vecotr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;x: &#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="与标准库的关系"><a class="anchor" href="#%e4%b8%8e%e6%a0%87%e5%87%86%e5%ba%93%e7%9a%84%e5%85%b3%e7%b3%bb">#</a>与标准库的关系</h2>
 <ul>
-<li>coost 分配器<strong>不能替代</strong>全局 <code>operator new</code> / <code>operator delete</code>。</li>
-<li><code>co::free</code> 需要带内存大小，<code>co::realloc</code> 需要带 old size，与 <code>new</code> / <code>delete</code> 语义不同。</li>
-<li>用 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放，反之亦然。</li>
+<li>coost 分配器<strong>不能替代</strong> <code>malloc, free</code> 或 <code>operator new, operator delete</code>。</li>
+<li><code>co::free</code> 需要带内存大小，<code>co::realloc</code> 需要带 old size，与标准库语义不同。</li>
+<li>用 <code>malloc</code> 或 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放，反之亦然。</li>
 <li><code>co::stl_allocator</code> 与 <code>std::allocator</code> 接口兼容，但底层使用 coost 分配器。</li>
 </ul>
-<hr>
 <h2 id="注意事项"><a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a>注意事项</h2>
 <ul>
 <li><code>co::free(p, n)</code> 的 <code>n</code> 必须与分配时一致，否则未定义行为。</li>
 <li><code>co::realloc(p, o, n)</code> 要求 <code>n &gt; o</code>；失败时返回 <code>nullptr</code>，原 <code>p</code> 仍有效。</li>
 <li><code>co::alloc(n, align)</code> 的 <code>align</code> 必须是 2 的幂，最大 256。</li>
 <li><code>co::strdup</code> 返回的内存需用 <code>co::free(s, strlen(s) + 1)</code> 释放。</li>
-<li><code>_</code> 开头的 API 是 coost 内部使用的，不建议用户调用。</li>
 <li><code>co::unique&lt;T&gt;</code> 只支持移动语义。</li>
-<li><code>co::shared&lt;T&gt;</code> 与 <code>std::shared_ptr</code> 语义一致，引用计数线程安全，不支持 <code>weak_ptr</code>。</li>
-<li><code>co::stl_allocator&lt;T&gt;</code> 用于替代 <code>std::allocator</code>。</li>
-<li>用 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放。</li>
+<li><code>malloc</code> 或 <code>new</code> 分配的内存不能用 <code>co::free</code> 释放。</li>
 </ul>
 </article>
  
@@ -1256,9 +1206,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/11fa6e3d3f318244d250a6e98d65ad9f1bb31313" title='最后修改者 idealvin | 2026/09/28' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/fcbc663a39b51f7e97e47be93525ee4999dd10cd" title='最后修改者 idealvin | 2026/09/29' target="_blank" rel="noopener">
       <img src="../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2026/09/28</span>
+      <span>2026/09/29</span>
     </a>
   </div>
 
@@ -1338,14 +1288,9 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#基础分配函数">基础分配函数</a>
           <ul>
             <li><a href="#关键约束">关键约束</a></li>
-            <li><a href="#线程安全">线程安全</a></li>
           </ul>
         </li>
-        <li><a href="#静态对象构造">静态对象构造</a>
-          <ul>
-            <li><a href="#使用方式">使用方式</a></li>
-          </ul>
-        </li>
+        <li><a href="#静态对象构造">静态对象构造</a></li>
         <li><a href="#counique">co::unique</a></li>
         <li><a href="#coshared">co::shared</a></li>
         <li><a href="#unique--shared-的构造约束">unique / shared 的构造约束</a></li>

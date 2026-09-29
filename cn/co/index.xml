@@ -6,6 +6,19 @@
     <description>Recent content in 参考文档 on Documents for Coost</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/co/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>基本定义</title>
+      <link>https://coostdocs.github.io/cn/co/def/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/def/</guid>
+      <description>#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
+#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
+typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
+这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
+namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
+    </item>
+    
+    <item>
       <title>内存分配</title>
       <link>https://coostdocs.github.io/cn/co/mem/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -13,11 +26,11 @@
       <guid>https://coostdocs.github.io/cn/co/mem/</guid>
       <description>#头文件 #include &amp;#34;co/mem.h&amp;#34; API 在 co 命名空间。
 _ 开头的 API 一般是 coost 内部使用的，不建议用户调用。
-内部通过 co::xx::MemInit 静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
+内部通过静态对象（nifty counter）初始化，只会初始化一次，用户不需要显式初始化。
 #概述 coost 内存分配器与 glibc 不同：内部不保存所分配内存的大小，因此释放时需要用户传入大小。
 分配器把内存按大小分为三个等级：
 等级 大小范围 对齐 小内存 &amp;lt;= S（S 小于 4K） 16 字节对齐 中等内存 &amp;lt;= 128K 4K 对齐 大内存 &amp;gt; 128K 页对齐，直接 mmap / VirtualAlloc 说明：
-co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &amp;gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256，有 runtime_assert 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大内存。 strdup 返回的内存由 coost 分配器管理，释放时用： co::free(s, strlen(s) + 1); #线程安全 alloc / free / realloc 是线程安全的。 #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&amp;lt;T&amp;gt;(args) template&amp;lt;typename T, typename.</description>
+co::free(p, n) 根据 n 判断内存属于哪一类，再回收。 因此 n 要求与 alloc / realloc 时传入的 size 一致。 传错 n 可能导致未定义行为。 coost 分配的内存至少是 16 字节对齐。 #基础分配函数 void* co::alloc(size_t n); // @align: must be power of 2, and its maximum value is 256 void* co::alloc(size_t n, size_t align); // @p: may be NULL // @n: MUST be the same as the size used in alloc or realloc void co::free(void* p, size_t n); // @p: may be NULL // @o: old size, must be the same as the size used in alloc() or a previous realloc() // @n: new size, must be greater than @o // return: may be the same as @p, or NULL on failure void* co::realloc(void* p, size_t o, size_t n); // alloc and zero-clear void* co::zalloc(size_t n); void* co::zalloc(size_t n, size_t align); // virtual alloc, page-aligned and zero-cleared void* co::valloc(size_t n); // virtual free void co::vfree(void* p, size_t n); char* co::strdup(const char* s); #关键约束 上述 API 都是线程安全的。 co::free(p, n) 的 n 必须与分配时一致，否则未定义行为。 co::realloc(p, o, n) 要求 n &amp;gt; o，即只能扩张。 实际应用中 realloc 一般也只用于扩张。 失败时返回 nullptr，原来的 p 不受影响，仍然有效。 align 必须是 2 的幂，最大值是 256 保证。 valloc / vfree： 分配按页对齐的内存，内容清零； n 不必是页大小的整数倍，系统 API 会自动 round up； 释放时 n 必须与分配时一致； 一般用于不需要 realloc 的大块内存。 strdup 返回的内存由 coost 分配器管理，释放时用 co::free(s, strlen(s) + 1)： #静态对象构造 // make static object, which will be destructed automatically at exit // - T* p = co::make_static&amp;lt;T&amp;gt;(args) template&amp;lt;typename T, typename.</description>
     </item>
     
     <item>
@@ -31,7 +44,7 @@ API 在 flag 命名空间。
 #概述 flag 提供命令行参数与配置文件解析功能，coost 中所有组件的配置项都通过 flag 定义。
 定义 flag 即定义全局变量，变量名是 FLG_&amp;lt;name&amp;gt;； 支持命令行参数与配置文件两种方式； 命令行中支持 -help 打印帮助信息、-mkconf 生成配置文件、-version 显示程序版本； #定义 flag #DEF 宏 DEF_bool(name, value, help, ...); DEF_int32(name, value, help, ...); DEF_int64(name, value, help, ...); DEF_uint32(name, value, help, ...); DEF_uint64(name, value, help, ...); DEF_double(name, value, help, ...); DEF_string(name, value, help, ...); 定义后通过全局变量访问，例如 FLG_name。
 类型对应关系：
-宏 类型 内部标识 DEF_bool bool &#39;b&#39; DEF_int32 int32 &#39;i&#39; DEF_int64 int64 &#39;I&#39; DEF_uint32 uint32 &#39;u&#39; DEF_uint64 uint64 &#39;U&#39; DEF_double double &#39;d&#39; DEF_string co::string&amp;amp; &#39;s&#39; #DEC 宏 DEC_bool(name); DEC_int32(name); DEC_int64(name); DEC_uint32(name); DEC_uint64(name); DEC_double(name); DEC_string(name); 用于跨文件声明，类型必须与 DEF_xxx 一致，否则同一项目中编译会报错。</description>
+宏 类型 内部标识 DEF_bool bool &#39;b&#39; DEF_int32 int32 &#39;i&#39; DEF_int64 int64 &#39;I&#39; DEF_uint32 uint32 &#39;u&#39; DEF_uint64 uint64 &#39;U&#39; DEF_double double &#39;d&#39; DEF_string co::string&amp;amp; &#39;s&#39; 示例：</description>
     </item>
     
     <item>
@@ -49,7 +62,7 @@ void log::close(); 说明：
 log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 说明：
 日志函数是线程安全的； 日志函数接受任意数量的参数； 参数可以是 co::string::operator&amp;lt;&amp;lt; 支持的任意类型； 日志函数自动在尾部添加换行符； fatal 级别的日志会终止程序运行。 示例：
 log::info(&amp;#34;hello &amp;#34;, false, &amp;#39; &amp;#39;, 23); 支持的参数类型有：
-bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符类型：char, signed char, unsigned char； 字符串类型：const char*, std::string, co::string； 指针类型：void*, T*，输出 0x 开头的十六进制值； STL 容器类型：std::vector, std::map, co::vector, co::map 等，需要包含 co/stl.</description>
+bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, std::string, co::string； 指针类型：void*, T*，输出 0x 开头的十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需要包含 co/stl.</description>
     </item>
     
     <item>
@@ -117,20 +130,6 @@ xmake f --with_libcurl=true --with_openssl=true xmake -a 启用 HTTP 或 SSL 特
 int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
 ./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
 # 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://coostdocs.github.io/cn/co/def/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/def/</guid>
-      <description>weight: 1 title: &amp;ldquo;基本定义&amp;rdquo;
-#头文件 #include &amp;#34;co/def.h&amp;#34; coost 很多组件都会包含这个头文件。
-#整型别名 以下类型别名定义在全局命名空间，不在 co 命名空间：
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; 说明：
-这些别名在 coost 中广泛使用，例如 co::rand() 返回 uint32，co::now.ns() 返回 int64。 因为定义在全局命名空间，所以直接写 int32、uint64 即可，不需要 co:: 前缀。 #整型极值常量 定义在 co 命名空间，均为 constexpr：
-namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co #缓存行大小 namespace co { #if defined(__s390x__) constexpr int cache_line_size = 256; #elif defined(__powerpc64__) || defined(_M_PPC64) constexpr int cache_line_size = 128; #elif defined(__aarch64__) || defined(_M_ARM64) constexpr int cache_line_size = 128; #else constexpr int cache_line_size = 64; #endif } // co 各架构对应值：</description>
     </item>
     
   </channel>
