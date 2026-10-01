@@ -74,17 +74,6 @@ ntoh16 ntoh32 ntoh64 hton16 hton32 hton64 这些方法分别适用于长度为 2
     </item>
     
     <item>
-      <title>终端输出</title>
-      <link>https://coostdocs.github.io/cn/co/other/console/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/other/console/</guid>
-      <description>include: co/cout.h.
-#颜色 如下：
-cout &amp;lt;&amp;lt; text::red(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::green(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::blue(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::yellow(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::magenta(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::cyan(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; &amp;#34;hello\n&amp;#34;; cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).red(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).green(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).blue(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).yellow(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).magenta(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).cyan(); #co::print template&amp;lt;typename ...X&amp;gt; void print(X&amp;amp;&amp;amp; ... x); 接受任意数量的参数，输出到 stdout，末尾会添加换行符。 内部有加锁，支持多线程同时调用 co::print。 co::print(&amp;#34;hello &amp;#34;, 23); co::print(text::red(&amp;#34;hello&amp;#34;)); co::vector&amp;lt;int&amp;gt; v = { 1, 2, 3 }; co::print(v); </description>
-    </item>
-    
-    <item>
       <title>APIs</title>
       <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/api/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -191,17 +180,6 @@ v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之�
     </item>
     
     <item>
-      <title>fastring</title>
-      <link>https://coostdocs.github.io/cn/co/other/fastring/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/other/fastring/</guid>
-      <description>include: co/fastring.h.
-#fastring fastring 是 coost 提供的字符串类型，它实现了 std::string 中的大部分方法，同时也提供了一些 std::string 没有的方法。
-#constructor 1. constexpr fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp;amp; s); 6. fastring(size_t n, char c); 7. fastring(const fastring&amp;amp; s); 8. fastring(fastring&amp;amp;&amp;amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastring 对象，不会分配任何内存。 2, 创建一个空的 fastring 对象，但用参数 cap 指定初始容量，即预分配 cap 字节的内存。 3, 用给定的字节序列创建 fastring 对象，参数 n 是序列长度。 4, 用 C 风格的字符串创建 fastring 对象，s 必须是 &amp;lsquo;\0&amp;rsquo; 结尾的字符串。 5, 用 std::string 创建一个 fastring 对象。 6, 将 fastring 对象初始化为 n 个字符 c 构成的字符串。 7, 拷贝构造函数，内部会进行内存拷贝。 8, 移动构造函数，不会进行内存拷贝。 v3.</description>
-    </item>
-    
-    <item>
       <title>字符串</title>
       <link>https://coostdocs.github.io/cn/co/string/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -231,21 +209,6 @@ v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之�
       <guid>https://coostdocs.github.io/cn/about/contact/</guid>
       <description>联系方式
 Email: idealvin at qq.com github: https://github.com/idealvin/coost zhihu: idealvin </description>
-    </item>
-    
-    <item>
-      <title>fastream</title>
-      <link>https://coostdocs.github.io/cn/co/other/fastream/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/other/fastream/</guid>
-      <description>include: co/fastream.h.
-#fastream fastream 用于取代 C++ 标准库中的 std::ostringstream。std::ostringstream 性能较差，实测比 snprintf 慢好几倍，fastream 在不同平台测试比 snprintf 快 10~30 倍左右。
-#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;amp;&amp;amp; s) noexcept; 1, 默认构造函数，创建一个空的 fastream 对象，内部不会分配任何内存。
-2, 用参数 cap 指定 fastream 的初始容量，即预分配 cap 字节的内存。
-3, 移动构造函数，不会进行内存拷贝。
-示例
-fastream s; // 空对象, 未分配内存 fastream s(1024); // 预分配 1k 内存 fastream x(std::move(s)); // 移动构造, s 变成空对象 #operator= fastream&amp;amp; operator=(fastream&amp;amp;&amp;amp; s) noexcept; fastream 只支持 move 赋值操作，s 的内容被转移到 fastream 中，s 自身变成空对象。</description>
     </item>
     
     <item>
@@ -283,16 +246,15 @@ int recv(S* s, void* buf, int n, int ms) { CHECK(co::sched()) &amp;lt;&amp;lt; &
     </item>
     
     <item>
-      <title>配置</title>
-      <link>https://coostdocs.github.io/cn/co/flag/</link>
+      <title>终端输出</title>
+      <link>https://coostdocs.github.io/cn/co/console/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/flag/</guid>
-      <description>#头文件 #include &amp;lt;co/flag.h&amp;gt; API 在 flag 命名空间。
-#概述 flag 提供命令行参数与配置文件解析功能，coost 中所有组件配置项都通过 flag 定义。
-定义 flag 即定义全局变量，变量名是 FLG_&amp;lt;name&amp;gt;； 支持命令行参数与配置文件两种方式； 命令行中支持 -help 打印帮助信息、-mkconf 生成配置文件、-version 显示程序版本； #定义 flag #DEF 宏 DEF_bool(name, value, help, ...); DEF_int32(name, value, help, ...); DEF_int64(name, value, help, ...); DEF_uint32(name, value, help, ...); DEF_uint64(name, value, help, ...); DEF_double(name, value, help, ...); DEF_string(name, value, help, ...); 定义后通过全局变量访问，如 FLG_name。
-类型对应关系：
-宏 类型 内部标识 DEF_bool bool &#39;b&#39; DEF_int32 int32 &#39;i&#39; DEF_int64 int64 &#39;I&#39; DEF_uint32 uint32 &#39;u&#39; DEF_uint64 uint64 &#39;U&#39; DEF_double double &#39;d&#39; DEF_string co::string&amp;amp; &#39;s&#39; 示例：</description>
+      <guid>https://coostdocs.github.io/cn/co/console/</guid>
+      <description>#头文件 #include &amp;#34;co/print.h&amp;#34; API 在 co 命名空间。
+#API template&amp;lt;typename ...X&amp;gt; co::xx::stream&amp;amp; co::print(X&amp;amp;&amp;amp; ...x); template&amp;lt;typename ...X&amp;gt; void co::println(X&amp;amp;&amp;amp; ...x); 输出到 stderr，均线程安全，接受任意数量参数。 参数可以是 co::string::operator&amp;lt;&amp;lt; 支持的任意类型； co::print 返回 xx::stream&amp;amp;，可链式调用 .flush()。 co::println 自动添加换行。 co::print 与 co::println 使用不同的缓冲区。 co::print 在数据达到一定量或用户手动调用 .flush() 时刷新缓冲区，co::println 则是立即刷新缓冲区。 #颜色 print、println 支持如下颜色(仅前景色):
+co::color::deflt # 终端默认颜色 co::color::red co::color::green co::color::yellow co::color::blue co::color::magenta # 紫 co::color::cyan # 青 co::color::bold # 粗体 co::color::bright_red co::color::bright_green co::color::bright_yellow co::color::bright_blue co::color::bright_magenta co::color::bright_cyan 若 stderr 重定向到文件，会自动关闭颜色输出。 co::color 有两种用法：
+带内容：写入颜色序列 + 内容 + 恢复默认颜色: co::color c; co::println(c.</description>
     </item>
     
     <item>
@@ -330,18 +292,16 @@ coost std co::deque std::deque co::list std::list co::map std::map co::set std::
     </item>
     
     <item>
-      <title>日志</title>
-      <link>https://coostdocs.github.io/cn/co/log/</link>
+      <title>配置</title>
+      <link>https://coostdocs.github.io/cn/co/flag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/log/</guid>
-      <description>#头文件 #include &amp;lt;co/log.h&amp;gt; API 在 log 命名空间。
-#初始化与关闭 log 内部使用 flag 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 main 函数开头调用：
-flag::parse(argc, argv); 关闭 API：
-void log::close(); 刷新日志缓冲区，退出日志线程。 用户一般不需要显示调用此函数。 #打印日志 使用如下函数打印不同级别的日志：
-log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 上述函数均线程安全，接受任意数量参数； 参数可以是 co::string::operator&amp;lt;&amp;lt; 支持的任意类型； 日志尾部自动添加换行； fatal 级别日志会终止程序。 示例：
-log::info(&amp;#34;hello &amp;#34;, false, &amp;#39; &amp;#39;, 23); 支持的参数类型有：
-bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, co::string, std::string, std::string_view； 指针类型：void*, T*，输出 0x 加十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需包含 co/stl.</description>
+      <guid>https://coostdocs.github.io/cn/co/flag/</guid>
+      <description>#头文件 #include &amp;lt;co/flag.h&amp;gt; API 在 flag 命名空间。
+#概述 flag 提供命令行参数与配置文件解析功能，coost 中所有组件配置项都通过 flag 定义。
+定义 flag 即定义全局变量，变量名是 FLG_&amp;lt;name&amp;gt;； 支持命令行参数与配置文件两种方式； 命令行中支持 -help 打印帮助信息、-mkconf 生成配置文件、-version 显示程序版本； #定义 flag #DEF 宏 DEF_bool(name, value, help, ...); DEF_int32(name, value, help, ...); DEF_int64(name, value, help, ...); DEF_uint32(name, value, help, ...); DEF_uint64(name, value, help, ...); DEF_double(name, value, help, ...); DEF_string(name, value, help, ...); 定义后通过全局变量访问，如 FLG_name。
+类型对应关系：
+宏 类型 内部标识 DEF_bool bool &#39;b&#39; DEF_int32 int32 &#39;i&#39; DEF_int64 int64 &#39;I&#39; DEF_uint32 uint32 &#39;u&#39; DEF_uint64 uint64 &#39;U&#39; DEF_double double &#39;d&#39; DEF_string co::string&amp;amp; &#39;s&#39; 示例：</description>
     </item>
     
     <item>
@@ -356,18 +316,6 @@ bool，输出 false 或 true； 字符类型：char, signed char, unsigned char�
     </item>
     
     <item>
-      <title>string utility</title>
-      <link>https://coostdocs.github.io/cn/co/other/str/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/other/str/</guid>
-      <description>include: co/str.h.
-#字符串操作 #str::cat template&amp;lt;typename ...X&amp;gt; inline fastring cat(X&amp;amp;&amp;amp; ...x); v2.0.3 新增，将任意数量的元素连接为一个字符串。
-示例
-str::cat(&amp;#34;hello&amp;#34;, &amp;#39; &amp;#39;, 23); // -&amp;gt; &amp;#34;hello 23&amp;#34; str::cat(&amp;#34;xx&amp;#34;, 3.14, &amp;#34;true&amp;#34;); // -&amp;gt; &amp;#34;xx3.14true&amp;#34; #str::replace fastring replace(const char* s, size_t n, const char* sub, size_t m, const char* to, size_t l, size_t t=0); fastring replace(const char* s, size_t n, const char* sub, const char* to, size_t t=0); fastring replace(const char* s, const char* sub, const char* to, size_t t=0); fastring replace(const fastring&amp;amp; s, const char* sub, const char* to, size_t t=0); fastring replace(const std::string&amp;amp; s, const char* sub, const char* to, size_t t=0); 将字符串 s 中的子串 sub 替换为 to，n 是 s 的长度，m 是 sub 的长度，l 是 to 的长度；t 是最大替换次数，默认为 0 不限次数。</description>
-    </item>
-    
-    <item>
       <title>互斥锁</title>
       <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/mutex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -378,13 +326,18 @@ str::cat(&amp;#34;hello&amp;#34;, &amp;#39; &amp;#39;, 23); // -&amp;gt; &amp;#3
     </item>
     
     <item>
-      <title>单元测试</title>
-      <link>https://coostdocs.github.io/cn/co/unitest/</link>
+      <title>日志</title>
+      <link>https://coostdocs.github.io/cn/co/log/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/unitest/</guid>
-      <description>#头文件 #include &amp;#34;co/unitest.h&amp;#34; #API 公开函数只有一个，在 co 命名空间：
-int co::run_unitests(); 运行单元测试，返回失败用例数； main 一般是固定写法： #include &amp;#34;co/unitest.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #定义测试单元 DEF_test(name) { // 测试代码 // DEF_case(xxx) {} } DEF_test 宏定义一个测试单元，实际是一个函数，用户可以在其中自由添加代码，如各测试用例共用的初始化代码； name 必须是合法变量名； 有多个 DEF_test 时，name 不能重复。 #定义测试用例 DEF_case(name) { // 测试用例代码 } DEF_case 宏定义一个测试用例，实际是 DEF_test 所定义函数中的代码块； name 不要求是合法变量名； DEF_test 中不含任何 DEF_case 时，会创建一个默认测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) // == EXPECT_NE(x, y) // != EXPECT_GE(x, y) // &amp;gt;= EXPECT_LE(x, y) // &amp;lt;= EXPECT_GT(x, y) // &amp;gt; EXPECT_LT(x, y) // &amp;lt; 失败信息在最后统一汇总。 EXPECT_XX 中参数需要支持相应比较运算符，且可打印，即支持： operator&amp;lt;&amp;lt;(co::string&amp;amp;, const T&amp;amp;); #运行逻辑 每个 DEF_test 内部定义一个 bool flag，默认值 false。 若所有测试单元 flag 都是默认值，则运行所有测试单元。 若有 flag 为 true，则只运行 flag 为 true 的测试单元。 测试单元按注册顺序执行。 #示例 #include &amp;#34;co/unitest.</description>
+      <guid>https://coostdocs.github.io/cn/co/log/</guid>
+      <description>#头文件 #include &amp;lt;co/log.h&amp;gt; API 在 log 命名空间。
+#初始化与关闭 log 内部使用 flag 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 main 函数开头调用：
+flag::parse(argc, argv); 关闭 API：
+void log::close(); 刷新日志缓冲区，退出日志线程。 用户一般不需要显示调用此函数。 #打印日志 使用如下函数打印不同级别的日志：
+log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 上述函数均线程安全，接受任意数量参数； 参数可以是 co::string::operator&amp;lt;&amp;lt; 支持的任意类型； 日志尾部自动添加换行； fatal 级别日志会终止程序。 示例：
+log::info(&amp;#34;hello &amp;#34;, false, &amp;#39; &amp;#39;, 23); 支持的参数类型有：
+bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, co::string, std::string, std::string_view； 指针类型：void*, T*，输出 0x 加十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需包含 co/stl.</description>
     </item>
     
     <item>
@@ -410,13 +363,13 @@ coost 实现了一个基于协程的 RPC 框架，它内部使用 JSON 格式传
     </item>
     
     <item>
-      <title>基准测试</title>
-      <link>https://coostdocs.github.io/cn/co/benchmark/</link>
+      <title>单元测试</title>
+      <link>https://coostdocs.github.io/cn/co/unitest/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/cn/co/benchmark/</guid>
-      <description>#头文件 #include &amp;#34;co/benchmark.h&amp;#34; #API 公开函数只有一个，在 co 命名空间：
-void co::run_benchmarks(); 运行基准测试，测试结果以 markdown table 格式输出。 main 一般是固定写法： #include &amp;#34;co/benchmark.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_benchmarks(); return 0; } #定义基准测试组 BM_group(name) { // BM_add(...) { ... } } BM_group 宏定义一个基准测试组，实际是一个函数，用户可以在其中自由添加公共初始化代码、预热代码等； name 必须是合法变量名； 有多个 BM_group 时，name 不能重复。 #定义基准测试用例 BM_add(name) { // 测试代码 } BM_add 宏定义一个基准测试用例，实际是 BM_group 所定义函数中的代码块； name 不要求是合法变量名； #子组 BM_sub_group_begin; 在 BM_group 内开启一个子组，子组之间独立比较。 首个 BM_sub_group_begin 之前的 BM_add 归入默认子组。 每个子组以第一个测试为基准，其余测试相对该基准计算 speedup。 基准自身 speedup 显示为 -。 #BM_use BM_use(v); 防止编译器优化掉测试代码。 若测试代码被优化掉，iters/s 会异常大，此时可使用 BM_use。 可用于任意变量，通常放在 BM_add 外部，以免干扰被测代码。 #运行逻辑 每个 BM_group 内部定义一个 bool flag，默认值 false。 若所有 group 的 flag 都是默认值，则运行所有 group。 若有 flag 为 true，则只运行 flag 为 true 的 group。 group 按注册顺序执行。 命令行示例：</description>
+      <guid>https://coostdocs.github.io/cn/co/unitest/</guid>
+      <description>#头文件 #include &amp;#34;co/unitest.h&amp;#34; #API 公开函数只有一个，在 co 命名空间：
+int co::run_unitests(); 运行单元测试，返回失败用例数； main 一般是固定写法： #include &amp;#34;co/unitest.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #定义测试单元 DEF_test(name) { // 测试代码 // DEF_case(xxx) {} } DEF_test 宏定义一个测试单元，实际是一个函数，用户可以在其中自由添加代码，如各测试用例共用的初始化代码； name 必须是合法变量名； 有多个 DEF_test 时，name 不能重复。 #定义测试用例 DEF_case(name) { // 测试用例代码 } DEF_case 宏定义一个测试用例，实际是 DEF_test 所定义函数中的代码块； name 不要求是合法变量名； DEF_test 中不含任何 DEF_case 时，会创建一个默认测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) // == EXPECT_NE(x, y) // != EXPECT_GE(x, y) // &amp;gt;= EXPECT_LE(x, y) // &amp;lt;= EXPECT_GT(x, y) // &amp;gt; EXPECT_LT(x, y) // &amp;lt; 失败信息在最后统一汇总。 EXPECT_XX 中参数需要支持相应比较运算符，且可打印，即支持： operator&amp;lt;&amp;lt;(co::string&amp;amp;, const T&amp;amp;); #运行逻辑 每个 DEF_test 内部定义一个 bool flag，默认值 false。 若所有测试单元 flag 都是默认值，则运行所有测试单元。 若有 flag 为 true，则只运行 flag 为 true 的测试单元。 测试单元按注册顺序执行。 #示例 #include &amp;#34;co/unitest.</description>
     </item>
     
     <item>
@@ -440,21 +393,6 @@ void co::run_benchmarks(); 运行基准测试，测试结果以 markdown table �
     </item>
     
     <item>
-      <title>JSON</title>
-      <link>https://coostdocs.github.io/cn/co/json/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/json/</guid>
-      <description>include: co/json.h.
-co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
-#基本概念 JSON 是一种简单的数据格式，它支持两种数据结构：
-由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
-object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
-{&amp;#34;a&amp;#34;:1, &amp;#34;b&amp;#34;:false, &amp;#34;s&amp;#34;:&amp;#34;xxx&amp;#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
-#global #json::array Json array(); 此函数在 namespace json 下，它返回一个空的 array 对象。 #json::object Json object(); 此函数在 namespace json 下，它返回一个空的 object 对象。 #json::parse Json parse(const char* s, size_t n); Json parse(const char* s); Json parse(const fastring&amp;amp; s); Json parse(const std::string&amp;amp; s); 从 JSON 字符串解析 Json 对象。 此函数不是 Json 类中的方法，而是定义于 namespace json 下的函数。 此函数返回一个 Json 对象，解析失败时，返回 null 对象。 #co::Json #constructor 1.</description>
-    </item>
-    
-    <item>
       <title>协程池</title>
       <link>https://coostdocs.github.io/cn/co/concurrency/coroutine/pool/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -468,6 +406,31 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
 4, 参数 ccb 用于创建元素，参数 dcb 用于销毁元素，参数 cap 指定 pool 的最大容量，默认为 -1，不限容量。
 注意参数 cap 并不是总容量，它是对单个线程而言，在 co::pool 内部实现中，每个线程都有自己的 pool，如 cap 设置为 1024，调度线程有 8 个，则总容量是 8192。
 当 dcb 为 NULL 时，参数 cap 会被忽略，这是因为当元素个数超过最大容量时，co::pool 需要用 dcb 销毁多余的元素。</description>
+    </item>
+    
+    <item>
+      <title>基准测试</title>
+      <link>https://coostdocs.github.io/cn/co/benchmark/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/benchmark/</guid>
+      <description>#头文件 #include &amp;#34;co/benchmark.h&amp;#34; #API 公开函数只有一个，在 co 命名空间：
+void co::run_benchmarks(); 运行基准测试，测试结果以 markdown table 格式输出。 main 一般是固定写法： #include &amp;#34;co/benchmark.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_benchmarks(); return 0; } #定义基准测试组 BM_group(name) { // BM_add(...) { ... } } BM_group 宏定义一个基准测试组，实际是一个函数，用户可以在其中自由添加公共初始化代码、预热代码等； name 必须是合法变量名； 有多个 BM_group 时，name 不能重复。 #定义基准测试用例 BM_add(name) { // 测试代码 } BM_add 宏定义一个基准测试用例，实际是 BM_group 所定义函数中的代码块； name 不要求是合法变量名； #子组 BM_sub_group_begin; 在 BM_group 内开启一个子组，子组之间独立比较。 首个 BM_sub_group_begin 之前的 BM_add 归入默认子组。 每个子组以第一个测试为基准，其余测试相对该基准计算 speedup。 基准自身 speedup 显示为 -。 #BM_use BM_use(v); 防止编译器优化掉测试代码。 若测试代码被优化掉，iters/s 会异常大，此时可使用 BM_use。 可用于任意变量，通常放在 BM_add 外部，以免干扰被测代码。 #运行逻辑 每个 BM_group 内部定义一个 bool flag，默认值 false。 若所有 group 的 flag 都是默认值，则运行所有 group。 若有 flag 为 true，则只运行 flag 为 true 的 group。 group 按注册顺序执行。 命令行示例：</description>
+    </item>
+    
+    <item>
+      <title>JSON</title>
+      <link>https://coostdocs.github.io/cn/co/json/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/co/json/</guid>
+      <description>include: co/json.h.
+co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
+#基本概念 JSON 是一种简单的数据格式，它支持两种数据结构：
+由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
+object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
+{&amp;#34;a&amp;#34;:1, &amp;#34;b&amp;#34;:false, &amp;#34;s&amp;#34;:&amp;#34;xxx&amp;#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
+#global #json::array Json array(); 此函数在 namespace json 下，它返回一个空的 array 对象。 #json::object Json object(); 此函数在 namespace json 下，它返回一个空的 object 对象。 #json::parse Json parse(const char* s, size_t n); Json parse(const char* s); Json parse(const fastring&amp;amp; s); Json parse(const std::string&amp;amp; s); 从 JSON 字符串解析 Json 对象。 此函数不是 Json 类中的方法，而是定义于 namespace json 下的函数。 此函数返回一个 Json 对象，解析失败时，返回 null 对象。 #co::Json #constructor 1.</description>
     </item>
     
     <item>
