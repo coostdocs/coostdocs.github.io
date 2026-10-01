@@ -3,27 +3,21 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="#头文件 #include &lt;co/log.h&gt; co/log.h 已经包含 co/flag.h。
-API 在 log 命名空间。
+<meta name="description" content="#头文件 #include &lt;co/log.h&gt; API 在 log 命名空间。
 #初始化与关闭 log 内部使用 flag 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 main 函数开头调用：
 flag::parse(argc, argv); 关闭 API：
-void log::close(); 说明：
-用户一般不需要显示调用此 API。 调用此函数，会刷新日志缓冲，退出日志线程。 #打印日志 使用如下函数打印不同级别的日志：
-log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 说明：
-日志函数是线程安全的； 日志函数接受任意数量的参数； 参数可以是 co::string::operator&lt;&lt; 支持的任意类型； 日志函数自动在尾部添加换行符； fatal 级别的日志会终止程序运行。 示例：
+void log::close(); 刷新日志缓冲区，退出日志线程。 用户一般不需要显示调用此函数。 #打印日志 使用如下函数打印不同级别的日志：
+log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 上述函数均线程安全，接受任意数量参数； 参数可以是 co::string::operator&lt;&lt; 支持的任意类型； 日志尾部自动添加换行； fatal 级别日志会终止程序。 示例：
 log::info(&#34;hello &#34;, false, &#39; &#39;, 23); 支持的参数类型有：
-bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, std::string, co::string； 指针类型：void*, T*，输出 0x 开头的十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需要包含 co/stl.">
+bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, co::string, std::string, std::string_view； 指针类型：void*, T*，输出 0x 加十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需包含 co/stl.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="日志" />
-<meta property="og:description" content="#头文件 #include &lt;co/log.h&gt; co/log.h 已经包含 co/flag.h。
-API 在 log 命名空间。
+<meta property="og:description" content="#头文件 #include &lt;co/log.h&gt; API 在 log 命名空间。
 #初始化与关闭 log 内部使用 flag 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 main 函数开头调用：
 flag::parse(argc, argv); 关闭 API：
-void log::close(); 说明：
-用户一般不需要显示调用此 API。 调用此函数，会刷新日志缓冲，退出日志线程。 #打印日志 使用如下函数打印不同级别的日志：
-log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 说明：
-日志函数是线程安全的； 日志函数接受任意数量的参数； 参数可以是 co::string::operator&lt;&lt; 支持的任意类型； 日志函数自动在尾部添加换行符； fatal 级别的日志会终止程序运行。 示例：
+void log::close(); 刷新日志缓冲区，退出日志线程。 用户一般不需要显示调用此函数。 #打印日志 使用如下函数打印不同级别的日志：
+log::debug(...); log::info(...); log::warn(...); log::error(...); log::fatal(...); 上述函数均线程安全，接受任意数量参数； 参数可以是 co::string::operator&lt;&lt; 支持的任意类型； 日志尾部自动添加换行； fatal 级别日志会终止程序。 示例：
 log::info(&#34;hello &#34;, false, &#39; &#39;, 23); 支持的参数类型有：
-bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, std::string, co::string； 指针类型：void*, T*，输出 0x 开头的十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需要包含 co/stl." />
+bool，输出 false 或 true； 字符类型：char, signed char, unsigned char； 整数类型； 浮点数类型：double, float； 字符串类型：const char*, co::string, std::string, std::string_view； 指针类型：void*, T*，输出 0x 加十六进制值； STL 容器：std::vector, std::map, co::vector, co::map 等，需包含 co/stl." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/log/" /><meta property="article:section" content="co" />
 
@@ -33,9 +27,9 @@ bool，输出 false 或 true； 字符类型：char, signed char, unsigned char�
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/log/" title="log">
-<link rel="stylesheet" href="../../../book.min.5fda655ced4c51a9446c9bc92b1ef0c059f1fd4637395318515c89ad310c0642.css" integrity="sha256-X9plXO1MUalEbJvJKx7wwFnx/UY3OVMYUVyJrTEMBkI=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../book.min.adc0d55ff9f1b921579b2eb89e678d31fd369a2a65f73e03159bfa361e2e739c.css" integrity="sha256-rcDVX/nxuSFXmy64nmeNMf02mipl9z4DFZv6Nh4uc5w=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.e635c19112d3dfb57185dcb7ee79ecf97905904b03dead97d0ecc6f54b54e70c.js" integrity="sha256-5jXBkRLT37Vxhdy37nns&#43;XkFkEsD3q2X0OzG9UtU5ww=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.b7cb5db3765e1df8513887c034af480f6eba226c5cf05ceb9270ef4a4399b2df.js" integrity="sha256-t8tds3ZeHfhROIfANK9ID266Imxc8FzrknDvSkOZst8=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -175,6 +169,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/string/" class="">字符串</a>
   
 
         </li>
@@ -910,18 +917,15 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt;</span><span class="cp">
-</span></span></span></code></pre></div><p><code>co/log.h</code> 已经包含 <code>co/flag.h</code>。</p>
-<p>API 在 <code>log</code> 命名空间。</p>
-<hr>
+</span></span></span></code></pre></div><p>API 在 <code>log</code> 命名空间。</p>
 <h2 id="初始化与关闭"><a class="anchor" href="#%e5%88%9d%e5%a7%8b%e5%8c%96%e4%b8%8e%e5%85%b3%e9%97%ad">#</a>初始化与关闭</h2>
 <p><code>log</code> 内部使用 <code>flag</code> 组件定义了一些配置项，可通过命令行参数或配置文件控制日志行为。另外，日志线程在命令行参数解析后才会启动。因此必须在 <code>main</code> 函数开头调用：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
 </span></span></code></pre></div><p>关闭 API：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">log</span><span class="o">::</span><span class="n">close</span><span class="p">();</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>用户一般不需要显示调用此 API。</li>
-<li>调用此函数，会刷新日志缓冲，退出日志线程。</li>
+</span></span></code></pre></div><ul>
+<li>刷新日志缓冲区，退出日志线程。</li>
+<li>用户一般不需要显示调用此函数。</li>
 </ul>
 <h2 id="打印日志"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e6%97%a5%e5%bf%97">#</a>打印日志</h2>
 <p>使用如下函数打印不同级别的日志：</p>
@@ -930,13 +934,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">warn</span><span class="p">(...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">error</span><span class="p">(...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">fatal</span><span class="p">(...);</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>日志函数是线程安全的；</li>
-<li>日志函数接受任意数量的参数；</li>
+</span></span></code></pre></div><ul>
+<li>上述函数均线程安全，接受任意数量参数；</li>
 <li>参数可以是 <code>co::string::operator&lt;&lt;</code> 支持的任意类型；</li>
-<li>日志函数自动在尾部添加换行符；</li>
-<li><code>fatal</code> 级别的日志会终止程序运行。</li>
+<li>日志尾部自动添加换行；</li>
+<li><code>fatal</code> 级别日志会终止程序。</li>
 </ul>
 <p>示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;hello &#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="sc">&#39; &#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
@@ -946,13 +948,11 @@ https://github.com/alex-shpak/hugo-book
 <li>字符类型：<code>char, signed char, unsigned char</code>；</li>
 <li>整数类型；</li>
 <li>浮点数类型：<code>double, float</code>；</li>
-<li>字符串类型：<code>const char*</code>, <code>std::string</code>, <code>co::string</code>；</li>
-<li>指针类型：<code>void*, T*</code>，输出 <code>0x</code> 开头的十六进制值；</li>
-<li>STL 容器：<code>std::vector, std::map, co::vector, co::map</code> 等，需要包含 <code>co/stl.h</code>。</li>
+<li>字符串类型：<code>const char*</code>, <code>co::string</code>, <code>std::string</code>, <code>std::string_view</code>；</li>
+<li>指针类型：<code>void*, T*</code>，输出 <code>0x</code> 加十六进制值；</li>
+<li>STL 容器：<code>std::vector, std::map, co::vector, co::map</code> 等，需包含 <code>co/stl.h</code>。</li>
 </ul>
-<p>自定义类型需要实现：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
-</span></span></code></pre></div><p>示例：</p>
+<p>自定义类型需实现 <code>operator&lt;&lt;(co::string&amp;, const T&amp;)</code>，如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Point</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -972,7 +972,6 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="断言"><a class="anchor" href="#%e6%96%ad%e8%a8%80">#</a>断言</h2>
-<p>提供以下断言接口：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="p">...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ne</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
@@ -980,7 +979,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_gt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_le</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
-</span></span></code></pre></div><p>示例：</p>
+</span></span></code></pre></div><ul>
+<li>check 失败，会刷新日志缓冲，打印堆栈信息，调用 <code>abort()</code> 终止程序；</li>
+<li>check 成功，不会输出任何信息。</li>
+</ul>
+<p>示例:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 should be 2&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_eq</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 must == 2&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ne</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;1+1 != 3&#34;</span><span class="p">);</span>
@@ -988,15 +991,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;2 &gt; 1&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_le</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &lt;= 2&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &gt;= 2&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>check 失败，会刷新日志缓冲，打印堆栈信息，调用 <code>abort()</code> 终止程序；</li>
-<li>check 成功时，不会输出任何信息。</li>
-</ul>
-<h2 id="打印堆栈信息"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e5%a0%86%e6%a0%88%e4%bf%a1%e6%81%af">#</a>打印堆栈信息</h2>
+</span></span></code></pre></div><h2 id="打印堆栈信息"><a class="anchor" href="#%e6%89%93%e5%8d%b0%e5%a0%86%e6%a0%88%e4%bf%a1%e6%81%af">#</a>打印堆栈信息</h2>
 <p>coost 会捕捉程序中产生的异常或异常信号，在程序崩溃退出前打印堆栈信息。</p>
-<p>在非 Windows 平台，此功能依赖 <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a>。Linux 上 GCC 一般已经内置 backtrace 库，macOS 通常需要用户手动安装。</p>
+<p>非 Windows 平台需要 <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a>。Linux 上 GCC 一般已内置 backtrace 库，macOS 通常需要用户手动安装。</p>
 <p>非 Windows 平台构建时用下述方式启用此功能：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># xmake</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># xmake</span>
 </span></span><span class="line"><span class="cl">xmake f --with_backtrace<span class="o">=</span><span class="nb">true</span>   <span class="c1"># 使用 backtrace 库</span>
 </span></span><span class="line"><span class="cl">xmake                           <span class="c1"># 编译 libco</span>
 </span></span><span class="line"><span class="cl">xmake b stack                   <span class="c1"># 编译 test/stack.cc</span>
@@ -1007,24 +1006,26 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">cmake .. -DWITH_BACKTRACE<span class="o">=</span>ON
 </span></span><span class="line"><span class="cl">make -j8
 </span></span></code></pre></div><h2 id="写日志回调"><a class="anchor" href="#%e5%86%99%e6%97%a5%e5%bf%97%e5%9b%9e%e8%b0%83">#</a>写日志回调</h2>
-<p>coost 日志默认写本地文件，用户可以调用如下 API 设置一个 callback，自定义日志输出目标：</p>
+<p>coost 日志默认写本地文件，用户可以设置一个 callback 写日志：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">log</span><span class="o">::</span><span class="n">set_write_cb</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">cb</span><span class="p">)(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">also_log2local</span><span class="o">=</span><span class="nb">false</span>
 </span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li><code>data</code> 中可能包含多条日志，<code>size</code> 可能很大，用 <code>UDP</code> 发送日志时需要注意。</li>
-<li>callback 在写日志的线程中执行(<strong>coost只有单个线程写日志</strong>)。</li>
-<li>如果 <code>also_log2local == true</code>，日志也写本地文件。</li>
-<li><strong>该函数建议在 <code>flag::parse</code> 前调用</strong>，因为 <code>flag::parse</code> 在解析命令行参数后启动日志线程，在日志线程启动前设置 callback 更安全。</li>
+</span></span></code></pre></div><ul>
+<li><code>data</code> 中可能包含多条日志，<code>size</code> 可能较大，用 <code>UDP</code> 发送日志需注意。</li>
+<li>callback 日志线程中执行(<strong>仅单个线程写日志</strong>)。</li>
+<li>若 <code>also_log2local == true</code>，日志也写本地文件。</li>
 </ul>
+<blockquote class="book-hint warning">
+  需要在 <code>flag::parse</code> 前调用，<code>flag::parse</code> 解析命令行参数后会启动日志线程，在日志线程启动前设置 callback 更安全。
+</blockquote>
+
 <p>示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">my_write_cb</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">fwrite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fwrite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">stderr</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
@@ -1033,11 +1034,9 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;hello &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">warn</span><span class="p">(</span><span class="s">&#34;warn &#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="日志配置项"><a class="anchor" href="#%e6%97%a5%e5%bf%97%e9%85%8d%e7%bd%ae%e9%a1%b9">#</a>日志配置项</h2>
-<p><code>log</code> 内部通过 <a href="../flag/">flag</a> 定义了一些配置项，可通过命令行参数与配置文件控制日志行为。</p>
 <table>
 <thead>
 <tr>

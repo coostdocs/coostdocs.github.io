@@ -4,16 +4,10 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="#头文件 #include &#34;co/unitest.h&#34; #API 公开函数只有一个，在 co 命名空间：
-int co::run_unitests(); // 返回失败的 case 数量 运行代码中定义的单元测试，返回失败的测试用例数； main 一般是固定写法： #include &#34;co/unitest.h&#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } 说明：
-必须调用 flag::parse，否则测试单元对应的 flag 无法生效。 失败的测试用例会在最后统一汇总。 #定义测试单元 DEF_test(name) { // 测试代码 } 说明：
-定义一个测试单元，实际相当于一个函数； name 必须是合法的 flag 名 / 变量名； 程序中可以有多个 DEF_test，只要 name 不重复。 #定义测试用例 DEF_case(name) { // 用例代码 } 说明：
-定义测试用例，相当于 DEF_test 所定义函数中的代码块； name 只要求能转成字符串，不要求是合法变量名，可重复。 DEF_test 定义的函数中可以不包含任何 DEF_case，这时会创建一个默认的测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) EXPECT_NE(x, y) EXPECT_GE(x, y) EXPECT_LE(x, y) EXPECT_GT(x, y) EXPECT_LT(x, y) 说明：">
+int co::run_unitests(); 运行单元测试，返回失败用例数； main 一般是固定写法： #include &#34;co/unitest.h&#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #定义测试单元 DEF_test(name) { // 测试代码 // DEF_case(xxx) {} } DEF_test 宏定义一个测试单元，实际是一个函数，用户可以在其中自由添加代码，如各测试用例共用的初始化代码； name 必须是合法变量名； 有多个 DEF_test 时，name 不能重复。 #定义测试用例 DEF_case(name) { // 测试用例代码 } DEF_case 宏定义一个测试用例，实际是 DEF_test 所定义函数中的代码块； name 不要求是合法变量名； DEF_test 中不含任何 DEF_case 时，会创建一个默认测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) // == EXPECT_NE(x, y) // != EXPECT_GE(x, y) // &gt;= EXPECT_LE(x, y) // &lt;= EXPECT_GT(x, y) // &gt; EXPECT_LT(x, y) // &lt; 失败信息在最后统一汇总。 EXPECT_XX 中参数需要支持相应比较运算符，且可打印，即支持： operator&lt;&lt;(co::string&amp;, const T&amp;); #运行逻辑 每个 DEF_test 内部定义一个 bool flag，默认值 false。 若所有测试单元 flag 都是默认值，则运行所有测试单元。 若有 flag 为 true，则只运行 flag 为 true 的测试单元。 测试单元按注册顺序执行。 #示例 #include &#34;co/unitest.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="单元测试" />
 <meta property="og:description" content="#头文件 #include &#34;co/unitest.h&#34; #API 公开函数只有一个，在 co 命名空间：
-int co::run_unitests(); // 返回失败的 case 数量 运行代码中定义的单元测试，返回失败的测试用例数； main 一般是固定写法： #include &#34;co/unitest.h&#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } 说明：
-必须调用 flag::parse，否则测试单元对应的 flag 无法生效。 失败的测试用例会在最后统一汇总。 #定义测试单元 DEF_test(name) { // 测试代码 } 说明：
-定义一个测试单元，实际相当于一个函数； name 必须是合法的 flag 名 / 变量名； 程序中可以有多个 DEF_test，只要 name 不重复。 #定义测试用例 DEF_case(name) { // 用例代码 } 说明：
-定义测试用例，相当于 DEF_test 所定义函数中的代码块； name 只要求能转成字符串，不要求是合法变量名，可重复。 DEF_test 定义的函数中可以不包含任何 DEF_case，这时会创建一个默认的测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) EXPECT_NE(x, y) EXPECT_GE(x, y) EXPECT_LE(x, y) EXPECT_GT(x, y) EXPECT_LT(x, y) 说明：" />
+int co::run_unitests(); 运行单元测试，返回失败用例数； main 一般是固定写法： #include &#34;co/unitest.h&#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #定义测试单元 DEF_test(name) { // 测试代码 // DEF_case(xxx) {} } DEF_test 宏定义一个测试单元，实际是一个函数，用户可以在其中自由添加代码，如各测试用例共用的初始化代码； name 必须是合法变量名； 有多个 DEF_test 时，name 不能重复。 #定义测试用例 DEF_case(name) { // 测试用例代码 } DEF_case 宏定义一个测试用例，实际是 DEF_test 所定义函数中的代码块； name 不要求是合法变量名； DEF_test 中不含任何 DEF_case 时，会创建一个默认测试用例。 #EXPECT 宏 EXPECT(x) EXPECT_EQ(x, y) // == EXPECT_NE(x, y) // != EXPECT_GE(x, y) // &gt;= EXPECT_LE(x, y) // &lt;= EXPECT_GT(x, y) // &gt; EXPECT_LT(x, y) // &lt; 失败信息在最后统一汇总。 EXPECT_XX 中参数需要支持相应比较运算符，且可打印，即支持： operator&lt;&lt;(co::string&amp;, const T&amp;); #运行逻辑 每个 DEF_test 内部定义一个 bool flag，默认值 false。 若所有测试单元 flag 都是默认值，则运行所有测试单元。 若有 flag 为 true，则只运行 flag 为 true 的测试单元。 测试单元按注册顺序执行。 #示例 #include &#34;co/unitest." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/unitest/" /><meta property="article:section" content="co" />
 
@@ -23,9 +17,9 @@ int co::run_unitests(); // 返回失败的 case 数量 运行代码中定义的�
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/unitest/" title="Unitest">
-<link rel="stylesheet" href="../../../book.min.5fda655ced4c51a9446c9bc92b1ef0c059f1fd4637395318515c89ad310c0642.css" integrity="sha256-X9plXO1MUalEbJvJKx7wwFnx/UY3OVMYUVyJrTEMBkI=" crossorigin="anonymous">
+<link rel="stylesheet" href="../../../book.min.adc0d55ff9f1b921579b2eb89e678d31fd369a2a65f73e03159bfa361e2e739c.css" integrity="sha256-rcDVX/nxuSFXmy64nmeNMf02mipl9z4DFZv6Nh4uc5w=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.e635c19112d3dfb57185dcb7ee79ecf97905904b03dead97d0ecc6f54b54e70c.js" integrity="sha256-5jXBkRLT37Vxhdy37nns&#43;XkFkEsD3q2X0OzG9UtU5ww=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.b7cb5db3765e1df8513887c034af480f6eba226c5cf05ceb9270ef4a4399b2df.js" integrity="sha256-t8tds3ZeHfhROIfANK9ID266Imxc8FzrknDvSkOZst8=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -165,6 +159,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../cn/co/string/" class="">字符串</a>
   
 
         </li>
@@ -883,7 +890,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#expect-宏">EXPECT 宏</a></li>
         <li><a href="#运行逻辑">运行逻辑</a></li>
         <li><a href="#示例">示例</a></li>
-        <li><a href="#构建及运行测试程序">构建及运行测试程序</a></li>
+        <li><a href="#构建及运行-coost-内部单元测试">构建及运行 coost 内部单元测试</a></li>
       </ul>
     </li>
   </ul>
@@ -902,9 +909,9 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
 </span></span></span></code></pre></div><h2 id="api"><a class="anchor" href="#api">#</a>API</h2>
 <p>公开函数只有一个，在 <code>co</code> 命名空间：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">run_unitests</span><span class="p">();</span> <span class="c1">// 返回失败的 case 数量
-</span></span></span></code></pre></div><ul>
-<li>运行代码中定义的单元测试，返回失败的测试用例数；</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">run_unitests</span><span class="p">();</span>
+</span></span></code></pre></div><ul>
+<li>运行单元测试，返回失败用例数；</li>
 <li><code>main</code> 一般是固定写法：</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
@@ -914,59 +921,47 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">run_unitests</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>必须调用 <code>flag::parse</code>，否则测试单元对应的 flag 无法生效。</li>
-<li>失败的测试用例会在最后统一汇总。</li>
-</ul>
-<h2 id="定义测试单元"><a class="anchor" href="#%e5%ae%9a%e4%b9%89%e6%b5%8b%e8%af%95%e5%8d%95%e5%85%83">#</a>定义测试单元</h2>
+</span></span></code></pre></div><h2 id="定义测试单元"><a class="anchor" href="#%e5%ae%9a%e4%b9%89%e6%b5%8b%e8%af%95%e5%8d%95%e5%85%83">#</a>定义测试单元</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 测试代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// DEF_case(xxx) {}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>定义一个测试单元，实际相当于一个函数；</li>
-<li><code>name</code> 必须是合法的 flag 名 / 变量名；</li>
-<li>程序中可以有多个 <code>DEF_test</code>，只要 <code>name</code> 不重复。</li>
+</span></span></code></pre></div><ul>
+<li><code>DEF_test</code> 宏定义一个测试单元，实际是一个函数，用户可以在其中自由添加代码，如各测试用例共用的初始化代码；</li>
+<li><code>name</code> 必须是合法变量名；</li>
+<li>有多个 <code>DEF_test</code> 时，<code>name</code> 不能重复。</li>
 </ul>
 <h2 id="定义测试用例"><a class="anchor" href="#%e5%ae%9a%e4%b9%89%e6%b5%8b%e8%af%95%e7%94%a8%e4%be%8b">#</a>定义测试用例</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_case</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 用例代码
+</span></span><span class="line"><span class="cl">    <span class="c1">// 测试用例代码
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>定义测试用例，相当于 DEF_test 所定义函数中的代码块；</li>
-<li><code>name</code> 只要求能转成字符串，不要求是合法变量名，可重复。</li>
-<li><code>DEF_test</code> 定义的函数中可以不包含任何 DEF_case，这时会创建一个默认的测试用例。</li>
+</span></span></code></pre></div><ul>
+<li><code>DEF_case</code> 宏定义一个测试用例，实际是 <code>DEF_test</code> 所定义函数中的代码块；</li>
+<li><code>name</code> 不要求是合法变量名；</li>
+<li><code>DEF_test</code> 中不含任何 <code>DEF_case</code> 时，会创建一个默认测试用例。</li>
 </ul>
 <h2 id="expect-宏"><a class="anchor" href="#expect-%e5%ae%8f">#</a>EXPECT 宏</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">EXPECT</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_EQ</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_NE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_GE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_LE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_GT</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">EXPECT_LT</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span></span></code></pre></div><p>说明：</p>
-<ul>
-<li>失败时记录信息，并继续执行后续代码。</li>
+</span></span><span class="line"><span class="cl"><span class="n">EXPECT_EQ</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// ==
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">EXPECT_NE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// !=
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">EXPECT_GE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// &gt;=
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">EXPECT_LE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// &lt;=
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">EXPECT_GT</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// &gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">EXPECT_LT</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   <span class="c1">// &lt;
+</span></span></span></code></pre></div><ul>
 <li>失败信息在最后统一汇总。</li>
-<li><code>EXPECT_XX</code> 宏中的参数需要支持相应的比较运算符，且可打印，即支持：
+<li><code>EXPECT_XX</code> 中参数需要支持相应比较运算符，且可打印，即支持：
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
 </span></span></code></pre></div></li>
 </ul>
 <h2 id="运行逻辑"><a class="anchor" href="#%e8%bf%90%e8%a1%8c%e9%80%bb%e8%be%91">#</a>运行逻辑</h2>
 <ul>
-<li>每个 <code>DEF_test</code> 内部定义一个 bool flag，默认 <code>false</code>。</li>
-<li>如果所有测试单元的 flag 都是默认值 <code>false</code>，则默认运行所有测试单元。</li>
-<li>如果有任意一个 flag 为 <code>true</code>，则只运行 flag 为 <code>true</code> 的测试单元。</li>
-<li>测试单元保存在 vector 中，按注册顺序执行。</li>
+<li>每个 <code>DEF_test</code> 内部定义一个 bool flag，默认值 <code>false</code>。</li>
+<li>若所有测试单元 flag 都是默认值，则运行所有测试单元。</li>
+<li>若有 flag 为 <code>true</code>，则只运行 flag 为 <code>true</code> 的测试单元。</li>
+<li>测试单元按注册顺序执行。</li>
 </ul>
-<p>命令行示例：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx             <span class="c1"># 运行所有测试单元</span>
-</span></span><span class="line"><span class="cl">./xx -os         <span class="c1"># 只运行 DEF_test(os)</span>
-</span></span><span class="line"><span class="cl">./xx -os -log    <span class="c1"># 只运行 os 和 log 两个单元</span>
-</span></span></code></pre></div><h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
+<h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/unitest.h&#34;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="n">DEF_test</span><span class="p">(</span><span class="n">math</span><span class="p">)</span> <span class="p">{</span>
@@ -1011,8 +1006,8 @@ https://github.com/alex-shpak/hugo-book
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx            <span class="c1"># 运行 math 和 string 两个单元</span>
 </span></span><span class="line"><span class="cl">./xx -math      <span class="c1"># 只运行 math</span>
 </span></span><span class="line"><span class="cl">./xx -string    <span class="c1"># 只运行 string</span>
-</span></span></code></pre></div><h2 id="构建及运行测试程序"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c%e6%b5%8b%e8%af%95%e7%a8%8b%e5%ba%8f">#</a>构建及运行测试程序</h2>
-<p><a href="https://github.com/idealvin/coost/tree/master/unitest">unitest</a> 目录下是 coost 内部的单元测试代码，在 coost 根目录执行下述命令构建及运行：</p>
+</span></span></code></pre></div><h2 id="构建及运行-coost-内部单元测试"><a class="anchor" href="#%e6%9e%84%e5%bb%ba%e5%8f%8a%e8%bf%90%e8%a1%8c-coost-%e5%86%85%e9%83%a8%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95">#</a>构建及运行 coost 内部单元测试</h2>
+<p><a href="https://github.com/idealvin/coost/tree/master/unitest">unitest</a> 目录下是 coost 内部单元测试代码，在 coost 根目录执行下述命令构建及运行：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 构建</span>
 </span></span><span class="line"><span class="cl">xmake b unitest
 </span></span><span class="line"><span class="cl">
@@ -1159,7 +1154,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#expect-宏">EXPECT 宏</a></li>
         <li><a href="#运行逻辑">运行逻辑</a></li>
         <li><a href="#示例">示例</a></li>
-        <li><a href="#构建及运行测试程序">构建及运行测试程序</a></li>
+        <li><a href="#构建及运行-coost-内部单元测试">构建及运行 coost 内部单元测试</a></li>
       </ul>
     </li>
   </ul>
