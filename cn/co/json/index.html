@@ -3,21 +3,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/json.h.
-co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
-#基本概念 JSON 是一种简单的数据格式，它支持两种数据结构：
-由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
-object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
-{&#34;a&#34;:1, &#34;b&#34;:false, &#34;s&#34;:&#34;xxx&#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
-#global #json::array Json array(); 此函数在 namespace json 下，它返回一个空的 array 对象。 #json::object Json object(); 此函数在 namespace json 下，它返回一个空的 object 对象。 #json::parse Json parse(const char* s, size_t n); Json parse(const char* s); Json parse(const fastring&amp; s); Json parse(const std::string&amp; s); 从 JSON 字符串解析 Json 对象。 此函数不是 Json 类中的方法，而是定义于 namespace json 下的函数。 此函数返回一个 Json 对象，解析失败时，返回 null 对象。 #co::Json #constructor 1.">
+<meta name="description" content="#头文件 #include &#34;co/json.h&#34; API 在 json 命名空间。
+#json::any json::any 表示任意 JSON 值，类型可以是 null、bool、int、double、string、array 或 object。
+#构造与拷贝 any(); // null any(decltype(nullptr)); // null any(any&amp;&amp; v); // 移动 any(any&amp; v); // 移动（非 const） any(const any&amp;) = delete; void operator=(const any&amp;) = delete; any&amp; operator=(any&amp;&amp; v); any&amp; operator=(any&amp; v); any dup() const; // 显式深拷贝 any(bool v); any(double v); any(int64 v); any(int32 v); any(uint32 v); any(uint64 v); any(const void* p, size_t n); // 初始化字符串类型 any(const char* s); any(const co::string&amp; s); any(const std::string&amp; s); any(std::initializer_list&lt;any&gt; v); 禁用拷贝构造、拷贝赋值。 支持移动，移动后源对象变成 null。 dup() 递归深拷贝。 整数统一存 int64。 示例:">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="JSON" />
-<meta property="og:description" content="include: co/json.h.
-co.json 是一个类似 rapidjson 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。
-#基本概念 JSON 是一种简单的数据格式，它支持两种数据结构：
-由一系列 key/value 键值对构成的集合，这类结构称为 object，对应编程语言中的 struct, map 等等。 由一系列 value 构成的列表，这类结构称为 array，对应编程语言中的 vector, list 等等。 上述 key 是 string，value 一般也称为 JSON value (co.json 中用 Json 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。
-object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：
-{&#34;a&#34;:1, &#34;b&#34;:false, &#34;s&#34;:&#34;xxx&#34;} [1, 2, 3] 由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。
-#global #json::array Json array(); 此函数在 namespace json 下，它返回一个空的 array 对象。 #json::object Json object(); 此函数在 namespace json 下，它返回一个空的 object 对象。 #json::parse Json parse(const char* s, size_t n); Json parse(const char* s); Json parse(const fastring&amp; s); Json parse(const std::string&amp; s); 从 JSON 字符串解析 Json 对象。 此函数不是 Json 类中的方法，而是定义于 namespace json 下的函数。 此函数返回一个 Json 对象，解析失败时，返回 null 对象。 #co::Json #constructor 1." />
+<meta property="og:description" content="#头文件 #include &#34;co/json.h&#34; API 在 json 命名空间。
+#json::any json::any 表示任意 JSON 值，类型可以是 null、bool、int、double、string、array 或 object。
+#构造与拷贝 any(); // null any(decltype(nullptr)); // null any(any&amp;&amp; v); // 移动 any(any&amp; v); // 移动（非 const） any(const any&amp;) = delete; void operator=(const any&amp;) = delete; any&amp; operator=(any&amp;&amp; v); any&amp; operator=(any&amp; v); any dup() const; // 显式深拷贝 any(bool v); any(double v); any(int64 v); any(int32 v); any(uint32 v); any(uint64 v); any(const void* p, size_t n); // 初始化字符串类型 any(const char* s); any(const co::string&amp; s); any(const std::string&amp; s); any(std::initializer_list&lt;any&gt; v); 禁用拷贝构造、拷贝赋值。 支持移动，移动后源对象变成 null。 dup() 递归深拷贝。 整数统一存 int64。 示例:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/json/" /><meta property="article:section" content="co" />
 
@@ -29,7 +21,7 @@ object 由一对大括号括起来，array 由一对中括号括起来，它们�
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/json/" title="JSON">
 <link rel="stylesheet" href="../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.cab6b318b2c4311e99cbe7defddb050d8273691803d7781930d8c486fe2f0fea.js" integrity="sha256-yrazGLLEMR6Zy&#43;fe/dsFDYJzaRgD13gZMNjEhv4vD&#43;o=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.cbd6aa99dd7b3f603c35617cd2a48b9b59dcec76dee3a86d84c06c9a4a324ec7.js" integrity="sha256-y9aqmd17P2A8NWF80qSLm1nc7Hbe46hthMBsmkoyTsc=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -98,7 +90,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/about/co/" class="">简介</a>
+    <a href="../../../cn/about/co/" class="">总体介绍</a>
   
 
         </li>
@@ -124,7 +116,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/about/contact/" class="">联系</a>
+    <a href="../../../cn/about/contact/" class="">联系方式</a>
   
 
         </li>
@@ -854,77 +846,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#基本概念">基本概念</a></li>
-        <li><a href="#global">global</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#jsonany">json::any</a>
           <ul>
-            <li><a href="#jsonarray">json::array</a></li>
-            <li><a href="#jsonobject">json::object</a></li>
-            <li><a href="#jsonparse">json::parse</a></li>
-          </ul>
-        </li>
-        <li><a href="#cojson">co::Json</a>
-          <ul>
-            <li><a href="#constructor">constructor</a></li>
-            <li><a href="#operator">operator=</a></li>
-            <li><a href="#dup">dup</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#is_null">is_null</a></li>
-            <li><a href="#is_bool">is_bool</a></li>
-            <li><a href="#is_int">is_int</a></li>
-            <li><a href="#is_double">is_double</a></li>
-            <li><a href="#is_string">is_string</a></li>
-            <li><a href="#is_array">is_array</a></li>
-            <li><a href="#is_object">is_object</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#as_bool">as_bool</a></li>
-            <li><a href="#as_int">as_int</a></li>
-            <li><a href="#as_double">as_double</a></li>
-            <li><a href="#as_string">as_string</a></li>
-            <li><a href="#as_c_str">as_c_str</a></li>
-            <li><a href="#get">get</a></li>
-            <li><a href="#set">set</a></li>
-            <li><a href="#代码示例">代码示例</a></li>
-            <li><a href="#heading-2">———————————</a></li>
-            <li><a href="#operator-1">operator==</a></li>
-            <li><a href="#operator-2">operator!=</a></li>
-            <li><a href="#代码示例-1">代码示例</a></li>
-            <li><a href="#heading-3">———————————</a></li>
-            <li><a href="#add_member">add_member</a></li>
-            <li><a href="#erase">erase</a></li>
-            <li><a href="#push_back">push_back</a></li>
-            <li><a href="#remove">remove</a></li>
-            <li><a href="#reset">reset</a></li>
-            <li><a href="#swap">swap</a></li>
-            <li><a href="#heading-4">———————————</a></li>
-            <li><a href="#operator-3">operator[]</a></li>
+            <li><a href="#构造与拷贝">构造与拷贝</a></li>
+            <li><a href="#类型查询与取值">类型查询与取值</a></li>
+            <li><a href="#访问与修改getset">访问与修改(get/set)</a></li>
+            <li><a href="#添加与删除">添加与删除</a></li>
+            <li><a href="#序列化">序列化</a></li>
+            <li><a href="#大小">大小</a></li>
             <li><a href="#has_member">has_member</a></li>
-            <li><a href="#size">size</a></li>
-            <li><a href="#empty">empty</a></li>
-            <li><a href="#string_size">string_size</a></li>
-            <li><a href="#array_size">array_size</a></li>
-            <li><a href="#object_size">object_size</a></li>
-            <li><a href="#heading-5">———————————</a></li>
-            <li><a href="#str">str</a></li>
-            <li><a href="#pretty">pretty</a></li>
-            <li><a href="#dbg">dbg</a></li>
-            <li><a href="#parse_from">parse_from</a></li>
-            <li><a href="#代码示例-2">代码示例</a></li>
-            <li><a href="#heading-6">———————————</a></li>
-            <li><a href="#begin">begin</a></li>
-            <li><a href="#end">end</a></li>
-            <li><a href="#iterator">iterator</a>
-              <ul>
-                <li><a href="#operator-4">operator==</a></li>
-                <li><a href="#operator-5">operator!=</a></li>
-                <li><a href="#operator-6">operator++</a></li>
-                <li><a href="#operator-7">operator*</a></li>
-                <li><a href="#key">key</a></li>
-                <li><a href="#value">value</a></li>
-              </ul>
-            </li>
-            <li><a href="#遍历-array-或-object">遍历 array 或 object</a></li>
+            <li><a href="#iterator">iterator</a></li>
           </ul>
         </li>
+        <li><a href="#解析">解析</a></li>
+        <li><a href="#快速创建-array-或-object">快速创建 array 或 object</a></li>
+        <li><a href="#终端或日志中打印-json">终端或日志中打印 JSON</a></li>
         <li><a href="#性能优化建议">性能优化建议</a></li>
       </ul>
     </li>
@@ -940,230 +877,120 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/json.h">co/json.h</a>.</p>
-<p><strong>co.json</strong> 是一个类似 <a href="https://github.com/Tencent/rapidjson">rapidjson</a> 的 JSON 库，与 rapidjson 相比，它既有性能上的优势，同时又更简单易用。</p>
-<h2 id="基本概念"><a class="anchor" href="#%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5">#</a>基本概念</h2>
-<p><a href="https://www.json.org/json-en.html">JSON</a> 是一种简单的数据格式，它支持两种数据结构：</p>
-<ul>
-<li>由一系列 <strong>key/value</strong> 键值对构成的集合，这类结构称为 <strong>object</strong>，对应编程语言中的 struct, map 等等。</li>
-<li>由一系列 <strong>value</strong> 构成的列表，这类结构称为 <strong>array</strong>，对应编程语言中的 vector, list 等等。</li>
-</ul>
-<p>上述 key 是 string，value 一般也称为 <strong>JSON value</strong> (co.json 中用 <strong>Json</strong> 类表示)，可以是 object, array, number, string, bool(false, true), null 中的任意一种。number 是整数或浮点数，大部分实现会将整数与浮点数区分开。</p>
-<p>object 由一对大括号括起来，array 由一对中括号括起来，它们看起来像下面这样：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="p">{</span><span class="s">&#34;a&#34;</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="o">:</span><span class="nb">false</span><span class="p">,</span> <span class="s">&#34;s&#34;</span><span class="o">:</span><span class="s">&#34;xxx&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</span></span></code></pre></div><p>由定义 object 与 array 可以嵌套，从而可以表示树等复杂数据结构。</p>
-<h2 id="global"><a class="anchor" href="#global">#</a>global</h2>
-<h3 id="jsonarray"><a class="anchor" href="#jsonarray">#</a>json::array</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">array</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>此函数在 namespace json 下，它返回一个空的 array 对象。</li>
-</ul>
-<h3 id="jsonobject"><a class="anchor" href="#jsonobject">#</a>json::object</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">object</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>此函数在 namespace json 下，它返回一个空的 object 对象。</li>
-</ul>
-<h3 id="jsonparse"><a class="anchor" href="#jsonparse">#</a>json::parse</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>从 JSON 字符串解析 Json 对象。</li>
-<li>此函数不是 Json 类中的方法，而是定义于 <code>namespace json</code> 下的函数。</li>
-<li>此函数返回一个 Json 对象，解析失败时，返回 null 对象。</li>
-</ul>
-<h2 id="cojson"><a class="anchor" href="#cojson">#</a>co::Json</h2>
-<h3 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"> <span class="mf">1.</span> <span class="n">Json</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">2.</span> <span class="n">Json</span><span class="p">(</span><span class="k">decltype</span><span class="p">(</span><span class="k">nullptr</span><span class="p">))</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> <span class="mf">3.</span> <span class="n">Json</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">4.</span> <span class="n">Json</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Json</span><span class="p">(</span><span class="k">const</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> <span class="mf">5.</span> <span class="n">Json</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">6.</span> <span class="n">Json</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">7.</span> <span class="n">Json</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">8.</span> <span class="n">Json</span><span class="p">(</span><span class="n">int32</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> <span class="mf">9.</span> <span class="n">Json</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">10.</span> <span class="n">Json</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">11.</span> <span class="n">Json</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">12.</span> <span class="n">Json</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">13.</span> <span class="n">Json</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">14.</span> <span class="n">Json</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">15.</span> <span class="n">Json</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">Json</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>1-2, 构建一个 null 对象。</p>
-</li>
-<li>
-<p>3-4, move 构造与拷贝构造函数，<strong>二者均执行 move 语义</strong>，构造函数执行后，<code>v</code> 将变为一个 null 对象。</p>
-</li>
-<li>
-<p>5, 构造 bool 类型的 JSON 对象。</p>
-</li>
-<li>
-<p>6, 构造 double 类型的 JSON 对象。</p>
-</li>
-<li>
-<p>7-10, 构造整数类型的 JSON 对象。</p>
-</li>
-<li>
-<p>11-14, 构造字符串类型的 JSON 对象。</p>
-</li>
-<li>
-<p>15, 根据初始化列表构建 object 或 array 对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">a</span><span class="p">;</span>          <span class="c1">// null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">b</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span> <span class="c1">// null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// bool
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>   <span class="c1">// double
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// integer
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">f</span> <span class="o">=</span> <span class="s">&#34;xx&#34;</span><span class="p">;</span>   <span class="c1">// string
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/json.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>json</code> 命名空间。</p>
+<h2 id="jsonany"><a class="anchor" href="#jsonany">#</a>json::any</h2>
+<p><code>json::any</code> 表示任意 JSON 值，类型可以是 null、bool、int、double、string、array 或 object。</p>
+<h3 id="构造与拷贝"><a class="anchor" href="#%e6%9e%84%e9%80%a0%e4%b8%8e%e6%8b%b7%e8%b4%9d">#</a>构造与拷贝</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">any</span><span class="p">();</span>                    <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">any</span><span class="p">(</span><span class="k">decltype</span><span class="p">(</span><span class="k">nullptr</span><span class="p">));</span>   <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">any</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>             <span class="c1">// 移动
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">any</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>              <span class="c1">// 移动（非 const）
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>  <span class="c1">// g -&gt; [1, 2, 3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">};</span> <span class="c1">// h -&gt; [&#34;a&#34;, &#34;b&#34;]
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="k">const</span> <span class="n">any</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">any</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">any</span> <span class="nf">dup</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>          <span class="c1">// 显式深拷贝
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">i</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// i -&gt; { &#34;a&#34;: &#34;b&#34; }
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="n">int32</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// 初始化字符串类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">any</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">any</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li>禁用拷贝构造、拷贝赋值。</li>
+<li>支持移动，移动后源对象变成 null。</li>
+<li><code>dup()</code> 递归深拷贝。</li>
+<li>整数统一存 <code>int64</code>。</li>
+</ul>
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">a</span><span class="p">;</span>               <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">b</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span>      <span class="c1">// null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">c</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>        <span class="c1">// bool
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">d</span><span class="p">(</span><span class="mf">3.14</span><span class="p">);</span>         <span class="c1">// double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">e</span><span class="p">(</span><span class="mi">23</span><span class="p">);</span>           <span class="c1">// integer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">f</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">);</span>         <span class="c1">// string
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>   <span class="c1">// [1, 2, 3]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">h</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">};</span>  <span class="c1">// [&#34;a&#34;, &#34;b&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">i</span> <span class="o">=</span> <span class="p">{</span>            <span class="c1">// { &#34;a&#34;: &#34;b&#34; }
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">j</span> <span class="o">=</span> <span class="p">{</span>           <span class="c1">// j -&gt; {&#34;a&#34;: 1, &#34;b&#34;: [1,2,3]}
+</span></span><span class="line"><span class="cl"><span class="p">};</span> 
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">j</span> <span class="o">=</span> <span class="p">{</span>            <span class="c1">// {&#34;a&#34;: 1, &#34;b&#34;: [1,2,3]}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>            <span class="c1">// i -&gt; null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">y</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">j</span><span class="p">));</span> <span class="c1">// j -&gt; null
-</span></span></span></code></pre></div><h3 id="operator"><a class="anchor" href="#operator">#</a>operator=</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>赋值操作，上面的两个方法等价，<strong>该操作执行后，参数 <code>v</code> 变成 null 对象</strong>。</li>
-</ul>
-<h3 id="dup"><a class="anchor" href="#dup">#</a>dup</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="nf">dup</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>深度拷贝一个 JSON 对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span> <span class="c1">// x -&gt; [1,2,3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>       <span class="c1">// x -&gt; null, y -&gt; [1,2,3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">z</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">dup</span><span class="p">();</span> <span class="c1">// y:[1,2,3], z -&gt; [1,2,3]
-</span></span></span></code></pre></div><h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
-<h3 id="is_null"><a class="anchor" href="#is_null">#</a>is_null</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_null</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为 null。</li>
-</ul>
-<h3 id="is_bool"><a class="anchor" href="#is_bool">#</a>is_bool</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为 bool 类型。</li>
-</ul>
-<h3 id="is_int"><a class="anchor" href="#is_int">#</a>is_int</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_int</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为整数类型。</li>
-</ul>
-<h3 id="is_double"><a class="anchor" href="#is_double">#</a>is_double</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为 double 类型。</li>
-</ul>
-<h3 id="is_string"><a class="anchor" href="#is_string">#</a>is_string</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为字符串类型。</li>
-</ul>
-<h3 id="is_array"><a class="anchor" href="#is_array">#</a>is_array</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_array</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为 array 类型。</li>
-</ul>
-<h3 id="is_object"><a class="anchor" href="#is_object">#</a>is_object</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_object</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为 object 类型。</li>
-</ul>
-<h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
-<h3 id="as_bool"><a class="anchor" href="#as_bool">#</a>as_bool</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">as_bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取 bool 类型的值。</li>
-<li>对于 int 或 double 类型，若值为 0，返回 false，否则返回 true。</li>
-<li>对于 string 类型，若值为 <code>&quot;true&quot;</code> 或 <code>&quot;1&quot;</code>，返回 true，否则返回 false。</li>
-<li>对于其他非 bool 类型，返回 false。</li>
-</ul>
-<h3 id="as_int"><a class="anchor" href="#as_int">#</a>as_int</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">as_int</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">int32</span> <span class="nf">as_int32</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">as_int64</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取整数类型的值。</li>
-<li>对于 bool, double 或 string 类型，结果自动转换为整数类型。</li>
-<li>对于其他非整数类型，返回 0。</li>
-</ul>
-<h3 id="as_double"><a class="anchor" href="#as_double">#</a>as_double</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">double</span> <span class="nf">as_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取 double 类型的值。</li>
-<li>对于 bool, int 或 string 类型，结果自动转换为 double 类型。</li>
-<li>对于其他非 double 类型，返回 0。</li>
-</ul>
-<h3 id="as_string"><a class="anchor" href="#as_string">#</a>as_string</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">as_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>获取字符串类型的值，返回 fastring。</li>
-<li>对于非 string 类型，此方法等价于 <a href="#str">str()</a>，结果将自动转换为 string 类型。</li>
-</ul>
-<h3 id="as_c_str"><a class="anchor" href="#as_c_str">#</a>as_c_str</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">as_c_str</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 <code>\0</code> 结尾的 C 风格字符串，可以用 <a href="#string_size">string_size()</a> 获取其长度，一般用于对性能要求较高的地方。</li>
-<li>对于非 string 类型，返回空字符串。</li>
-</ul>
-<h3 id="get"><a class="anchor" href="#get">#</a>get</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span><span class="p">(</span><span class="n">h</span><span class="p">);</span>            <span class="c1">// h -&gt; null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">y</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">i</span><span class="p">));</span> <span class="c1">// i -&gt; null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">y</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>                     <span class="c1">// j -&gt; null
+</span></span></span></code></pre></div><h3 id="类型查询与取值"><a class="anchor" href="#%e7%b1%bb%e5%9e%8b%e6%9f%a5%e8%af%a2%e4%b8%8e%e5%8f%96%e5%80%bc">#</a>类型查询与取值</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span>  <span class="nf">type</span><span class="p">()</span>      <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_null</span><span class="p">()</span>   <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_bool</span><span class="p">()</span>   <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_int</span><span class="p">()</span>    <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_array</span><span class="p">()</span>  <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">is_object</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">,</span>  <span class="k">class</span> <span class="err">...</span><span class="nc">X</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl">   <span class="kr">inline</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="n">X</span><span class="o">&amp;&amp;</span> <span class="p">...</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>根据 index 或 key 获取 JSON 对象，<strong>此方法是只读操作，不会修改调用此方法的 JSON 对象</strong>。</li>
-<li>1-2, 获取 array 对象的第 i 个元素，若调用此方法的 JSON 对象不是 array 类型，或者 <code>i</code> 超出了 array 的范围，返回结果将引用一个 null 对象。</li>
-<li>3, 获取 <code>key</code> 对应的 JSON value 对象，若调用此方法的 JSON 对象不是 object 类型，或者 <code>key</code> 不存在，返回结果将引用一个 null 对象。</li>
-<li>4, 可以带任意数量的参数，每个参数是 index 或者 key。该方法遇到第一个不合适的 index 或 不存在的 key 时，立即返回，返回结果将引用一个 null 对象。</li>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span>        <span class="nf">as_bool</span><span class="p">()</span>   <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">int64</span>       <span class="nf">as_int64</span><span class="p">()</span>  <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">int32</span>       <span class="nf">as_int32</span><span class="p">()</span>  <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>         <span class="nf">as_int</span><span class="p">()</span>    <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">double</span>      <span class="nf">as_double</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">as_c_str</span><span class="p">()</span>  <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span>  <span class="n">as_string</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span></code></pre></div><p>若 JSON 不是相应类型，<code>as_xxx()</code> 会尝试类型转换：</p>
+<ul>
+<li><code>as_bool()</code>：非 0 为 true，字符串 <code>&quot;true&quot;</code> 或 <code>&quot;1&quot;</code> 为 true，其余 false。</li>
+<li><code>as_int64()</code>：字符串用 <code>co::stoi64</code>。</li>
+<li><code>as_double()</code>：字符串用 <code>co::stod</code>。</li>
+<li><code>as_c_str()</code>：非 string 返回 <code>&quot;&quot;</code>。</li>
+<li><code>as_string()</code>：null 返回 <code>&quot;&quot;</code>，非 string 返回 <code>str()</code>。</li>
 </ul>
-<h3 id="set"><a class="anchor" href="#set">#</a>set</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">set</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">*</span><span class="k">this</span> <span class="o">=</span> <span class="n">Json</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<h3 id="访问与修改getset"><a class="anchor" href="#%e8%ae%bf%e9%97%ae%e4%b8%8e%e4%bf%ae%e6%94%b9getset">#</a>访问与修改(get/set)</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">A</span><span class="p">,</span> <span class="k">class</span> <span class="nc">B</span><span class="p">,</span>  <span class="k">class</span> <span class="err">...</span><span class="nc">X</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">set</span><span class="p">(</span><span class="n">A</span><span class="o">&amp;&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">B</span><span class="o">&amp;&amp;</span> <span class="n">b</span><span class="p">,</span> <span class="n">X</span><span class="o">&amp;&amp;</span> <span class="p">...</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="p">...</span><span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="n">X</span><span class="o">&amp;&amp;</span> <span class="p">...</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">set</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">A</span><span class="p">,</span> <span class="k">typename</span> <span class="n">B</span><span class="p">,</span> <span class="k">typename</span> <span class="p">...</span><span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">set</span><span class="p">(</span><span class="n">A</span><span class="o">&amp;&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">B</span><span class="o">&amp;&amp;</span> <span class="n">b</span><span class="p">,</span> <span class="n">X</span><span class="o">&amp;&amp;</span> <span class="p">...</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>设置 JSON 对象的值。</li>
-<li><code>set</code> 方法最后一个参数是所设置的值，其他参数是 index 或者 key。</li>
+<li><code>get</code> 只读，越界或 key 不存在返回内部 null 对象的引用。</li>
+<li><code>set</code> 不存在时创建，最后一个参数是值，其余参数是索引或 key。</li>
+<li><code>operator[]</code>:
+<ul>
+<li>const 版本只读，等价于 <code>get(i)</code> / <code>get(key)</code>;</li>
+<li>非 const 版本不存在时创建对应元素或成员，并返回可写引用；若当前类型不匹配，会先重置为 array 或 object。</li>
 </ul>
-<h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+</li>
+</ul>
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">7</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">}</span> <span class="p">},</span>
@@ -1178,361 +1005,199 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 2
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// x -&gt; {&#34;a&#34;:1,&#34;b&#34;:[0,1,2],&#34;c&#34;:{&#34;d&#34;:[&#34;oo&#34;]}}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">}));</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">}));</span>
 </span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;oo&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="heading-2"><a class="anchor" href="#heading-2">#</a>———————————</h3>
-<h3 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator==</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象的值是否等于 <code>v</code>。</li>
-<li>若 Json 对象的类型与 <code>v</code> 不同，则直接返回 false。</li>
-</ul>
-<h3 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator!=</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">bool</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">double</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">int64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">uint32</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">uint64</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象的值是否不等于 <code>v</code>。</li>
-<li>若 Json 对象的类型与 <code>v</code> 不同，则直接返回 true。</li>
-</ul>
-<h3 id="代码示例-1"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h3 id="添加与删除"><a class="anchor" href="#%e6%b7%bb%e5%8a%a0%e4%b8%8e%e5%88%a0%e9%99%a4">#</a>添加与删除</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">any</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">any</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">any</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">==</span> <span class="mi">7</span><span class="p">;</span>          <span class="c1">// false
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">;</span>     <span class="c1">// true
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;b&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// true
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">x</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#34;xx&#34;</span><span class="p">;</span>  <span class="c1">// true
-</span></span></span></code></pre></div><h3 id="heading-3"><a class="anchor" href="#heading-3">#</a>———————————</h3>
-<h3 id="add_member"><a class="anchor" href="#add_member">#</a>add_member</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">add_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>向 object 类型的 Json 中添加 key-value 键值对 (非 object 对象调用此方法后自动变成 object)。</p>
-</li>
-<li>
-<p>此方法将保持 key 的添加顺序，key 可能重复出现。</p>
-</li>
-<li>
-<p>参数 key 是 <code>'\0'</code> 结尾的 C 字符串，参数 v 是所添加的值。</p>
-</li>
-<li>
-<p>参数 v 执行 move 语义，调用此方法后，v 变为 null 对象。</p>
-</li>
-<li>
-<p><strong>NOTE：</strong> co/json 出于性能上的考虑，要求 key 中不能包含双引号。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// r -&gt; {&#34;a&#34;:1}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">);</span>  <span class="c1">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">);</span> <span class="c1">// r -&gt; {&#34;a&#34;:1, &#34;d&#34;:3.3, &#34;s&#34;:&#34;xx&#34;}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>                            <span class="c1">// r -&gt; null
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span> <span class="c1">// r -&gt; {&#34;o&#34;:{&#34;x&#34;:3}}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; {&#34;o&#34;:1,&#34;k&#34;:2}
-</span></span></span></code></pre></div><h3 id="erase"><a class="anchor" href="#erase">#</a>erase</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span> <span class="c1">// 末尾移到 i，O(1)，打乱顺序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span>  <span class="c1">// 前移，O(n)，保持顺序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>前两个版本删除 array 中的第 i 个元素。</li>
-<li>第 3 个版本删除 object 中 <code>key</code> 对应的元素。</li>
+<li>
+<p><code>add_member</code> 添加 key-value 到 object 中(非 object 先重置为 object)，允许重复 key；</p>
+</li>
+<li>
+<p><code>push_back</code> 添加元素到 array 末尾(非 array 先重置为 array)；</p>
+</li>
+<li>
+<p>参数 <code>v</code> 采用 move 语义；调用后 <code>v</code> 变为 null。</p>
+</li>
+<li>
+<p><code>remove</code>、<code>erase</code> 删除 array 或 object 中元素。</p>
+</li>
+<li>
+<p><code>remove</code> 是 O(1)，<code>erase</code> 是 O(n)。</p>
+</li>
 </ul>
-<h3 id="push_back"><a class="anchor" href="#push_back">#</a>push_back</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">push_back</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>向 array 类型的 Json 中添加元素(非 array 对象调用此方法后自动变成 array)。</p>
-</li>
-<li>
-<p>参数 v 执行 move 语义，调用此方法后，v 变为 null 对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>    <span class="c1">// r -&gt; [1]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">3.3</span><span class="p">);</span>  <span class="c1">// r -&gt; [1, 3.3]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">);</span> <span class="c1">// r -&gt; [1, 3.3, &#34;xx&#34;]
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// r -&gt; {&#34;i&#34;:1}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">);</span>  <span class="c1">// r -&gt; {&#34;i&#34;:1, &#34;d&#34;:3.3}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">);</span> <span class="c1">// r -&gt; {&#34;i&#34;:1, &#34;d&#34;:3.3, &#34;s&#34;:&#34;xx&#34;}
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>  <span class="c1">// r -&gt; null, x -&gt; [[1, 3.3, &#34;xx&#34;]]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="p">().</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span> <span class="c1">// r -&gt; [[1,2]]
-</span></span></span></code></pre></div><h3 id="remove"><a class="anchor" href="#remove">#</a>remove</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">uint32</span> <span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>前两个版本移除 array 中的第 i 个元素。</li>
-<li>第 3 个版本移除 object 中 <code>key</code> 对应的元素。</li>
-<li><code>remove</code> 操作会将最后一个元素移动到删除的元素所在的位置。</li>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>                             <span class="c1">// r -&gt; null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="p">().</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span> <span class="c1">// r -&gt; {&#34;o&#34;:{&#34;x&#34;:3}}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>  <span class="c1">// c -&gt; [1,2]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>  <span class="c1">// c -&gt; null, d -&gt; [[1, 2]]
+</span></span></span></code></pre></div><h3 id="序列化"><a class="anchor" href="#%e5%ba%8f%e5%88%97%e5%8c%96">#</a>序列化</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>    <span class="k">const</span><span class="p">;</span>  <span class="c1">// 紧凑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">dbg</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>    <span class="k">const</span><span class="p">;</span>  <span class="c1">// 截断长字符串（&gt;512 字节）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">pretty</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>  <span class="c1">// 缩进 4 空格
+</span></span></span></code></pre></div><ul>
+<li><code>mdp</code>：浮点数最大有效小数位数，默认 16。</li>
 </ul>
-<h3 id="reset"><a class="anchor" href="#reset">#</a>reset</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/json.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">,</span> <span class="s">&#34;coost&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;str:    &#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;pretty:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">pretty</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="大小"><a class="anchor" href="#%e5%a4%a7%e5%b0%8f">#</a>大小</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span>   <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">array_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">object_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">string_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>重置 Json 对象为 null。</li>
+<li><code>size()</code>：array 元素数，object 键值对数，string 长度，其它 0。</li>
+<li><code>empty()</code> 等价于 <code>size() == 0</code>。</li>
+<li><code>array_size()</code> / <code>object_size()</code> / <code>string_size()</code> 仅对应类型返回长度，其它 0。</li>
 </ul>
-<h3 id="swap"><a class="anchor" href="#swap">#</a>swap</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>交换两个 Json 对象的内容。</li>
-</ul>
-<h3 id="heading-4"><a class="anchor" href="#heading-4">#</a>———————————</h3>
-<h3 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator[]</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">uint32</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>重载 <code>operator[]</code>，根据 index 或 key 获取 Json 对象中的元素。</p>
-</li>
-<li>
-<p>1-2, 适用于 array 类型，获取 array 对象的第 i 个元素，i 必须在 array 大小范围内。</p>
-</li>
-<li>
-<p>3, 适用于 object 类型，key 不存在时，会在 Json 中插入一个 null 对象。</p>
-</li>
-<li>
-<p><strong>一般情况下，建议尽量用只读的 <code>get()</code> 方法取代此操作。</strong></p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">7</span> <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">}</span> <span class="p">},</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">].</span><span class="n">as_int</span><span class="p">();</span>    <span class="c1">// 7
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;x&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 1
-</span></span></span></code></pre></div><h3 id="has_member"><a class="anchor" href="#has_member">#</a>has_member</h3>
+<h3 id="has_member"><a class="anchor" href="#has_member">#</a>has_member</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">has_member</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>判断 Json 对象中是否存在 key 对应的元素。</p>
-</li>
-<li>
-<p>若调用此方法的 Json 对象不是 object 类型，返回 false。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">has_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">);</span> <span class="c1">// true
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">.</span><span class="n">has_member</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">);</span> <span class="c1">// false
-</span></span></span></code></pre></div><h3 id="size"><a class="anchor" href="#size">#</a>size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>若 Json 是 object 或 array 类型，此方法返回元素个数。</p>
-</li>
-<li>
-<p>若 Json 是 string 类型，此方法返回字符串长度。</p>
-</li>
-<li>
-<p>所有其他类型，此方法返回 0。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>      <span class="c1">// 3
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;x&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 5
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="c1">// 3
-</span></span></span></code></pre></div><h3 id="empty"><a class="anchor" href="#empty">#</a>empty</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 Json 对象是否为空，等价于 <code>size() == 0</code>。</li>
-</ul>
-<h3 id="string_size"><a class="anchor" href="#string_size">#</a>string_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">string_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 string 类型的长度，若调用此方法的 Json 对象不是 string 类型，返回 0。</li>
-</ul>
-<h3 id="array_size"><a class="anchor" href="#array_size">#</a>array_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">array_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 array 类型的元素个数，若调用此方法的 Json 对象不是 array 类型，返回 0。</li>
-</ul>
-<h3 id="object_size"><a class="anchor" href="#object_size">#</a>object_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">object_size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 object 类型的元素个数，若调用此方法的 Json 对象不是 object 类型，返回 0。</li>
-</ul>
-<h3 id="heading-5"><a class="anchor" href="#heading-5">#</a>———————————</h3>
-<h3 id="str"><a class="anchor" href="#str">#</a>str</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">str</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>将 Json 对象转换成字符串。</li>
-<li>第 1 个版本将 JSON 字符串追加到 fastream 中，返回值与参数 s 相同。</li>
-<li>第 2 个版本将 JSON 字符串追加到 fastring 中，返回值与参数 s 相同。</li>
-<li>第 3 个版本直接返回 JSON 字符串。</li>
-<li>参数 <code>mdp</code> 是 <code>max decimal places</code> 的缩写，表示最多保留多少位小数。</li>
-</ul>
-<h3 id="pretty"><a class="anchor" href="#pretty">#</a>pretty</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">pretty</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">pretty</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">pretty</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>将 Json 对象转换成更漂亮的 JSON 字符串，除了结果好看点，其他与 <code>str()</code> 一样。</li>
-</ul>
-<h3 id="dbg"><a class="anchor" href="#dbg">#</a>dbg</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">dbg</span><span class="p">(</span><span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">dbg</span><span class="p">(</span><span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dbg</span><span class="p">(</span><span class="kt">int</span> <span class="n">mdp</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>将 Json 对象转换成 debug 字符串，当 string 类型的值长度超过 512 字节时，截断取前 32 字节，其他与 <code>str()</code> 一样。</li>
-<li>此方法一般用于打印日志。有些应用场景中，Json 对象可能包含较长的 string，如一个图片文件的 base64 编码，这个时候用 <code>dbg()</code> 取代 <code>str()</code> 方法，可以避免打印过多无意义的日志。</li>
-</ul>
-<h3 id="parse_from"><a class="anchor" href="#parse_from">#</a>parse_from</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">parse_from</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>从 JSON 字符串解析 Json 对象。</li>
-<li>第 1 个版本中，s 不要求以 <code>'\0'</code> 结尾。</li>
-<li>解析成功时，返回 true，否则返回 false。</li>
-<li>解析失败时，Json 变成 null 对象。</li>
-</ul>
-<h3 id="代码示例-2"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-2">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="n">s</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>    <span class="c1">// s -&gt; {&#34;a&#34;:[1,2,3]}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fastring</span> <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">pretty</span><span class="p">();</span> 
-</span></span><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">dbg</span><span class="p">();</span>          <span class="c1">// print json debug string
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>                <span class="c1">// the same as above, but is  more efficient
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">parse_from</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">.</span><span class="n">parse_from</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">v</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="heading-6"><a class="anchor" href="#heading-6">#</a>———————————</h3>
-<h3 id="begin"><a class="anchor" href="#begin">#</a>begin</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回指向 Json 对象的 beginning iterator。</li>
-<li>若调用此方法的 Json 对象不是 array 或 object 类型，返回值等于 <a href="#end">end()</a>。</li>
-</ul>
-<h3 id="end"><a class="anchor" href="#end">#</a>end</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="n">iterator</span><span class="o">::</span><span class="n">End</span><span class="o">&amp;</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回一个假的 end iterator。</li>
-<li>返回值实际上并不是一个 iterator 对象，但 iterator 可以与它比较，若 iterator 与 <code>end()</code> 相等，表示没有更多的元素了。</li>
+<li>判断 <code>key</code> 是否存在，非 object 类型返回 false。</li>
 </ul>
 <h3 id="iterator"><a class="anchor" href="#iterator">#</a>iterator</h3>
-<h4 id="operator-4"><a class="anchor" href="#operator-4">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">End</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 iterator 是否等于 <code>End</code>，End 是一个假的 end iterator。</li>
-</ul>
-<h4 id="operator-5"><a class="anchor" href="#operator-5">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">End</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断 iterator 是否不等于 <code>End</code>，End 是一个假的 end iterator。</li>
-</ul>
-<h4 id="operator-6"><a class="anchor" href="#operator-6">#</a>operator++</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>重载前缀 <code>++</code> 操作，不支持后缀 <code>++</code> 操作。</li>
-</ul>
-<h4 id="operator-7"><a class="anchor" href="#operator-7">#</a>operator*</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>重载 <code>operator*</code>，此方法<strong>仅适用于 array 类型的 iterator</strong>。</li>
-<li>Json 为 array 时，iterator 指向 array 中的元素。</li>
-</ul>
-<h4 id="key"><a class="anchor" href="#key">#</a>key</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">key</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>此方法<strong>仅适用于 object 类型的 iterator</strong>。</li>
-<li>Json 为 object 时，iterator 指向 object 中的 key-value 键值对，此方法返回该键值对中的 key。</li>
-</ul>
-<h4 id="value"><a class="anchor" href="#value">#</a>value</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>此方法<strong>仅适用于 object 类型的 iterator</strong>。</li>
-<li>Json 为 object 时，iterator 指向 object 中的 key-value 键值对，此方法返回该键值对中的 value 的引用。</li>
-</ul>
-<h3 id="遍历-array-或-object"><a class="anchor" href="#%e9%81%8d%e5%8e%86-array-%e6%88%96-object">#</a>遍历 array 或 object</h3>
-<p>co.json 支持用 iterator 遍历 array 或 object 类型的 Json 对象。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// {&#34;i&#34;:7, &#34;s&#34;:&#34;xx&#34;, &#34;a&#34;:[123, true, &#34;nice&#34;]}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">7</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}},</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">iterator</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">_End</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">_End</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">key</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">any</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">any</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// object
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">r</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">iterator</span><span class="o">::</span><span class="n">_End</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span></code></pre></div><ul>
+<li>array：<code>operator*</code> 返回元素。</li>
+<li>object：<code>key()</code> 返回键，<code>value()</code> 返回值。</li>
+<li>不支持后缀 <code>++</code>。</li>
+</ul>
+<blockquote class="book-hint warning">
+  object 类型的 iterator，不允许使用 <code>operator*</code>。
+</blockquote>
+
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/json.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用 iterator 遍历 object
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">x</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">(),</span> <span class="s">&#34; = &#34;</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">as_int</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// array
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用 iterator 遍历 array
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">bengin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">y</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用索引遍历 array
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="n">uint32</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">.</span><span class="n">array_size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="解析"><a class="anchor" href="#%e8%a7%a3%e6%9e%90">#</a>解析</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li>将字符串解析成 JSON 对象，失败返回 null。</li>
+</ul>
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/json.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">R</span><span class="s">&#34;({&#34;</span><span class="n">name</span><span class="s">&#34;:&#34;</span><span class="n">coost</span><span class="s">&#34;,&#34;</span><span class="n">version</span><span class="s">&#34;:4,&#34;</span><span class="n">tags</span><span class="s">&#34;:[&#34;</span><span class="n">cpp</span><span class="s">&#34;,&#34;</span><span class="n">coroutine</span><span class="s">&#34;]})&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">x</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;name:    &#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="s">&#34;name&#34;</span><span class="p">].</span><span class="n">as_c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;version: &#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="s">&#34;version&#34;</span><span class="p">].</span><span class="n">as_int</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">tags</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;tags&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">uint32</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tags</span><span class="p">.</span><span class="n">array_size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;tag[&#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s">&#34;] = &#34;</span><span class="p">,</span> <span class="n">tags</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">as_c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="快速创建-array-或-object"><a class="anchor" href="#%e5%bf%ab%e9%80%9f%e5%88%9b%e5%bb%ba-array-%e6%88%96-object">#</a>快速创建 array 或 object</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">array</span><span class="p">();</span>  <span class="c1">// 返回空 array
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">();</span> <span class="c1">// 返回空 object
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">array</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">any</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">any</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">);</span>
+</span></span></code></pre></div><p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">a</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">array</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">o</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><h2 id="终端或日志中打印-json"><a class="anchor" href="#%e7%bb%88%e7%ab%af%e6%88%96%e6%97%a5%e5%bf%97%e4%b8%ad%e6%89%93%e5%8d%b0-json">#</a>终端或日志中打印 JSON</h2>
+<p>coost 重载了如下操作符，可在 <code>co::print</code> 或日志中直接打印 <code>json::any</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="k">const</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span></code></pre></div><p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">o</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;o: &#34;</span><span class="p">,</span> <span class="n">o</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;o: &#34;</span><span class="p">,</span> <span class="n">o</span><span class="p">);</span>
 </span></span></code></pre></div><h2 id="性能优化建议"><a class="anchor" href="#%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%bb%ba%e8%ae%ae">#</a>性能优化建议</h2>
-<p>有些用户喜欢用下面的方式添加元素：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+<p>有些用户喜欢用如下方式添加元素：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;a&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">[</span><span class="s">&#34;s&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#34;hello world&#34;</span><span class="p">;</span>
-</span></span></code></pre></div><p>上面的操作虽然可行，但是<strong>效率并不高</strong>。<code>operator[]</code> 操作会先查找 key，找到了就更新值，没找到就插入新的元素。一般建议用 <strong>add_member()</strong> 方法取而代之：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span><span class="p">;</span>
+</span></span></code></pre></div><p>可行，但<strong>效率不高</strong>。<code>operator[]</code> 先查找 key，找到就更新值，没找到插入新元素。建议用 <strong>add_member()</strong> 方法取代:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><p>或者像下面这样构造 Json 对象：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></code></pre></div><p>或者像下面这样构造:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;hello world&#34;</span><span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><p>对于只读操作，建议用 <a href="#get">get()</a> 取代 <code>operator[]</code>，前者无副作用。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Json</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}};</span>
-</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">).</span><span class="n">as_int</span><span class="p">();</span> <span class="c1">// 1
-</span></span></span></code></pre></div></article>
+</span></span></code></pre></div></article>
  
       
 
@@ -1654,77 +1319,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#基本概念">基本概念</a></li>
-        <li><a href="#global">global</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#jsonany">json::any</a>
           <ul>
-            <li><a href="#jsonarray">json::array</a></li>
-            <li><a href="#jsonobject">json::object</a></li>
-            <li><a href="#jsonparse">json::parse</a></li>
-          </ul>
-        </li>
-        <li><a href="#cojson">co::Json</a>
-          <ul>
-            <li><a href="#constructor">constructor</a></li>
-            <li><a href="#operator">operator=</a></li>
-            <li><a href="#dup">dup</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#is_null">is_null</a></li>
-            <li><a href="#is_bool">is_bool</a></li>
-            <li><a href="#is_int">is_int</a></li>
-            <li><a href="#is_double">is_double</a></li>
-            <li><a href="#is_string">is_string</a></li>
-            <li><a href="#is_array">is_array</a></li>
-            <li><a href="#is_object">is_object</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#as_bool">as_bool</a></li>
-            <li><a href="#as_int">as_int</a></li>
-            <li><a href="#as_double">as_double</a></li>
-            <li><a href="#as_string">as_string</a></li>
-            <li><a href="#as_c_str">as_c_str</a></li>
-            <li><a href="#get">get</a></li>
-            <li><a href="#set">set</a></li>
-            <li><a href="#代码示例">代码示例</a></li>
-            <li><a href="#heading-2">———————————</a></li>
-            <li><a href="#operator-1">operator==</a></li>
-            <li><a href="#operator-2">operator!=</a></li>
-            <li><a href="#代码示例-1">代码示例</a></li>
-            <li><a href="#heading-3">———————————</a></li>
-            <li><a href="#add_member">add_member</a></li>
-            <li><a href="#erase">erase</a></li>
-            <li><a href="#push_back">push_back</a></li>
-            <li><a href="#remove">remove</a></li>
-            <li><a href="#reset">reset</a></li>
-            <li><a href="#swap">swap</a></li>
-            <li><a href="#heading-4">———————————</a></li>
-            <li><a href="#operator-3">operator[]</a></li>
+            <li><a href="#构造与拷贝">构造与拷贝</a></li>
+            <li><a href="#类型查询与取值">类型查询与取值</a></li>
+            <li><a href="#访问与修改getset">访问与修改(get/set)</a></li>
+            <li><a href="#添加与删除">添加与删除</a></li>
+            <li><a href="#序列化">序列化</a></li>
+            <li><a href="#大小">大小</a></li>
             <li><a href="#has_member">has_member</a></li>
-            <li><a href="#size">size</a></li>
-            <li><a href="#empty">empty</a></li>
-            <li><a href="#string_size">string_size</a></li>
-            <li><a href="#array_size">array_size</a></li>
-            <li><a href="#object_size">object_size</a></li>
-            <li><a href="#heading-5">———————————</a></li>
-            <li><a href="#str">str</a></li>
-            <li><a href="#pretty">pretty</a></li>
-            <li><a href="#dbg">dbg</a></li>
-            <li><a href="#parse_from">parse_from</a></li>
-            <li><a href="#代码示例-2">代码示例</a></li>
-            <li><a href="#heading-6">———————————</a></li>
-            <li><a href="#begin">begin</a></li>
-            <li><a href="#end">end</a></li>
-            <li><a href="#iterator">iterator</a>
-              <ul>
-                <li><a href="#operator-4">operator==</a></li>
-                <li><a href="#operator-5">operator!=</a></li>
-                <li><a href="#operator-6">operator++</a></li>
-                <li><a href="#operator-7">operator*</a></li>
-                <li><a href="#key">key</a></li>
-                <li><a href="#value">value</a></li>
-              </ul>
-            </li>
-            <li><a href="#遍历-array-或-object">遍历 array 或 object</a></li>
+            <li><a href="#iterator">iterator</a></li>
           </ul>
         </li>
+        <li><a href="#解析">解析</a></li>
+        <li><a href="#快速创建-array-或-object">快速创建 array 或 object</a></li>
+        <li><a href="#终端或日志中打印-json">终端或日志中打印 JSON</a></li>
         <li><a href="#性能优化建议">性能优化建议</a></li>
       </ul>
     </li>

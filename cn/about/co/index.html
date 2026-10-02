@@ -11,7 +11,7 @@
 coost 通常会提供简短、语义清晰的命名； coost 一般不会为了支持一些较少使用的功能，而增加代码的复杂度、维护难度； coost 内部不使用异常，用户不需要 try / catch。 #它解决什么问题 C&#43;&#43; 项目开发中，通常会遇到下面问题：
 并发模型复杂：多线程 &#43; 回调 &#43; 锁，逻辑容易写乱，异步代码可读性差、难以调试。 依赖多：项目可能引入多个三方库，代码风格、内存管理方式等不统一，集成、调试和优化成本高。 依赖重：项目可能引入 Boost、folly 等大型三方库，编译慢、上手成本高。 全局对象管理混乱：不同 .cc 文件的静态对象，初始化与析构顺序未定义，程序可能因访问未初始化或已析构的静态对象而崩溃。 #coost 的解决方案 用协程简化并发模型，用同步写法获得异步性能。 用 coost 一个库覆盖配置、日志、协程、网络、RPC、JSON、单元测试、基准测试等常用基础组件，减少三方依赖。 核心组件自研，不依赖 Boost、folly 等大型三方库。 用 co::make_static / co::make_rootic 接管静态对象，借助 nifty counter 技巧保证被依赖的对象先构造、后析构。 此外，coost 还统一了：
 配置方式：所有组件通过 flag 配置，支持命令行和配置文件。 输出方式：终端输出、日志都基于 co::string 流式接口，自定义类型只需实现 operator&lt;&lt;(co::string&amp;, const T&amp;)。 内存分配：所有组件统一使用 coost 内存分配器。 #核心组件与设计选择 #协程 coost 协程与 golang 中 goroutine 类似：">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="简介" />
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="总体介绍" />
 <meta property="og:description" content="#定位 coost 是一个轻量的跨平台 C&#43;&#43; 基础库，提供协程、网络、RPC、日志、配置、JSON 等组件，风格接近 golang，追求极简，同时保持高性能，不依赖 Boost、folly 等三方库。
 适合如下场景：
 需要轻量协程； 需要基于协程的网络框架； 不想引入较重或较多的三方库； 希望配置、日志、内存管理等有一致的风格。 #设计原则 coost 的核心设计原则是 keep simple，同时保持高性能。
@@ -25,13 +25,13 @@ coost 通常会提供简短、语义清晰的命名； coost 一般不会为了�
 
 <meta property="article:modified_time" content="2026-10-01T14:39:45+08:00" />
 
-<title>简介 | Coost Docs</title>
+<title>总体介绍 | Coost Docs</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/about/co/" title="Introduction">
 <link rel="stylesheet" href="../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../cn.search.min.cab6b318b2c4311e99cbe7defddb050d8273691803d7781930d8c486fe2f0fea.js" integrity="sha256-yrazGLLEMR6Zy&#43;fe/dsFDYJzaRgD13gZMNjEhv4vD&#43;o=" crossorigin="anonymous"></script>
+  <script defer src="../../../cn.search.min.cbd6aa99dd7b3f603c35617cd2a48b9b59dcec76dee3a86d84c06c9a4a324ec7.js" integrity="sha256-y9aqmd17P2A8NWF80qSLm1nc7Hbe46hthMBsmkoyTsc=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -100,7 +100,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/about/co/" class=" active">简介</a>
+    <a href="../../../cn/about/co/" class=" active">总体介绍</a>
   
 
         </li>
@@ -126,7 +126,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../cn/about/contact/" class="">联系</a>
+    <a href="../../../cn/about/contact/" class="">联系方式</a>
   
 
         </li>
@@ -838,7 +838,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>简介</strong>
+  <strong>总体介绍</strong>
 
   <label for="toc-control">
     
