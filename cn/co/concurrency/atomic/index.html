@@ -3,19 +3,15 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/atomic.h.
-#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
-enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
-#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;x, 0) 取代之。 #load &amp; store #atomic_load template &lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。">
+<meta name="description" content="#头文件 #include &#34;co/atomic.h&#34; API 在 co 命名空间。
+#内存序 using memorder_t = std::memory_order; constexpr memorder_t mo_relaxed = std::memory_order_relaxed; constexpr memorder_t mo_consume = std::memory_order_consume; constexpr memorder_t mo_acquire = std::memory_order_acquire; constexpr memorder_t mo_release = std::memory_order_release; constexpr memorder_t mo_acq_rel = std::memory_order_acq_rel; constexpr memorder_t mo_seq_cst = std::memory_order_seq_cst; #加载与存储 template&lt;typename T&gt; T atomic_load(const T* p, memorder_t mo = mo_seq_cst); template&lt;typename T, typename V&gt; void atomic_store(T* p, V v, memorder_t mo = mo_seq_cst); atomic_load 支持内存序：mo_relaxed、mo_consume、mo_acquire、mo_seq_cst。 atomic_store 支持内存序：mo_relaxed、mo_release、mo_seq_cst。 示例:">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="原子操作" />
-<meta property="og:description" content="include: co/atomic.h.
-#Memory Order coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：
-enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; 为了保持兼容性，coost 中的原子操作默认的 memory order 均为 mo_seq_cst。
-#v3.0 删除的 API atomic_get，使用 atomic_load 取代之。 atomic_set，使用 atomic_store 取代之。 atomic_reset，使用 atomic_store(&amp;x, 0) 取代之。 #load &amp; store #atomic_load template &lt;typename T&gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); 此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。" />
+<meta property="og:description" content="#头文件 #include &#34;co/atomic.h&#34; API 在 co 命名空间。
+#内存序 using memorder_t = std::memory_order; constexpr memorder_t mo_relaxed = std::memory_order_relaxed; constexpr memorder_t mo_consume = std::memory_order_consume; constexpr memorder_t mo_acquire = std::memory_order_acquire; constexpr memorder_t mo_release = std::memory_order_release; constexpr memorder_t mo_acq_rel = std::memory_order_acq_rel; constexpr memorder_t mo_seq_cst = std::memory_order_seq_cst; #加载与存储 template&lt;typename T&gt; T atomic_load(const T* p, memorder_t mo = mo_seq_cst); template&lt;typename T, typename V&gt; void atomic_store(T* p, V v, memorder_t mo = mo_seq_cst); atomic_load 支持内存序：mo_relaxed、mo_consume、mo_acquire、mo_seq_cst。 atomic_store 支持内存序：mo_relaxed、mo_release、mo_seq_cst。 示例:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/concurrency/atomic/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+<meta property="article:modified_time" content="2026-10-02T23:58:52+08:00" />
 
 <title>原子操作 | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -23,7 +19,7 @@ enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/concurrency/atomic/" title="Atomic Operations">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.024346af3424f3e677e23e1b21bb20de4f27d274598edf2928e38a8c8e083cc9.js" integrity="sha256-AkNGrzQk8&#43;Z34j4bIbsg3k8n0nRZjt8pKOOKjI4IPMk=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.4de3884448a57c52df68fa03f8ab3ac03882a6a3bb7bc1c6d35af6a915e60557.js" integrity="sha256-TeOIREilfFLfaPoD&#43;Ks6wDiCpqO7e8HG01r2qRXmBVc=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -255,7 +251,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle" checked />
     <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
-      <a role="button" class="">并发编程</a>
+      <a role="button" class="">并发</a>
     </label>
   
 
@@ -440,7 +436,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">网络编程</a>
+      <a role="button" class="">网络</a>
     </label>
   
 
@@ -848,43 +844,12 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#memory-order">Memory Order</a></li>
-        <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
-        <li><a href="#load--store">load &amp; store</a>
-          <ul>
-            <li><a href="#atomic_load">atomic_load</a></li>
-            <li><a href="#atomic_store">atomic_store</a></li>
-          </ul>
-        </li>
-        <li><a href="#交换">交换</a>
-          <ul>
-            <li><a href="#atomic_swap">atomic_swap</a></li>
-            <li><a href="#atomic_cas">atomic_cas</a></li>
-            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
-          </ul>
-        </li>
-        <li><a href="#算术运算">算术运算</a>
-          <ul>
-            <li><a href="#atomic_inc">atomic_inc</a></li>
-            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
-            <li><a href="#atomic_dec">atomic_dec</a></li>
-            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
-            <li><a href="#atomic_add">atomic_add</a></li>
-            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
-            <li><a href="#atomic_sub">atomic_sub</a></li>
-            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
-          </ul>
-        </li>
-        <li><a href="#位运算">位运算</a>
-          <ul>
-            <li><a href="#atomic_or">atomic_or</a></li>
-            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
-            <li><a href="#atomic_and">atomic_and</a></li>
-            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
-            <li><a href="#atomic_xor">atomic_xor</a></li>
-            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#内存序">内存序</a></li>
+        <li><a href="#加载与存储">加载与存储</a></li>
+        <li><a href="#交换">交换</a></li>
+        <li><a href="#加减">加减</a></li>
+        <li><a href="#位运算">位运算</a></li>
       </ul>
     </li>
   </ul>
@@ -899,364 +864,120 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/tree/master/include/co/atomic.h">co/atomic.h</a>.</p>
-<h2 id="memory-order"><a class="anchor" href="#memory-order">#</a>Memory Order</h2>
-<p>coost 从 v3.0 开始，增加了对 memory order 的支持。coost 中的 6 种 memory order 定义如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="nc">memory_order_t</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_relaxed</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_consume</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_acquire</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_release</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_acq_rel</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mo_seq_cst</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><p>为了保持兼容性，coost 中的原子操作默认的 memory order 均为 <code>mo_seq_cst</code>。</p>
-<h2 id="v30-删除的-api"><a class="anchor" href="#v30-%e5%88%a0%e9%99%a4%e7%9a%84-api">#</a>v3.0 删除的 API</h2>
-<ul>
-<li><strong>atomic_get</strong>，使用 <code>atomic_load</code> 取代之。</li>
-<li><strong>atomic_set</strong>，使用 <code>atomic_store</code> 取代之。</li>
-<li><strong>atomic_reset</strong>，使用 <code>atomic_store(&amp;x, 0)</code> 取代之。</li>
-</ul>
-<h2 id="load--store"><a class="anchor" href="#load--store">#</a>load &amp; store</h2>
-<h3 id="atomic_load"><a class="anchor" href="#atomic_load">#</a>atomic_load</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_load</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/atomic.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间。</p>
+<h2 id="内存序"><a class="anchor" href="#%e5%86%85%e5%ad%98%e5%ba%8f">#</a>内存序</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">using</span> <span class="n">memorder_t</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_relaxed</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_consume</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_consume</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_acquire</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_release</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_acq_rel</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_acq_rel</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">memorder_t</span> <span class="n">mo_seq_cst</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_seq_cst</span><span class="p">;</span>
+</span></span></code></pre></div><h2 id="加载与存储"><a class="anchor" href="#%e5%8a%a0%e8%bd%bd%e4%b8%8e%e5%ad%98%e5%82%a8">#</a>加载与存储</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_load</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">atomic_store</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>此函数获取 p 指向的变量的值，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)。</p>
-</li>
-<li>
-<p><code>mo</code> 可以是 mo_relaxed, mo_consume, mo_acquire, mo_seq_cst。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li><code>atomic_load</code> 支持内存序：<code>mo_relaxed</code>、<code>mo_consume</code>、<code>mo_acquire</code>、<code>mo_seq_cst</code>。</li>
+<li><code>atomic_store</code> 支持内存序：<code>mo_relaxed</code>、<code>mo_release</code>、<code>mo_seq_cst</code>。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_load</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span> <span class="c1">// r = 7
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_load</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="n">mo_relaxed</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="atomic_store"><a class="anchor" href="#atomic_store">#</a>atomic_store</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">void</span> <span class="n">atomic_store</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+<p>示例:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">atomic_store</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>      <span class="c1">// i -&gt; 3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">atomic_load</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// x -&gt; 3
+</span></span></span></code></pre></div><h2 id="交换"><a class="anchor" href="#%e4%ba%a4%e6%8d%a2">#</a>交换</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_swap</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_compare_swap</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memorder_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_cas</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memorder_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">atomic_bool_cas</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memorder_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>此函数将 p 指向的值设为 v，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，V 是可以转换为 T 类型的任意类型。</p>
-</li>
-<li>
-<p><code>mo</code> 可以是 mo_relaxed, mo_release, mo_seq_cst。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li><code>atomic_swap</code> 返回旧值，支持所有内存序。</li>
+<li><code>atomic_cas</code> 与 <code>atomic_compare_swap</code> 等价，<code>*p == o</code> 时才执行交换操作，返回旧值。</li>
+<li><code>atomic_bool_cas</code> 与 <code>atomic_cas</code> 类似，成功返回 true，失败返回 false。</li>
+<li>CAS 操作中，<code>smo</code> 是成功时内存序，支持所有，<code>fmo</code> 是失败时内存序，不能是 <code>mo_release</code>、<code>mo_acq_rel</code>，且不能强于 <code>smo</code>。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">atomic_store</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// i -&gt; 3
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">atomic_store</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mo_release</span><span class="p">);</span>
-</span></span></code></pre></div><h2 id="交换"><a class="anchor" href="#%e4%ba%a4%e6%8d%a2">#</a>交换</h2>
-<h3 id="atomic_swap"><a class="anchor" href="#atomic_swap">#</a>atomic_swap</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_swap</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子交换操作，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，V 是可以转换为 T 类型的任意类型。</p>
-</li>
-<li>
-<p>此函数对 p 指向的值与 v 进行交换操作，并返回交换操作前的值。</p>
-</li>
-<li>
-<p><code>mo</code> 可以是任意类型。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
+<p>示例:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">o</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">atomic_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span> <span class="c1">// b -&gt; true, o -&gt; false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">atomic_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>   <span class="c1">// i 不变, r -&gt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">atomic_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>       <span class="c1">// i -&gt; 2, r -&gt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>       <span class="c1">// b -&gt; true, x = false
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>           <span class="c1">// i -&gt; 1, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">atomic_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="mi">8</span><span class="p">);</span>  <span class="c1">// p -&gt; 8, q = 0
-</span></span></span></code></pre></div><h3 id="atomic_cas"><a class="anchor" href="#atomic_cas">#</a>atomic_cas</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_cas</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_compare_swap</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子交换操作，T 是长度为 1, 2, 4, 8 字节的任意内置数据类型(包括指针类型)，O 与 V 是可以转换为 T 类型的任意类型。</p>
-</li>
-<li>
-<p>此函数仅在 p 指向的值与 o 相等时，才与 v 进行交换操作。</p>
-</li>
-<li>
-<p>此函数返回交换操作前的值，用户可以根据返回值是否与 o 相等来判断是否进行了交换操作。</p>
-</li>
-<li>
-<p><code>smo</code>，交换操作成功时的 memory order，可以是任意类型；<code>fmo</code>，交换操作失败时的 memory order，不能是 mo_release, mo_acq_rel，并且不能强于 <code>smo</code>。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>   <span class="c1">// b -&gt; true, x = false
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>           <span class="c1">// 不会交换, i 保持不变, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">atomic_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="mi">8</span><span class="p">);</span>  <span class="c1">// p -&gt; 8, q = 0
-</span></span></span></code></pre></div><h3 id="atomic_bool_cas"><a class="anchor" href="#atomic_bool_cas">#</a>atomic_bool_cas</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">O</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">atomic_bool_cas</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">O</span> <span class="n">o</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">smo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">memory_order_t</span> <span class="n">fmo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>与 <a href="#atomic_cas">atomic_cas</a> 类似，交换操作成功时返回 true，否则返回 false。</li>
-</ul>
-<h2 id="算术运算"><a class="anchor" href="#%e7%ae%97%e6%9c%af%e8%bf%90%e7%ae%97">#</a>算术运算</h2>
-<h3 id="atomic_inc"><a class="anchor" href="#atomic_inc">#</a>atomic_inc</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_inc</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子自增，T 是长度为 1, 2, 4, 8 字节的任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数进行自增操作，并返回自增后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_inc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>     <span class="c1">// i -&gt; 1, r = 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_inc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">);</span>  <span class="c1">// u -&gt; 1, x = 1
-</span></span></span></code></pre></div><h3 id="atomic_fetch_inc"><a class="anchor" href="#atomic_fetch_inc">#</a>atomic_fetch_inc</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_inc</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_inc">atomic_inc</a> 一样，但返回自增前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_inc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>     <span class="c1">// i -&gt; 1, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_inc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">);</span>  <span class="c1">// u -&gt; 1, x = 0
-</span></span></span></code></pre></div><h3 id="atomic_dec"><a class="anchor" href="#atomic_dec">#</a>atomic_dec</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_dec</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子自减，T 是长度为 1, 2, 4, 8 字节的任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数进行自减操作，并返回自减后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_dec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>     <span class="c1">// i -&gt; 0, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_dec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">);</span>  <span class="c1">// u -&gt; 0, x = 0
-</span></span></span></code></pre></div><h3 id="atomic_fetch_dec"><a class="anchor" href="#atomic_fetch_dec">#</a>atomic_fetch_dec</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_dec</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_dec">atomic_dec</a> 一样，但返回自减前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_dec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>     <span class="c1">// i -&gt; 0, r = 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_dec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">);</span>  <span class="c1">// u -&gt; 0, x = 1
-</span></span></span></code></pre></div><h3 id="atomic_add"><a class="anchor" href="#atomic_add">#</a>atomic_add</h3>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">x</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">atomic_bool_cas</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="mi">8</span><span class="p">);</span>  <span class="c1">// p -&gt; 8, x -&gt; true
+</span></span></span></code></pre></div><h2 id="加减"><a class="anchor" href="#%e5%8a%a0%e5%87%8f">#</a>加减</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_add</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_add</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_sub</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_inc</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_dec</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_add</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_sub</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_inc</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_dec</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>原子加法，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数加上值 v，并返回加 v 后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li><code>inc</code> 加 1，<code>dec</code> 减 1。</li>
+<li>带 fetch 版本返回旧值，不带 fetch 版本返回新值。</li>
+<li>支持所有内存序。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>     <span class="c1">// i -&gt; 1, r = 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// u -&gt; 1, x = 1
-</span></span></span></code></pre></div><h3 id="atomic_fetch_add"><a class="anchor" href="#atomic_fetch_add">#</a>atomic_fetch_add</h3>
+<h2 id="位运算"><a class="anchor" href="#%e4%bd%8d%e8%bf%90%e7%ae%97">#</a>位运算</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_add</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_or</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_and</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_xor</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_or</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_and</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="n">atomic_fetch_xor</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memorder_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_add">atomic_add</a> 一样，但返回加 v 前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li>带 fetch 版本返回旧值，不带 fetch 版本返回新值。</li>
+<li>支持所有内存序。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>     <span class="c1">// i -&gt; 1, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// u -&gt; 1, x = 0
-</span></span></span></code></pre></div><h3 id="atomic_sub"><a class="anchor" href="#atomic_sub">#</a>atomic_sub</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_sub</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子减法，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数减去值 v，并返回减 v 后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_sub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>     <span class="c1">// i -&gt; 0, r = 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_sub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// u -&gt; 0, x = 0
-</span></span></span></code></pre></div><h3 id="atomic_fetch_sub"><a class="anchor" href="#atomic_fetch_sub">#</a>atomic_fetch_sub</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_sub</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_sub">atomic_sub</a> 一样，但返回减 v 前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_sub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>     <span class="c1">// i -&gt; 0, r = 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_sub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// u -&gt; 0, x = 1
-</span></span></span></code></pre></div><h2 id="位运算"><a class="anchor" href="#%e4%bd%8d%e8%bf%90%e7%ae%97">#</a>位运算</h2>
-<h3 id="atomic_or"><a class="anchor" href="#atomic_or">#</a>atomic_or</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_or</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子位或，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数与 v 进行位或操作，并返回操作后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_or</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i |= 3, i -&gt; 7, r = 7
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_or</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u |= 3, u -&gt; 7, x = 7
-</span></span></span></code></pre></div><h3 id="atomic_fetch_or"><a class="anchor" href="#atomic_fetch_or">#</a>atomic_fetch_or</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_or</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_or">atomic_or</a> 一样，但返回位或操作之前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_or</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i |= 3, i -&gt; 7, r = 5
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_or</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u |= 3, u -&gt; 7, x = 5
-</span></span></span></code></pre></div><h3 id="atomic_and"><a class="anchor" href="#atomic_and">#</a>atomic_and</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_and</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子位与，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数与 v 进行位与操作，并返回操作后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_and</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i &amp;= 3, i -&gt; 1, r = 1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_and</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u &amp;= 3, u -&gt; 1, x = 1
-</span></span></span></code></pre></div><h3 id="atomic_fetch_and"><a class="anchor" href="#atomic_fetch_and">#</a>atomic_fetch_and</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_and</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_and">atomic_and</a> 一样，但返回位与操作之前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_and</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i &amp;= 3, i -&gt; 1, r = 5
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_and</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u &amp;= 3, u -&gt; 1, x = 5
-</span></span></span></code></pre></div><h3 id="atomic_xor"><a class="anchor" href="#atomic_xor">#</a>atomic_xor</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_xor</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>原子按位异或，T 是长度为 1, 2, 4, 8 字节的任意整数类型，V 是任意整数类型，参数 p 是 T 类型的指针。</p>
-</li>
-<li>
-<p>此函数对 p 指向的整数与 v 进行按位异或操作，并返回操作后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_xor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i ^= 3, i -&gt; 6, r = 6
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_xor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u ^= 3, u -&gt; 6, x = 6
-</span></span></span></code></pre></div><h3 id="atomic_fetch_xor"><a class="anchor" href="#atomic_fetch_xor">#</a>atomic_fetch_xor</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">T</span> <span class="n">atomic_fetch_xor</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">V</span> <span class="n">v</span><span class="p">,</span> <span class="n">memory_order_t</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo_seq_cst</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>与 <a href="#atomic_xor">atomic_xor</a> 一样，但返回按位异或操作之前的值。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">atomic_fetch_xor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>     <span class="c1">// i ^= 3, i -&gt; 6, r = 5
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">atomic_fetch_xor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// u ^= 3, u -&gt; 6, x = 5
-</span></span></span></code></pre></div></article>
+</article>
  
       
 
@@ -1308,9 +1029,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | 2023/09/09' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/9075785e1cede9e4050718717960f5b73da5b02f" title='最后修改者 idealvin | 2026/10/02' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2023/09/09</span>
+      <span>2026/10/02</span>
     </a>
   </div>
 
@@ -1378,43 +1099,12 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#memory-order">Memory Order</a></li>
-        <li><a href="#v30-删除的-api">v3.0 删除的 API</a></li>
-        <li><a href="#load--store">load &amp; store</a>
-          <ul>
-            <li><a href="#atomic_load">atomic_load</a></li>
-            <li><a href="#atomic_store">atomic_store</a></li>
-          </ul>
-        </li>
-        <li><a href="#交换">交换</a>
-          <ul>
-            <li><a href="#atomic_swap">atomic_swap</a></li>
-            <li><a href="#atomic_cas">atomic_cas</a></li>
-            <li><a href="#atomic_bool_cas">atomic_bool_cas</a></li>
-          </ul>
-        </li>
-        <li><a href="#算术运算">算术运算</a>
-          <ul>
-            <li><a href="#atomic_inc">atomic_inc</a></li>
-            <li><a href="#atomic_fetch_inc">atomic_fetch_inc</a></li>
-            <li><a href="#atomic_dec">atomic_dec</a></li>
-            <li><a href="#atomic_fetch_dec">atomic_fetch_dec</a></li>
-            <li><a href="#atomic_add">atomic_add</a></li>
-            <li><a href="#atomic_fetch_add">atomic_fetch_add</a></li>
-            <li><a href="#atomic_sub">atomic_sub</a></li>
-            <li><a href="#atomic_fetch_sub">atomic_fetch_sub</a></li>
-          </ul>
-        </li>
-        <li><a href="#位运算">位运算</a>
-          <ul>
-            <li><a href="#atomic_or">atomic_or</a></li>
-            <li><a href="#atomic_fetch_or">atomic_fetch_or</a></li>
-            <li><a href="#atomic_and">atomic_and</a></li>
-            <li><a href="#atomic_fetch_and">atomic_fetch_and</a></li>
-            <li><a href="#atomic_xor">atomic_xor</a></li>
-            <li><a href="#atomic_fetch_xor">atomic_fetch_xor</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#内存序">内存序</a></li>
+        <li><a href="#加载与存储">加载与存储</a></li>
+        <li><a href="#交换">交换</a></li>
+        <li><a href="#加减">加减</a></li>
+        <li><a href="#位运算">位运算</a></li>
       </ul>
     </li>
   </ul>
