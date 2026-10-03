@@ -115,11 +115,14 @@ xmake -v -a #启用 backtrace 特性 在 Linux、macOS 上打印程序崩溃的�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/faq/</guid>
-      <description>#FAQ #如何修改配置项的值？ flag 是 coost 中的配置管理组件，它定义的配置项(也称flag)，可以通过命令行参数或配置文件修改，具体用法见命令行中使用 flag及配置文件。
-使用 flag 库需要在 main 函数开头调用 flag::parse 解析命令行参数。 另外也可以通过 API flag::set_value 修改配置项的值：
-int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改相关配置项的值。 #程序启动时如何指定配置文件？ 用户使用 flag 定义配置项后，程序启动时可用如下方式指定配置文件：
-./xx xx.conf # 此种情况，配置文件名需要以 .conf 或 config 结尾 ./xx -conf xx.conf # 此种情况，配置文件名没有上述限制 注意 main 函数开头需要调用 flag::parse 方法。另外，用户可以用 -mkconf 自动生成配置文件：
-# 自动生成配置文件 xx.conf ./xx -mkconf #如何使用 flag 别名？ flag 支持别名，定义了别名的 flag，在命令行参数、配置文件中，可以用别名代替原名。给 flag 添加别名有两种方法，第一种是在定义 flag 时指定：</description>
+      <description>#FAQ #如何修改配置项的值？ coost 用 flag 定义配置项，可以通过命令行参数或配置文件修改。
+命令行中：
+-co_sched_num=2 -min_log_level 1 配置文件中：
+co_sched_num = 2 min_log_level = 1 用户不需要手写配置文件，可执行 ./exe -mkconf 生成配置文件。
+另外也可以调用 flag::set_value 修改 flag 默认值：
+int main(int argc, char** argv) { flag::set_value(&amp;#34;co_sched_num&amp;#34;, &amp;#34;2&amp;#34;); flag::set_value(&amp;#34;version&amp;#34;, &amp;#34;v3.1.4&amp;#34;); flag::parse(argc, argv); return 0; } 此处 flag::set_value 在 flag::parse 之前，这样用户仍然能够通过命令行参数、配置文件修改 flag 值。 #程序启动时如何指定配置文件？ 命令行参数中第一个非 flag 参数(.conf 结尾)是配置文件：
+./xx xx.conf 在代码中可以用 flag::set_config_path 设置默认配置路径，设置后，命令行中可以不传配置路径：
+int main(int argc, char** argv) { flag::set_config_path(&amp;#34;xx.conf&amp;#34;); flag::parse(argc, argv); return 0; } set_config_path 必须在 parse 前调用。 #如何使用 flag 别名？ 定义 flag 时，最后一个参数可指定最多一个别名：</description>
     </item>
     
   </channel>
