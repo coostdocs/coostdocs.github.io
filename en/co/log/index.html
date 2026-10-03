@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/log.h.
-#Introduction co.log is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:
-LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log #Level Log Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="log" />
-<meta property="og:description" content="include: co/log.h.
-#Introduction co.log is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:
-LOG &lt;&lt; &#34;hello world&#34; &lt;&lt; 23; // level log TLOG(&#34;topic&#34;) &lt;&lt; &#34;hello&#34; &lt;&lt; 23; // topic log #Level Log Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels." />
+<meta name="description" content="#Header #include &lt;co/log.h&gt; The API is in the log namespace.
+#Initialization and Shutdown log internally uses the flag component to define some configuration items, and logging behavior can be controlled through command-line arguments or a configuration file. In addition, the logging thread starts only after command-line arguments are parsed. Therefore, it must be called at the beginning of the main function:
+flag::parse(argc, argv); Shutdown API:
+void log::close(); Flushes the log buffer and exits the logging thread.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Logging" />
+<meta property="og:description" content="#Header #include &lt;co/log.h&gt; The API is in the log namespace.
+#Initialization and Shutdown log internally uses the flag component to define some configuration items, and logging behavior can be controlled through command-line arguments or a configuration file. In addition, the logging thread starts only after command-line arguments are parsed. Therefore, it must be called at the beginning of the main function:
+flag::parse(argc, argv); Shutdown API:
+void log::close(); Flushes the log buffer and exits the logging thread." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/log/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>log | Coost Docs</title>
+<title>Logging | Coost Docs</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/log/" title="日志">
 <link rel="stylesheet" href="../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,20 +92,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -117,6 +106,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -160,19 +162,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -186,7 +175,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/flag/" class="">flag</a>
+    <a href="../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -199,7 +188,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/log/" class=" active">log</a>
+    <a href="../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -212,7 +201,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../en/co/log/" class=" active">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -293,133 +295,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -438,7 +315,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -452,7 +329,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -465,33 +342,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -505,19 +356,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -564,7 +402,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -603,32 +441,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -642,33 +454,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -694,7 +480,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -707,7 +493,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -739,6 +525,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -751,7 +550,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -798,7 +610,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>log</strong>
+  <strong>Logging</strong>
 
   <label for="toc-control">
     
@@ -816,53 +628,14 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#introduction">Introduction</a>
-          <ul>
-            <li><a href="#level-log">Level Log</a></li>
-            <li><a href="#topic-log">Topic Log</a></li>
-            <li><a href="#performance">Performance</a></li>
-          </ul>
-        </li>
-        <li><a href="#apis">APIs</a>
-          <ul>
-            <li><a href="#logexit">log::exit</a></li>
-            <li><a href="#logset_write_cb">log::set_write_cb</a></li>
-            <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
-          </ul>
-        </li>
-        <li><a href="#level-log-1">Level Log</a>
-          <ul>
-            <li><a href="#basic-usages">Basic usages</a></li>
-            <li><a href="#condition-log">Condition Log</a></li>
-            <li><a href="#print-log-every-n-entries">Print log every N entries</a></li>
-            <li><a href="#print-the-first-n-logs">Print the first N logs</a></li>
-          </ul>
-        </li>
-        <li><a href="#tlog">TLOG</a></li>
-        <li><a href="#check-assertion">CHECK Assertion</a></li>
-        <li><a href="#stack-trace">Stack trace</a></li>
-        <li><a href="#configuration">Configuration</a>
-          <ul>
-            <li><a href="#log_dir">log_dir</a></li>
-            <li><a href="#log_file_name">log_file_name</a></li>
-            <li><a href="#min_log_level">min_log_level</a></li>
-            <li><a href="#max_log_size">max_log_size</a></li>
-            <li><a href="#max_log_file_size">max_log_file_size</a></li>
-            <li><a href="#max_log_file_num">max_log_file_num</a></li>
-            <li><a href="#max_log_buffer_size">max_log_buffer_size</a></li>
-            <li><a href="#log_flush_ms">log_flush_ms</a></li>
-            <li><a href="#log_daily">log_daily</a></li>
-            <li><a href="#cout">cout</a></li>
-          </ul>
-        </li>
-        <li><a href="#log-file">Log file</a>
-          <ul>
-            <li><a href="#log-file-name">Log file name</a></li>
-            <li><a href="#log-format">Log format</a></li>
-            <li><a href="#view-logs">View logs</a></li>
-          </ul>
-        </li>
-        <li><a href="#build-and-run-the-test-program">Build and run the test program</a></li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#initialization-and-shutdown">Initialization and Shutdown</a></li>
+        <li><a href="#printing-logs">Printing Logs</a></li>
+        <li><a href="#assertions">Assertions</a></li>
+        <li><a href="#printing-stack-information">Printing Stack Information</a></li>
+        <li><a href="#write-log-callback">Write Log Callback</a></li>
+        <li><a href="#log-configuration-items">Log Configuration Items</a></li>
+        <li><a href="#minimal-example">Minimal Example</a></li>
       </ul>
     </li>
   </ul>
@@ -877,375 +650,222 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/log.h">co/log.h</a>.</p>
-<h2 id="introduction"><a class="anchor" href="#introduction">#</a>Introduction</h2>
-<p><strong>co.log</strong> is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello world&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>     <span class="c1">// level log
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;topic&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// topic log
-</span></span></span></code></pre></div><h3 id="level-log"><a class="anchor" href="#level-log">#</a>Level Log</h3>
-<p>Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.</p>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>log</code> namespace.</p>
+<h2 id="initialization-and-shutdown"><a class="anchor" href="#initialization-and-shutdown">#</a>Initialization and Shutdown</h2>
+<p><code>log</code> internally uses the <code>flag</code> component to define some configuration items, and logging behavior can be controlled through command-line arguments or a configuration file. In addition, the logging thread starts only after command-line arguments are parsed. Therefore, it must be called at the beginning of the <code>main</code> function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span></code></pre></div><p>Shutdown API:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">log</span><span class="o">::</span><span class="n">close</span><span class="p">();</span>
+</span></span></code></pre></div><ul>
+<li>Flushes the log buffer and exits the logging thread.</li>
+<li>Users generally do not need to call this function explicitly.</li>
+</ul>
+<h2 id="printing-logs"><a class="anchor" href="#printing-logs">#</a>Printing Logs</h2>
+<p>Use the following functions to print logs at different levels:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">debug</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">warn</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">error</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">fatal</span><span class="p">(...);</span>
+</span></span></code></pre></div><ul>
+<li>The above functions are all thread-safe and accept any number of arguments;</li>
+<li>Arguments can be any type supported by <code>co::string::operator&lt;&lt;</code>;</li>
+<li>A newline is automatically added at the end of the log;</li>
+<li><code>fatal</code> level logs terminate the program.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;hello &#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="sc">&#39; &#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span></code></pre></div><p>Supported argument types include:</p>
+<ul>
+<li>bool, outputs false or true;</li>
+<li>Character types: <code>char, signed char, unsigned char</code>;</li>
+<li>Integer types;</li>
+<li>Floating-point types: <code>double, float</code>;</li>
+<li>String types: <code>const char*</code>, <code>co::string</code>, <code>std::string</code>, <code>std::string_view</code>;</li>
+<li>Pointer types: <code>void*, T*</code>, outputs <code>0x</code> followed by the hexadecimal value;</li>
+<li>STL containers: <code>std::vector, std::map, co::vector, co::map</code>, etc.; <code>co/stl.h</code> must be included.</li>
+</ul>
+<p>Custom types need to implement <code>operator&lt;&lt;(co::string&amp;, const T&amp;)</code>, for example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Point</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">,</span> <span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Point(&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;, &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Point</span> <span class="n">p</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;point: &#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;point: &#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="assertions"><a class="anchor" href="#assertions">#</a>Assertions</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ne</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_lt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_gt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_le</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">...);</span>
+</span></span></code></pre></div><ul>
+<li>If check fails, it flushes the log buffer, prints stack information, and calls <code>abort()</code> to terminate the program;</li>
+<li>If check succeeds, no information is output.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 should be 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_eq</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 must == 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ne</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;1+1 != 3&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_lt</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1 &lt; 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;2 &gt; 1&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_le</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &lt;= 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">::</span><span class="n">check_ge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &gt;= 2&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="printing-stack-information"><a class="anchor" href="#printing-stack-information">#</a>Printing Stack Information</h2>
+<p>coost captures exceptions or abnormal signals generated in the program and prints stack information before the program crashes and exits.</p>
+<p>On non-Windows platforms, <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a> is required. On Linux, GCC generally has a built-in backtrace library; on macOS, users usually need to install it manually.</p>
+<p>On non-Windows platforms, enable this feature during build as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># xmake</span>
+</span></span><span class="line"><span class="cl">xmake f --with_backtrace<span class="o">=</span><span class="nb">true</span>   <span class="c1"># Use the backtrace library</span>
+</span></span><span class="line"><span class="cl">xmake                           <span class="c1"># Build libco</span>
+</span></span><span class="line"><span class="cl">xmake b stack                   <span class="c1"># Build test/stack.cc</span>
+</span></span><span class="line"><span class="cl">xmake r stack                   <span class="c1"># Run the stack test program</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># cmake</span>
+</span></span><span class="line"><span class="cl">mkdir cmakebuild <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cmakebuild
+</span></span><span class="line"><span class="cl">cmake .. -DWITH_BACKTRACE<span class="o">=</span>ON
+</span></span><span class="line"><span class="cl">make -j8
+</span></span></code></pre></div><h2 id="write-log-callback"><a class="anchor" href="#write-log-callback">#</a>Write Log Callback</h2>
+<p>By default, coost logs to a local file. Users can set a callback to write logs:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">log</span><span class="o">::</span><span class="n">set_write_cb</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">cb</span><span class="p">)(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">also_log2local</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li><code>data</code> may contain multiple logs, and <code>size</code> may be large; be careful when using <code>UDP</code> to send logs.</li>
+<li>The callback is executed in the logging thread (<strong>only a single thread writes logs</strong>).</li>
+<li>If <code>also_log2local == true</code>, logs are also written to a local file.</li>
+</ul>
 <blockquote class="book-hint warning">
-  <strong>A fatal log will terminate the program</strong>, and <code>co.log</code> will also try to print the stack information before the program exits.
+  This needs to be called before <code>flag::parse</code>. After <code>flag::parse</code> parses command-line arguments, the logging thread starts; it is safer to set the callback before the logging thread starts.
 </blockquote>
 
-<p>Different levels of logs are written to the same file. It is usually used to print debugging information.</p>
-<h3 id="topic-log"><a class="anchor" href="#topic-log">#</a>Topic Log</h3>
-<p>Topic log (TLOG) has no level, but is categorized by topic.</p>
-<p>Topic logs are written into different files according to the topic, and is generally used to print business logs.</p>
-<h3 id="performance"><a class="anchor" href="#performance">#</a>Performance</h3>
-<p><code>co.log</code> is internally implemented in an asynchronous manner. The logs are first written into the cache. After reaching a certain amount or exceeding a certain period of time, the background thread writes the file at one time. The performance is improved by about 20 to 150 times compared with glog on different platforms. The following table shows the test results of continuously printing 1 million info logs (about 50 bytes each) in a single thread on different platforms:</p>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">void</span> <span class="nf">my_write_cb</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fwrite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">stderr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">set_write_cb</span><span class="p">(</span><span class="n">my_write_cb</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;hello &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">warn</span><span class="p">(</span><span class="s">&#34;warn &#34;</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="log-configuration-items"><a class="anchor" href="#log-configuration-items">#</a>Log Configuration Items</h2>
 <table>
 <thead>
 <tr>
-<th>platform</th>
-<th>glog</th>
-<th>co.log</th>
+<th>flag name</th>
+<th style="text-align:right">Type</th>
+<th style="text-align:right">Default</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>win2012 HHD</td>
-<td>1.6MB/s</td>
-<td>180MB/s</td>
+<td><code>log_dir</code></td>
+<td style="text-align:right">string</td>
+<td style="text-align:right"><code>&quot;logs&quot;</code></td>
+<td>Log directory</td>
 </tr>
 <tr>
-<td>win10 SSD</td>
-<td>3.7MB/s</td>
-<td>560MB/s</td>
+<td><code>min_log_level</code></td>
+<td style="text-align:right">uint32</td>
+<td style="text-align:right"><code>0</code></td>
+<td>Minimum level of logs to output; 0-4 correspond to debug/info/warn/error/fatal</td>
 </tr>
 <tr>
-<td>mac SSD</td>
-<td>17MB/s</td>
-<td>450MB/s</td>
+<td><code>max_log_size</code></td>
+<td style="text-align:right">uint32</td>
+<td style="text-align:right"><code>4096</code></td>
+<td>Maximum size of a single log</td>
 </tr>
 <tr>
-<td>linux SSD</td>
-<td>54MB/s</td>
-<td>1023MB/s</td>
+<td><code>max_log_file_size</code></td>
+<td style="text-align:right">int64</td>
+<td style="text-align:right"><code>256 &lt;&lt; 20</code>, i.e. 256MB</td>
+<td>Maximum log file size</td>
+</tr>
+<tr>
+<td><code>max_log_file_num</code></td>
+<td style="text-align:right">uint32</td>
+<td style="text-align:right"><code>8</code></td>
+<td>Maximum number of log files</td>
+</tr>
+<tr>
+<td><code>max_log_buffer_size</code></td>
+<td style="text-align:right">uint32</td>
+<td style="text-align:right"><code>32 &lt;&lt; 20</code>, i.e. 32MB</td>
+<td>Maximum log buffer size</td>
+</tr>
+<tr>
+<td><code>log_flush_ms</code></td>
+<td style="text-align:right">uint32</td>
+<td style="text-align:right"><code>128</code></td>
+<td>Time interval for flushing the log buffer, in milliseconds</td>
+</tr>
+<tr>
+<td><code>also_log2console</code></td>
+<td style="text-align:right">bool</td>
+<td style="text-align:right"><code>false</code></td>
+<td>Also output logs to the terminal</td>
+</tr>
+<tr>
+<td><code>log_daily</code></td>
+<td style="text-align:right">bool</td>
+<td style="text-align:right"><code>false</code></td>
+<td>Rotate log files daily</td>
 </tr>
 </tbody>
 </table>
-<h2 id="apis"><a class="anchor" href="#apis">#</a>APIs</h2>
-<h3 id="logexit"><a class="anchor" href="#logexit">#</a>log::exit</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Write logs in the cache to the file and exit the log thread.</li>
-<li>This function is automatically called by <code>co.log</code> when the program exits normally.</li>
-<li>It is safe to call this function multiple times.</li>
-<li>When <code>co.log</code> captures <code>SIGINT, SIGTERM, SIGQUIT</code> or other similar signals, this function will be called before the program exits.</li>
-</ul>
-<h3 id="logset_write_cb"><a class="anchor" href="#logset_write_cb">#</a>log::set_write_cb</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_write_cb</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">cb</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>By default, <code>co.log</code> writes logs to a local file. Users can set a callback to write logs to different destinations through this API.</li>
-<li>The parameter <code>cb</code> is the callback. In the first version (for level log), cb has 2 parameters, a pointer to the log buffer and its length. In the second version (for TLOG), cb has 3 parameters, the first is the topic, the last two parameters are the same as in the 1st version. The buffer may contain multiple logs.</li>
-<li>The parameter <code>flags</code> is new in v3.0, the default is 0, it can be a combination of the following options:
-<ul>
-<li><code>log::log2local</code>, also write logs to local file.</li>
-</ul>
-</li>
-</ul>
-<h3 id="apis-removed-in-v30"><a class="anchor" href="#apis-removed-in-v30">#</a>APIs removed in v3.0</h3>
-<ul>
-<li>
-<p><strong>log::init</strong>, removed in v3.0, starting from v3.0, we only need to call <code>flag::parse(argc, argv)</code> at the beginning of the main function.</p>
-</li>
-<li>
-<p><strong>log::set_single_write_cb</strong>, removed in v3.0.</p>
-</li>
-<li>
-<p><strong>log::close</strong>, removed in v3.0, use <code>log::exit()</code> instead.</p>
-</li>
-</ul>
-<h2 id="level-log-1"><a class="anchor" href="#level-log-1">#</a>Level Log</h2>
-<h3 id="basic-usages"><a class="anchor" href="#basic-usages">#</a>Basic usages</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span>  <span class="n">LOG</span>  <span class="n">WLOG</span>  <span class="n">ELOG</span>  <span class="n">FLOG</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>The above 5 macros are used to print 5 levels of logs respectively, they are <strong>thread safe</strong>.</p>
-</li>
-<li>
-<p>These macros are actually references to <a href="../fastream/">fastream</a>, so any type supported by <code>fastream::operator&lt;&lt;</code> can be printed.</p>
-</li>
-<li>
-<p>These macros will automatically add a &lsquo;\n&rsquo; at the end of each log, and users do not need to manually enter a newline character.</p>
-</li>
-<li>
-<p>The first 4 types will only print the log when the <code>FLG_min_log_level</code> is not greater than the current log level. The user can set FLG_min_log_level to a larger value to disable low-level logs.</p>
-</li>
-<li>
-<p>Print a fatal level log, which means that the program has a fatal error. coost will print the stack information of the current thread and terminate the program.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">WLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">ELOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">FLOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is FATAL log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span></code></pre></div><h3 id="condition-log"><a class="anchor" href="#condition-log">#</a>Condition Log</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_IF(cond) if (cond) DLOG
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_IF(cond) if (cond) LOG
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_IF(cond) if (cond) WLOG
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_IF(cond) if (cond) ELOG
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define FLOG_IF(cond) if (cond) FLOG
-</span></span></span></code></pre></div><ul>
-<li>The above 5 macros accept a conditional parameter cond, and only print the log when cond is true.</li>
-<li>The parameter cond can be any expression whose value is of type bool.</li>
-</ul>
-<blockquote class="book-hint warning">
-  Since the condition is checked in the first place, even if the log of the corresponding level is disabled, these macros will ensure that the cond expression is executed.
-</blockquote>
-
-<ul>
-<li>Example</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">DLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> <span class="n">LOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ok: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">WLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">ELOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">FLOG_IF</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket ko: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
-</span></span></code></pre></div><h3 id="print-log-every-n-entries"><a class="anchor" href="#print-log-every-n-entries">#</a>Print log every N entries</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_EVERY_N(n) _LOG_EVERY_N(n, DLOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_EVERY_N(n) _LOG_EVERY_N(n, LOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_EVERY_N(n) _LOG_EVERY_N(n, WLOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_EVERY_N(n) _LOG_EVERY_N(n, ELOG)
-</span></span></span></code></pre></div><ul>
-<li>
-<p>The above macros print the log once every n entries.</p>
-</li>
-<li>
-<p>The parameter n must be an integer greater than 0.</p>
-</li>
-<li>
-<p>The first log will always be printed.</p>
-</li>
-<li>
-<p>The program will terminate as soon as the fatal log is printed, so FLOG_EVERY_N is not provided.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Print every 32 items (1,33,65...)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">LOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">WLOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">ELOG_EVERY_N</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span></code></pre></div><h3 id="print-the-first-n-logs"><a class="anchor" href="#print-the-first-n-logs">#</a>Print the first N logs</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define DLOG_FIRST_N(n) _LOG_FIRST_N(n, DLOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOG_FIRST_N(n) _LOG_FIRST_N(n, LOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define WLOG_FIRST_N(n) _LOG_FIRST_N(n, WLOG)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define ELOG_FIRST_N(n) _LOG_FIRST_N(n, ELOG)
-</span></span></span></code></pre></div><ul>
-<li>
-<p>The above macros print the first n logs.</p>
-</li>
-<li>
-<p>The parameter n is an integer not less than 0 (no log will be printed when it is equal to 0). Generally, it should not exceed the maximum value of the int type.</p>
-</li>
-<li>
-<p>In general, do not use complex expressions for the parameter n.</p>
-</li>
-<li>
-<p>The program will terminate as soon as the fatal log is printed, so FLOG_FIRST_N is not provided.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// print the first 10 logs
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is DEBUG log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">LOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is INFO log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">WLOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is WARNING log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">ELOG_FIRST_N</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;this is ERROR log &#34;</span><span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span></code></pre></div><h2 id="tlog"><a class="anchor" href="#tlog">#</a>TLOG</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define TLOG(topic)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define TLOG_IF(topic, cond) if (cond) TLOG(topic)
-</span></span></span></code></pre></div><ul>
-<li>
-<p>The TLOG macro takes a parameter <code>topic</code>, which is a C-style string, and <strong>must have a static lifetime</strong>.</p>
-</li>
-<li>
-<p>The TLOG_IF macro prints the log only when <code>cond</code> is true.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">TLOG</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">TLOG_IF</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello &#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>
-</span></span></code></pre></div><h2 id="check-assertion"><a class="anchor" href="#check-assertion">#</a>CHECK Assertion</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define CHECK(cond) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">    if (!(cond)) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#cond &#34;!&#34;
+<p><code>min_log_level</code> can filter out lower-level logs; only logs with a level greater than or equal to <code>min_log_level</code> are output.</p>
+<h2 id="minimal-example"><a class="anchor" href="#minimal-example">#</a>Minimal Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NOTNULL(p) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">    if ((p) == 0) _FLOG_STREAM &lt;&lt; &#34;check failed: &#34;#p&#34; mustn&#39;t be NULL! &#34;
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_EQ(a, b) _CHECK_OP(a, b, ==)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_NE(a, b) _CHECK_OP(a, b, !=)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GE(a, b) _CHECK_OP(a, b, &gt;=)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LE(a, b) _CHECK_OP(a, b, &lt;=)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_GT(a, b) _CHECK_OP(a, b, &gt;)
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define CHECK_LT(a, b) _CHECK_OP(a, b, &lt;)
-</span></span></span></code></pre></div><ul>
-<li>
-<p>The above macros can be regarded as an enhanced version of <code>assert</code>, and they will not be cleared in DEBUG mode.</p>
-</li>
-<li>
-<p>These macros are similar to <code>FLOG</code> and can print fatal level logs.</p>
-</li>
-<li>
-<p><code>CHECK</code> asserts that the condition cond is true, and cond can be any expression with a value of type bool.</p>
-</li>
-<li>
-<p><code>CHECK_NOTNULL</code> asserts that the pointer is not NULL.</p>
-</li>
-<li>
-<p><code>CHECK_EQ</code> asserts <code>a == b</code>.</p>
-</li>
-<li>
-<p><code>CHECK_NE</code> asserts <code>a != b</code>.</p>
-</li>
-<li>
-<p><code>CHECK_GE</code> asserts <code>a &gt;= b</code>.</p>
-</li>
-<li>
-<p><code>CHECK_LE</code> asserts <code>a &lt;= b</code>.</p>
-</li>
-<li>
-<p><code>CHECK_GT</code> asserts <code>a &gt; b</code>.</p>
-</li>
-<li>
-<p><code>CHECK_LT</code> asserts <code>a &lt; b</code>.</p>
-</li>
-<li>
-<p>It is generally recommended to use <code>CHECK_XX(a, b)</code> first, they provide more information than <code>CHECK(cond)</code>, and will print out the values of parameters a and b.</p>
-</li>
-<li>
-<p>Types not supported by <code>fastream::operator&lt;&lt;</code>, such as iterator type of STL containers, cannot use the <code>CHECK_XX(a, b)</code> macros.</p>
-</li>
-<li>
-<p>When the assertion fails, <code>co.log</code> calls <code>log::exit()</code> at first, then prints the stack information of the current thread, and then exits the program.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">CHECK_NE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span> <span class="c1">// s != -1
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GE</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span>  <span class="c1">// s &gt;= 0
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CHECK_GT</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;create socket failed&#34;</span><span class="p">;</span> <span class="c1">// s &gt; -1
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cp"># parse is required; after parsing command-line arguments, the logging thread starts
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">debug</span><span class="p">(</span><span class="s">&#34;This is debug.. &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;This is info.. &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">warn</span><span class="p">(</span><span class="s">&#34;This is warn.. &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">error</span><span class="p">(</span><span class="s">&#34;This is error.. &#34;</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 should be 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_eq</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1+1 must == 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_ne</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;1+1 != 3&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_lt</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1 &lt; 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;2 &gt; 1&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_le</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &lt;= 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">check_ge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;2 &gt;= 2&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// log::fatal(&#34;fatal.. &#34;, 23); // Will terminate the program
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">CHECK</span><span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// Cannot use CHECK_NE(it, m.end()), the compiler will report an error
-</span></span></span></code></pre></div><h2 id="stack-trace"><a class="anchor" href="#stack-trace">#</a>Stack trace</h2>
-<p><code>co.log</code> will print the stack information when <code>CHECK</code> assertion failed, or an abnormal signal like <code>SIGSEGV</code> was caught. See details below:</p>
-<p><img src="https://coostdocs.github.io/images/stack.png" alt="stack" />(<a href="https://asciinema.org/a/435894">https://asciinema.org/a/435894</a>)</p>
-<p>To get the stack trace, you should compile with debug symbols (compile with <code>-g</code> for gcc, etc). And on linux and macosx, <a href="https://github.com/ianlancetaylor/libbacktrace">libbacktrace</a> is required, make sure you have installed it on your system. On linux, <code>libbacktrace</code> may have been installed within gcc. You may find it in a directory like <code>/usr/lib/gcc/x86_64-linux-gnu/9</code>. Otherwise, you can install it by yourself as follow:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git clone https://github.com/ianlancetaylor/libbacktrace.git
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> libbacktrace-master
-</span></span><span class="line"><span class="cl">./configure
-</span></span><span class="line"><span class="cl">make -j8
-</span></span><span class="line"><span class="cl">sudo make install
-</span></span></code></pre></div><h2 id="configuration"><a class="anchor" href="#configuration">#</a>Configuration</h2>
-<p><code>co.log</code> uses <a href="../flag/">co.flag</a> to define config items. The flags defined inside <code>co.log</code> are listed below. These config items are valid for both level log and TLOG unless otherwise specified.</p>
-<h3 id="log_dir"><a class="anchor" href="#log_dir">#</a>log_dir</h3>
-<ul>
-<li>Specify the log directory. The default is the <code>logs</code> directory under the current directory. If it does not exist, it will be created automatically.</li>
-<li>log_dir can be an absolute path or a relative path, and the path separator can be either &lsquo;/&rsquo; or &lsquo;\&rsquo;. It is generally recommended to use &lsquo;/&rsquo;.</li>
-<li>When the program starts, make sure that the current user has sufficient permissions, otherwise the creation of the log directory may fail.</li>
-</ul>
-<h3 id="log_file_name"><a class="anchor" href="#log_file_name">#</a>log_file_name</h3>
-<ul>
-<li>Specify the log file name (without path), the default is empty, use the program name (<code>.exe</code> at the end will be removed), for example, the log file name corresponding to program <code>xx</code> or <code>xx.exe</code> is <code>xx.log</code>.</li>
-<li>If the log file name does not end with <code>.log</code>, co/log automatically adds <code>.log</code> to the end of it.</li>
-</ul>
-<h3 id="min_log_level"><a class="anchor" href="#min_log_level">#</a>min_log_level</h3>
-<ul>
-<li>For level log only. Specify the minimum level of logs to be printed, which can be used to disable low-level logs, the default is 0, and all levels of logs are printed.</li>
-</ul>
-<h3 id="max_log_size"><a class="anchor" href="#max_log_size">#</a>max_log_size</h3>
-<ul>
-<li>Specify the maximum size of a single log, the default is 4k. A log will be truncated if its size is larger than this value.</li>
-</ul>
-<h3 id="max_log_file_size"><a class="anchor" href="#max_log_file_size">#</a>max_log_file_size</h3>
-<ul>
-<li>Specify the maximum size of a log file. The default is 256M. If this size is exceeded, a new log file will be created, and the old log file will be renamed.</li>
-</ul>
-<h3 id="max_log_file_num"><a class="anchor" href="#max_log_file_num">#</a>max_log_file_num</h3>
-<ul>
-<li>Specify the maximum number of log files. The default is 8. If this value is exceeded, old log files will be deleted.</li>
-</ul>
-<h3 id="max_log_buffer_size"><a class="anchor" href="#max_log_buffer_size">#</a>max_log_buffer_size</h3>
-<ul>
-<li>Specify the maximum size of the log cache. The default is 32M. If this value is exceeded, about half of the logs will be lost.</li>
-</ul>
-<h3 id="log_flush_ms"><a class="anchor" href="#log_flush_ms">#</a>log_flush_ms</h3>
-<ul>
-<li>The time interval for the background thread to flush the log cache to the file, in milliseconds.</li>
-</ul>
-<h3 id="log_daily"><a class="anchor" href="#log_daily">#</a>log_daily</h3>
-<ul>
-<li>Generate log files by day, the default is false.</li>
-</ul>
-<h3 id="cout"><a class="anchor" href="#cout">#</a>cout</h3>
-<ul>
-<li>Terminal log switch, the default is false. If true, logs will also be printed to the console.</li>
-</ul>
-<h2 id="log-file"><a class="anchor" href="#log-file">#</a>Log file</h2>
-<h3 id="log-file-name"><a class="anchor" href="#log-file-name">#</a>Log file name</h3>
-<p><code>co.log</code> will write all levels of logs into the same file. By default, the program name is used as the log file name. For example, the log file of process xx is xx.log. When the log file reaches the maximum size (FLG_max_log_file_size), <code>co.log</code> will rename the log file and generate a new file. The log directory may contain the following files:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xx.log
-</span></span><span class="line"><span class="cl">xx_0523_16_12_54.970.log
-</span></span><span class="line"><span class="cl">xx_0523_16_13_12.921.log
-</span></span><span class="line"><span class="cl">xx_0523_16_15_05.264.log
-</span></span></code></pre></div><p><code>xx.log</code> is always the latest log file. When the number of files exceeds <code>FLG_max_log_file_num</code>, <code>co.log</code> will remove the oldest log file.</p>
-<p><code>fatal</code> logs will be additionally recorded in the <code>xx.fatal</code> file, <strong>co.log will not rename or delete the fatal log file</strong>.</p>
-<h3 id="log-format"><a class="anchor" href="#log-format">#</a>Log format</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">I0514 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
-</span></span><span class="line"><span class="cl">D0514 11:15:30.123 <span class="m">1045</span> xx.cc:12<span class="o">]</span> hello world
-</span></span><span class="line"><span class="cl">W0514 11:15:30.123 <span class="m">1045</span> xx.cc:13<span class="o">]</span> hello world
-</span></span><span class="line"><span class="cl">E0514 11:15:30.123 <span class="m">1045</span> xx.cc:14<span class="o">]</span> hello world
-</span></span><span class="line"><span class="cl">F0514 11:15:30.123 <span class="m">1045</span> xx.cc:15<span class="o">]</span> hello world
-</span></span><span class="line"><span class="cl"><span class="m">0514</span> 11:15:30.123 <span class="m">1045</span> xx.cc:11<span class="o">]</span> hello world
-</span></span></code></pre></div><ul>
-<li>Level log from left to right, it is the level, time (month to millisecond), thread id, file and line number, and the log content.</li>
-<li>The first letter of level log is the log level, <code>I</code> for info, <code>D</code> for debug, <code>W</code> for warning, <code>E</code> for error, <code>F</code> for fatal.</li>
-<li>Topic log has no level, others are the same as level log (The last log in the above example is a topic log).</li>
-</ul>
-<h3 id="view-logs"><a class="anchor" href="#view-logs">#</a>View logs</h3>
-<p>On linux or mac, <code>grep</code>, <code>tail</code> and other commands can be used to view the logs.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep ^E xx.log
-</span></span><span class="line"><span class="cl">tail -F xx.log
-</span></span><span class="line"><span class="cl">tail -F xx.log <span class="p">|</span> grep ^E
-</span></span></code></pre></div><ul>
-<li>The first line uses <code>grep</code> to filter out the error logs in the file, <code>^E</code> means starts with the letter <code>E</code>.</li>
-<li>The second line uses the <code>tail -F</code> command to dynamically track the log file, here we should use the uppercase <code>F</code>, because xx.log may be renamed, and then generate a new xx.log file, <code>-F</code> make sure to follow the latest file by the name.</li>
-<li>In line 3, use <code>tail -F</code> in conjunction with <code>grep</code> to dynamically track the error logs in the log file.</li>
-</ul>
-<h2 id="build-and-run-the-test-program"><a class="anchor" href="#build-and-run-the-test-program">#</a>Build and run the test program</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b log                    <span class="c1"># build log or log.exe</span>
-</span></span><span class="line"><span class="cl">xmake r log                     <span class="c1"># run log or log.exe</span>
-</span></span><span class="line"><span class="cl">xmake r log -cout               <span class="c1"># also log to terminal</span>
-</span></span><span class="line"><span class="cl">xmake r log -min_log_level<span class="o">=</span><span class="m">1</span>    <span class="c1"># 0-4: debug,info,warning,error,fatal</span>
-</span></span><span class="line"><span class="cl">xmake r log -perf               <span class="c1"># performance test</span>
-</span></span></code></pre></div><ul>
-<li>Run <code>xmake -b log</code> in the root directory of coost to compile <a href="https://github.com/idealvin/coost/blob/master/test/log.cc">test/log.cc</a>, and a binary program named log or log.exe will be generated.</li>
-</ul>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Run example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./app -min_log_level<span class="o">=</span><span class="m">1</span> -also_log2console<span class="o">=</span><span class="nb">true</span>
+</span></span></code></pre></div><p>The command-line arguments indicate that only info and higher-level logs are output, and they are output to the terminal.</p>
 </article>
  
       
@@ -1368,53 +988,14 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#introduction">Introduction</a>
-          <ul>
-            <li><a href="#level-log">Level Log</a></li>
-            <li><a href="#topic-log">Topic Log</a></li>
-            <li><a href="#performance">Performance</a></li>
-          </ul>
-        </li>
-        <li><a href="#apis">APIs</a>
-          <ul>
-            <li><a href="#logexit">log::exit</a></li>
-            <li><a href="#logset_write_cb">log::set_write_cb</a></li>
-            <li><a href="#apis-removed-in-v30">APIs removed in v3.0</a></li>
-          </ul>
-        </li>
-        <li><a href="#level-log-1">Level Log</a>
-          <ul>
-            <li><a href="#basic-usages">Basic usages</a></li>
-            <li><a href="#condition-log">Condition Log</a></li>
-            <li><a href="#print-log-every-n-entries">Print log every N entries</a></li>
-            <li><a href="#print-the-first-n-logs">Print the first N logs</a></li>
-          </ul>
-        </li>
-        <li><a href="#tlog">TLOG</a></li>
-        <li><a href="#check-assertion">CHECK Assertion</a></li>
-        <li><a href="#stack-trace">Stack trace</a></li>
-        <li><a href="#configuration">Configuration</a>
-          <ul>
-            <li><a href="#log_dir">log_dir</a></li>
-            <li><a href="#log_file_name">log_file_name</a></li>
-            <li><a href="#min_log_level">min_log_level</a></li>
-            <li><a href="#max_log_size">max_log_size</a></li>
-            <li><a href="#max_log_file_size">max_log_file_size</a></li>
-            <li><a href="#max_log_file_num">max_log_file_num</a></li>
-            <li><a href="#max_log_buffer_size">max_log_buffer_size</a></li>
-            <li><a href="#log_flush_ms">log_flush_ms</a></li>
-            <li><a href="#log_daily">log_daily</a></li>
-            <li><a href="#cout">cout</a></li>
-          </ul>
-        </li>
-        <li><a href="#log-file">Log file</a>
-          <ul>
-            <li><a href="#log-file-name">Log file name</a></li>
-            <li><a href="#log-format">Log format</a></li>
-            <li><a href="#view-logs">View logs</a></li>
-          </ul>
-        </li>
-        <li><a href="#build-and-run-the-test-program">Build and run the test program</a></li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#initialization-and-shutdown">Initialization and Shutdown</a></li>
+        <li><a href="#printing-logs">Printing Logs</a></li>
+        <li><a href="#assertions">Assertions</a></li>
+        <li><a href="#printing-stack-information">Printing Stack Information</a></li>
+        <li><a href="#write-log-callback">Write Log Callback</a></li>
+        <li><a href="#log-configuration-items">Log Configuration Items</a></li>
+        <li><a href="#minimal-example">Minimal Example</a></li>
       </ul>
     </li>
   </ul>

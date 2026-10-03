@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/rpc.h.
-Coost implements a coroutine-based RPC framework, which internally uses JSON as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.
-Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method. #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; This class is a pure interface, which represents a RPC service.">
+<meta name="description" content="#Header #include &#34;co/rpc.h&#34; The API is in the co namespace, and aliases are also provided:
+namespace rpc { using service = co::rpc_service; using server = co::rpc_server; using client = co::rpc_client; using method_t = co::rpc_method_t; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#Overview A lightweight RPC based on TCP &#43; JSON. Protocol: 8-byte header &#43; JSON body. Requests specify the method through the api field, in the format ServiceName.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="RPC" />
-<meta property="og:description" content="include: co/rpc.h.
-Coost implements a coroutine-based RPC framework, which internally uses JSON as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.
-Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method. #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&lt;void(Json&amp;, Json&amp;)&gt; Fun; virtual const char* name() const = 0; virtual const co::map&lt;const char*, Fun&gt;&amp; methods() const = 0; }; This class is a pure interface, which represents a RPC service." />
+<meta property="og:description" content="#Header #include &#34;co/rpc.h&#34; The API is in the co namespace, and aliases are also provided:
+namespace rpc { using service = co::rpc_service; using server = co::rpc_server; using client = co::rpc_client; using method_t = co::rpc_method_t; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#Overview A lightweight RPC based on TCP &#43; JSON. Protocol: 8-byte header &#43; JSON body. Requests specify the method through the api field, in the format ServiceName." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/net/rpc/" /><meta property="article:section" content="co" />
 
@@ -21,7 +21,7 @@ Since v3.0, the RPC framework also supports HTTP protocol, and we are able to se
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/net/rpc/" title="RPC">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,20 +90,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -117,6 +104,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -160,19 +160,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -186,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -199,7 +186,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -212,7 +199,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -293,133 +293,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -438,7 +313,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle" checked />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -452,7 +327,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -465,33 +340,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -505,19 +354,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -564,7 +400,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -603,32 +439,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -642,33 +452,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -694,7 +478,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -707,7 +491,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -739,6 +523,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -751,7 +548,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -816,50 +626,39 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#rpcservice">rpc::Service</a></li>
-        <li><a href="#rpcserver">rpc::Server</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#protocol">Protocol</a>
           <ul>
-            <li><a href="#serverserver">Server::Server</a></li>
-            <li><a href="#serveradd_service">Server::add_service</a></li>
-            <li><a href="#serverstart">Server::start</a></li>
-            <li><a href="#serverexit">Server::exit</a></li>
+            <li><a href="#header-1">Header</a></li>
+            <li><a href="#request">Request</a></li>
+            <li><a href="#response">Response</a></li>
           </ul>
         </li>
-        <li><a href="#rpc-server-example">RPC server example</a>
+        <li><a href="#rpc_service">rpc_service</a></li>
+        <li><a href="#gen-tool">gen Tool</a>
           <ul>
-            <li><a href="#define-a-proto-file">Define a proto file</a></li>
-            <li><a href="#generate-code-for-rpc-service">Generate code for RPC service</a></li>
-            <li><a href="#implement-the-rpc-service">Implement the RPC service</a></li>
-            <li><a href="#start-rpc-server">Start RPC server</a></li>
-            <li><a href="#call-rpc-service-with-curl">Call RPC service with curl</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#proto-syntax">proto Syntax</a>
+              <ul>
+                <li><a href="#program-structure">Program Structure</a></li>
+                <li><a href="#service">service</a></li>
+                <li><a href="#object">object</a></li>
+                <li><a href="#types">Types</a></li>
+                <li><a href="#field-values">Field Values</a></li>
+                <li><a href="#comments">Comments</a></li>
+                <li><a href="#literals">Literals</a></li>
+                <li><a href="#identifiers">Identifiers</a></li>
+              </ul>
+            </li>
+            <li><a href="#syntax-constraints">Syntax Constraints</a></li>
+            <li><a href="#generated-code">Generated Code</a></li>
           </ul>
         </li>
-        <li><a href="#rpcclient">rpc::Client</a>
-          <ul>
-            <li><a href="#clientclient">Client::Client</a></li>
-            <li><a href="#clientclient-1">Client::~Client</a></li>
-            <li><a href="#clientcall">Client::call</a></li>
-            <li><a href="#clientclose">Client::close</a></li>
-            <li><a href="#clientping">Client::ping</a></li>
-          </ul>
-        </li>
-        <li><a href="#rpc-client-example">RPC client example</a>
-          <ul>
-            <li><a href="#use-rpcclient-directly">Use rpc::Client directly</a></li>
-            <li><a href="#use-connection-pool">Use connection pool</a></li>
-          </ul>
-        </li>
-        <li><a href="#config-items">Config items</a>
-          <ul>
-            <li><a href="#rpc_conn_idle_sec">rpc_conn_idle_sec</a></li>
-            <li><a href="#rpc_conn_timeout">rpc_conn_timeout</a></li>
-            <li><a href="#rpc_log">rpc_log</a></li>
-            <li><a href="#rpc_max_idle_conn">rpc_max_idle_conn</a></li>
-            <li><a href="#rpc_max_msg_size">rpc_max_msg_size</a></li>
-            <li><a href="#rpc_recv_timeout">rpc_recv_timeout</a></li>
-            <li><a href="#rpc_send_timeout">rpc_send_timeout</a></li>
-          </ul>
-        </li>
+        <li><a href="#rpc_server">rpc_server</a></li>
+        <li><a href="#rpc_client">rpc_client</a></li>
+        <li><a href="#rpc-related-flags">RPC-Related Flags</a></li>
+        <li><a href="#notes">Notes</a></li>
       </ul>
     </li>
   </ul>
@@ -874,94 +673,75 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/rpc.h">co/rpc.h</a>.</p>
-<p>Coost implements a coroutine-based RPC framework, which internally uses <strong>JSON</strong> as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.</p>
-<blockquote class="book-hint info">
-  Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method.
-</blockquote>
-
-<h2 id="rpcservice"><a class="anchor" href="#rpcservice">#</a>rpc::Service</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Service</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">   <span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">     <span class="n">Service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">     <span class="k">virtual</span> <span class="o">~</span><span class="n">Service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">     <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Fun</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">     <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">name</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">     <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><ul>
-<li>This class is a pure interface, which represents a RPC service. A RPC server may have multiple services.</li>
-<li><code>name()</code> returns the service name, <code>methods()</code> returns all the RPC methods.</li>
-</ul>
-<h2 id="rpcserver"><a class="anchor" href="#rpcserver">#</a>rpc::Server</h2>
-<h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>The default constructor, users do not need to care.</li>
-</ul>
-<h3 id="serveradd_service"><a class="anchor" href="#serveradd_service">#</a>Server::add_service</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Server</span><span class="o">&amp;</span> <span class="n">add_service</span><span class="p">(</span><span class="n">rpc</span><span class="o">::</span><span class="n">Service</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Server</span><span class="o">&amp;</span> <span class="n">add_service</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Service</span><span class="o">&gt;&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Add a service, the parameter <code>s</code> in the first one must be dynamically created with <code>operator new</code>.</li>
-<li>Users can call this method multiple times to add multiple services, and <strong>different services must have different names</strong>.</li>
-</ul>
-<h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">url</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ca</span><span class="o">=</span><span class="mi">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Start the RPC server, this method will not block the current thread.</li>
-<li>The parameter <code>ip</code> is the server ip, which can be an IPv4 or IPv6 address, and the parameter <code>port</code> is the server port.</li>
-<li>The parameter <code>url</code> is the url of the HTTP server, and must start with <code>/</code>.</li>
-<li>The parameter <strong>key</strong> is path of a <strong>PEM</strong>file which stores the SSL private key, and the parameter <strong>ca</strong> is path of a PEM file which stores the SSL certificate. They are NULL by default, and SSL is disabled.</li>
-<li>Starting from v3.0, the server no longer depends on the <code>rpc::Server</code> object after startup.</li>
-</ul>
-<h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Added since v2.0.2.</li>
-<li>Exit the RPC server, close the listening socket, and no longer receive new connections.</li>
-<li>Since v3.0, after the RPC server exits, previously established connections will be reset in the future.</li>
-</ul>
-<h2 id="rpc-server-example"><a class="anchor" href="#rpc-server-example">#</a>RPC server example</h2>
-<h3 id="define-a-proto-file"><a class="anchor" href="#define-a-proto-file">#</a>Define a proto file</h3>
-<p>Here is a simple proto file hello_world.proto:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">xx</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">service</span> <span class="n">HelloWorld</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">hello</span>
-</span></span><span class="line"><span class="cl">    <span class="n">world</span>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rpc.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>co</code> namespace, and aliases are also provided:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">rpc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">service</span>  <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_service</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">server</span>   <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_server</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">client</span>   <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">method_t</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_method_t</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><strong>package</strong> defines the package name.</p>
+</span></span></code></pre></div><p>Before use, you need to call <code>flag::parse(argc, argv);</code> at the beginning of <code>main</code>.</p>
+<h2 id="overview"><a class="anchor" href="#overview">#</a>Overview</h2>
 <ul>
-<li>
-<p><strong>package</strong> defines the package name, which corresponds to <strong>namespace</strong> in C++.</p>
-</li>
-<li>
-<p><strong>service</strong> defines a RPC service, it has 2 methods, hello and world.</p>
-</li>
-<li>
-<p>Since the RPC request and response are both JSON, there is no need to define the structure in the proto file.</p>
-</li>
-<li>
-<p>At most one service can be defined in a proto file.</p>
-</li>
+<li>A lightweight RPC based on TCP + JSON.</li>
+<li>Protocol: 8-byte header + JSON body.</li>
+<li>Requests specify the method through the <code>api</code> field, in the format <code>ServiceName.method_name</code>, such as <code>HelloWorld.hello</code>.</li>
 </ul>
-<blockquote class="book-hint info">
-  Coost v3.0.1 rewrote <a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> with flex and <a href="https://invisible-island.net/byacc/">byacc</a>, and we can alse define object (struct) in the proto file. For specific usage, please refer to <a href="https://github.com/idealvin/coost/tree/master/test/j2s">j2s</a>.
-</blockquote>
-
-<h3 id="generate-code-for-rpc-service"><a class="anchor" href="#generate-code-for-rpc-service">#</a>Generate code for RPC service</h3>
-<p><a href="https://github.com/idealvin/coost/tree/master/gen">gen</a> is the RPC code generator provided by coost, which can be used to generate code for RPC service.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake -b gen             <span class="c1"># build gen</span>
-</span></span><span class="line"><span class="cl">cp gen /usr/local/bin    <span class="c1"># put gen in the /usr/local/bin directory</span>
-</span></span><span class="line"><span class="cl">gen hello_world.proto    <span class="c1"># Generate code</span>
-</span></span></code></pre></div><p>The generated file hello_world.proto is as follow:</p>
+<h2 id="protocol"><a class="anchor" href="#protocol">#</a>Protocol</h2>
+<h3 id="header-1"><a class="anchor" href="#header-1">#</a>Header</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Header</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint16</span> <span class="n">flags</span><span class="p">;</span> <span class="c1">// reserved, 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">uint16</span> <span class="n">magic</span><span class="p">;</span> <span class="c1">// 0x7777
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">uint32</span> <span class="n">len</span><span class="p">;</span>   <span class="c1">// body len, network byte order
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span> <span class="c1">// 8 bytes
+</span></span></span></code></pre></div><ul>
+<li><code>magic = 0x7777</code>, used for validation.</li>
+<li><code>len</code> is the body length, in network byte order.</li>
+<li>The body is JSON text.</li>
+</ul>
+<h3 id="request"><a class="anchor" href="#request">#</a>Request</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;api&#34;</span><span class="p">:</span> <span class="s2">&#34;ServiceName.method_name&#34;</span><span class="p">,</span> <span class="err">...</span><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li><code>api</code> must be a string.</li>
+<li>Other fields are user parameters.</li>
+</ul>
+<h3 id="response"><a class="anchor" href="#response">#</a>Response</h3>
+<ul>
+<li>Success: JSON filled in by the user method.</li>
+<li>Failure: <code>{&quot;error&quot;: &quot;...&quot;}</code>.</li>
+</ul>
+<h2 id="rpc_service"><a class="anchor" href="#rpc_service">#</a>rpc_service</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">rpc_service</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">rpc_service</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">name</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">rpc_method_t</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">rpc_method_t</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span></code></pre></div><ul>
+<li><code>name()</code> returns the service name.</li>
+<li><code>methods()</code> returns a mapping from method names to <code>rpc_method_t</code>.</li>
+<li>Registered into rpc_server through <code>rpc_server::add_service</code>.</li>
+<li><code>rpc_method_t</code>: the first parameter is the request JSON, and the second is the response JSON.</li>
+</ul>
+<h2 id="gen-tool"><a class="anchor" href="#gen-tool">#</a>gen Tool</h2>
+<p>Generates a subclass of <code>rpc_service</code> from a <code>.proto</code> file. Execute the following command in the coost root directory to build <code>gen</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmake b gen
+</span></span></code></pre></div><h3 id="usage"><a class="anchor" href="#usage">#</a>Usage</h3>
+<p><code>hello_world.proto</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">xx</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">service</span> <span class="n">HelloWorld</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">hello</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">world</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><p>Execute:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gen hello_world.proto
+</span></span></code></pre></div><p>Generates <code>hello_world.h</code>, containing the <code>xx::HelloWorld</code> class:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Autogenerated.
 </span></span></span><span class="line"><span class="cl"><span class="c1">// DO NOT EDIT. All changes will be undone.
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#pragma once
@@ -970,10 +750,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">xx</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HelloWorld</span> <span class="o">:</span> <span class="k">public</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Service</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Fun</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">HelloWorld</span> <span class="o">:</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_service</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">HelloWorld</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">placeholders</span><span class="o">::</span><span class="n">_1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">placeholders</span><span class="o">::</span><span class="n">_2</span><span class="p">;</span>
@@ -987,208 +764,293 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;HelloWorld&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_method_t</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">_methods</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="k">private</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">Fun</span><span class="o">&gt;</span> <span class="n">_methods</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_method_t</span><span class="o">&gt;</span> <span class="n">_methods</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// xx
+</span></span></span></code></pre></div><p>Users inherit from it and implement the pure virtual methods:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">HelloWorldImpl</span> <span class="o">:</span> <span class="n">xx</span><span class="o">::</span><span class="n">HelloWorld</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;msg&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;msg&#34;</span><span class="p">,</span> <span class="s">&#34;world&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h3 id="proto-syntax"><a class="anchor" href="#proto-syntax">#</a>proto Syntax</h3>
+<h4 id="program-structure"><a class="anchor" href="#program-structure">#</a>Program Structure</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kn">package</span> <span class="p">&lt;</span><span class="n">package_name</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kd">service</span> <span class="p">&lt;</span><span class="n">ServiceName</span><span class="p">&gt;</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">method1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">method2</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="n">object</span> <span class="p">&lt;</span><span class="n">ObjectName</span><span class="p">&gt;</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="p">&lt;</span><span class="n">field_type</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="n">field_name</span><span class="p">&gt;</span> <span class="p">[</span><span class="o">=</span> <span class="p">&lt;</span><span class="n">default_value</span><span class="p">&gt;]</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
 </span></span></span></code></pre></div><ul>
-<li>As you can see, the <code>HelloWorld</code> class inherits from <a href="#rpcservice">rpc::Service</a>, and it has already implemented <code>name()</code> and <code>methods()</code> in <code>rpc::Service</code>.</li>
-<li>Users only need to inherit the <code>HelloWorld</code> class and implement the methods <code>hello</code> and <code>world</code>.</li>
+<li><code>package</code> is optional and corresponds to the namespace of the generated code.</li>
+<li>A <code>.proto</code> file can contain at most one <code>service</code>.</li>
+<li><code>object</code> defines a struct type.</li>
 </ul>
-<h3 id="implement-the-rpc-service"><a class="anchor" href="#implement-the-rpc-service">#</a>Implement the RPC service</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;hello_world.h&#34;</span><span class="cp">
+<h4 id="service"><a class="anchor" href="#service">#</a>service</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kd">service</span> <span class="n">HelloWorld</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">hello</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="n">world</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><ul>
+<li>The braces contain a list of methods, one method name per line.</li>
+<li>Method names can be any valid identifier.</li>
+<li>Methods can be separated by <code>,</code> or <code>;</code>, or the separators can be omitted.</li>
+</ul>
+<p>The generated method key format is <code>ServiceName.method_name</code>.</p>
+<h4 id="object"><a class="anchor" href="#object">#</a>object</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">object</span> <span class="n">User</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">int32</span> <span class="n">id</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">string</span> <span class="n">name</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">int64</span> <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><ul>
+<li>The <code>object</code> name corresponds to the generated struct type name.</li>
+<li>Field format: <code>&lt;type&gt; &lt;name&gt; [= &lt;default&gt;]</code>.</li>
+</ul>
+<h4 id="types"><a class="anchor" href="#types">#</a>Types</h4>
+<p>Basic types:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">bool
+</span></span><span class="line"><span class="cl">int
+</span></span><span class="line"><span class="cl">int32
+</span></span><span class="line"><span class="cl">int64
+</span></span><span class="line"><span class="cl">uint32
+</span></span><span class="line"><span class="cl">uint64
+</span></span><span class="line"><span class="cl">double
+</span></span><span class="line"><span class="cl">string
+</span></span></code></pre></div><p>Object types:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">User</span> <span class="n">user</span><span class="err">
+</span></span></span></code></pre></div><p>Or anonymous objects:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="n">user</span> <span class="p">{</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">int32</span> <span class="n">id</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="kt">string</span> <span class="n">name</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">}</span><span class="err">
+</span></span></span></code></pre></div><p>Array types:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="p">[</span><span class="kt">string</span><span class="p">]</span> <span class="n">tags</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">[</span><span class="kt">int32</span><span class="p">]</span> <span class="n">scores</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="p">[</span><span class="n">User</span><span class="p">]</span> <span class="n">users</span><span class="err">
+</span></span></span></code></pre></div><h4 id="field-values"><a class="anchor" href="#field-values">#</a>Field Values</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="kt">int32</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kt">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;unknown&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kt">double</span> <span class="n">score</span> <span class="o">=</span> <span class="mf">3.14</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="kt">bool</span> <span class="n">enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="err">
+</span></span></span></code></pre></div><ul>
+<li><code>= &lt;value&gt;</code> is optional and represents the default value.</li>
+<li>Supports bool, int, double, and string literals.</li>
+</ul>
+<h4 id="comments"><a class="anchor" href="#comments">#</a>Comments</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-proto" data-lang="proto"><span class="line"><span class="cl"><span class="c1">// Single-line comment
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cm">/* Multi-line comment */</span><span class="err">
+</span></span></span></code></pre></div><h4 id="literals"><a class="anchor" href="#literals">#</a>Literals</h4>
+<ul>
+<li>Integers: <code>123</code>, <code>-32</code>, <code>+5</code></li>
+<li>Hexadecimal: <code>0xFF</code>, <code>-0x10</code></li>
+<li>Floating point: <code>3.14</code>, <code>1e10</code>, <code>-2.5E-3</code></li>
+<li>Boolean: <code>true</code>, <code>false</code></li>
+<li>Strings: single or double quotes; supports <code>\r</code>, <code>\n</code>, <code>\t</code>, <code>\&quot;</code>, <code>\'</code>, <code>\\</code></li>
+</ul>
+<h4 id="identifiers"><a class="anchor" href="#identifiers">#</a>Identifiers</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[a-zA-Z_]([a-zA-Z_0-9]|\.[a-zA-Z_0-9])*
+</span></span></code></pre></div><ul>
+<li>Starts with a letter or underscore.</li>
+<li>Can contain letters, digits, underscores, and <code>.</code>.</li>
+<li>After <code>.</code>, it must start with a letter or underscore.</li>
+</ul>
+<h3 id="syntax-constraints"><a class="anchor" href="#syntax-constraints">#</a>Syntax Constraints</h3>
+<ul>
+<li>A <code>.proto</code> file can contain at most one <code>service</code>.</li>
+<li>Method names must not be duplicated.</li>
+<li>Object names must not be duplicated.</li>
+<li>Field names within the same object must not be duplicated.</li>
+<li>Custom object types must have been defined earlier.</li>
+</ul>
+<h3 id="generated-code"><a class="anchor" href="#generated-code">#</a>Generated Code</h3>
+<p>For each <code>service</code>, a class is generated:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">ServiceName</span> <span class="o">:</span> <span class="n">co</span><span class="o">::</span><span class="n">rpc_service</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ServiceName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">ServiceName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">name</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">rpc_method_t</span><span class="o">&gt;&amp;</span> <span class="n">methods</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">method1</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">method2</span><span class="p">(</span><span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="n">rpc_method_t</span><span class="o">&gt;</span> <span class="n">_methods</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><ul>
+<li>The constructor registers all methods, with keys <code>ServiceName.method_name</code>.</li>
+<li>Each method is a pure virtual function that users must implement.</li>
+<li>The namespace is determined by <code>package</code>.</li>
+</ul>
+<h2 id="rpc_server"><a class="anchor" href="#rpc_server">#</a>rpc_server</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">rpc_server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_server</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">rpc_server</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_server</span><span class="p">(</span><span class="k">const</span> <span class="n">rpc_server</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_server</span><span class="p">(</span><span class="n">rpc_server</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">rpc_server</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">rpc_server</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_server</span><span class="o">&amp;</span> <span class="n">add_service</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">unique</span><span class="o">&lt;</span><span class="n">rpc_service</span><span class="o">&gt;&amp;&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><ul>
+<li>Implemented based on <code>co::tcp_server</code>, with one coroutine per connection.</li>
+<li><code>add_service</code> registers a service and returns <code>*this</code>, allowing chained calls.</li>
+<li><code>start()</code> starts the internal <code>tcp_server</code>.</li>
+<li><code>stop()</code> stops the internal <code>tcp_server</code>.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rpc.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;hello_world.h&#34;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">xx</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HelloWorldImpl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">HelloWorld</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">HelloWorldImpl</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="o">~</span><span class="n">HelloWorldImpl</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="s">&#34;result&#34;</span><span class="p">,</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="p">{</span> <span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mi">23</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">};</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">world</span><span class="p">(</span><span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="s">&#34;error&#34;</span><span class="p">,</span> <span class="s">&#34;not supported&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">};</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">// xx
-</span></span></span></code></pre></div><ul>
-<li>The above is just a very simple example. In actual applications, it is generally necessary to perform corresponding business processing according to the parameters in <code>req</code>, and then fill in <code>res</code>.</li>
-</ul>
-<h3 id="start-rpc-server"><a class="anchor" href="#start-rpc-server">#</a>Start RPC server</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">rpc</span><span class="o">::</span><span class="n">Server</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">add_service</span><span class="p">(</span><span class="k">new</span> <span class="n">xx</span><span class="o">::</span><span class="n">HelloWorldImpl</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="s">&#34;/xx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">rpc_server</span> <span class="n">s</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">add_service</span><span class="p">(</span><span class="n">co</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">HelloWorldImpl</span><span class="o">&gt;</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(;;)</span> <span class="n">sleep</span><span class="o">::</span><span class="n">sec</span><span class="p">(</span><span class="mi">80000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="rpc_client"><a class="anchor" href="#rpc_client">#</a>rpc_client</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">rpc_client</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">server_host</span><span class="p">,</span> <span class="kt">int</span> <span class="n">server_port</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">_tcp_cli</span><span class="p">(</span><span class="n">server_host</span><span class="p">,</span> <span class="p">(</span><span class="n">uint16</span><span class="p">)</span><span class="n">server_port</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_client</span><span class="p">(</span><span class="k">const</span> <span class="n">rpc_client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">_tcp_cli</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">_tcp_cli</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">rpc_client</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">rpc_client</span><span class="p">(</span><span class="n">rpc_client</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">rpc_client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">rpc_client</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">call</span><span class="p">(</span><span class="k">const</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">json</span><span class="o">::</span><span class="n">any</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">ping</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">close</span><span class="p">()</span> <span class="p">{</span> <span class="n">_tcp_cli</span><span class="p">.</span><span class="n">close</span><span class="p">();</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">tcp_client</span> <span class="n">_tcp_cli</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>First call <a href="#serveradd_service">add_service()</a> to add the service, then call <a href="#serverstart">start()</a> to start the server.</li>
+<li>Copy construction only copies host / port, not the connection.</li>
+<li><code>call</code>: sends a request and receives a response.</li>
+<li><code>ping</code>: sends <code>{&quot;api&quot;:&quot;ping&quot;}</code>.</li>
+<li><code>close</code>: closes the underlying connection.</li>
 </ul>
-<blockquote class="book-hint info">
-  The <code>start()</code> method will not block the current thread, so we need a for loop to prevent the main function from exiting.
+<blockquote class="book-hint warning">
+  rpc_client cannot be called by multiple coroutines at the same time; you can put rpc_client into co::pool for reuse.
 </blockquote>
 
-<h3 id="call-rpc-service-with-curl"><a class="anchor" href="#call-rpc-service-with-curl">#</a>Call RPC service with curl</h3>
-<p>In v3.0, the RPC framework supports HTTP protocol, so we can call the RPC service with the <code>curl</code> command:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://127.0.0.1:7788/xx --request POST --data <span class="s1">&#39;{&#34;api&#34;:&#34;ping&#34;}&#39;</span>
-</span></span><span class="line"><span class="cl">curl http://127.0.0.1:7788/xx --request POST --data <span class="s1">&#39;{&#34;api&#34;:&#34;HelloWorld.hello&#34;}&#39;</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>The above use <code>curl</code> to send a POST request to the RPC server, the parameter is a JSON string, and a <code>&quot;api&quot;</code> field must be provided to indicate the RPC method to be called.</p>
-</li>
-<li>
-<p><code>&quot;ping&quot;</code> is a built-in method of the RPC framework, generally used for testing or sending heartbeats.</p>
-</li>
-<li>
-<p><code>/xx</code> in the url should be consistent with the url specified when the RPC server is started.</p>
-</li>
-</ul>
-<h2 id="rpcclient"><a class="anchor" href="#rpcclient">#</a>rpc::Client</h2>
-<h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_ssl</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="n">Client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, the parameter <code>ip</code> is ip of the server, which can be a domain name, IPv4 or IPv6 address; the parameter <code>port</code> is port of the server; the parameter <code>use_ssl</code> indicates whether to enable SSL transmission, the default is false, and SSL is disabled.</li>
-</ul>
-<blockquote class="book-hint info">
-  When rpc::Client was constructed, the connection is not established immediately.
-</blockquote>
-
-<h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Client</span><span class="o">::~</span><span class="n">Client</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Destructor, close the internal connection.</li>
-</ul>
-<h3 id="clientcall"><a class="anchor" href="#clientcall">#</a>Client::call</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">call</span><span class="p">(</span><span class="k">const</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">req</span><span class="p">,</span> <span class="n">Json</span><span class="o">&amp;</span> <span class="n">res</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Perform a RPC request, it must be called in coroutine.</li>
-<li>The parameter <code>req</code> must contain the <code>&quot;api&quot;</code> field, its value is generally in the form of <code>&quot;service.method&quot;</code>.</li>
-<li>The parameter <code>res</code> is the response of the RPC request.</li>
-<li>If the RPC request is not sent, or no response from the server is received, res will not be filled.</li>
-<li>This method checks the connection status before sending the RPC request, and establishes the connection first if it is not connected.</li>
-</ul>
-<h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Close the connection, it is safe to call this function multiple times.</li>
-</ul>
-<h3 id="clientping"><a class="anchor" href="#clientping">#</a>Client::ping</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">ping</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Send a <code>ping</code> request to the server, generally used for testing or sending heartbeats.</li>
-</ul>
-<h2 id="rpc-client-example"><a class="anchor" href="#rpc-client-example">#</a>RPC client example</h2>
-<h3 id="use-rpcclient-directly"><a class="anchor" href="#use-rpcclient-directly">#</a>Use rpc::Client directly</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">use_ssl</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;use ssl if true&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;request num&#34;</span><span class="p">);</span>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rpc.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="n">FLG_use_ssl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">rpc_client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">FLG_n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="s">&#34;api&#34;</span><span class="p">,</span> <span class="s">&#34;HelloWorld.hello&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">};</span>
-</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">Json</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">req</span> <span class="o">=</span> <span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">req</span><span class="p">.</span><span class="n">add_member</span><span class="p">(</span><span class="s">&#34;api&#34;</span><span class="p">,</span> <span class="s">&#34;HelloWorld.hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">json</span><span class="o">::</span><span class="n">any</span> <span class="n">res</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;res = &#34;</span><span class="p">,</span> <span class="n">res</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">c</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>In the above example, the client sends an RPC request to the server every 1 second.</li>
+</span></span></code></pre></div><h2 id="rpc-related-flags"><a class="anchor" href="#rpc-related-flags">#</a>RPC-Related Flags</h2>
+<table>
+<thead>
+<tr>
+<th>flag</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rpc_max_msg_size</code></td>
+<td><code>8 &lt;&lt; 20</code> (8M)</td>
+<td>Maximum message length</td>
+</tr>
+<tr>
+<td><code>rpc_recv_timeout</code></td>
+<td><code>3000</code></td>
+<td>Receive timeout (milliseconds)</td>
+</tr>
+<tr>
+<td><code>rpc_send_timeout</code></td>
+<td><code>3000</code></td>
+<td>Send timeout (milliseconds)</td>
+</tr>
+<tr>
+<td><code>rpc_conn_timeout</code></td>
+<td><code>3000</code></td>
+<td>Connection timeout (milliseconds)</td>
+</tr>
+<tr>
+<td><code>rpc_conn_idle_sec</code></td>
+<td><code>180</code></td>
+<td>Maximum connection idle time (seconds)</td>
+</tr>
+<tr>
+<td><code>rpc_max_idle_conn</code></td>
+<td><code>128</code></td>
+<td>Maximum number of idle connections</td>
+</tr>
+<tr>
+<td><code>rpc_log</code></td>
+<td><code>false</code></td>
+<td>Print RPC logs</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Can be adjusted via command line or configuration file:</li>
 </ul>
-<h3 id="use-connection-pool"><a class="anchor" href="#use-connection-pool">#</a>Use connection pool</h3>
-<p>When a client needs to establish a large number of connections, <a href="../../concurrency/coroutine/pool/">co::pool</a> can be used to manage these connections.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">proto</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">pool</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="p">[]()</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">new</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="o">*</span><span class="n">proto</span><span class="p">);</span> <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="p">(</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">pool</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="o">-&gt;</span><span class="n">ping</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">proto</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">rpc</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ul>
-<li>In the above example, co::pool is used to store the clients, and multiple coroutines can share these clients.</li>
-<li>The ccb of co::pool uses copy construction to copy a client from <code>proto</code>.</li>
-</ul>
-<h2 id="config-items"><a class="anchor" href="#config-items">#</a>Config items</h2>
-<p>Coost uses <a href="../../flag/">co.flag</a> to define config items for RPC.</p>
-<h3 id="rpc_conn_idle_sec"><a class="anchor" href="#rpc_conn_idle_sec">#</a>rpc_conn_idle_sec</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_conn_idle_sec</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s">&#34;#2 connection may be closed if no data...&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Timeout in <strong>seconds</strong> for idle connections in rpc::Server. If a connection does not receive any data within this time, the server may close the connection.</li>
-</ul>
-<h3 id="rpc_conn_timeout"><a class="anchor" href="#rpc_conn_timeout">#</a>rpc_conn_timeout</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_conn_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 connect timeout in ms&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Connect timeout in milliseconds for rpc::Client.</li>
-</ul>
-<h3 id="rpc_log"><a class="anchor" href="#rpc_log">#</a>rpc_log</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">rpc_log</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="s">&#34;#2 enable rpc log if true&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Whether to print RPC logs, the default is true, rpc::Server and rpc::Client will print RPC requests and responses.</li>
-</ul>
-<h3 id="rpc_max_idle_conn"><a class="anchor" href="#rpc_max_idle_conn">#</a>rpc_max_idle_conn</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_max_idle_conn</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="s">&#34;#2 max idle connections&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Maximum number of idle connections for rpc::Server. The default is 128. When this number is exceeded, the server will close some idle connections.</li>
-</ul>
-<h3 id="rpc_max_msg_size"><a class="anchor" href="#rpc_max_msg_size">#</a>rpc_max_msg_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_max_msg_size</span><span class="p">,</span> <span class="mi">8</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#34;#2 max size of rpc message, default: 8M&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>The maximum length of RPC messages, the default is 8M.</li>
-</ul>
-<h3 id="rpc_recv_timeout"><a class="anchor" href="#rpc_recv_timeout">#</a>rpc_recv_timeout</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_recv_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 recv timeout in ms&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>RPC recv timeout in milliseconds.</li>
-</ul>
-<h3 id="rpc_send_timeout"><a class="anchor" href="#rpc_send_timeout">#</a>rpc_send_timeout</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">rpc_send_timeout</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s">&#34;#2 send timeout in ms&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>RPC send timeout in milliseconds.</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./app -rpc_log<span class="o">=</span><span class="nb">true</span> -rpc_recv_timeout<span class="o">=</span><span class="m">5000</span>
+</span></span></code></pre></div><h2 id="notes"><a class="anchor" href="#notes">#</a>Notes</h2>
+<ul>
+<li>The RPC protocol header is fixed at 8 bytes, with magic <code>0x7777</code>.</li>
+<li>Requests must contain the <code>api</code> field, and it must be a string.</li>
+<li>The method name format is <code>ServiceName.method_name</code>.</li>
+<li>The built-in method <code>ping</code> responds with <code>{&quot;res&quot;:&quot;pong&quot;}</code>.</li>
+<li><code>rpc_client::call</code> attempts to connect if not connected; returns directly on failure.</li>
+<li><code>rpc_client</code> cannot be called by multiple threads at the same time.</li>
+<li>Copy construction of <code>rpc_client</code> only copies host / port, not the connection.</li>
+<li>When adding a service, duplicate service or method names will cause <code>log::check</code> to fail.</li>
+<li><code>flag::parse</code> is required to start the underlying threads.</li>
+<li>Users usually inherit from the class generated by <code>gen</code>, rather than directly inheriting from <code>co::rpc_service</code>.</li>
+<li>A <code>.proto</code> file can contain at most one <code>service</code>.</li>
 </ul>
 </article>
  
@@ -1312,50 +1174,39 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#rpcservice">rpc::Service</a></li>
-        <li><a href="#rpcserver">rpc::Server</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#protocol">Protocol</a>
           <ul>
-            <li><a href="#serverserver">Server::Server</a></li>
-            <li><a href="#serveradd_service">Server::add_service</a></li>
-            <li><a href="#serverstart">Server::start</a></li>
-            <li><a href="#serverexit">Server::exit</a></li>
+            <li><a href="#header-1">Header</a></li>
+            <li><a href="#request">Request</a></li>
+            <li><a href="#response">Response</a></li>
           </ul>
         </li>
-        <li><a href="#rpc-server-example">RPC server example</a>
+        <li><a href="#rpc_service">rpc_service</a></li>
+        <li><a href="#gen-tool">gen Tool</a>
           <ul>
-            <li><a href="#define-a-proto-file">Define a proto file</a></li>
-            <li><a href="#generate-code-for-rpc-service">Generate code for RPC service</a></li>
-            <li><a href="#implement-the-rpc-service">Implement the RPC service</a></li>
-            <li><a href="#start-rpc-server">Start RPC server</a></li>
-            <li><a href="#call-rpc-service-with-curl">Call RPC service with curl</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#proto-syntax">proto Syntax</a>
+              <ul>
+                <li><a href="#program-structure">Program Structure</a></li>
+                <li><a href="#service">service</a></li>
+                <li><a href="#object">object</a></li>
+                <li><a href="#types">Types</a></li>
+                <li><a href="#field-values">Field Values</a></li>
+                <li><a href="#comments">Comments</a></li>
+                <li><a href="#literals">Literals</a></li>
+                <li><a href="#identifiers">Identifiers</a></li>
+              </ul>
+            </li>
+            <li><a href="#syntax-constraints">Syntax Constraints</a></li>
+            <li><a href="#generated-code">Generated Code</a></li>
           </ul>
         </li>
-        <li><a href="#rpcclient">rpc::Client</a>
-          <ul>
-            <li><a href="#clientclient">Client::Client</a></li>
-            <li><a href="#clientclient-1">Client::~Client</a></li>
-            <li><a href="#clientcall">Client::call</a></li>
-            <li><a href="#clientclose">Client::close</a></li>
-            <li><a href="#clientping">Client::ping</a></li>
-          </ul>
-        </li>
-        <li><a href="#rpc-client-example">RPC client example</a>
-          <ul>
-            <li><a href="#use-rpcclient-directly">Use rpc::Client directly</a></li>
-            <li><a href="#use-connection-pool">Use connection pool</a></li>
-          </ul>
-        </li>
-        <li><a href="#config-items">Config items</a>
-          <ul>
-            <li><a href="#rpc_conn_idle_sec">rpc_conn_idle_sec</a></li>
-            <li><a href="#rpc_conn_timeout">rpc_conn_timeout</a></li>
-            <li><a href="#rpc_log">rpc_log</a></li>
-            <li><a href="#rpc_max_idle_conn">rpc_max_idle_conn</a></li>
-            <li><a href="#rpc_max_msg_size">rpc_max_msg_size</a></li>
-            <li><a href="#rpc_recv_timeout">rpc_recv_timeout</a></li>
-            <li><a href="#rpc_send_timeout">rpc_send_timeout</a></li>
-          </ul>
-        </li>
+        <li><a href="#rpc_server">rpc_server</a></li>
+        <li><a href="#rpc_client">rpc_client</a></li>
+        <li><a href="#rpc-related-flags">RPC-Related Flags</a></li>
+        <li><a href="#notes">Notes</a></li>
       </ul>
     </li>
   </ul>

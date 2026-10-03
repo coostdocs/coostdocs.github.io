@@ -11,22 +11,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/def/</guid>
-      <description>include: co/def.h.
-#typedefs #Fixed-length integer type co/def.h defines the following 8 types of integers:
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; These types have the same length on different platforms, and there is no portability problem. Google Code Style recommends not to use built-in integer types such as short, long, long long, etc.</description>
-    </item>
-    
-    <item>
-      <title>God Oriented Programming</title>
-      <link>https://coostdocs.github.io/en/co/god/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/god/</guid>
-      <description>include: co/god.h.
-#god The god module provides some features on templates. C++ code written with templates may be hard to understand. Some C++ programmers call it god-oriented programming.
-#god::bless_no_bugs void bless_no_bugs(); Pray to God to bless the code is bug-free. It is thread-safe, and can be called arbitrarily.
-example
-#include &amp;#34;co/god.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; int main(int argc, char** argv) { god::bless_no_bugs(); co::print(&amp;#34;hello world&amp;#34;); return 0; } #god::cast template&amp;lt;typename To, typename From&amp;gt; constexpr To cast(From&amp;amp;&amp;amp; f) { return (To) std::forward&amp;lt;From&amp;gt;(f); } Universal conversion, convert From type to To type, To can be a reference.</description>
+      <description>#Header #include &amp;#34;co/def.h&amp;#34; #Integer Type Aliases typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; Defined in the global namespace. #Integer Extreme Value Constants namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co Defined in the co namespace; all are constexpr.</description>
     </item>
     
     <item>
@@ -35,41 +20,53 @@ example
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/mem/</guid>
-      <description>include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, allocate size bytes of memory. 2, allocate size bytes of memory, and the memory boundary is align byte-aligned (align &amp;lt;= 1024). In the 2nd, align must be power of 2 and cannot exceed 1024. #co::free void free(void* p, size_t size); Free memory allocated by co::alloc or co::realloc, where size is the size of the allocated memory. co::free is different from the ::free provided by the system, it needs an additional size parameter.</description>
+      <description>#Header #include &amp;#34;co/mem.h&amp;#34; The API is in the co namespace.
+APIs starting with an underscore are generally used internally by coost and are not recommended for users to call. #Overview The coost memory allocator divides memory into three categories:
+Category Size Range Alignment Small memory &amp;lt;= S (S is less than 4K) 16-byte aligned Medium memory &amp;lt;= 128K 4K aligned Large memory &amp;gt; 128K Page-aligned, directly mmap / VirtualAlloc Unlike ordinary memory allocators, the coost allocator does not store the size of allocated memory; free requires passing the size.</description>
     </item>
     
     <item>
-      <title>flag</title>
+      <title>String</title>
+      <link>https://coostdocs.github.io/en/co/string/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/string/</guid>
+      <description>#Header #include &amp;#34;co/string.h&amp;#34; The API is in the co namespace.
+#co::string co::string is the string class provided by coost. Its interface style is close to std::string, but:
+It uses the coost memory allocator underneath; It supports operator&amp;lt;&amp;lt;, used for output in logging, print, etc.; It provides convenient methods such as starts_with / ends_with / contains / trim / replace. #Internal Structure struct string { static const size_t npos = (size_t)-1; size_t _cap; // capacity size_t _size; // length char* _p; // data pointer }; _p is managed by the coost allocator.</description>
+    </item>
+    
+    <item>
+      <title>Configuration</title>
       <link>https://coostdocs.github.io/en/co/flag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/flag/</guid>
-      <description>include: co/flag.h.
-#Basic concepts co.flag is a command line and config file parsing library. Its principle is very simple, define global variables in code, then parse the command line parameters and/or config file when the program starts, and update the value of these global variables.
-#flag variable The global variable defined by macros in co.flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.</description>
+      <description>#Header #include &amp;lt;co/flag.h&amp;gt; The API is in the flag namespace.
+#Overview flag provides command-line argument and configuration file parsing functionality. All component configuration items in coost are defined through flags.
+Defining a flag defines a global variable; the variable name is FLG_&amp;lt;name&amp;gt;; Supports both command-line arguments and configuration files; The command line supports -help to print help information, -mkconf to generate a configuration file, and -version to display the program version; #Defining Flags #DEF Macros DEF_bool(name, value, help, .</description>
     </item>
     
     <item>
-      <title>log</title>
+      <title>Logging</title>
       <link>https://coostdocs.github.io/en/co/log/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/log/</guid>
-      <description>include: co/log.h.
-#Introduction co.log is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:
-LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log #Level Log Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.</description>
+      <description>#Header #include &amp;lt;co/log.h&amp;gt; The API is in the log namespace.
+#Initialization and Shutdown log internally uses the flag component to define some configuration items, and logging behavior can be controlled through command-line arguments or a configuration file. In addition, the logging thread starts only after command-line arguments are parsed. Therefore, it must be called at the beginning of the main function:
+flag::parse(argc, argv); Shutdown API:
+void log::close(); Flushes the log buffer and exits the logging thread.</description>
     </item>
     
     <item>
-      <title>Unitest</title>
+      <title>Unit Test</title>
       <link>https://coostdocs.github.io/en/co/unitest/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/unitest/</guid>
-      <description>include: co/unitest.h.
-#Basic concepts co.unitest is a unit testing framework, similar to google gtest, but easier to use.
-#Test Units and Test Cases A test program can be divided into multiple test units according to functions or modules, and there can be multiple test cases under each test unit. For example, a test unit can be defined for a class (or module) in C++, and a test case can be defined for each method in the class (or module).</description>
+      <description>#Header #include &amp;#34;co/unitest.h&amp;#34; #API There is only one public function, in the co namespace:
+int co::run_unitests(); Runs unit tests and returns the number of failed test cases; main is generally written in a fixed way: #include &amp;#34;co/unitest.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #Defining a Test Unit DEF_test(name) { // test code // DEF_case(xxx) {} } The DEF_test macro defines a test unit. It is actually a function, and users can freely add code inside it, such as initialization code shared by test cases; name must be a valid variable name; When there are multiple DEF_tests, name must not be duplicated.</description>
     </item>
     
     <item>
@@ -78,9 +75,8 @@ LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/benchmark/</guid>
-      <description>include: co/benchmark.h.
-#basic concept co.benchmark is a benchmark framework added in v3.0.1, which can be used for performance benchmarking.
-#BM_group #define BM_group(_name_) \ ......\ void _co_bm_group_##_name_(bm::xx::Group&amp;amp; _g_) The BM_group macro is used to define a benchmark group, which actually defines a function. Multiple benchmarks can be defined with BM_add in each group. The parameter _name_ is the group name, which is also part of name of the defined function. BM_group(atomic) is ok, but BM_group(co.</description>
+      <description>#Header #include &amp;#34;co/benchmark.h&amp;#34; #API There is only one public function, in the co namespace:
+void co::run_benchmarks(); Run benchmarks; results are output in markdown table format. main is generally written in a fixed way: #include &amp;#34;co/benchmark.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_benchmarks(); return 0; } #Defining a Benchmark Group BM_group(name) { // BM_add(...) { ... } } The BM_group macro defines a benchmark group. It is actually a function, and users can freely add common initialization code, warm-up code, etc.</description>
     </item>
     
     <item>
@@ -89,22 +85,33 @@ LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/json/</guid>
-      <description>include: co/json.h.
-co.json is a JSON library similar to rapidjson. Compared with rapidjson, it has better performance and is easier to use.
-#Basic concepts JSON is a simple data format that supports two data structures:
-A collection consisting of a series of key/value pairs. This type of structure is called object, which corresponds to struct, map, etc, in programming languages. A list composed of a series of value, this kind of structure is called array, which corresponds to vector, list, etc, in programming languages.</description>
+      <description>#Header #include &amp;#34;co/json.h&amp;#34; The API is in the json namespace.
+#json::any json::any represents any JSON value. Its type can be null, bool, int, double, string, array, or object.
+#Construction and Copying any(); // null any(decltype(nullptr)); // null any(any&amp;amp;&amp;amp; v); // move any(any&amp;amp; v); // move (non-const) any(const any&amp;amp;) = delete; void operator=(const any&amp;amp;) = delete; any&amp;amp; operator=(any&amp;amp;&amp;amp; v); // move any&amp;amp; operator=(any&amp;amp; v); // move any dup() const; // explicit deep copy any(bool v); any(double v); any(int64 v); any(int32 v); any(uint32 v); any(uint64 v); any(const void* p, size_t n); // initialize as string type any(const char* s); any(const co::string&amp;amp; s); any(const std::string&amp;amp; s); any(std::initializer_list&amp;lt;any&amp;gt; v); Copy construction and copy assignment are disabled.</description>
     </item>
     
     <item>
-      <title>Compiling</title>
+      <title>Compilation</title>
       <link>https://coostdocs.github.io/en/co/build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/build/</guid>
-      <description>#Compiler requirements The compilers required are as follows:
-Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+ #xmake Coost recommends using xmake as the build tool.
-#Install xmake For Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&amp;rsquo;s Installation instructions.
-#Build Run commands below in the root directory of co to build libco and other projects:</description>
+      <description>#Compiler Requirements The latest version of coost requires compiler support for C++17:
+Linux: gcc Mac: clang Windows: MSVC #Building with xmake coost recommends using xmake as the build tool.
+#Quick Start # All commands are executed in the coost root directory; this will not be repeated below. xmake # Build libco by default xmake -a # Build all projects (libco, benchmark, gen, test, unitest) In addition, you can use -v or -vD to make xmake print more detailed compilation information:</description>
+    </item>
+    
+    <item>
+      <title>FAQ</title>
+      <link>https://coostdocs.github.io/en/co/faq/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/faq/</guid>
+      <description>#FAQ #How do I modify the value of a configuration item? coost uses flag to define configuration items, which can be modified through command-line arguments or a configuration file.
+On the command line:
+-co_sched_num=2 -min_log_level 1 In the configuration file:
+co_sched_num = 2 min_log_level = 1 Users do not need to write the configuration file by hand; execute ./exe -mkconf to generate a configuration file.
+Alternatively, you can call flag::set_value to modify the default value of a flag:</description>
     </item>
     
   </channel>

@@ -3,27 +3,25 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/co.h.
-#Socket APIs Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.
-Most of the APIs are consistent in form with the native socket APIs, which can reduce the user&rsquo;s learning burden, and users who are familiar with socket programming can easily get started.
-Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Socket programming" />
-<meta property="og:description" content="include: co/co.h.
-#Socket APIs Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.
-Most of the APIs are consistent in form with the native socket APIs, which can reduce the user&rsquo;s learning burden, and users who are familiar with socket programming can easily get started.
-Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block." />
+<meta name="description" content="#Header #include &#34;co/sock.h&#34; The API is in the co namespace. Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+sock_t is in the global namespace.
+#Overview Coroutine-based socket API. I/O-related APIs do not block the scheduling thread and must be called inside a coroutine. On error, use co::error() / co::strerror() to get error information. #Address co::sockaddr struct sockaddr { sockaddr(); sockaddr(const char* host, uint16 port); bool valid() const; int af() const; }; Supports IPv4, IPv6, and domain name resolution.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Socket Programming" />
+<meta property="og:description" content="#Header #include &#34;co/sock.h&#34; The API is in the co namespace. Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+sock_t is in the global namespace.
+#Overview Coroutine-based socket API. I/O-related APIs do not block the scheduling thread and must be called inside a coroutine. On error, use co::error() / co::strerror() to get error information. #Address co::sockaddr struct sockaddr { sockaddr(); sockaddr(const char* host, uint16 port); bool valid() const; int af() const; }; Supports IPv4, IPv6, and domain name resolution." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/net/sock/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>Socket programming | Coost Docs</title>
+<title>Socket Programming | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/net/sock/" title="socket 编程">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -92,20 +90,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -119,6 +104,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -162,19 +160,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -188,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -201,7 +186,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -214,7 +199,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -295,133 +293,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -440,7 +313,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle" checked />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -454,7 +327,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -467,33 +340,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class=" active">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class=" active">Socket Programming</a>
   
 
         </li>
@@ -507,19 +354,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -566,7 +400,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -605,32 +439,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -644,33 +452,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -696,7 +478,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -709,7 +491,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -741,6 +523,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -753,7 +548,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -800,7 +608,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Socket programming</strong>
+  <strong>Socket Programming</strong>
 
   <label for="toc-control">
     
@@ -818,36 +626,20 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#socket-apis">Socket APIs</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#address-cosockaddr">Address co::sockaddr</a></li>
+        <li><a href="#io-event-types">I/O Event Types</a></li>
+        <li><a href="#creating-a-socket">Creating a Socket</a></li>
+        <li><a href="#socket-operations">Socket Operations</a></li>
+        <li><a href="#send-and-receive">Send and Receive</a></li>
+        <li><a href="#socket-options">Socket Options</a></li>
+        <li><a href="#others">Others</a></li>
+        <li><a href="#examples">Examples</a>
           <ul>
-            <li><a href="#terminology-convention">Terminology convention</a></li>
-            <li><a href="#cosocket">co::socket</a></li>
-            <li><a href="#coaccept">co::accept</a></li>
-            <li><a href="#cobind">co::bind</a></li>
-            <li><a href="#coclose">co::close</a></li>
-            <li><a href="#coconnect">co::connect</a></li>
-            <li><a href="#colisten">co::listen</a></li>
-            <li><a href="#corecv">co::recv</a></li>
-            <li><a href="#corecvn">co::recvn</a></li>
-            <li><a href="#corecvfrom">co::recvfrom</a></li>
-            <li><a href="#cosend">co::send</a></li>
-            <li><a href="#cosendto">co::sendto</a></li>
-            <li><a href="#coshutdown">co::shutdown</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#cogetsockopt">co::getsockopt</a></li>
-            <li><a href="#cosetsockopt">co::setsockopt</a></li>
-            <li><a href="#coset_nonblock">co::set_nonblock</a></li>
-            <li><a href="#coset_reuseaddr">co::set_reuseaddr</a></li>
-            <li><a href="#coset_recv_buffer_size">co::set_recv_buffer_size</a></li>
-            <li><a href="#coset_send_buffer_size">co::set_send_buffer_size</a></li>
-            <li><a href="#coset_tcp_keepalive">co::set_tcp_keepalive</a></li>
-            <li><a href="#coset_tcp_nodelay">co::set_tcp_nodelay</a></li>
-            <li><a href="#coreset_tcp_socket">co::reset_tcp_socket</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#coaddr2str">co::addr2str</a></li>
-            <li><a href="#coinit_addr">co::init_addr</a></li>
-            <li><a href="#coinit_ip_addr">co::init_ip_addr</a></li>
-            <li><a href="#copeer">co::peer</a></li>
+            <li><a href="#tcp-client">TCP Client</a></li>
+            <li><a href="#tcp-server">TCP Server</a></li>
+            <li><a href="#udp">UDP</a></li>
           </ul>
         </li>
       </ul>
@@ -864,201 +656,192 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
-<h2 id="socket-apis"><a class="anchor" href="#socket-apis">#</a>Socket APIs</h2>
-<p>Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.</p>
-<p><strong>Most of the APIs are consistent in form with the native socket APIs</strong>, which can reduce the user&rsquo;s learning burden, and users who are familiar with socket programming can easily get started.</p>
-<p>Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block. With these APIs, users can easily implement <strong>high-concurrency and high-performance network programs</strong>.</p>
-<h3 id="terminology-convention"><a class="anchor" href="#terminology-convention">#</a>Terminology convention</h3>
-<p><strong>Blocking</strong></p>
-<p>When describing some socket APIs (accept, recv, etc.) in coost, the term blocking is used. The document says that they will block, which means that the current coroutine will block, but the scheduling thread will not (it can switch to other coroutines to run). From the user&rsquo;s point of view, they saw the coroutines which may block. In fact, these APIs use <strong>non-blocking socket</strong> internally, which does not really block, but when the socket is not readable or writable, the scheduling thread will suspend the current coroutine. When the socket becomes readable or writable, the scheduling thread will awaken the coroutine again and continue the I/O operation.</p>
-<p><strong>non-blocking socket</strong></p>
-<p>The socket APIs in coost must use <strong>non-blocking socket</strong>. On windows, socket must also support <a href="https://support.microsoft.com/en-us/help/181611/socket-overlapped-io-versus-blocking-nonblocking-mode">overlapped I/O</a>, which is supported by default for sockets created with win32 API, users generally no need to worry about it. For narrative convenience, when non-blocking socket is mentioned in the document, it also means that it supports overlapped I/O on windows.</p>
-<h3 id="cosocket"><a class="anchor" href="#cosocket">#</a>co::socket</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">sock_t</span> <span class="n">socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">domain</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">proto</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">sock_t</span> <span class="n">tcp_socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">domain</span><span class="o">=</span><span class="n">AF_INET</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">sock_t</span> <span class="n">udp_socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">domain</span><span class="o">=</span><span class="n">AF_INET</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Create a socket.</li>
-<li>1, the form is exactly the same as the native API. You can use <code>man socket</code> to see the details on linux.</li>
-<li>2, create a TCP socket.</li>
-<li>3, create a UDP socket.</li>
-<li>The parameter <code>domain</code> is usually AF_INET or AF_INET6, the former means ipv4 and the latter means ipv6.</li>
-<li><strong>These functions return a non-blocking socket</strong>. When an error occurs, the return value is -1, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sock.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>co</code> namespace. Before use, you need to call <code>flag::parse(argc, argv);</code> at the beginning of <code>main</code>.</p>
+<p><code>sock_t</code> is in the global namespace.</p>
+<h2 id="overview"><a class="anchor" href="#overview">#</a>Overview</h2>
+<ul>
+<li>Coroutine-based socket API.</li>
+<li>I/O-related APIs do not block the scheduling thread and must be called inside a coroutine.</li>
+<li>On error, use <code>co::error()</code> / <code>co::strerror()</code> to get error information.</li>
 </ul>
-<h3 id="coaccept"><a class="anchor" href="#coaccept">#</a>co::accept</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">sock_t</span> <span class="nf">accept</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">addrlen</span><span class="p">);</span>
+<h2 id="address-cosockaddr"><a class="anchor" href="#address-cosockaddr">#</a>Address co::sockaddr</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">sockaddr</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sockaddr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sockaddr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">host</span><span class="p">,</span> <span class="n">uint16</span> <span class="n">port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">valid</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">af</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>Receive the client connection on the specified socket, the parameter fd is a non-blocking socket, and the parameters addr and addrlen are used to receive the client&rsquo;s address information. The initial value of <code>*addrlen</code> is the length of the buffer pointed to by addr. If the user does not need the client address information, addr and addrlen should be set to NULL.</li>
-<li>This function <strong>must be called in coroutine</strong>.</li>
-<li>This function will block until a new connection comes in or an error occurs.</li>
-<li>This function <strong>returns a non-blocking socket</strong> on success, and returns -1 when an error occurs, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li>Supports IPv4, IPv6, and domain name resolution.</li>
+<li><code>af()</code> returns <code>AF_INET</code> or <code>AF_INET6</code>.</li>
+<li>Can be printed directly, in the format <code>127.0.0.1:8080</code>.</li>
 </ul>
-<h3 id="cobind"><a class="anchor" href="#cobind">#</a>co::bind</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">bind</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">addrlen</span><span class="p">);</span>
+<h2 id="io-event-types"><a class="anchor" href="#io-event-types">#</a>I/O Event Types</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="nc">ev_t</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ev_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ev_write</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>Bind the ip address to the socket, the parameters addr and addrlen are the address information, which is the same as the native API.</li>
-<li>This function returns 0 on success, otherwise returns -1, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li>Bitwise OR combination is not supported.</li>
 </ul>
-<h3 id="coclose"><a class="anchor" href="#coclose">#</a>co::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">close</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+<h2 id="creating-a-socket"><a class="anchor" href="#creating-a-socket">#</a>Creating a Socket</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">sock_t</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">af</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">sock_t</span> <span class="n">co</span><span class="o">::</span><span class="n">udp_socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">af</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">sock_t</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_server_socket</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">host</span><span class="p">,</span> <span class="n">uint16</span> <span class="n">port</span><span class="p">,</span> <span class="kt">int</span> <span class="n">backlog</span><span class="o">=</span><span class="mi">4096</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>Close the socket.</li>
-<li>In coost v2.0.0 or before, a socket must be closed in the same thread that performed the I/O operation. Since v2.0.1, a socket can be closed anywhere.</li>
-<li>When <code>ms &gt; 0</code>, it will call <code>co::sleep(ms)</code> to suspend the current coroutine for a period of time, and then close the socket.</li>
-<li>The <strong>EINTR</strong> signal has been processed internally in this function, and the user does not need to consider it.</li>
-<li>This function returns 0 on success, otherwise it returns -1, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li><code>af=0</code> defaults to <code>AF_INET</code>.</li>
+<li>The created socket is already non-blocking.</li>
+<li><code>tcp_server_socket</code>: creates a TCP socket, binds the address, and listens.</li>
 </ul>
-<h3 id="coconnect"><a class="anchor" href="#coconnect">#</a>co::connect</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">connect</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">addrlen</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+<h2 id="socket-operations"><a class="anchor" href="#socket-operations">#</a>Socket Operations</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="n">sockaddr</span><span class="o">&amp;</span> <span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">listen</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">backlog</span><span class="o">=</span><span class="mi">4096</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="n">sockaddr</span><span class="o">&amp;</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">sock_t</span> <span class="n">co</span><span class="o">::</span><span class="n">accept</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="n">addr</span><span class="o">=</span><span class="k">nullptr</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>Create a connection to the specified address on the specified socket, parameter <code>fd</code> must be non-blocking, <code>ms</code> is the timeout period in milliseconds, the default is -1, which will never time out.</li>
-<li>This function <strong>must be called in coroutine</strong>.</li>
-<li>This function will block until the connection is completed, or timeout or an error occurs.</li>
-<li>This function returns 0 on success, and returns -1 on timeout or an error occurs. The user can call <a href="../../concurrency/coroutine/api/#cotimeout">co::timeout()</a> to check whether it has timed out, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li><code>close(fd, ms)</code>: delays closing by <code>ms</code> milliseconds to prevent malicious attacks.</li>
+<li><code>connect</code>: <code>ms=-1</code> means no timeout; the timeout error code is <code>ETIMEDOUT</code>.</li>
+<li><code>accept</code> returns the socket on success and <code>(sock_t)-1</code> on error; the others return 0 on success and -1 on error.</li>
 </ul>
-<h3 id="colisten"><a class="anchor" href="#colisten">#</a>co::listen</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">listen</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">backlog</span><span class="o">=</span><span class="mi">1024</span><span class="p">);</span>
+<h2 id="send-and-receive"><a class="anchor" href="#send-and-receive">#</a>Send and Receive</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">recvn</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">recvfrom</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">sockaddr</span><span class="o">&amp;</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">sendto</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="n">sockaddr</span><span class="o">&amp;</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>Listenning on the specified socket.</li>
-<li>This function returns 0 on success, otherwise it returns -1, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li><code>recv</code>: single read, may return fewer than <code>n</code> bytes.</li>
+<li><code>recvn</code>: reads exactly <code>n</code> bytes, suitable for protocols with a fixed-length header.</li>
+<li><code>recvfrom</code>: UDP receive; when the function returns, <code>addr</code> is filled with the sender&rsquo;s address.</li>
+<li><code>send</code>: returning <code>n</code> on success means all data was sent; the state after an error or timeout is undefined.</li>
+<li><code>sendto</code>: UDP send.</li>
+<li><code>ms=-1</code> means no timeout; the timeout error code is <code>ETIMEDOUT</code>.</li>
 </ul>
-<h3 id="corecv"><a class="anchor" href="#corecv">#</a>co::recv</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+<h2 id="socket-options"><a class="anchor" href="#socket-options">#</a>Socket Options</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_reuseaddr</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_tcp_nodelay</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_tcp_keepalive</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_send_buffer_size</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_recv_buffer_size</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_nonblock</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">set_cloexec</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span> <span class="c1">// non-Windows
+</span></span></span></code></pre></div><ul>
+<li><code>set_send_buffer_size</code> / <code>set_recv_buffer_size</code> must be called before connecting.</li>
+</ul>
+<h2 id="others"><a class="anchor" href="#others">#</a>Others</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">co</span><span class="o">::</span><span class="n">reset_tcp_socket</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">sockaddr</span> <span class="n">co</span><span class="o">::</span><span class="n">peeraddr</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>Receive data on the specified socket, parameter <code>fd</code> must be non-blocking, <code>buf</code> is the buffer to receive the data, <code>n</code> is the buffer length, and <code>ms</code> is the timeout period in milliseconds, the default is -1, never time out.</li>
-<li>This function <strong>must be called in coroutine</strong>.</li>
-<li>On Windows, this function only works with TCP-like stream socket.</li>
-<li>This function will block until any data comes in, or timeout or any error occurs.</li>
-<li>This function returns length of the data received (may be less than <code>n</code>) on success, returns 0 when the peer closes the connection, returns -1 when timeout or an error occurs, and users can call <a href="../../concurrency/coroutine/api/#cotimeout">co::timeout()</a> to check whether it has timed out, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
+<li><code>reset_tcp_socket</code>: resets the connection without entering <code>timed_wait</code>; generally used on the server side.</li>
+<li><code>peeraddr</code>: returns the peer address.</li>
 </ul>
-<h3 id="corecvn"><a class="anchor" href="#corecvn">#</a>co::recvn</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recvn</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Receive <code>n</code> bytes on the specified socket, <code>fd</code> must be non-blocking, <code>ms</code> is the timeout period in milliseconds, the default is -1, never timeout.</li>
-<li>This function <strong>must be called in coroutine</strong>.</li>
-<li>This function will block until all <code>n</code> bytes of data are received, or timeout or an error occurs.</li>
-<li>This function returns <code>n</code> on success, returns 0 when the peer closes the connection, and returns -1 when timeout or an error occurs. The user can call <a href="../../concurrency/coroutine/api/#cotimeout">co::timeout()</a> to check whether it has timed out, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
-</ul>
-<h3 id="corecvfrom"><a class="anchor" href="#corecvfrom">#</a>co::recvfrom</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recvfrom</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">src_addr</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">addrlen</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Similar to <a href="#corecv">co::recv</a>, except that the parameters <code>src_addr</code> and <code>addrlen</code> can be used to receive the source address information. The initial value of <code>*addrlen</code> is the length of the buffer pointed to by <code>src_addr</code>. If the user does not need the source address information, <code>addr</code> and <code>addrlen</code> should be set to NULL .</li>
-<li><strong>It is recommended to use this function to receive UDP data only</strong>.</li>
-</ul>
-<h3 id="cosend"><a class="anchor" href="#cosend">#</a>co::send</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">send</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Send data to the specified socket, parameter <code>fd</code> must be non-blocking, <code>ms</code> is the timeout period in milliseconds, the default is -1, which will never time out.</li>
-<li>This function <strong>must be called in coroutine</strong>.</li>
-<li>On Windows, this function only works with TCP-like stream socket.</li>
-<li>This function will block until all <code>n</code> bytes of data are sent, or timeout or an error occurs.</li>
-<li>This function returns <code>n</code> on success, and returns -1 on timeout or an error occurs. The user can call <a href="../../concurrency/coroutine/api/#cotimeout">co::timeout()</a> to check whether it has timed out, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
-</ul>
-<h3 id="cosendto"><a class="anchor" href="#cosendto">#</a>co::sendto</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">sendto</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">addrlen</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Send data to the specified address. When <code>dst_addr</code> is NULL and <code>addrlen</code> is 0, it is equivalent to <a href="#cosend">co::send</a>.</li>
-<li><strong>It is recommended to use this function to send UDP data only</strong>.</li>
-<li>When <code>fd</code> is a UDP socket, the maximum of <code>n</code> is 65507.</li>
-</ul>
-<h3 id="coshutdown"><a class="anchor" href="#coshutdown">#</a>co::shutdown</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">shutdown</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">char</span> <span class="n">c</span><span class="o">=</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function is generally used to half-close the socket. The parameter <code>c</code> is a hint, <code>'r'</code> for read, <code>'w'</code> for write, the default is <code>'b'</code> for both read and write.</li>
-<li>It is better to call this function in the same thread that performed the I/O operation.</li>
-<li>This function returns 0 on success, otherwise it returns -1, and <a href="../../other/error/#coerror">co::error()</a> can be called to get the error code.</li>
-</ul>
-<h3 id="heading"><a class="anchor" href="#heading">#</a>———————————</h3>
-<h3 id="cogetsockopt"><a class="anchor" href="#cogetsockopt">#</a>co::getsockopt</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getsockopt</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">lv</span><span class="p">,</span> <span class="kt">int</span> <span class="n">opt</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">optval</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">optlen</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Get socket option information, which is exactly the same as native API, <strong>man getsockopt</strong> for details.</li>
-</ul>
-<h3 id="cosetsockopt"><a class="anchor" href="#cosetsockopt">#</a>co::setsockopt</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">setsockopt</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">lv</span><span class="p">,</span> <span class="kt">int</span> <span class="n">opt</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">optval</span><span class="p">,</span> <span class="kt">int</span> <span class="n">optlen</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set the socket option information, which is exactly the same as the native API, <strong>man setsockopt</strong> for details.</li>
-</ul>
-<h3 id="coset_nonblock"><a class="anchor" href="#coset_nonblock">#</a>co::set_nonblock</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_nonblock</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set <strong>O_NONBLOCK</strong> option for the socket.</li>
-</ul>
-<h3 id="coset_reuseaddr"><a class="anchor" href="#coset_reuseaddr">#</a>co::set_reuseaddr</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_reuseaddr</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set <strong>SO_REUSEADDR</strong> option for the socket.</li>
-<li>Generally, the listening socket of a server needs to set this option, or <a href="#cobind">bind</a> may fail when the server restarts.</li>
-</ul>
-<h3 id="coset_recv_buffer_size"><a class="anchor" href="#coset_recv_buffer_size">#</a>co::set_recv_buffer_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_recv_buffer_size</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set receiving buffer size of the socket. This function must be called before the socket is connected.</li>
-</ul>
-<h3 id="coset_send_buffer_size"><a class="anchor" href="#coset_send_buffer_size">#</a>co::set_send_buffer_size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_send_buffer_size</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set sending buffer size of the socket. This function must be called before the socket is connected.</li>
-</ul>
-<h3 id="coset_tcp_keepalive"><a class="anchor" href="#coset_tcp_keepalive">#</a>co::set_tcp_keepalive</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_tcp_keepalive</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set <strong>SO_KEEPALIVE</strong> option for the socket.</li>
-</ul>
-<h3 id="coset_tcp_nodelay"><a class="anchor" href="#coset_tcp_nodelay">#</a>co::set_tcp_nodelay</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set_tcp_nodelay</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Set <strong>TCP_NODELAY</strong> option for the socket.</li>
-</ul>
-<h3 id="coreset_tcp_socket"><a class="anchor" href="#coreset_tcp_socket">#</a>co::reset_tcp_socket</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">reset_tcp_socket</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Reset a TCP connection, similar to <a href="#coclose">co::close</a>, but the caller will not enter the TIME_WAIT state.</li>
-<li>Generally, only the server side will call this function to close a client connection without entering the TIME_WAIT state.</li>
-</ul>
-<h3 id="heading-1"><a class="anchor" href="#heading-1">#</a>———————————</h3>
-<h3 id="coaddr2str"><a class="anchor" href="#coaddr2str">#</a>co::addr2str</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fastring</span> <span class="n">addr2str</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">sockaddr_in</span><span class="o">*</span> <span class="n">addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">fastring</span> <span class="n">addr2str</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">sockaddr_in6</span><span class="o">*</span> <span class="n">addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">fastring</span> <span class="n">addr2str</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Convert the socket address into a string in the form of <code>&quot;ip:port&quot;</code>.</li>
-<li>1, for ipv4 addresses, 2 for ipv6 addresses. The third one calls version 1 or version 2 according to <code>addrlen</code>.</li>
-</ul>
-<h3 id="coinit_addr"><a class="anchor" href="#coinit_addr">#</a>co::init_addr</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">bool</span> <span class="n">init_addr</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr_in</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">init_addr</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr_in6</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Initialize the sockaddr structure with ip and port.</p>
-</li>
-<li>
-<p>1, for ipv4 addresses, 2 for ipv6 addresses.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">union</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">sockaddr_in</span> <span class="n">v4</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">sockaddr_in6</span> <span class="n">v6</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">addr</span><span class="p">;</span>
+<h2 id="examples"><a class="anchor" href="#examples">#</a>Examples</h2>
+<h3 id="tcp-client"><a class="anchor" href="#tcp-client">#</a>TCP Client</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sock.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">init_ip_addr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">.</span><span class="n">v4</span><span class="p">,</span> <span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7777</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">init_ip_addr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">.</span><span class="n">v6</span><span class="p">,</span> <span class="s">&#34;::&#34;</span><span class="p">,</span> <span class="mi">7777</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="coinit_ip_addr"><a class="anchor" href="#coinit_ip_addr">#</a>co::init_ip_addr</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">init_ip_addr</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr_in</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">init_ip_addr</span><span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr_in6</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Deprecated since v3.0.1, use <a href="#coinit_addr">co::init_addr</a> instead.</li>
-</ul>
-<h3 id="copeer"><a class="anchor" href="#copeer">#</a>co::peer</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">peer</span><span class="p">(</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Get the address information of the peer. The return value is a string in the form of <code>&quot;ip:port&quot;</code>.</li>
-</ul>
-</article>
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sockaddr</span> <span class="n">addr</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sock_t</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_socket</span><span class="p">(</span><span class="n">addr</span><span class="p">.</span><span class="n">af</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;connect failed: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">strerror</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;sent &#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="s">&#34; bytes&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">recv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;recv: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">r</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="tcp-server"><a class="anchor" href="#tcp-server">#</a>TCP Server</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sock.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sock_t</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_server_socket</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="p">(</span><span class="n">sock_t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;listen failed: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">strerror</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">sockaddr</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock_t</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">accept</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="p">(</span><span class="n">sock_t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">go</span><span class="p">([</span><span class="n">fd</span><span class="p">,</span> <span class="n">addr</span><span class="p">]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;accepted: &#34;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">recvn</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">uint32</span> <span class="n">body_len</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint32</span><span class="o">*</span><span class="p">)</span><span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">body</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">body</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">body_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">co</span><span class="o">::</span><span class="n">recvn</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">body</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">body_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;body: &#34;</span><span class="p">,</span> <span class="n">body</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="udp"><a class="anchor" href="#udp">#</a>UDP</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sock.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sock_t</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">udp_socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sockaddr</span> <span class="n">addr</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&#34;ping&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sendto</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">sockaddr</span> <span class="n">peer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">recvfrom</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">peer</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;recvfrom &#34;</span><span class="p">,</span> <span class="n">peer</span><span class="p">,</span> <span class="s">&#34;: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -1180,36 +963,20 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#socket-apis">Socket APIs</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#address-cosockaddr">Address co::sockaddr</a></li>
+        <li><a href="#io-event-types">I/O Event Types</a></li>
+        <li><a href="#creating-a-socket">Creating a Socket</a></li>
+        <li><a href="#socket-operations">Socket Operations</a></li>
+        <li><a href="#send-and-receive">Send and Receive</a></li>
+        <li><a href="#socket-options">Socket Options</a></li>
+        <li><a href="#others">Others</a></li>
+        <li><a href="#examples">Examples</a>
           <ul>
-            <li><a href="#terminology-convention">Terminology convention</a></li>
-            <li><a href="#cosocket">co::socket</a></li>
-            <li><a href="#coaccept">co::accept</a></li>
-            <li><a href="#cobind">co::bind</a></li>
-            <li><a href="#coclose">co::close</a></li>
-            <li><a href="#coconnect">co::connect</a></li>
-            <li><a href="#colisten">co::listen</a></li>
-            <li><a href="#corecv">co::recv</a></li>
-            <li><a href="#corecvn">co::recvn</a></li>
-            <li><a href="#corecvfrom">co::recvfrom</a></li>
-            <li><a href="#cosend">co::send</a></li>
-            <li><a href="#cosendto">co::sendto</a></li>
-            <li><a href="#coshutdown">co::shutdown</a></li>
-            <li><a href="#heading">———————————</a></li>
-            <li><a href="#cogetsockopt">co::getsockopt</a></li>
-            <li><a href="#cosetsockopt">co::setsockopt</a></li>
-            <li><a href="#coset_nonblock">co::set_nonblock</a></li>
-            <li><a href="#coset_reuseaddr">co::set_reuseaddr</a></li>
-            <li><a href="#coset_recv_buffer_size">co::set_recv_buffer_size</a></li>
-            <li><a href="#coset_send_buffer_size">co::set_send_buffer_size</a></li>
-            <li><a href="#coset_tcp_keepalive">co::set_tcp_keepalive</a></li>
-            <li><a href="#coset_tcp_nodelay">co::set_tcp_nodelay</a></li>
-            <li><a href="#coreset_tcp_socket">co::reset_tcp_socket</a></li>
-            <li><a href="#heading-1">———————————</a></li>
-            <li><a href="#coaddr2str">co::addr2str</a></li>
-            <li><a href="#coinit_addr">co::init_addr</a></li>
-            <li><a href="#coinit_ip_addr">co::init_ip_addr</a></li>
-            <li><a href="#copeer">co::peer</a></li>
+            <li><a href="#tcp-client">TCP Client</a></li>
+            <li><a href="#tcp-server">TCP Server</a></li>
+            <li><a href="#udp">UDP</a></li>
           </ul>
         </li>
       </ul>

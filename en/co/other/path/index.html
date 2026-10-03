@@ -3,29 +3,25 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/path.h.
-#path This library is ported from golang&rsquo;s path package, the path separator must be / .
-#path::clean fastring clean(const char* s, size_t n); fastring clean(const char* s); fastring clean(const fastring&amp; s); Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.
-Example
-path::clean(&#34;&#34;); // &#34;.&#34; path::clean(&#34;./x//y/&#34;); // &#34;x/y&#34; path::clean(&#34;./x/..&#34;); // &#34;.&#34; path::clean(&#34;./x/../..&#34;); // &#34;..&#34; #path::join template&lt;typename ...S&gt; inline fastring join(S&amp;&amp;... s); Concatenate any number of strings into a complete path, the returned result is cleaned by path::clean.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Path" />
-<meta property="og:description" content="include: co/path.h.
-#path This library is ported from golang&rsquo;s path package, the path separator must be / .
-#path::clean fastring clean(const char* s, size_t n); fastring clean(const char* s); fastring clean(const fastring&amp; s); Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.
-Example
-path::clean(&#34;&#34;); // &#34;.&#34; path::clean(&#34;./x//y/&#34;); // &#34;x/y&#34; path::clean(&#34;./x/..&#34;); // &#34;.&#34; path::clean(&#34;./x/../..&#34;); // &#34;..&#34; #path::join template&lt;typename ...S&gt; inline fastring join(S&amp;&amp;... s); Concatenate any number of strings into a complete path, the returned result is cleaned by path::clean." />
+<meta name="description" content="#Header #include &#34;co/path.h&#34; The API is in the path namespace, not co.
+Ported from Go&rsquo;s path package; the path separator is fixed as /.
+#Overview clean: returns the shortest equivalent path. join: joins multiple path elements. split: splits into dir and file at the last /. dir: returns the directory part. base: returns the last segment. ext: returns the extension. All functions returning co::string have three overloads: (const char*, size_t), (const char*), and (const co::string&amp;).">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="File Path" />
+<meta property="og:description" content="#Header #include &#34;co/path.h&#34; The API is in the path namespace, not co.
+Ported from Go&rsquo;s path package; the path separator is fixed as /.
+#Overview clean: returns the shortest equivalent path. join: joins multiple path elements. split: splits into dir and file at the last /. dir: returns the directory part. base: returns the last segment. ext: returns the extension. All functions returning co::string have three overloads: (const char*, size_t), (const char*), and (const co::string&amp;)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/other/path/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>Path | Coost Docs</title>
+<title>File Path | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/path/" title="文件路径">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -94,20 +90,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -121,6 +104,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -164,19 +160,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -190,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -203,7 +186,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -216,7 +199,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -297,133 +293,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -442,7 +313,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -456,7 +327,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -469,33 +340,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -509,19 +354,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -568,7 +400,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -607,32 +439,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -646,33 +452,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -698,7 +478,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -711,7 +491,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class=" active">Path</a>
+    <a href="../../../../en/co/other/path/" class=" active">File Path</a>
   
 
         </li>
@@ -743,6 +523,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -755,7 +548,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -802,7 +608,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Path</strong>
+  <strong>File Path</strong>
 
   <label for="toc-control">
     
@@ -820,16 +626,16 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#path">path</a>
-          <ul>
-            <li><a href="#pathclean">path::clean</a></li>
-            <li><a href="#pathjoin">path::join</a></li>
-            <li><a href="#pathsplit">path::split</a></li>
-            <li><a href="#pathdir">path::dir</a></li>
-            <li><a href="#pathbase">path::base</a></li>
-            <li><a href="#pathext">path::ext</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#clean">clean</a></li>
+        <li><a href="#join">join</a></li>
+        <li><a href="#split">split</a></li>
+        <li><a href="#dir">dir</a></li>
+        <li><a href="#base">base</a></li>
+        <li><a href="#ext">ext</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#notes">Notes</a></li>
       </ul>
     </li>
   </ul>
@@ -844,121 +650,88 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/path.h">co/path.h</a>.</p>
-<h2 id="path"><a class="anchor" href="#path">#</a>path</h2>
-<p>This library is ported from golang&rsquo;s <a href="https://github.com/golang/go/blob/master/src/path/path.go">path package</a>, the path separator must be <code>/</code> .</p>
-<h3 id="pathclean"><a class="anchor" href="#pathclean">#</a>path::clean</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/path.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>path</code> namespace, not <code>co</code>.</p>
+<p>Ported from Go&rsquo;s <code>path</code> package; the path separator is fixed as <code>/</code>.</p>
+<h2 id="overview"><a class="anchor" href="#overview">#</a>Overview</h2>
+<ul>
+<li><code>clean</code>: returns the shortest equivalent path.</li>
+<li><code>join</code>: joins multiple path elements.</li>
+<li><code>split</code>: splits into dir and file at the last <code>/</code>.</li>
+<li><code>dir</code>: returns the directory part.</li>
+<li><code>base</code>: returns the last segment.</li>
+<li><code>ext</code>: returns the extension.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>            <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x//y/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;x/y&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/..&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">);</span>   <span class="c1">// &#34;..&#34;
-</span></span></span></code></pre></div><h3 id="pathjoin"><a class="anchor" href="#pathjoin">#</a>path::join</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">S</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">fastring</span> <span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Concatenate any number of strings into a complete path, the returned result is cleaned by <a href="#pathclean">path::clean</a>.</p>
-</li>
-<li>
-<p>Empty strings in the parameters will be ignored.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
+<p>All functions returning <code>co::string</code> have three overloads: <code>(const char*, size_t)</code>, <code>(const char*)</code>, and <code>(const co::string&amp;)</code>.</p>
+<h2 id="clean"><a class="anchor" href="#clean">#</a>clean</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>Returns the shortest equivalent path.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>           <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;.//x/&#34;</span><span class="p">)</span>      <span class="c1">// -&gt; &#34;x&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;..&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;/x/../..&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;x//y//z&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;x/y/z&#34;
+</span></span></span></code></pre></div><h2 id="join"><a class="anchor" href="#join">#</a>join</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="n">X</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">x</span><span class="p">);</span>
+</span></span></code></pre></div><p>Joins any number of path elements; the result is <code>clean</code>ed; empty elements are ignored.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>       <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;/x/y&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/x/y&#34;
+</span></span></span></code></pre></div><h2 id="split"><a class="anchor" href="#split">#</a>split</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>Splits into dir and file at the last <code>/</code>, satisfying <code>path = dir + file</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &lt;&#34;/a/&#34;, &#34;&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &lt;&#34;/a/&#34;, &#34;b&#34;&gt;
+</span></span></span></code></pre></div><h2 id="dir"><a class="anchor" href="#dir">#</a>dir</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>Returns the directory part; the result is <code>clean</code>ed.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>     <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;/a&#34;
+</span></span></span></code></pre></div><h2 id="base"><a class="anchor" href="#base">#</a>base</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>Returns the last segment, after removing trailing slashes.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>       <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;b&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;b&#34;
+</span></span></span></code></pre></div><p>If the path consists entirely of slashes, returns <code>&quot;/&quot;</code>.</p>
+<h2 id="ext"><a class="anchor" href="#ext">#</a>ext</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>Returns the file extension (including <code>.</code>).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;x/x.c&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;.c&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/b.c/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a.&#34;</span><span class="p">)</span>     <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span></code></pre></div><h2 id="example"><a class="anchor" href="#example">#</a>Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/path.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">));</span>       <span class="c1">// ..
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">,</span> <span class="s">&#34;z&#34;</span><span class="p">));</span>    <span class="c1">// /x/y/z
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="s">&#34; | &#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>       <span class="c1">// /a/ | b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">));</span>              <span class="c1">// /a
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b/&#34;</span><span class="p">));</span>            <span class="c1">// b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;x/x.c&#34;</span><span class="p">));</span>             <span class="c1">// .c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="notes"><a class="anchor" href="#notes">#</a>Notes</h2>
+<ul>
+<li>The path separator is fixed as <code>/</code> and is platform-independent.</li>
+<li><code>clean</code> is the basis of the other functions; all results are cleaned.</li>
+<li><code>join</code> ignores empty elements.</li>
+<li>The result of <code>split</code> satisfies <code>path = dir + file</code>.</li>
+<li><code>base(&quot;&quot;)</code> and <code>dir(&quot;&quot;)</code> return <code>&quot;.&quot;</code>.</li>
+<li>If the path consists entirely of slashes, <code>base</code> returns <code>&quot;/&quot;</code>.</li>
+<li><code>ext</code> returns the extension including <code>.</code>, and returns <code>&quot;&quot;</code> if there is no extension.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>        <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">,</span> <span class="s">&#34;z&#34;</span><span class="p">);</span> <span class="c1">// &#34;x/y/z&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">);</span>    <span class="c1">// &#34;/x/y&#34;
-</span></span></span></code></pre></div><h3 id="pathsplit"><a class="anchor" href="#pathsplit">#</a>path::split</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Divide the path into two parts, dir and file. If the path does not contain a separator, the dir part will be empty.</p>
-</li>
-<li>
-<p>The returned result satisfies the property <code>path = dir + file</code>.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>    <span class="c1">// -&gt; {&#34;/&#34;, &#34;&#34;}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>   <span class="c1">// -&gt; {&#34;/&#34;, &#34;a&#34;}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>   <span class="c1">// -&gt; { &#34;/a/&#34;, &#34;&#34; }
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span> <span class="c1">// -&gt; {&#34;/a/&#34;, &#34;b&#34;}
-</span></span></span></code></pre></div><h3 id="pathdir"><a class="anchor" href="#pathdir">#</a>path::dir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Return the directory part of the path, the return value is a cleaned path by <a href="#pathclean">path::clean</a>.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">);</span>    <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a/&#34;</span><span class="p">);</span>   <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>    <span class="c1">// &#34;/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>   <span class="c1">// &#34;/&#34;;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>  <span class="c1">// &#34;/a&#34;;
-</span></span></span></code></pre></div><h3 id="pathbase"><a class="anchor" href="#pathbase">#</a>path::base</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Return the last element of the path.</p>
-</li>
-<li>
-<p>If <code>s</code> is empty, return &ldquo;.&rdquo;.</p>
-</li>
-<li>
-<p>If <code>s</code> consists entirely of slashes, return &ldquo;/&rdquo;.</p>
-</li>
-<li>
-<p>In other cases, remove trailing slashes of <code>s</code> before extracting the last element.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>     <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>    <span class="c1">// &#34;/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>  <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>   <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span> <span class="c1">// &#34;b&#34;
-</span></span></span></code></pre></div><h3 id="pathext"><a class="anchor" href="#pathext">#</a>path::ext</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Return the file name extension of the path.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c&#34;</span><span class="p">);</span>   <span class="c1">// &#34;.c&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">);</span>    <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c/&#34;</span><span class="p">);</span>  <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a.&#34;</span><span class="p">);</span>     <span class="c1">// &#34;.&#34;
-</span></span></span></code></pre></div></article>
+</article>
  
       
 
@@ -1080,16 +853,16 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#path">path</a>
-          <ul>
-            <li><a href="#pathclean">path::clean</a></li>
-            <li><a href="#pathjoin">path::join</a></li>
-            <li><a href="#pathsplit">path::split</a></li>
-            <li><a href="#pathdir">path::dir</a></li>
-            <li><a href="#pathbase">path::base</a></li>
-            <li><a href="#pathext">path::ext</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#clean">clean</a></li>
+        <li><a href="#join">join</a></li>
+        <li><a href="#split">split</a></li>
+        <li><a href="#dir">dir</a></li>
+        <li><a href="#base">base</a></li>
+        <li><a href="#ext">ext</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#notes">Notes</a></li>
       </ul>
     </li>
   </ul>

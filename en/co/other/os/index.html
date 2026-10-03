@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/os.h.
-#os #os::cpunum int cpunum(); Returns the number of system CPU cores. #os::cwd fastring cwd(); Returns path of the current working directory. On windows, \ in the results will be converted to /. #os::daemon void daemon(); Put the current process to run in the background, for linux only. #os::env 1. fastring env(const char* name); 2. bool env(const char* name, const char* value); 1, get value of the environment variable. 2, added in v2.">
+<meta name="description" content="#Header #include &#34;co/os.h&#34; The API is in the os namespace; flag::parse is not required.
+#Environment Variables co::string os::env(const char* name); bool os::env(const char* name, const char* value); env(name): gets the value of an environment variable; returns an empty string if it does not exist. env(name, value): sets the value of an environment variable. If value is nullptr or an empty string, the variable is deleted. Returns true on success. The value is not UTF-8 transcoded.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Operating System" />
-<meta property="og:description" content="include: co/os.h.
-#os #os::cpunum int cpunum(); Returns the number of system CPU cores. #os::cwd fastring cwd(); Returns path of the current working directory. On windows, \ in the results will be converted to /. #os::daemon void daemon(); Put the current process to run in the background, for linux only. #os::env 1. fastring env(const char* name); 2. bool env(const char* name, const char* value); 1, get value of the environment variable. 2, added in v2." />
+<meta property="og:description" content="#Header #include &#34;co/os.h&#34; The API is in the os namespace; flag::parse is not required.
+#Environment Variables co::string os::env(const char* name); bool os::env(const char* name, const char* value); env(name): gets the value of an environment variable; returns an empty string if it does not exist. env(name, value): sets the value of an environment variable. If value is nullptr or an empty string, the variable is deleted. Returns true on success. The value is not UTF-8 transcoded." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/other/os/" /><meta property="article:section" content="co" />
 
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/os/" title="操作系统">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -88,20 +88,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -115,6 +102,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -158,19 +158,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -184,7 +171,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -197,7 +184,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -210,7 +197,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -291,133 +291,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -436,7 +311,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -450,7 +325,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -463,33 +338,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -503,19 +352,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -562,7 +398,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -601,32 +437,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -640,33 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -692,7 +476,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -705,7 +489,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -737,6 +521,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -749,7 +546,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -814,19 +624,13 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#os">os</a>
-          <ul>
-            <li><a href="#oscpunum">os::cpunum</a></li>
-            <li><a href="#oscwd">os::cwd</a></li>
-            <li><a href="#osdaemon">os::daemon</a></li>
-            <li><a href="#osenv">os::env</a></li>
-            <li><a href="#osexename">os::exename</a></li>
-            <li><a href="#osexepath">os::exepath</a></li>
-            <li><a href="#oshomedir">os::homedir</a></li>
-            <li><a href="#ospid">os::pid</a></li>
-            <li><a href="#ossignal">os::signal</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#environment-variables">Environment Variables</a></li>
+        <li><a href="#paths">Paths</a></li>
+        <li><a href="#process-and-hardware">Process and Hardware</a></li>
+        <li><a href="#signals">Signals</a></li>
+        <li><a href="#executing-commands">Executing Commands</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>
@@ -841,75 +645,76 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/os.h">co/os.h</a>.</p>
-<h2 id="os"><a class="anchor" href="#os">#</a>os</h2>
-<h3 id="oscpunum"><a class="anchor" href="#oscpunum">#</a>os::cpunum</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">cpunum</span><span class="p">();</span>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>os</code> namespace; <code>flag::parse</code> is not required.</p>
+<h2 id="environment-variables"><a class="anchor" href="#environment-variables">#</a>Environment Variables</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span>       <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>Returns the number of system CPU cores.</li>
+<li><code>env(name)</code>: gets the value of an environment variable; returns an empty string if it does not exist.</li>
+<li><code>env(name, value)</code>: sets the value of an environment variable. If <code>value</code> is <code>nullptr</code> or an empty string, the variable is deleted. Returns <code>true</code> on success.</li>
+<li>The value is not UTF-8 transcoded.</li>
 </ul>
-<h3 id="oscwd"><a class="anchor" href="#oscwd">#</a>os::cwd</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">cwd</span><span class="p">();</span>
+<h2 id="paths"><a class="anchor" href="#paths">#</a>Paths</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">();</span>  <span class="c1">// current user&#39;s home directory
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">cwd</span><span class="p">();</span>      <span class="c1">// current working directory
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exepath</span><span class="p">();</span>  <span class="c1">// executable file path
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exedir</span><span class="p">();</span>   <span class="c1">// directory containing the executable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exename</span><span class="p">();</span>  <span class="c1">// executable file name
+</span></span></span></code></pre></div><ul>
+<li>Returns an empty string on failure.</li>
+<li>On Windows, returns UTF-8, consistent with <code>fs</code>.</li>
+<li><code>exename()</code> includes the extension.</li>
+</ul>
+<h2 id="process-and-hardware"><a class="anchor" href="#process-and-hardware">#</a>Process and Hardware</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">size_t</span> <span class="n">os</span><span class="o">::</span><span class="n">pagesize</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
-<li>Returns path of the current working directory.</li>
-<li>On windows, <code>\</code> in the results will be converted to <code>/</code>.</li>
+<li><code>pid()</code>: current process id.</li>
+<li><code>cpunum()</code>: number of logical CPU cores.</li>
+<li><code>pagesize()</code>: page size (in bytes).</li>
 </ul>
-<h3 id="osdaemon"><a class="anchor" href="#osdaemon">#</a>os::daemon</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">daemon</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Put the current process to run in the background, <strong>for linux only</strong>.</li>
-</ul>
-<h3 id="osenv"><a class="anchor" href="#osenv">#</a>os::env</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fastring</span> <span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, get value of the environment variable.</li>
-<li>2, added in v2.0.2, set value of the environment variable, return true on success, otherwise false.</li>
-</ul>
-<h3 id="osexename"><a class="anchor" href="#osexename">#</a>os::exename</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">exename</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Returns name of the current process (without path).</li>
-</ul>
-<h3 id="osexepath"><a class="anchor" href="#osexepath">#</a>os::exepath</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">exepath</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Returns the full path of the current process.</li>
-<li>On windows, <code>\</code> in the results will be converted to <code>/</code>.</li>
-</ul>
-<h3 id="oshomedir"><a class="anchor" href="#oshomedir">#</a>os::homedir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">homedir</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Returns path of the home directory of the current user.</li>
-<li>On windows, <code>\</code> in the results will be converted to <code>/</code>.</li>
-</ul>
-<h3 id="ospid"><a class="anchor" href="#ospid">#</a>os::pid</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">pid</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Returns the id of the current process.</li>
-</ul>
-<h3 id="ossignal"><a class="anchor" href="#ossignal">#</a>os::signal</h3>
+<h2 id="signals"><a class="anchor" href="#signals">#</a>Signals</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sig_handler_t</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">sig_handler_t</span> <span class="nf">signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">,</span> <span class="n">sig_handler_t</span> <span class="n">handler</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sig_handler_t</span> <span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">,</span> <span class="n">sig_handler_t</span> <span class="n">handler</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>Set a handler for a signal, the parameter <code>sig</code> is the signal value, and the parameter <code>flag</code> is the combination of <code>SA_RESTART</code>, <code>SA_ONSTACK</code> or other options.</p>
-</li>
-<li>
-<p>The parameter <code>flag</code> is only applicable to linux/mac platforms.</p>
-</li>
-<li>
-<p>This function returns the old signal handler.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
+<li>Just a simple wrapper around <code>::signal</code>.</li>
+<li>Returns the old handler.</li>
+<li><code>flag</code> is not supported on Windows.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">f</span><span class="p">);</span>        <span class="c1">// user defined handler
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGABRT</span><span class="p">,</span> <span class="n">SIG_DFL</span><span class="p">);</span> <span class="c1">// default handler
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">SIG_IGN</span><span class="p">);</span> <span class="c1">// ignore SIGPIPE
-</span></span></span></code></pre></div></article>
+<h2 id="executing-commands"><a class="anchor" href="#executing-commands">#</a>Executing Commands</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">os</span><span class="o">::</span><span class="n">system</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">cmd</span><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li>There is no <code>std::string</code> overload; you need to call <code>.c_str()</code> first.</li>
+<li>On non-Windows, it is based on <code>popen</code> / <code>pclose</code>; output goes directly to the terminal.</li>
+<li>Returns <code>bool</code>, indicating whether the command executed successfully.</li>
+</ul>
+<h2 id="example"><a class="anchor" href="#example">#</a>Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;homedir = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;cwd     = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">cwd</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;exepath = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">exepath</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;pid     = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;cpunum  = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;page    = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">pagesize</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;PATH = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;PATH&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;MY_VAR = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">system</span><span class="p">(</span><span class="s">&#34;echo hello coost&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -1031,19 +836,13 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#os">os</a>
-          <ul>
-            <li><a href="#oscpunum">os::cpunum</a></li>
-            <li><a href="#oscwd">os::cwd</a></li>
-            <li><a href="#osdaemon">os::daemon</a></li>
-            <li><a href="#osenv">os::env</a></li>
-            <li><a href="#osexename">os::exename</a></li>
-            <li><a href="#osexepath">os::exepath</a></li>
-            <li><a href="#oshomedir">os::homedir</a></li>
-            <li><a href="#ospid">os::pid</a></li>
-            <li><a href="#ossignal">os::signal</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#environment-variables">Environment Variables</a></li>
+        <li><a href="#paths">Paths</a></li>
+        <li><a href="#process-and-hardware">Process and Hardware</a></li>
+        <li><a href="#signals">Signals</a></li>
+        <li><a href="#executing-commands">Executing Commands</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>

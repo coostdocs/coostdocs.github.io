@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/flag.h.
-#Basic concepts co.flag is a command line and config file parsing library. Its principle is very simple, define global variables in code, then parse the command line parameters and/or config file when the program starts, and update the value of these global variables.
-#flag variable The global variable defined by macros in co.flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="flag" />
-<meta property="og:description" content="include: co/flag.h.
-#Basic concepts co.flag is a command line and config file parsing library. Its principle is very simple, define global variables in code, then parse the command line parameters and/or config file when the program starts, and update the value of these global variables.
-#flag variable The global variable defined by macros in co.flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x." />
+<meta name="description" content="#Header #include &lt;co/flag.h&gt; The API is in the flag namespace.
+#Overview flag provides command-line argument and configuration file parsing functionality. All component configuration items in coost are defined through flags.
+Defining a flag defines a global variable; the variable name is FLG_&lt;name&gt;; Supports both command-line arguments and configuration files; The command line supports -help to print help information, -mkconf to generate a configuration file, and -version to display the program version; #Defining Flags #DEF Macros DEF_bool(name, value, help, .">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Configuration" />
+<meta property="og:description" content="#Header #include &lt;co/flag.h&gt; The API is in the flag namespace.
+#Overview flag provides command-line argument and configuration file parsing functionality. All component configuration items in coost are defined through flags.
+Defining a flag defines a global variable; the variable name is FLG_&lt;name&gt;; Supports both command-line arguments and configuration files; The command line supports -help to print help information, -mkconf to generate a configuration file, and -version to display the program version; #Defining Flags #DEF Macros DEF_bool(name, value, help, ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/flag/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>flag | Coost Docs</title>
+<title>Configuration | Coost Docs</title>
 <link rel="manifest" href="../../../manifest.json">
 <link rel="icon" href="../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/flag/" title="配置">
 <link rel="stylesheet" href="../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../flexsearch.min.js"></script>
-  <script defer src="../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,20 +90,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -117,6 +104,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -160,19 +160,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -186,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/flag/" class=" active">flag</a>
+    <a href="../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -199,7 +186,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/log/" class="">log</a>
+    <a href="../../../en/co/flag/" class=" active">Configuration</a>
   
 
         </li>
@@ -212,7 +199,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -293,133 +293,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -438,7 +313,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -452,7 +327,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -465,33 +340,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -505,19 +354,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -564,7 +400,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -603,32 +439,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -642,33 +452,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -694,7 +478,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -707,7 +491,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -739,6 +523,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -751,7 +548,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -798,7 +608,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>flag</strong>
+  <strong>Configuration</strong>
 
   <label for="toc-control">
     
@@ -816,46 +626,35 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#basic-concepts">Basic concepts</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#defining-flags">Defining Flags</a>
           <ul>
-            <li><a href="#flag-variable">flag variable</a></li>
-            <li><a href="#command-line-flag">command line flag</a></li>
+            <li><a href="#def-macros">DEF Macros</a></li>
+            <li><a href="#dec-macros">DEC Macros</a></li>
+            <li><a href="#aliases">Aliases</a></li>
           </ul>
         </li>
-        <li><a href="#apis">APIs</a>
+        <li><a href="#parsing-arguments">Parsing Arguments</a></li>
+        <li><a href="#command-line-arguments">Command-Line Arguments</a>
           <ul>
-            <li><a href="#flagparse">flag::parse</a></li>
-            <li><a href="#flagset_value">flag::set_value</a></li>
-            <li><a href="#flagalias">flag::alias</a></li>
+            <li><a href="#bool-type">bool Type</a></li>
+            <li><a href="#integer-units">Integer Units</a></li>
+            <li><a href="#single-letter-flag-shorthand-syntax">Single-Letter Flag Shorthand Syntax</a></li>
           </ul>
         </li>
-        <li><a href="#use-flag-variable-in-the-code">Use flag variable in the code</a>
+        <li><a href="#configuration-file">Configuration File</a></li>
+        <li><a href="#command-line-vs-configuration-file-priority">Command-Line vs. Configuration File Priority</a></li>
+        <li><a href="#internal-flags">Internal Flags</a>
           <ul>
-            <li><a href="#define-a-flag-variable">Define a flag variable</a></li>
-            <li><a href="#add-alias-for-a-flag">Add alias for a flag</a></li>
-            <li><a href="#declare-the-flag-variable">Declare the flag variable</a></li>
-            <li><a href="#use-the-flag-variable">Use the flag variable</a></li>
+            <li><a href="#-help">-help</a></li>
+            <li><a href="#-version">-version</a></li>
+            <li><a href="#-mkconf">-mkconf</a></li>
           </ul>
         </li>
-        <li><a href="#use-flag-in-command-line">Use flag in command line</a>
-          <ul>
-            <li><a href="#set-value-of-flags">Set value of flags</a></li>
-            <li><a href="#show-help-information">Show Help Information</a></li>
-            <li><a href="#list-all-flags">List all flags</a></li>
-            <li><a href="#show-version-of-the-program">Show version of the program</a></li>
-          </ul>
-        </li>
-        <li><a href="#config-file">config file</a>
-          <ul>
-            <li><a href="#config-file-format">config file format</a></li>
-            <li><a href="#generate-config-file">Generate config file</a></li>
-            <li><a href="#adjust-the-order-of-config-items">Adjust the order of config items</a></li>
-            <li><a href="#prohibit-config-items-from-being-generated-in-the-config-file">Prohibit config items from being generated in the config file</a></li>
-            <li><a href="#specify-the-config-file-when-the-program-starts">Specify the config file when the program starts</a></li>
-          </ul>
-        </li>
-        <li><a href="#custom-help-information">Custom help information</a></li>
-        <li><a href="#run-program-as-a-daemon">Run program as a daemon</a></li>
+        <li><a href="#runtime-api">Runtime API</a></li>
+        <li><a href="#thread-safety">Thread Safety</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>
@@ -870,406 +669,254 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/flag.h">co/flag.h</a>.</p>
-<h2 id="basic-concepts"><a class="anchor" href="#basic-concepts">#</a>Basic concepts</h2>
-<p><strong>co.flag</strong> is a command line and config file parsing library. Its principle is very simple, define global variables in code, then parse the command line parameters and/or config file when the program starts, and update the value of these global variables.</p>
-<h3 id="flag-variable"><a class="anchor" href="#flag-variable">#</a>flag variable</h3>
-<p>The global variable defined by macros in <code>co.flag</code> are called <strong>flag variable</strong>. For example, the following code defines a flag variable, the variable name is <code>FLG_x</code>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span> <span class="c1">// int32 FLG_x = 0;
-</span></span></span></code></pre></div><p><code>co.flag</code> supports 7 types of flag variable:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span><span class="p">,</span> <span class="n">int32</span><span class="p">,</span> <span class="n">int64</span><span class="p">,</span> <span class="n">uint32</span><span class="p">,</span> <span class="n">uint64</span><span class="p">,</span> <span class="kt">double</span><span class="p">,</span> <span class="n">string</span>
-</span></span></code></pre></div><p>Every flag variable has a default value, and a new value can be passed to it from command-line or config file. Take the previously <code>FLG_x</code> as an example, we can use <code>-x=23</code> in command line, or <code>x = 23</code> in the config file, to set a new value for it.</p>
-<h3 id="command-line-flag"><a class="anchor" href="#command-line-flag">#</a>command line flag</h3>
-<p>Command line parameters appear in the form of <code>-x=y</code>, where <code>x</code> is called a <strong>command line flag</strong> (hereinafter referred to as flag). The flag <code>x</code> in command line corresponds to the global variable <code>FLG_x</code> in the code, and <code>-x=y</code> in command line is equivalent to setting the value of <code>FLG_x</code> to <code>y</code>.</p>
-<p><code>co.flag</code> is designed to be very flexible:</p>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/flag.h&gt;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>flag</code> namespace.</p>
+<h2 id="overview"><a class="anchor" href="#overview">#</a>Overview</h2>
+<p><code>flag</code> provides command-line argument and configuration file parsing functionality. All component configuration items in coost are defined through flags.</p>
 <ul>
-<li>
-<p><code>-x=y</code> can omit the preceding <code>-</code>, abbreviated as <code>x=y</code>.</p>
-</li>
-<li>
-<p><code>-x=y</code> can also be written as <code>-x y</code>.</p>
-</li>
-<li>
-<p><code>x=y</code> can be preceded by any number of <code>-</code>.</p>
-</li>
-<li>
-<p>For bool type flags, <code>-b=true</code> can be abbreviated as <code>-b</code>.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
+<li>Defining a flag defines a global variable; the variable name is <code>FLG_&lt;name&gt;</code>;</li>
+<li>Supports both command-line arguments and configuration files;</li>
+<li>The command line supports <code>-help</code> to print help information, <code>-mkconf</code> to generate a configuration file, and <code>-version</code> to display the program version;</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># b, i, s are all flags, xx is not a flag</span>
-</span></span><span class="line"><span class="cl">./exe -b -i<span class="o">=</span><span class="m">32</span> -s<span class="o">=</span>hello xx
-</span></span></code></pre></div><h2 id="apis"><a class="anchor" href="#apis">#</a>APIs</h2>
-<h3 id="flagparse"><a class="anchor" href="#flagparse">#</a>flag::parse</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">parse</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">parse</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
+<h2 id="defining-flags"><a class="anchor" href="#defining-flags">#</a>Defining Flags</h2>
+<h3 id="def-macros"><a class="anchor" href="#def-macros">#</a>DEF Macros</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_int64</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_uint64</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_double</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...);</span>
+</span></span></code></pre></div><p>After definition, access it through a global variable, such as <code>FLG_name</code>.</p>
+<p>Type correspondence:</p>
+<table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Type</th>
+<th>Internal Identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEF_bool</code></td>
+<td><code>bool</code></td>
+<td><code>'b'</code></td>
+</tr>
+<tr>
+<td><code>DEF_int32</code></td>
+<td><code>int32</code></td>
+<td><code>'i'</code></td>
+</tr>
+<tr>
+<td><code>DEF_int64</code></td>
+<td><code>int64</code></td>
+<td><code>'I'</code></td>
+</tr>
+<tr>
+<td><code>DEF_uint32</code></td>
+<td><code>uint32</code></td>
+<td><code>'u'</code></td>
+</tr>
+<tr>
+<td><code>DEF_uint64</code></td>
+<td><code>uint64</code></td>
+<td><code>'U'</code></td>
+</tr>
+<tr>
+<td><code>DEF_double</code></td>
+<td><code>double</code></td>
+<td><code>'d'</code></td>
+</tr>
+<tr>
+<td><code>DEF_string</code></td>
+<td><code>co::string&amp;</code></td>
+<td><code>'s'</code></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Define a global bool variable; the variable name is FLG_debug
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;debug mode&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="dec-macros"><a class="anchor" href="#dec-macros">#</a>DEC Macros</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEC_bool</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_int32</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_int64</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_uint32</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_uint64</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_double</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEC_string</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span></span></code></pre></div><p>Used for cross-file declarations; the type must match <code>DEF_xxx</code>.</p>
+<h3 id="aliases"><a class="anchor" href="#aliases">#</a>Aliases</h3>
+<p>Flags support aliases; aliases can be used on the command line or in configuration files.</p>
+<p>The last variadic parameter of <code>DEF_xxx</code> can specify at most one alias:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// d is an alias
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;debug mode&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+</span></span></code></pre></div><p>Aliases are displayed in the help information, for example <code>-debug,d</code>.</p>
+<h2 id="parsing-arguments"><a class="anchor" href="#parsing-arguments">#</a>Parsing Arguments</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">parse</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">command_line_only</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>Added in v3.0.1.</p>
-</li>
-<li>
-<p>The first parse function, parse the command line parameters and config file, and update value of the flag variables. It usually needs to be called once at the beginning of the main function. Generally speaking, it does the following steps:</p>
+<li>Parses command-line arguments and the configuration file, and updates flag values.</li>
+<li>The return value contains all non-flag arguments;</li>
+<li>When <code>command_line_only == true</code>, only command-line arguments are parsed;</li>
+<li>Usually called at the beginning of <code>main</code>;</li>
+<li>On error, prints information and exits the program.</li>
+</ul>
+<h2 id="command-line-arguments"><a class="anchor" href="#command-line-arguments">#</a>Command-Line Arguments</h2>
+<p>Two forms are supported:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-name<span class="o">=</span>value
+</span></span><span class="line"><span class="cl">-name value
+</span></span></code></pre></div><p><code>-</code> can be one or more; <code>-debug</code> and <code>--debug</code> are equivalent.</p>
+<h3 id="bool-type"><a class="anchor" href="#bool-type">#</a>bool Type</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-debug          <span class="c1"># Equivalent to -debug=true</span>
+</span></span><span class="line"><span class="cl">-debug<span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">-debug<span class="o">=</span><span class="nb">false</span>
+</span></span></code></pre></div><h3 id="integer-units"><a class="anchor" href="#integer-units">#</a>Integer Units</h3>
+<p>Integer types support the units <code>k, m, g, t, p</code>, case-insensitive, <code>1k = 1024</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-co_stack_size<span class="o">=</span>2m   <span class="c1"># 2 * 1024 * 1024</span>
+</span></span></code></pre></div><h3 id="single-letter-flag-shorthand-syntax"><a class="anchor" href="#single-letter-flag-shorthand-syntax">#</a>Single-Letter Flag Shorthand Syntax</h3>
+<p>Single-letter flags support the following two shorthands (command line only):</p>
 <ul>
-<li>Preprocess the command line parameters, the value of <code>FLG_config</code> may be updated then.</li>
-<li>If <code>FLG_config</code> is not empty, parse the config file specified by it, and update value of the flag variables.</li>
-<li>Parse other command line parameters and update value of the flag variables.</li>
-<li>If <code>FLG_mkconf</code> is true, generate a config file and terminate the program.</li>
-<li>If <code>FLG_daemon</code> is true, run the program as a daemon (for Linux only).</li>
-<li>When any error occurs, print the error message and terminate the program immediately.</li>
-<li>If no error occurs, return the non-flag list. For example, when executing <code>./exe x y</code>, this function will return <code>[&quot;x&quot;, &quot;y&quot;]</code>.</li>
+<li>Multiple single-letter bool flags can be combined: for example, if x, y, and z are all bool flags, <code>-xyz</code> can set all three to true.</li>
+<li>A single-letter integer flag can be written together with its value: for example, <code>-n8</code> is equivalent to <code>-n=8</code>.</li>
 </ul>
-</li>
-<li>
-<p>The second parse function, parses the config file and updates value of the flag variables. The parameter <code>path</code> is the path of the config file. When any error occurs, print the error message and terminate the program.</p>
-</li>
+<h2 id="configuration-file"><a class="anchor" href="#configuration-file">#</a>Configuration File</h2>
+<p>By default, the first non-flag argument on the command line (whose name must end with <code>.conf</code>) is used as the configuration file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx xx.conf
+</span></span></code></pre></div><p>Configuration file format:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="c1"># Comment</span>
+</span></span><span class="line"><span class="cl"><span class="na">debug</span> <span class="o">=</span> <span class="s">true</span>
+</span></span><span class="line"><span class="cl"><span class="na">threads</span> <span class="o">=</span> <span class="s">8</span>
+</span></span><span class="line"><span class="cl"><span class="na">port</span> <span class="o">=</span> <span class="s">8080</span>
+</span></span><span class="line"><span class="cl"><span class="na">name</span> <span class="o">=</span> <span class="s">&#34;my app&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="na">n</span> <span class="o">=</span> <span class="s">8k   # 8192 </span>
+</span></span></code></pre></div><ul>
+<li><code>#</code> indicates a comment;</li>
+<li>Blank lines are supported;</li>
+<li>Leading or trailing spaces on a line are allowed;</li>
+<li>The key is not prefixed with <code>--</code>;</li>
+<li>Spaces are allowed before and after <code>=</code>;</li>
+<li>If a string has leading or trailing spaces, it needs to be quoted; both single and double quotes are supported;</li>
+<li>Strings support common escape characters; see <code>co::string::unescape</code> for details;</li>
+<li>bool supports <code>true/false</code> and <code>1/0</code>; all other values are treated as <code>false</code>;</li>
+<li>Integers support the units <code>k, m, g, t, p</code>, case-insensitive;</li>
+<li>If an undefined flag appears in the configuration file, a warning line is printed to the terminal, but the program does not exit;</li>
+<li>Flag names are case-sensitive.</li>
 </ul>
-<blockquote class="book-hint warning">
-  <strong>flag::init</strong><br>
-Since v3.0.1，<code>flag::init()</code> has been marked as deprecated, please use <code>flag::parse()</code> instead.
+<h2 id="command-line-vs-configuration-file-priority"><a class="anchor" href="#command-line-vs-configuration-file-priority">#</a>Command-Line vs. Configuration File Priority</h2>
+<ul>
+<li>When both command-line arguments and a configuration file are present, command-line arguments override values in the configuration file;</li>
+<li>A <code>.conf</code> passed on the command line overrides the default path set by <code>set_config_path</code>.</li>
+</ul>
+<h2 id="internal-flags"><a class="anchor" href="#internal-flags">#</a>Internal Flags</h2>
+<p>The flag component internally defines three bool flags:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">help</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">s_help</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">s_version</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">mkconf</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">s_mkconf</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="-help"><a class="anchor" href="#-help">#</a>-help</h3>
+<p>Prints help information.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -help
+</span></span></code></pre></div><p>Example help information format:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">usage:  ./xx [xx.conf] [-flag [value]] [-flag=value]...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">flags:  -name[,alias]  type  comments  (default value)
+</span></span><span class="line"><span class="cl">  -help       b  show help information  (false)
+</span></span><span class="line"><span class="cl">  -version,v  b  show version information  (false)
+</span></span><span class="line"><span class="cl">  -mkconf     b  generate configuration file  (false)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  -boo        b  bool flag  (false)
+</span></span><span class="line"><span class="cl">  ...
+</span></span></code></pre></div><p>If the user includes <code>co/log.h, co/co.h, co/rpc.h</code>, flags defined internally by coost will also appear in the help information.</p>
+<h3 id="-version"><a class="anchor" href="#-version">#</a>-version</h3>
+<p>Displays the program version. You need to call <code>flag::set_program_version</code> before <code>flag::parse</code> to set the version number. If not set, the version information is empty.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -version
+</span></span></code></pre></div><h3 id="-mkconf"><a class="anchor" href="#-mkconf">#</a>-mkconf</h3>
+<p>Generates a configuration file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -mkconf
+</span></span></code></pre></div><ul>
+<li>Generates the configuration file in the directory where the command is executed;</li>
+<li>File name rule: the executable file name with <code>.exe</code> removed, plus <code>.conf</code>;</li>
+<li>Contains all user flags as well as flags from the coost components used;</li>
+<li>If you do not want a flag to appear in the configuration file, you can use <code>flag::hide()</code> to hide the flag.</li>
+</ul>
+<h2 id="runtime-api"><a class="anchor" href="#runtime-api">#</a>Runtime API</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Add an alias; @new_name must have static lifetime
+</span></span></span><span class="line"><span class="cl"><span class="c1">// If @new_name is empty, remove the existing alias
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">alias</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">new_name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Set the default configuration path
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">set_config_path</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Set the program version
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">set_program_version</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ver</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Hide a flag so that it does not appear in help information or the configuration file generated by -mkconf
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">hide</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Opposite of hide
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">unhide</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Set the value of a flag; returns false on error and prints an error message to the terminal
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">bool</span> <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">flag_name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Register a callback to be executed after flag::parse finishes parsing command-line arguments
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">run_after_parse</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">cb</span><span class="p">)());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Register a callback to be executed before flag::parse parses command-line arguments
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">flag</span><span class="o">::</span><span class="n">run_before_parse</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">cb</span><span class="p">)());</span>
+</span></span></code></pre></div><blockquote class="book-hint warning">
+  The above APIs are not thread-safe and <strong>need to be called before <code>flag::parse</code></strong>.
 </blockquote>
 
 <ul>
-<li>Example</li>
+<li><code>alias</code> adds at most one alias.</li>
+<li>After <code>set_config_path</code> sets the default configuration path, you do not need to pass a configuration file on the command line; <code>parse</code> will parse the configuration file from the default path.</li>
+<li>In <code>set_value</code>, <code>value</code> is in string form and is parsed internally according to the flag type; an error will not cause the program to exit;</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">flag</span><span class="o">::</span><span class="n">alias</span><span class="p">(</span><span class="s">&#34;version&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;debug&#34;</span><span class="p">,</span> <span class="s">&#34;true&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="thread-safety"><a class="anchor" href="#thread-safety">#</a>Thread Safety</h2>
+<p>A flag is essentially a global variable or object. If multiple threads access or modify <code>FLG_xxx</code>, the user needs to ensure concurrency safety themselves.</p>
+<h2 id="example"><a class="anchor" href="#example">#</a>Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;co/log.h&gt; // Already includes co/flag.h</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;enable debug mode&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">threads</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#34;number of threads&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">8080</span><span class="p">,</span> <span class="s">&#34;server port&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#34;coost&#34;</span><span class="p">,</span> <span class="s">&#34;app name&#34;</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// n is an alias
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="flagset_value"><a class="anchor" href="#flagset_value">#</a>flag::set_value</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="n">set_value</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Added in v3.0. Set value of a flag variable, <code>name</code> is the flag name.</p>
-</li>
-<li>
-<p>This function is not thread-safe and usually needs to be called at the beginning of the main function.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Set the program version number
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">set_program_version</span><span class="p">(</span><span class="s">&#34;1.0.0&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="s">&#34;true&#34;</span><span class="p">);</span> <span class="c1">// FLG_b -&gt; true
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="s">&#34;23&#34;</span><span class="p">);</span>   <span class="c1">// FLG_i -&gt; 23
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;xx&#34;</span><span class="p">);</span>   <span class="c1">// FLG_s -&gt; &#34;xx&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="flagalias"><a class="anchor" href="#flagalias">#</a>flag::alias</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">alias</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">new_name</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>Added in v3.0. Add an alias to a flag, in <strong>command line or config file</strong> you can replace the original name with the alias.</p>
-</li>
-<li>
-<p>This function is not thread safe and needs to be called before <code>flag::parse()</code>.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">all</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">     <span class="n">flag</span><span class="o">::</span><span class="n">alias</span><span class="p">(</span><span class="s">&#34;all&#34;</span><span class="p">,</span> <span class="s">&#34;a&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">     <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="use-flag-variable-in-the-code"><a class="anchor" href="#use-flag-variable-in-the-code">#</a>Use flag variable in the code</h2>
-<h3 id="define-a-flag-variable"><a class="anchor" href="#define-a-flag-variable">#</a>Define a flag variable</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_int64</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_uint64</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_double</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="p">...)</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>The above 7 macros are used to define 7 different types of flag variables.</p>
-</li>
-<li>
-<p>The parameter <code>name</code> is the flag name, the corresponding global variable name is <code>FLG_name</code>, the parameter <code>value</code> is the default value, and the parameter <code>help</code> is comment for the flag.</p>
-</li>
-<li>
-<p>A flag variable is a global variable and generally should not be defined in the header file.</p>
-</li>
-<li>
-<p>The name of the flag variable is unique, and we cannot define two flag variables with the same name.</p>
-</li>
-<li>
-<p>The flag variable is generally defined outside the namespace, otherwise it may be not possible to use FLG_name to access the flag variable.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// bool FLG_b = false;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_int32</span><span class="p">(</span><span class="n">i32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// int32 FLG_i32 = 32;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_int64</span><span class="p">(</span><span class="n">i64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// int64 FLG_i64 = 64;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_uint32</span><span class="p">(</span><span class="n">u32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// uint32 FLG_u32 = 0;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_uint64</span><span class="p">(</span><span class="n">u64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// uint64 FLG_u64 = 0;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_double</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// double FLG_d = 2.0;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span> <span class="c1">// fastring&amp; FLG_s = ...;
-</span></span></span></code></pre></div><blockquote class="book-hint info">
-  Since v3.0.1, <code>DEF_string</code> actually defines a reference to <code>fastring</code>.
-</blockquote>
-
-<h3 id="add-alias-for-a-flag"><a class="anchor" href="#add-alias-for-a-flag">#</a>Add alias for a flag</h3>
-<ul>
-<li>
-<p>Added in v3.0, when defining a flag variable, you can add any number of aliases to the flag.</p>
-</li>
-<li>
-<p>In command line or config file, alias can be used instead of the original name.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>         <span class="c1">// no alias
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>      <span class="c1">// d is an alias of debug
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">dbg</span><span class="p">);</span> <span class="c1">// 2 aliases
-</span></span></span></code></pre></div><h3 id="declare-the-flag-variable"><a class="anchor" href="#declare-the-flag-variable">#</a>Declare the flag variable</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEC_bool</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_int32</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_int64</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_uint32</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_uint64</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_double</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_string</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>The 7 macros above are used to declare 7 different types of flag variables.</p>
-</li>
-<li>
-<p>The parameter <code>name</code> is the flag name, and the corresponding global variable name is <code>FLG_name</code>.</p>
-</li>
-<li>
-<p>A flag variable can be defined only once, but it can be declared multiple times, which can be declared wherever needed.</p>
-</li>
-<li>
-<p>The flag variable is generally declared outside the namespace, otherwise it may be not possible to use FLG_name to access the flag variable.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEC_bool</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>     <span class="c1">// extern bool FLG_b;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_int32</span><span class="p">(</span><span class="n">i32</span><span class="p">);</span>  <span class="c1">// extern int32 FLG_i32;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_int64</span><span class="p">(</span><span class="n">i64</span><span class="p">);</span>  <span class="c1">// extern int64 FLG_i64;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_uint32</span><span class="p">(</span><span class="n">u32</span><span class="p">);</span> <span class="c1">// extern uint32 FLG_u32;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_uint64</span><span class="p">(</span><span class="n">u64</span><span class="p">);</span> <span class="c1">// extern uint64 FLG_u64;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_double</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>   <span class="c1">// extern double FLG_d;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEC_string</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>   <span class="c1">// extern fastring&amp; FLG_s;
-</span></span></span></code></pre></div><h3 id="use-the-flag-variable"><a class="anchor" href="#use-the-flag-variable">#</a>Use the flag variable</h3>
-<p>Once a flag variable is defined or declared, we can use it the same as an ordinary variable.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="n">DEC_bool</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="s">&#34;xxx&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Built-in flag of the logging component; also output logs to the terminal
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="o">::</span><span class="n">set_value</span><span class="p">(</span><span class="s">&#34;also_log2console&#34;</span><span class="p">,</span> <span class="s">&#34;true&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">FLG_b</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;b is false&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">FLG_s</span> <span class="o">+=</span> <span class="s">&#34; world&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">FLG_s</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// Optional: set the default configuration file path
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// flag::set_config_path(&#34;my.conf&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">non_flags</span> <span class="o">=</span> <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;debug=&#34;</span><span class="p">,</span> <span class="n">FLG_debug</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;threads=&#34;</span><span class="p">,</span> <span class="n">FLG_threads</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;port=&#34;</span><span class="p">,</span> <span class="n">FLG_port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;name=&#34;</span><span class="p">,</span> <span class="n">FLG_name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">s</span> <span class="p">:</span> <span class="n">non_flags</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;non-flag: &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="use-flag-in-command-line"><a class="anchor" href="#use-flag-in-command-line">#</a>Use flag in command line</h2>
-<h3 id="set-value-of-flags"><a class="anchor" href="#set-value-of-flags">#</a>Set value of flags</h3>
-<p>Suppose the following flags are defined in the program:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;bool x&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;bool y&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_int32</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="mi">32</span><span class="p">,</span> <span class="s">&#34;int32&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_uint64</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="s">&#34;uint64&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;nice&#34;</span><span class="p">,</span> <span class="s">&#34;string&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><p>When the program starts, we can modify value of the flag variables through command line parameters:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># -x=y, x=y, -x y, the three are equivalent</span>
-</span></span><span class="line"><span class="cl">./xx -i<span class="o">=</span><span class="m">8</span> <span class="nv">u</span><span class="o">=</span><span class="m">88</span> -s<span class="o">=</span>xxx
-</span></span><span class="line"><span class="cl">./xx -i <span class="m">8</span> -u <span class="m">88</span> -s <span class="s2">&#34;hello world&#34;</span>
-</span></span><span class="line"><span class="cl">./xx -i8       <span class="c1"># -i=8, only for single-letter named integer flags</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># When a bool type is set to true, the value can be omitted</span>
-</span></span><span class="line"><span class="cl">./xx -x        <span class="c1"># -x=true</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Multiple single-letter named bool flags can be combined and set to true</span>
-</span></span><span class="line"><span class="cl">./xx -xy       <span class="c1"># -x=true -y=true</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Integer type flags can have units k, m, g, t, p, not case sensitive</span>
-</span></span><span class="line"><span class="cl">./xx -i -4k    <span class="c1"># i=-4096</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Integer type flags can pass octal or hexadecimal numbers</span>
-</span></span><span class="line"><span class="cl">./xx <span class="nv">i</span><span class="o">=</span><span class="m">032</span>     <span class="c1"># i=26 octal</span>
-</span></span><span class="line"><span class="cl">./xx <span class="nv">u</span><span class="o">=</span>0xff    <span class="c1"># u=255 hexadecimal</span>
-</span></span></code></pre></div><h3 id="show-help-information"><a class="anchor" href="#show-help-information">#</a>Show Help Information</h3>
-<p><code>co.flag</code> supports using <code>--help</code> command to print the help information of the program:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./xx --help
-</span></span><span class="line"><span class="cl">usage:  <span class="nv">$exe</span> <span class="o">[</span>-flag<span class="o">]</span> <span class="o">[</span>value<span class="o">]</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">$exe</span> -x -i 8k -s ok        <span class="c1"># x=true, i=8192, s=&#34;ok&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">$exe</span> --                    <span class="c1"># print all flags</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">$exe</span> -mkconf               <span class="c1"># generate config file</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">$exe</span> -conf xx.conf         <span class="c1"># run with config file</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">flags:
-</span></span><span class="line"><span class="cl">    -n  int32
-</span></span><span class="line"><span class="cl">        type: int32       default: <span class="m">0</span>
-</span></span><span class="line"><span class="cl">        from: test/flag.cc
-</span></span><span class="line"><span class="cl">    -s  string
-</span></span><span class="line"><span class="cl">        type: string      default: <span class="s2">&#34;hello world&#34;</span>
-</span></span><span class="line"><span class="cl">        from: test/flag.cc
-</span></span></code></pre></div><h3 id="list-all-flags"><a class="anchor" href="#list-all-flags">#</a>List all flags</h3>
-<p><code>co.flag</code> provides <code>--</code> command to list all the flags defined in the program:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./xx --
-</span></span><span class="line"><span class="cl">flags:
-</span></span><span class="line"><span class="cl">    -boo  bool flag
-</span></span><span class="line"><span class="cl">        type: bool        default: <span class="nb">false</span>
-</span></span><span class="line"><span class="cl">        from: test/flag.cc
-</span></span><span class="line"><span class="cl">    -co_sched_num  number of coroutine schedulers, default: os::cpunum<span class="o">()</span>
-</span></span><span class="line"><span class="cl">        type: uint32      default: os::cpunum<span class="o">()</span>
-</span></span><span class="line"><span class="cl">        from: src/co/sched.cc
-</span></span></code></pre></div><h3 id="show-version-of-the-program"><a class="anchor" href="#show-version-of-the-program">#</a>Show version of the program</h3>
-<ul>
-<li>
-<p><code>version</code> is a flag defined inside coost. You can use the <code>-version</code> command to print version information.</p>
-</li>
-<li>
-<p><code>version</code> is empty by default, its value should be set before calling <code>flag::parse()</code>.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">     <span class="n">FLG_version</span> <span class="o">=</span> <span class="s">&#34;v3.0.0&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">     <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./xx -version
-</span></span><span class="line"><span class="cl">v3.0.0
-</span></span></code></pre></div><h2 id="config-file"><a class="anchor" href="#config-file">#</a>config file</h2>
-<h3 id="config-file-format"><a class="anchor" href="#config-file-format">#</a>config file format</h3>
-<p>The config file format of <code>co.flag</code> is flexible:</p>
-<ul>
-<li>
-<p>One config item per line, each config item corresponds to a flag, and the form is unified as <code>x = y</code>, which looks clear at a glance.</p>
-</li>
-<li>
-<p><code>#</code> or <code>//</code> are for comments.</p>
-</li>
-<li>
-<p><code>#</code> or <code>//</code> in quotation marks are not comments.</p>
-</li>
-<li>
-<p>Ignore the blank characters at the beginning or end of the line.</p>
-</li>
-<li>
-<p>Blank characters can be added before or after the <code>=</code> sign.</p>
-</li>
-<li>
-<p><code>\</code> can be used to continue a line to avoid too long a line.</p>
-</li>
-<li>
-<p>The string does not support escaping to avoid ambiguity.</p>
-</li>
-<li>
-<p>The string can be enclosed in double quotes, single quotes or 3 back quotes.</p>
-</li>
-<li>
-<p>Sample config file</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">   </span><span class="c"># config file: xx.conf</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">boo = true                </span><span class="w"> </span><span class="c"># bool type</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s =                       </span><span class="w"> </span><span class="c"># empty string</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s = hello \</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="l">world                 </span><span class="w"> </span><span class="c"># s = &#34;helloworld&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s = &#34;http://github.com&#34;    #</span><span class="w"> </span><span class="c"># or // in quotation marks are not comments</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s = &#34;I&#39;m ok&#34;              </span><span class="w"> </span><span class="c"># enclose the string in double quotes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s =&#39;how are &#34;U&#34;&#39;          </span><span class="w"> </span><span class="c"># enclose the string in single quotes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">s = ```I&#39;m &#34;ok&#34;```        </span><span class="w"> </span><span class="c"># enclose the string in 3 back quotes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">i32 = 4k                  </span><span class="w"> </span><span class="c"># 4096, integers can have units k, m, g, t, p, not case sensitive</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">i32 = 032                 </span><span class="w"> </span><span class="c"># octal, i32 = 26</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">i32 = 0xff                </span><span class="w"> </span><span class="c"># hexadecimal, i32 = 255</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="l">pi = 3.14159              </span><span class="w"> </span><span class="c"># double type</span><span class="w">
-</span></span></span></code></pre></div><h3 id="generate-config-file"><a class="anchor" href="#generate-config-file">#</a>Generate config file</h3>
-<ul>
-<li><code>mkconf</code> is a flag defined internally in coost, which is a switch for automatically generating config file.</li>
-<li>You can use <code>-mkconf</code> to generate a config file in command line.</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -mkconf            <span class="c1"># Generate xx.conf</span>
-</span></span><span class="line"><span class="cl">./xx -mkconf -x <span class="nv">u</span><span class="o">=</span><span class="m">88</span>    <span class="c1"># Custom config item value</span>
-</span></span></code></pre></div><h3 id="adjust-the-order-of-config-items"><a class="anchor" href="#adjust-the-order-of-config-items">#</a>Adjust the order of config items</h3>
-<p>In the automatically generated config file, the config items are sorted by flag level, file name, and code line number. If the user wants some config items to be ranked higher, the flag level can be set to a smaller value, otherwise, the flag level can be set to a larger value.</p>
-<p>When defining a flag, you can use <code>#n</code> at the beginning of the comment to specify the flag level, <strong>n must be an integer between 0 and 9</strong>. If the comment is not empty, there must be a space after n. When not specified, the default flag level is 5.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;comments&#34;</span><span class="p">);</span>    <span class="c1">// The default level is 5
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;#3&#34;</span><span class="p">);</span>          <span class="c1">// The level is 3, and the comment is empty
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DEF_bool</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;#3 comments&#34;</span><span class="p">);</span> <span class="c1">// The level is 3
-</span></span></span></code></pre></div><h3 id="prohibit-config-items-from-being-generated-in-the-config-file"><a class="anchor" href="#prohibit-config-items-from-being-generated-in-the-config-file">#</a>Prohibit config items from being generated in the config file</h3>
-<p>Flags whose comments start with <code>.</code>, are <strong>hidden flags</strong>, which will not be present in the config file, but can be found with the <code>--</code> command in command line. A flag with an empty comment is completely invisible and will neither be generated in the config file nor be found with the <code>--</code> command.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">DEF_bool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">&#34;.say something here&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">DEF_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#34;good&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="specify-the-config-file-when-the-program-starts"><a class="anchor" href="#specify-the-config-file-when-the-program-starts">#</a>Specify the config file when the program starts</h3>
-<ul>
-<li><code>config</code> is a flag defined internally in coost, which is the path of the config file. It has an alias <code>conf</code>.</li>
-<li>You can use <code>-config</code> to specify the config file in command line.</li>
-<li>Another way, you can modify the value of <code>FLG_config</code> to specify the config file, before calling <code>flag::parse()</code>.</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -config xx.conf
-</span></span><span class="line"><span class="cl">./xx -conf xx.conf
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># If the config file name ends with .conf or config, </span>
-</span></span><span class="line"><span class="cl"><span class="c1"># and it is the first non-flag parameter in command line, </span>
-</span></span><span class="line"><span class="cl"><span class="c1"># -config can be omitted.</span>
-</span></span><span class="line"><span class="cl">./xx xx.conf
-</span></span><span class="line"><span class="cl">./xx xx.conf -x
-</span></span></code></pre></div><h2 id="custom-help-information"><a class="anchor" href="#custom-help-information">#</a>Custom help information</h2>
-<ul>
-<li>
-<p><code>help</code> is a flag defined in coost, which stores the help information of the program. This information can be seen with the command <code>--help</code> in command line.</p>
-</li>
-<li>
-<p><code>FLG_help</code> is empty by default, and the default help information provided by coost is used.</p>
-</li>
-<li>
-<p>You can modify the value of <code>FLG_help</code> before calling <code>flag::parse()</code> to customize the help information.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/flag.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">FLG_help</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;usage:</span><span class="se">\n</span><span class="s">&#34;</span>
-</span></span><span class="line"><span class="cl">             <span class="o">&lt;&lt;</span> <span class="s">&#34;</span><span class="se">\t</span><span class="s">./xx -ip 127.0.0.1 -port 7777</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="run-program-as-a-daemon"><a class="anchor" href="#run-program-as-a-daemon">#</a>Run program as a daemon</h2>
-<ul>
-<li>
-<p><code>daemon</code> is a flag defined in coost. If it is true, the program will run as a daemon. It only works on Linux platform.</p>
-</li>
-<li>
-<p>You can use <code>-daemon</code> in command line to make the program run in the background as a daemon.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./xx -daemon
+</span></span></code></pre></div><p>Run:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./app
+</span></span><span class="line"><span class="cl">./app -debug -threads<span class="o">=</span><span class="m">8</span> -port <span class="m">8080</span> -name<span class="o">=</span>myapp
+</span></span><span class="line"><span class="cl">./app -help
+</span></span><span class="line"><span class="cl">./app -version
+</span></span><span class="line"><span class="cl">./app -mkconf
+</span></span><span class="line"><span class="cl">./app app.conf
 </span></span></code></pre></div></article>
  
       
@@ -1392,46 +1039,35 @@ Since v3.0.1，<code>flag::init()</code> has been marked as deprecated, please u
   <ul>
     <li>
       <ul>
-        <li><a href="#basic-concepts">Basic concepts</a>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#defining-flags">Defining Flags</a>
           <ul>
-            <li><a href="#flag-variable">flag variable</a></li>
-            <li><a href="#command-line-flag">command line flag</a></li>
+            <li><a href="#def-macros">DEF Macros</a></li>
+            <li><a href="#dec-macros">DEC Macros</a></li>
+            <li><a href="#aliases">Aliases</a></li>
           </ul>
         </li>
-        <li><a href="#apis">APIs</a>
+        <li><a href="#parsing-arguments">Parsing Arguments</a></li>
+        <li><a href="#command-line-arguments">Command-Line Arguments</a>
           <ul>
-            <li><a href="#flagparse">flag::parse</a></li>
-            <li><a href="#flagset_value">flag::set_value</a></li>
-            <li><a href="#flagalias">flag::alias</a></li>
+            <li><a href="#bool-type">bool Type</a></li>
+            <li><a href="#integer-units">Integer Units</a></li>
+            <li><a href="#single-letter-flag-shorthand-syntax">Single-Letter Flag Shorthand Syntax</a></li>
           </ul>
         </li>
-        <li><a href="#use-flag-variable-in-the-code">Use flag variable in the code</a>
+        <li><a href="#configuration-file">Configuration File</a></li>
+        <li><a href="#command-line-vs-configuration-file-priority">Command-Line vs. Configuration File Priority</a></li>
+        <li><a href="#internal-flags">Internal Flags</a>
           <ul>
-            <li><a href="#define-a-flag-variable">Define a flag variable</a></li>
-            <li><a href="#add-alias-for-a-flag">Add alias for a flag</a></li>
-            <li><a href="#declare-the-flag-variable">Declare the flag variable</a></li>
-            <li><a href="#use-the-flag-variable">Use the flag variable</a></li>
+            <li><a href="#-help">-help</a></li>
+            <li><a href="#-version">-version</a></li>
+            <li><a href="#-mkconf">-mkconf</a></li>
           </ul>
         </li>
-        <li><a href="#use-flag-in-command-line">Use flag in command line</a>
-          <ul>
-            <li><a href="#set-value-of-flags">Set value of flags</a></li>
-            <li><a href="#show-help-information">Show Help Information</a></li>
-            <li><a href="#list-all-flags">List all flags</a></li>
-            <li><a href="#show-version-of-the-program">Show version of the program</a></li>
-          </ul>
-        </li>
-        <li><a href="#config-file">config file</a>
-          <ul>
-            <li><a href="#config-file-format">config file format</a></li>
-            <li><a href="#generate-config-file">Generate config file</a></li>
-            <li><a href="#adjust-the-order-of-config-items">Adjust the order of config items</a></li>
-            <li><a href="#prohibit-config-items-from-being-generated-in-the-config-file">Prohibit config items from being generated in the config file</a></li>
-            <li><a href="#specify-the-config-file-when-the-program-starts">Specify the config file when the program starts</a></li>
-          </ul>
-        </li>
-        <li><a href="#custom-help-information">Custom help information</a></li>
-        <li><a href="#run-program-as-a-daemon">Run program as a daemon</a></li>
+        <li><a href="#runtime-api">Runtime API</a></li>
+        <li><a href="#thread-safety">Thread Safety</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>

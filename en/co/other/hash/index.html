@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/hash.h.
-#Hash #hash32 uint32 hash32(const void* s, size_t n); uint32 hash32(const char* s); uint32 hash32(const fastring&amp; s) uint32 hash32(const std::string&amp; s); This function returns a 32-bit murmur hash value. When s is a pointer, it is required to be sizeof(void*) byte aligned. #hash64 uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp; s); uint64 hash64(const std::string&amp; s); This function returns a 64-bit murmur hash value. When s is a pointer, it is required to be 8-byte aligned.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Hash" />
-<meta property="og:description" content="include: co/hash.h.
-#Hash #hash32 uint32 hash32(const void* s, size_t n); uint32 hash32(const char* s); uint32 hash32(const fastring&amp; s) uint32 hash32(const std::string&amp; s); This function returns a 32-bit murmur hash value. When s is a pointer, it is required to be sizeof(void*) byte aligned. #hash64 uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp; s); uint64 hash64(const std::string&amp; s); This function returns a 64-bit murmur hash value. When s is a pointer, it is required to be 8-byte aligned." />
+<meta name="description" content="#Header #include &#34;co/base64.h&#34; #include &#34;co/md5.h&#34; #include &#34;co/murmur_hash.h&#34; #include &#34;co/sha256.h&#34; The API is in the co namespace. All functions have overloads for (const void*, size_t), (const char*), (const co::string&amp;), and (const std::string&amp;).
+#base64 co::string co::base64_encode(const void* s, size_t n); co::string co::base64_decode(const void* s, size_t n); base64 encoding / decoding. decode returns an empty string on error. #md5 typedef struct { uint32 lo, hi; uint32 a, b, c, d; uint8 buffer[64]; uint32 block[16]; } md5_ctx_t; void md5_init(md5_ctx_t* ctx); void md5_update(md5_ctx_t* ctx, const void* s, size_t n); void md5_final(md5_ctx_t* ctx, uint8 res[16]); Streaming interface, suitable for large files.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Hash and Encoding" />
+<meta property="og:description" content="#Header #include &#34;co/base64.h&#34; #include &#34;co/md5.h&#34; #include &#34;co/murmur_hash.h&#34; #include &#34;co/sha256.h&#34; The API is in the co namespace. All functions have overloads for (const void*, size_t), (const char*), (const co::string&amp;), and (const std::string&amp;).
+#base64 co::string co::base64_encode(const void* s, size_t n); co::string co::base64_decode(const void* s, size_t n); base64 encoding / decoding. decode returns an empty string on error. #md5 typedef struct { uint32 lo, hi; uint32 a, b, c, d; uint8 buffer[64]; uint32 block[16]; } md5_ctx_t; void md5_init(md5_ctx_t* ctx); void md5_update(md5_ctx_t* ctx, const void* s, size_t n); void md5_final(md5_ctx_t* ctx, uint8 res[16]); Streaming interface, suitable for large files." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/other/hash/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>Hash | Coost Docs</title>
+<title>Hash and Encoding | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/hash/" title="哈希与编码">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -88,20 +88,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -115,6 +102,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -158,19 +158,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -184,7 +171,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -197,7 +184,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -210,7 +197,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -291,133 +291,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -436,7 +311,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -450,7 +325,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -463,33 +338,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -503,19 +352,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -562,7 +398,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -601,32 +437,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -640,33 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class=" active">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -692,7 +476,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class="">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class="">Scheduled Tasks</a>
   
 
         </li>
@@ -705,7 +489,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -737,6 +521,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class=" active">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -749,7 +546,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -796,7 +606,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Hash</strong>
+  <strong>Hash and Encoding</strong>
 
   <label for="toc-control">
     
@@ -814,40 +624,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#hash">Hash</a>
-          <ul>
-            <li><a href="#hash32">hash32</a></li>
-            <li><a href="#hash64">hash64</a></li>
-            <li><a href="#murmur_hash">murmur_hash</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#base64">base64</a></li>
         <li><a href="#md5">md5</a>
           <ul>
             <li><a href="#md5digest">md5digest</a></li>
             <li><a href="#md5sum">md5sum</a></li>
-            <li><a href="#lower-level-apis">Lower level APIs</a></li>
           </ul>
         </li>
         <li><a href="#sha256">sha256</a>
           <ul>
             <li><a href="#sha256digest">sha256digest</a></li>
             <li><a href="#sha256sum">sha256sum</a></li>
-            <li><a href="#lower-level-apis-1">Lower level APIs</a></li>
           </ul>
         </li>
-        <li><a href="#base64">base64</a>
-          <ul>
-            <li><a href="#base64_encode">base64_encode</a></li>
-            <li><a href="#base64_decode">base64_decode</a></li>
-          </ul>
-        </li>
-        <li><a href="#url">url</a>
-          <ul>
-            <li><a href="#url_encode">url_encode</a></li>
-            <li><a href="#url_decode">url_decode</a></li>
-          </ul>
-        </li>
-        <li><a href="#crc16">crc16</a></li>
+        <li><a href="#murmur_hash">murmur_hash</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>
@@ -862,147 +654,106 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/hash.h">co/hash.h</a>.</p>
-<h2 id="hash"><a class="anchor" href="#hash">#</a>Hash</h2>
-<h3 id="hash32"><a class="anchor" href="#hash32">#</a>hash32</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">hash32</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">hash32</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">hash32</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">hash32</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/base64.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/md5.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/murmur_hash.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sha256.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>co</code> namespace. All functions have overloads for <code>(const void*, size_t)</code>, <code>(const char*)</code>, <code>(const co::string&amp;)</code>, and <code>(const std::string&amp;)</code>.</p>
+<h2 id="base64"><a class="anchor" href="#base64">#</a>base64</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">co</span><span class="o">::</span><span class="n">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">co</span><span class="o">::</span><span class="n">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>This function returns a 32-bit murmur hash value.</li>
-<li>When <code>s</code> is a pointer, it is required to be <code>sizeof(void*)</code> byte aligned.</li>
-</ul>
-<h3 id="hash64"><a class="anchor" href="#hash64">#</a>hash64</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint64</span> <span class="nf">hash64</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="nf">hash64</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="nf">hash64</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint64</span> <span class="nf">hash64</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function returns a 64-bit murmur hash value.</li>
-<li>When <code>s</code> is a pointer, it is required to be 8-byte aligned.</li>
-</ul>
-<h3 id="murmur_hash"><a class="anchor" href="#murmur_hash">#</a>murmur_hash</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="nf">murmur_hash</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function returns a hash value of <code>size_t</code> type. This value is 64-bit on 64-bit platform and 32-bit on 32-bit platform.</li>
-<li>The parameter s is generally required to be <code>sizeof(void*)</code> byte-aligned.</li>
+<li>base64 encoding / decoding.</li>
+<li><code>decode</code> returns an empty string on error.</li>
 </ul>
 <h2 id="md5"><a class="anchor" href="#md5">#</a>md5</h2>
-<h3 id="md5digest"><a class="anchor" href="#md5digest">#</a>md5digest</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function calculates the md5 of a string and returns a 16-byte binary string.</li>
-</ul>
-<h3 id="md5sum"><a class="anchor" href="#md5sum">#</a>md5sum</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">32</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function calculates the md5 of a string and returns a 32-byte string containing only hexadecimal characters(0-9,a-f).</li>
-</ul>
-<h3 id="lower-level-apis"><a class="anchor" href="#lower-level-apis">#</a>Lower level APIs</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5_init</span><span class="p">(</span><span class="n">md5_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint8</span>  <span class="n">buffer</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">block</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">md5_ctx_t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5_init</span><span class="p">(</span><span class="n">md5_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5_update</span><span class="p">(</span><span class="n">md5_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5_final</span><span class="p">(</span><span class="n">md5_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">uint8</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">]);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>The above 3 APIs can be used to calculate md5 incrementally.</p>
-</li>
-<li>
-<p>Example</p>
-</li>
+<li>Streaming interface, suitable for large files.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">4096</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint8</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl"><span class="n">md5_ctx_t</span> <span class="n">ctx</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">md5_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">4096</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">md5_update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">md5_final</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="n">res</span><span class="p">);</span>
-</span></span></code></pre></div><h2 id="sha256"><a class="anchor" href="#sha256">#</a>sha256</h2>
-<h3 id="sha256digest"><a class="anchor" href="#sha256digest">#</a>sha256digest</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">32</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<h3 id="md5digest"><a class="anchor" href="#md5digest">#</a>md5digest</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">md5digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>This function calculates the sha256 of a string and returns a 32-byte binary string.</li>
+<li>Outputs 16-byte binary.</li>
 </ul>
-<h3 id="sha256sum"><a class="anchor" href="#sha256sum">#</a>sha256sum</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">64</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<h3 id="md5sum"><a class="anchor" href="#md5sum">#</a>md5sum</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">32</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">md5sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>This function calculates the sha256 of a string and returns a 64-byte string containing only hexadecimal characters(0-9,a-f).</li>
+<li>Outputs a 32-byte hexadecimal string.</li>
 </ul>
-<h3 id="lower-level-apis-1"><a class="anchor" href="#lower-level-apis-1">#</a>Lower level APIs</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256_init</span><span class="p">(</span><span class="n">sha256_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">);</span>
+<h2 id="sha256"><a class="anchor" href="#sha256">#</a>sha256</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">state</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint64</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint8</span>  <span class="n">buffer</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">sha256_ctx_t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256_init</span><span class="p">(</span><span class="n">sha256_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256_update</span><span class="p">(</span><span class="n">sha256_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256_final</span><span class="p">(</span><span class="n">sha256_ctx_t</span><span class="o">*</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">uint8</span> <span class="n">res</span><span class="p">[</span><span class="mi">32</span><span class="p">]);</span>
 </span></span></code></pre></div><ul>
-<li>The above 3 APIs can be used to calculate sha256 incrementally like that in md5.</li>
+<li>Streaming interface.</li>
 </ul>
-<h2 id="base64"><a class="anchor" href="#base64">#</a>base64</h2>
-<h3 id="base64_encode"><a class="anchor" href="#base64_encode">#</a>base64_encode</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<h3 id="sha256digest"><a class="anchor" href="#sha256digest">#</a>sha256digest</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">32</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">sha256digest</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li><code>base64</code> encoding, <code>\r\n</code> is not added in this implementation.</li>
+<li>Outputs 32-byte binary.</li>
 </ul>
-<h3 id="base64_decode"><a class="anchor" href="#base64_decode">#</a>base64_decode</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<h3 id="sha256sum"><a class="anchor" href="#sha256sum">#</a>sha256sum</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">64</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">sha256sum</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li><code>base64</code> decoding, if the input is not valid base64-encoded data, the decoding will fail and an empty string will be returned.</li>
+<li>Outputs a 64-byte hexadecimal string.</li>
 </ul>
-<h2 id="url"><a class="anchor" href="#url">#</a>url</h2>
-<h3 id="url_encode"><a class="anchor" href="#url_encode">#</a>url_encode</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_encode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_encode</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+<h2 id="murmur_hash"><a class="anchor" href="#murmur_hash">#</a>murmur_hash</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">size_t</span> <span class="n">co</span><span class="o">::</span><span class="n">murmur_hash</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>url encoding, reserved characters <code>!()*#$&amp;'+,/:;=?@[]</code> and <code>a-z A-Z 0-9 -_.~</code> will not be encoded, all other characters will be encoded.</li>
+<li>Non-cryptographic hash, returns <code>size_t</code>.</li>
+<li>Suitable for hashing and indexing; not for security scenarios.</li>
 </ul>
-<h3 id="url_decode"><a class="anchor" href="#url_decode">#</a>url_decode</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_decode</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_decode</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">url_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>url decoding, if the input is not a reasonably encoded url, the decoding will fail and an empty string will be returned.</li>
-</ul>
-<h2 id="crc16"><a class="anchor" href="#crc16">#</a>crc16</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">uint16_t</span> <span class="nf">crc16</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">uint16_t</span> <span class="nf">crc16</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">uint16_t</span> <span class="nf">crc16</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">uint16_t</span> <span class="nf">crc16</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>This function calculates the crc16 value of a string. The implementation is taken from <a href="https://github.com/antirez/redis/">redis</a> and will be used when implementing the redis cluster client.</li>
-</ul>
-</article>
+<h2 id="example"><a class="anchor" href="#example">#</a>Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/base64.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/md5.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/sha256.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/murmur_hash.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;base64 = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">base64_encode</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;decode = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">base64_decode</span><span class="p">(</span><span class="s">&#34;aGVsbG8=&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;md5sum  = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">md5sum</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;sha256sum = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">sha256sum</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;murmur = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">murmur_hash</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// streaming md5
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">md5_ctx_t</span> <span class="n">ctx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">md5_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">md5_update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&#34;he&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">md5_update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&#34;llo&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">md5_final</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="p">(</span><span class="n">uint8</span><span class="o">*</span><span class="p">)</span><span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;md5digest = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -1124,40 +875,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#hash">Hash</a>
-          <ul>
-            <li><a href="#hash32">hash32</a></li>
-            <li><a href="#hash64">hash64</a></li>
-            <li><a href="#murmur_hash">murmur_hash</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#base64">base64</a></li>
         <li><a href="#md5">md5</a>
           <ul>
             <li><a href="#md5digest">md5digest</a></li>
             <li><a href="#md5sum">md5sum</a></li>
-            <li><a href="#lower-level-apis">Lower level APIs</a></li>
           </ul>
         </li>
         <li><a href="#sha256">sha256</a>
           <ul>
             <li><a href="#sha256digest">sha256digest</a></li>
             <li><a href="#sha256sum">sha256sum</a></li>
-            <li><a href="#lower-level-apis-1">Lower level APIs</a></li>
           </ul>
         </li>
-        <li><a href="#base64">base64</a>
-          <ul>
-            <li><a href="#base64_encode">base64_encode</a></li>
-            <li><a href="#base64_decode">base64_decode</a></li>
-          </ul>
-        </li>
-        <li><a href="#url">url</a>
-          <ul>
-            <li><a href="#url_encode">url_encode</a></li>
-            <li><a href="#url_decode">url_decode</a></li>
-          </ul>
-        </li>
-        <li><a href="#crc16">crc16</a></li>
+        <li><a href="#murmur_hash">murmur_hash</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>

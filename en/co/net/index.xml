@@ -1,51 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Network Programming on Coost Docs</title>
+    <title>Network on Coost Docs</title>
     <link>https://coostdocs.github.io/en/co/net/</link>
-    <description>Recent content in Network Programming on Coost Docs</description>
+    <description>Recent content in Network on Coost Docs</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/en/co/net/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Byte order</title>
+      <title>Byte Order</title>
       <link>https://coostdocs.github.io/en/co/net/byte_order/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/byte_order/</guid>
-      <description>include: co/byte_order.h.
-Data in the computer is stored in bytes (8 bit). Big-endian computers use big-endian byte order, that is, the high-order byte is at the lower address, and the low-order byte is at the higher address. The little-endian machine uses little-endian byte order, that is, the low-order byte is at the lower address, and the high-order byte is at the higher address.
-A single byte is exactly the same on big endian and little endian machines, while basic data types of multiple bytes are different.</description>
+      <description>#Header #include &amp;#34;co/byte_order.h&amp;#34; The API is in the co namespace.
+#Overview Data is stored in memory with bytes (8 bits) as the basic unit. Big-endian machine: high-order bytes are at lower addresses, low-order bytes are at higher addresses. Little-endian machine: low-order bytes are at lower addresses, high-order bytes are at higher addresses. A single byte is identical on big-endian and little-endian machines. Multi-byte primitive types (such as int, double) have different byte orders on big-endian and little-endian machines.</description>
     </item>
     
     <item>
-      <title>Socket programming</title>
+      <title>Socket Programming</title>
       <link>https://coostdocs.github.io/en/co/net/sock/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/sock/</guid>
-      <description>include: co/co.h.
-#Socket APIs Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.
-Most of the APIs are consistent in form with the native socket APIs, which can reduce the user&amp;rsquo;s learning burden, and users who are familiar with socket programming can easily get started.
-Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block.</description>
-    </item>
-    
-    <item>
-      <title>Network programming model</title>
-      <link>https://coostdocs.github.io/en/co/net/mode/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/net/mode/</guid>
-      <description>#Coroutine based network programming model It is easy to write high-concurrency and high-performance network programs with coroutine. Although a coroutine may block, the scheduling thread can quickly switch between a large number of coroutines. Therefore, to achieve high concurrency, we just need to create more coroutines.
-#Network model for TCP server void on_connection(int fd) { while (true) { co::recv(fd, ...); // recv request from client process(...); // process the request co::send(fd, .</description>
-    </item>
-    
-    <item>
-      <title>Use third-party network libraries</title>
-      <link>https://coostdocs.github.io/en/co/net/third/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/net/third/</guid>
-      <description>#Use third-party network libraries in coroutines There are two ways to use third-party network libraries in coroutines:
-Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost. Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with co::io_event. #System API hook API hook simply intercepts system API requests.</description>
+      <description>#Header #include &amp;#34;co/sock.h&amp;#34; The API is in the co namespace. Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+sock_t is in the global namespace.
+#Overview Coroutine-based socket API. I/O-related APIs do not block the scheduling thread and must be called inside a coroutine. On error, use co::error() / co::strerror() to get error information. #Address co::sockaddr struct sockaddr { sockaddr(); sockaddr(const char* host, uint16 port); bool valid() const; int af() const; }; Supports IPv4, IPv6, and domain name resolution.</description>
     </item>
     
     <item>
@@ -54,20 +32,9 @@ Directly use the blocking APIs of the third-party network library. This is the s
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/tcp/</guid>
-      <description>include: co/tcp.h.
-#tcp::Connection tcp::Connection is a simple encapsulation of TCP connection, it is designed for TCP server. When SSL is enabled in a TCP server, tcp::Connection will transfer data by SSL.
-#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;amp;&amp;amp; c); The constructor, Connection is created by tcp::Server, users do not need to create it manually. The first version constructs a normal TCP connection, the second version constructs a TCP connection that support SSL, and the third is a move constructor.</description>
-    </item>
-    
-    <item>
-      <title>HTTP</title>
-      <link>https://coostdocs.github.io/en/co/net/http/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/net/http/</guid>
-      <description>include: co/http.h.
-#http::Client http::Client is a coroutine-based HTTP client, which is implemented based on libcurl.
-#Client::Client explicit Client(const char* serv_url); Constructor, the parameter serv_url is the url address of the server, and its form is protocol://host:port, the following server urls are all ok: &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo; Connection is not established in the constructor. #Client::~Client Client::~Client(); Destructor, close the connection, and release libcurl related resources. #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); Add a HTTP header.</description>
+      <description>#Header #include &amp;#34;co/tcp.h&amp;#34; The API is in the co namespace, and aliases are also provided:
+namespace tcp { using client = co::tcp_client; using server = co::tcp_server; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#tcp_client struct tcp_client { tcp_client(const char* server_host, uint16 server_port); tcp_client(const tcp_client&amp;amp; c); ~tcp_client(); tcp_client(tcp_client&amp;amp;&amp;amp;) = delete; void operator=(const tcp_client&amp;amp; c) = delete; void operator=(tcp_client&amp;amp;&amp;amp; c) = delete; bool connected() const; bool connect(int ms); void disconnect(); void close(); int recv(void* buf, int n, int ms=-1); int recvn(void* buf, int n, int ms=-1); int send(const void* buf, int n, int ms=-1); }; Must be used inside a coroutine.</description>
     </item>
     
     <item>
@@ -76,9 +43,9 @@ Directly use the blocking APIs of the third-party network library. This is the s
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/rpc/</guid>
-      <description>include: co/rpc.h.
-Coost implements a coroutine-based RPC framework, which internally uses JSON as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.
-Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method. #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&amp;lt;void(Json&amp;amp;, Json&amp;amp;)&amp;gt; Fun; virtual const char* name() const = 0; virtual const co::map&amp;lt;const char*, Fun&amp;gt;&amp;amp; methods() const = 0; }; This class is a pure interface, which represents a RPC service.</description>
+      <description>#Header #include &amp;#34;co/rpc.h&amp;#34; The API is in the co namespace, and aliases are also provided:
+namespace rpc { using service = co::rpc_service; using server = co::rpc_server; using client = co::rpc_client; using method_t = co::rpc_method_t; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#Overview A lightweight RPC based on TCP + JSON. Protocol: 8-byte header + JSON body. Requests specify the method through the api field, in the format ServiceName.</description>
     </item>
     
   </channel>

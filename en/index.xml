@@ -6,12 +6,13 @@
     <description>Recent content on Coost Docs</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/en/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Basic concepts</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/basic/</link>
+      <title>Atomic Operations</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/atomic/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/basic/</guid>
-      <description>#Basic concepts of coroutine Coroutines are lightweight scheduling units that run in threads. Coroutines are to threads, similar to threads to processes. There can be multiple threads in a process and multiple coroutines in a thread. The thread where the coroutine runs in is generally called the scheduling thread. The scheduling thread will suspend a coroutine, if it blocks on an I/O operation or sleep was called in the coroutine. When a coroutine is suspended, the scheduling thread will switch to other coroutines waiting to be executed.</description>
+      <guid>https://coostdocs.github.io/en/co/concurrency/atomic/</guid>
+      <description>#Header #include &amp;#34;co/atomic.h&amp;#34; The API is in the co namespace.
+#Memory Order using memorder_t = std::memory_order; constexpr memorder_t mo_relaxed = std::memory_order_relaxed; constexpr memorder_t mo_consume = std::memory_order_consume; constexpr memorder_t mo_acquire = std::memory_order_acquire; constexpr memorder_t mo_release = std::memory_order_release; constexpr memorder_t mo_acq_rel = std::memory_order_acq_rel; constexpr memorder_t mo_seq_cst = std::memory_order_seq_cst; #Load and Store template&amp;lt;typename T&amp;gt; T atomic_load(const T* p, memorder_t mo = mo_seq_cst); template&amp;lt;typename T, typename V&amp;gt; void atomic_store(T* p, V v, memorder_t mo = mo_seq_cst); atomic_load supports: mo_relaxed, mo_consume, mo_acquire, mo_seq_cst.</description>
     </item>
     
     <item>
@@ -20,74 +21,27 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/def/</guid>
-      <description>include: co/def.h.
-#typedefs #Fixed-length integer type co/def.h defines the following 8 types of integers:
-typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; These types have the same length on different platforms, and there is no portability problem. Google Code Style recommends not to use built-in integer types such as short, long, long long, etc.</description>
+      <description>#Header #include &amp;#34;co/def.h&amp;#34; #Integer Type Aliases typedef int8_t int8; typedef int16_t int16; typedef int32_t int32; typedef int64_t int64; typedef uint8_t uint8; typedef uint16_t uint16; typedef uint32_t uint32; typedef uint64_t uint64; Defined in the global namespace. #Integer Extreme Value Constants namespace co { constexpr uint8 max_uint8 = (uint8) ~((uint8) 0); constexpr uint16 max_uint16 = (uint16) ~((uint16)0); constexpr uint32 max_uint32 = (uint32) ~((uint32)0); constexpr uint64 max_uint64 = (uint64) ~((uint64)0); constexpr int8 max_int8 = (int8) (max_uint8 &amp;gt;&amp;gt; 1); constexpr int16 max_int16 = (int16) (max_uint16 &amp;gt;&amp;gt; 1); constexpr int32 max_int32 = (int32) (max_uint32 &amp;gt;&amp;gt; 1); constexpr int64 max_int64 = (int64) (max_uint64 &amp;gt;&amp;gt; 1); constexpr int8 min_int8 = (int8) ~max_int8; constexpr int16 min_int16 = (int16) ~max_int16; constexpr int32 min_int32 = (int32) ~max_int32; constexpr int64 min_int64 = (int64) ~max_int64; } // co Defined in the co namespace; all are constexpr.</description>
     </item>
     
     <item>
-      <title>Byte order</title>
+      <title>Byte Order</title>
       <link>https://coostdocs.github.io/en/co/net/byte_order/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/byte_order/</guid>
-      <description>include: co/byte_order.h.
-Data in the computer is stored in bytes (8 bit). Big-endian computers use big-endian byte order, that is, the high-order byte is at the lower address, and the low-order byte is at the higher address. The little-endian machine uses little-endian byte order, that is, the low-order byte is at the lower address, and the high-order byte is at the higher address.
-A single byte is exactly the same on big endian and little endian machines, while basic data types of multiple bytes are different.</description>
+      <description>#Header #include &amp;#34;co/byte_order.h&amp;#34; The API is in the co namespace.
+#Overview Data is stored in memory with bytes (8 bits) as the basic unit. Big-endian machine: high-order bytes are at lower addresses, low-order bytes are at higher addresses. Little-endian machine: low-order bytes are at lower addresses, high-order bytes are at higher addresses. A single byte is identical on big-endian and little-endian machines. Multi-byte primitive types (such as int, double) have different byte orders on big-endian and little-endian machines.</description>
     </item>
     
     <item>
-      <title>Console</title>
+      <title>Console Output</title>
       <link>https://coostdocs.github.io/en/co/other/console/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/console/</guid>
-      <description>include: co/cout.h.
-#Colored output See below:
-cout &amp;lt;&amp;lt; text::red(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::green(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::blue(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::yellow(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::magenta(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::cyan(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; &amp;#34;hello\n&amp;#34;; cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).red(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).green(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).blue(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).yellow(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).magenta(); cout &amp;lt;&amp;lt; text::bold(&amp;#34;hello\n&amp;#34;).cyan(); #co::print template&amp;lt;typename ...X&amp;gt; void print(X&amp;amp;&amp;amp; ... x); Accept any number of arguments and output to stdout with a newline at the end. A mutex lock is used internally, and multiple threads can call co::print at the same time.</description>
-    </item>
-    
-    <item>
-      <title>Introduction</title>
-      <link>https://coostdocs.github.io/en/about/co/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/about/co/</guid>
-      <description>#What is coost coost is an elegant and efficient cross-platform C++ base library. Its goal is to create a sword of C++ to make C++ programming easy and enjoyable.
-Coost, co for short, is like boost, but more lightweight, the static library built on linux or mac is only about 1MB in size. However, it still provides enough powerful features:
-Command line and config file parser (flag) High performance log library (log) Unit testing framework Benchmark testing framework go-style coroutine Coroutine-based network library JSON RPC framework Atomic operation (atomic) Efficient stream (fastream) Efficient string (fastring) String utility (str) Time library (time) Thread library (thread) Timed Task Scheduler God-oriented programming Efficient JSON library Hash library Path library File utilities (fs) System operations (os) Fast memory allocator #History of coost 2013-2015, Alvin(idealvin) felt a little cumbersome when using google&amp;rsquo;s gflags, glog, gtest, etc.</description>
-    </item>
-    
-    <item>
-      <title>APIs</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/api/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/api/</guid>
-      <description>#Coroutine APIs Coost v3.0 removed co::init, co::exit, co::stop. #go 1. void go(Closure* cb); 2. template&amp;lt;typename F&amp;gt; void go(F&amp;amp;&amp;amp; f); 3. template&amp;lt;typename F, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, P&amp;amp;&amp;amp; p); 4. template&amp;lt;typename F, typename T, typename P&amp;gt; void go(F&amp;amp;&amp;amp; f, T* t, P&amp;amp;&amp;amp; p); This function is used to create a coroutine, similar to creating a thread, a coroutine function must be specified.
-1, the parameter cb points to a Closure object.</description>
-    </item>
-    
-    <item>
-      <title>Atomic Operations</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/atomic/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/atomic/</guid>
-      <description>include: co/atomic.h.
-#Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
-enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
-#APIs removed since v3.0 atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;amp;x, 0) instead. #load &amp;amp; store #atomic_load template&amp;lt;typename T&amp;gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.</description>
-    </item>
-    
-    <item>
-      <title>Contact</title>
-      <link>https://coostdocs.github.io/en/about/contact/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/about/contact/</guid>
-      <description>Contact
-Email: idealvin at qq.com github: https://github.com/idealvin/coost zhihu: idealvin </description>
+      <description>#Header #include &amp;#34;co/print.h&amp;#34; The API is in the co namespace.
+#API template&amp;lt;typename ...X&amp;gt; co::xx::stream&amp;amp; co::print(X&amp;amp;&amp;amp; ...x); template&amp;lt;typename ...X&amp;gt; void co::println(X&amp;amp;&amp;amp; ...x); Outputs to stderr; both are thread-safe and accept any number of arguments. Arguments can be any type supported by co::string::operator&amp;lt;&amp;lt;; co::print returns xx::stream&amp;amp;, allowing chained calls to .flush(). co::println automatically adds a newline. co::print and co::println use different buffers. co::print flushes the buffer when the data reaches a certain amount or when the user manually calls .</description>
     </item>
     
     <item>
@@ -96,9 +50,7 @@ Email: idealvin at qq.com github: https://github.com/idealvin/coost zhihu: ideal
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/defer/</guid>
-      <description>include: co/defer.h.
-#defer defer is a macro provided by coost, which is similar to defer in golang. It accepts one or more statements as the arguments.
-void f() { void* p = malloc(32); defer(free(p)); defer( std::cout &amp;lt;&amp;lt; &amp;#34;111&amp;#34; &amp;lt;&amp;lt; std::endl; std::cout &amp;lt;&amp;lt; &amp;#34;222&amp;#34; &amp;lt;&amp;lt; std::endl; ); std::cout &amp;lt;&amp;lt; &amp;#34;333&amp;#34; &amp;lt;&amp;lt; std::endl; } In the above example, the code in defer will be executed at the end of function f, so 333 is printed before 111 and 222.</description>
+      <description>#Header #include &amp;#34;co/defer.h&amp;#34; #defer The defer macro implements functionality similar to defer in golang. The defer argument can be one or more statements. void f() { void* p = co::alloc(32); defer(co::free(p, 32)); defer( co::println(&amp;#34;111&amp;#34;); co::println(&amp;#34;222&amp;#34;); ); co::println(&amp;#34;333&amp;#34;); } In the above example, the code in defer will be executed when the function f ends, so 333 is printed before 111 and 222.</description>
     </item>
     
     <item>
@@ -107,33 +59,41 @@ void f() { void* p = malloc(32); defer(free(p)); defer( std::cout &amp;lt;&amp;l
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/error/</guid>
-      <description>include: co/error.h.
-#co::error 1. int error(); 2. void error(int e); 1, returns the current error code. 2, set the current error code to e. #co::strerror 1. const char* strerror(int e); 2. const char* strerror(); 1, get the description information of the error code e, thread-safe. 2, get the description information of the current error code, thread-safe. </description>
+      <description>#Header #include &amp;#34;co/error.h&amp;#34; The API is in the co namespace.
+#co::error int error(); void error(int e); error() returns the current error code. error(e) sets the current error code to e. Thread-safe. #co::strerror const char* strerror(int e); const char* strerror(); Returns the description corresponding to e or the current error code. Thread-safe. The returned string must not be stored for a long time. </description>
     </item>
     
     <item>
-      <title>God Oriented Programming</title>
-      <link>https://coostdocs.github.io/en/co/god/</link>
+      <title>Memory Allocation</title>
+      <link>https://coostdocs.github.io/en/co/mem/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/god/</guid>
-      <description>include: co/god.h.
-#god The god module provides some features on templates. C++ code written with templates may be hard to understand. Some C++ programmers call it god-oriented programming.
-#god::bless_no_bugs void bless_no_bugs(); Pray to God to bless the code is bug-free. It is thread-safe, and can be called arbitrarily.
-example
-#include &amp;#34;co/god.h&amp;#34; #include &amp;#34;co/cout.h&amp;#34; int main(int argc, char** argv) { god::bless_no_bugs(); co::print(&amp;#34;hello world&amp;#34;); return 0; } #god::cast template&amp;lt;typename To, typename From&amp;gt; constexpr To cast(From&amp;amp;&amp;amp; f) { return (To) std::forward&amp;lt;From&amp;gt;(f); } Universal conversion, convert From type to To type, To can be a reference.</description>
+      <guid>https://coostdocs.github.io/en/co/mem/</guid>
+      <description>#Header #include &amp;#34;co/mem.h&amp;#34; The API is in the co namespace.
+APIs starting with an underscore are generally used internally by coost and are not recommended for users to call. #Overview The coost memory allocator divides memory into three categories:
+Category Size Range Alignment Small memory &amp;lt;= S (S is less than 4K) 16-byte aligned Medium memory &amp;lt;= 128K 4K aligned Large memory &amp;gt; 128K Page-aligned, directly mmap / VirtualAlloc Unlike ordinary memory allocators, the coost allocator does not store the size of allocated memory; free requires passing the size.</description>
     </item>
     
     <item>
-      <title>Socket programming</title>
+      <title>Overview</title>
+      <link>https://coostdocs.github.io/en/about/co/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/about/co/</guid>
+      <description>#Introduction coost is a lightweight cross-platform C++ base library. It provides components such as coroutines, networking, RPC, logging, configuration, and JSON. Its style is close to golang, it pursues minimalism while maintaining high performance, and it does not depend on third-party libraries such as Boost or folly.
+It is suitable for the following scenarios:
+You need lightweight coroutines; You need a coroutine-based network framework; You do not want to introduce heavy or numerous third-party libraries; You want configuration, logging, memory management, etc.</description>
+    </item>
+    
+    <item>
+      <title>Socket Programming</title>
       <link>https://coostdocs.github.io/en/co/net/sock/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/sock/</guid>
-      <description>include: co/co.h.
-#Socket APIs Coost provides commonly used coroutineized socket APIs to support coroutine-based network programming.
-Most of the APIs are consistent in form with the native socket APIs, which can reduce the user&amp;rsquo;s learning burden, and users who are familiar with socket programming can easily get started.
-Most of these APIs need to be used in coroutines. When they are blocked on I/O or sleep, the scheduling thread will suspend the current coroutine and switch to other waiting coroutines, and the scheduling thread itself will not block.</description>
+      <description>#Header #include &amp;#34;co/sock.h&amp;#34; The API is in the co namespace. Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+sock_t is in the global namespace.
+#Overview Coroutine-based socket API. I/O-related APIs do not block the scheduling thread and must be called inside a coroutine. On error, use co::error() / co::strerror() to get error information. #Address co::sockaddr struct sockaddr { sockaddr(); sockaddr(const char* host, uint16 port); bool valid() const; int af() const; }; Supports IPv4, IPv6, and domain name resolution.</description>
     </item>
     
     <item>
@@ -142,19 +102,8 @@ Most of these APIs need to be used in coroutines. When they are blocked on I/O o
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/concurrency/thread/</guid>
-      <description>include: co/thread.h.
-#Thread Coost v3.0.1 removed the header file co/thread.h, and removed the global class Thread and Mutex, which are nearly the same as std::thread and std::mutex in C++11. Users can use the std version directly. #co::thread_id uint32 thread_id(); Returns the id value of the current thread. #co::sync_event Coost v3.0.1 removed the global SyncEvent, please use co::sync_event instead. #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); Constructor, parameter manual_reset indicates whether to manually reset the event to unsynced state, parameter signaled indicates whether the initial state is synced.</description>
-    </item>
-    
-    <item>
-      <title>Channel</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/chan/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/chan/</guid>
-      <description>include: co/co.h.
-#co::chan template&amp;lt;typename T&amp;gt; class chan; co::chan is a template class, which is similar to the channel in golang and is used to pass data between coroutines.
-Since v3.0.1, co::chan can be used in coroutines or non-coroutines, and can store values ​​of non-POD types such as std::string. #constructor 1. explicit chan(uint32 cap=1, uint32 ms=(uint32)-1); 2. chan(chan&amp;amp;&amp;amp; c); 3. chan(const chan&amp;amp; c); 1, cap is the maximum capacity of the internal queue, the default is 1.</description>
+      <description>#Header #include &amp;#34;co/thread.h&amp;#34; The API is in the co namespace.
+#Thread ID uint32 co::thread_id(); Returns the current thread id. #Synchronization Event std::condition_variable allows spurious wakeups, notify_one does not guarantee waking only one waiting thread, and wait requires a lock, making it inconvenient to use. coost implements co::sync_event to replace it. struct sync_event { sync_event(bool manual_reset, bool signaled); sync_event() : sync_event(false, false) {} ~sync_event(); sync_event(sync_event&amp;amp;&amp;amp; e) noexcept : _p(e._p) { e._p = 0; } sync_event(const sync_event&amp;amp;) = delete; void operator=(const sync_event&amp;amp;) = delete; void operator=(sync_event&amp;amp;&amp;amp;) = delete; void notify_one(); void notify_all(); void reset(); void wait(); bool wait(uint32 ms); void* _p; }; notify_one wakes only one waiting thread.</description>
     </item>
     
     <item>
@@ -169,110 +118,27 @@ If you are not sure whether paid support is needed, you can request a free initi
     </item>
     
     <item>
-      <title>fastring</title>
-      <link>https://coostdocs.github.io/en/co/other/fastring/</link>
+      <title>Coroutine</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/other/fastring/</guid>
-      <description>include: co/fastring.h.
-#fastring fastring is the string type in coost. It implements most of the methods in std::string and also provides some methods that std::string does not support.
-#constructor 1. constexpr fastring() noexcept; 2. explicit fastring(size_t cap); 3. fastring(const void* s, size_t n); 4. fastring(const char* s); 5. fastring(const std::string&amp;amp; s); 6. fastring(size_t n, char c); 7. fastring(const fastring&amp;amp; s); 8. fastring(fastring&amp;amp;&amp;amp; s) noexcept; 1, the default constructor, which creates an empty fastring without allocating any memory.</description>
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/</guid>
+      <description>#Header #include &amp;#34;co/co.h&amp;#34; The API is in the co namespace.
+go has been introduced into the global namespace via using co::go; and can be used directly.
+#Initialization Just include co/co.h; no explicit initialization is needed.
+You must call flag::parse(argc, argv); at the beginning of main to start the scheduling threads.
+#include &amp;#34;co/co.h&amp;#34; #include &amp;#34;co/flag.h&amp;#34; #include &amp;#34;co/print.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); go([] { co::println(&amp;#34;coroutine test&amp;#34;); }); co::sleep(100); return 0; } #Getting Scheduler and Coroutine Information int co::sched_num(); sched_t* co::sched(); coro_t* co::coroutine(); int co::sched_id(); int co::coroutine_id(); sched_num(): number of schedulers, defaults to os::cpunum().</description>
     </item>
     
     <item>
-      <title>Memory Allocation</title>
-      <link>https://coostdocs.github.io/en/co/mem/</link>
+      <title>String</title>
+      <link>https://coostdocs.github.io/en/co/string/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/mem/</guid>
-      <description>include: co/mem.h.
-#co::alloc 1. void* alloc(size_t size); 2. void* alloc(size_t size, size_t align); 1, allocate size bytes of memory. 2, allocate size bytes of memory, and the memory boundary is align byte-aligned (align &amp;lt;= 1024). In the 2nd, align must be power of 2 and cannot exceed 1024. #co::free void free(void* p, size_t size); Free memory allocated by co::alloc or co::realloc, where size is the size of the allocated memory. co::free is different from the ::free provided by the system, it needs an additional size parameter.</description>
-    </item>
-    
-    <item>
-      <title>Network programming model</title>
-      <link>https://coostdocs.github.io/en/co/net/mode/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/net/mode/</guid>
-      <description>#Coroutine based network programming model It is easy to write high-concurrency and high-performance network programs with coroutine. Although a coroutine may block, the scheduling thread can quickly switch between a large number of coroutines. Therefore, to achieve high concurrency, we just need to create more coroutines.
-#Network model for TCP server void on_connection(int fd) { while (true) { co::recv(fd, ...); // recv request from client process(...); // process the request co::send(fd, .</description>
-    </item>
-    
-    <item>
-      <title>fastream</title>
-      <link>https://coostdocs.github.io/en/co/other/fastream/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/other/fastream/</guid>
-      <description>include: co/fastream.h.
-#fastream fastream is used to replace std::ostringstream in the C++ standard library. The performance of std::ostringstream is poor which may be several times slower than snprintf, and fastream is about 10~30 times faster than snprintf on different platforms.
-#constructor 1. constexpr fastream() noexcept; 2. explicit fastream(size_t cap); 3. fastream(fastream&amp;amp;&amp;amp; s) noexcept; 1, the default constructor, which creates an empty fastream object without any memory allocation.
-2, uses the parameter cap to specify the initial capacity of fastream.</description>
-    </item>
-    
-    <item>
-      <title>flag</title>
-      <link>https://coostdocs.github.io/en/co/flag/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/flag/</guid>
-      <description>include: co/flag.h.
-#Basic concepts co.flag is a command line and config file parsing library. Its principle is very simple, define global variables in code, then parse the command line parameters and/or config file when the program starts, and update the value of these global variables.
-#flag variable The global variable defined by macros in co.flag are called flag variable. For example, the following code defines a flag variable, the variable name is FLG_x.</description>
-    </item>
-    
-    <item>
-      <title>Sync Event</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/event/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/event/</guid>
-      <description>include: co/co.h.
-#co::event co::event is a synchronization mechanism between coroutines, which is similar to co::sync_event in threads.
-Starting from v2.0.1, co::event can be used in coroutines and non-coroutines. #constructor 1. explicit event(bool manual_reset=false, bool signaled=false); 2. event(event&amp;amp;&amp;amp; e); 3. event(const event&amp;amp; e); 1, similar to co::sync_event in threads. 2, move constructor. 3, copy constructor, only increases the internal reference count by 1. #reset void reset() const; Reset the event to unsynced state.</description>
-    </item>
-    
-    <item>
-      <title>Use third-party network libraries</title>
-      <link>https://coostdocs.github.io/en/co/net/third/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/net/third/</guid>
-      <description>#Use third-party network libraries in coroutines There are two ways to use third-party network libraries in coroutines:
-Directly use the blocking APIs of the third-party network library. This is the simplest way, but it relies on the system API hook in coost. Use the non-blocking APIs of the third-party network library. In this way, users need to convert the APIs to synchronous manner with co::io_event. #System API hook API hook simply intercepts system API requests.</description>
-    </item>
-    
-    <item>
-      <title>IO Event</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/io_event/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/io_event/</guid>
-      <description>include: co/co.h.
-#co::_ev_t enum _ev_t { ev_read = 1, ev_write = 2, }; Type of I/O event. #co::io_event co::io_event is used to convert non-blocking I/O to synchronous mode. The user performs I/O operations on a non-blocking socket in coroutine. When the socket is unreadable or unwritable, the user calls the wait() method of co::io_event to suspend the coroutine and wait for the I/O event; When the socket becomes readable or writable, the scheduling thread will wake up the coroutine again and continue the I/O operation.</description>
-    </item>
-    
-    <item>
-      <title>log</title>
-      <link>https://coostdocs.github.io/en/co/log/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/log/</guid>
-      <description>include: co/log.h.
-#Introduction co.log is a high-performance log library provided by coost. It supports two types of logs, level log and topic log (TLOG). It prints logs as follows:
-LOG &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34; &amp;lt;&amp;lt; 23; // level log TLOG(&amp;#34;topic&amp;#34;) &amp;lt;&amp;lt; &amp;#34;hello&amp;#34; &amp;lt;&amp;lt; 23; // topic log #Level Log Level log is divided into 5 levels: debug, info, warning, error, fatal, and provides a series of macros to print logs of different levels.</description>
-    </item>
-    
-    <item>
-      <title>STL</title>
-      <link>https://coostdocs.github.io/en/co/other/stl/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/other/stl/</guid>
-      <description>include: co/stl.h.
-#Common containers In the table below, the containers in coost on the left are equivalent to the corresponding std versions on the right, only the internal memory allocators are different.
-coost std co::deque std::deque co::list std::list co::map std::map co::set std::set co::multimap std::multimap co::multiset std::multiset co::hash_map std::unordered_map co::hash_set std::unordered_set When the key is of const char* type (C-style string), co::map, co::set, co::multimap, co::multiset, co:: hash_map, co::hash_set will compare the key and calculate the hash value of the key according to the content of the string.</description>
+      <guid>https://coostdocs.github.io/en/co/string/</guid>
+      <description>#Header #include &amp;#34;co/string.h&amp;#34; The API is in the co namespace.
+#co::string co::string is the string class provided by coost. Its interface style is close to std::string, but:
+It uses the coost memory allocator underneath; It supports operator&amp;lt;&amp;lt;, used for output in logging, print, etc.; It provides convenient methods such as starts_with / ends_with / contains / trim / replace. #Internal Structure struct string { static const size_t npos = (size_t)-1; size_t _cap; // capacity size_t _size; // length char* _p; // data pointer }; _p is managed by the coost allocator.</description>
     </item>
     
     <item>
@@ -281,74 +147,20 @@ coost std co::deque std::deque co::list std::list co::map std::map co::set std::
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/tcp/</guid>
-      <description>include: co/tcp.h.
-#tcp::Connection tcp::Connection is a simple encapsulation of TCP connection, it is designed for TCP server. When SSL is enabled in a TCP server, tcp::Connection will transfer data by SSL.
-#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;amp;&amp;amp; c); The constructor, Connection is created by tcp::Server, users do not need to create it manually. The first version constructs a normal TCP connection, the second version constructs a TCP connection that support SSL, and the third is a move constructor.</description>
+      <description>#Header #include &amp;#34;co/tcp.h&amp;#34; The API is in the co namespace, and aliases are also provided:
+namespace tcp { using client = co::tcp_client; using server = co::tcp_server; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#tcp_client struct tcp_client { tcp_client(const char* server_host, uint16 server_port); tcp_client(const tcp_client&amp;amp; c); ~tcp_client(); tcp_client(tcp_client&amp;amp;&amp;amp;) = delete; void operator=(const tcp_client&amp;amp; c) = delete; void operator=(tcp_client&amp;amp;&amp;amp; c) = delete; bool connected() const; bool connect(int ms); void disconnect(); void close(); int recv(void* buf, int n, int ms=-1); int recvn(void* buf, int n, int ms=-1); int send(const void* buf, int n, int ms=-1); }; Must be used inside a coroutine.</description>
     </item>
     
     <item>
-      <title>HTTP</title>
-      <link>https://coostdocs.github.io/en/co/net/http/</link>
+      <title>Configuration</title>
+      <link>https://coostdocs.github.io/en/co/flag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/net/http/</guid>
-      <description>include: co/http.h.
-#http::Client http::Client is a coroutine-based HTTP client, which is implemented based on libcurl.
-#Client::Client explicit Client(const char* serv_url); Constructor, the parameter serv_url is the url address of the server, and its form is protocol://host:port, the following server urls are all ok: &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo; Connection is not established in the constructor. #Client::~Client Client::~Client(); Destructor, close the connection, and release libcurl related resources. #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); Add a HTTP header.</description>
-    </item>
-    
-    <item>
-      <title>Mutex Lock</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/mutex/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/mutex/</guid>
-      <description>include: co/co.h.
-#co::mutex Starting from v3.0.1, co::mutex can be used in coroutines and non-coroutines. #constructor 1. mutex(); 2. mutex(mutex&amp;amp;&amp;amp; m); 3. mutex(const mutex&amp;amp; m); 1, default constructor. 2, move constructor. 3, copy constructor, only increases the internal reference count by 1. #lock void lock() const; Acquire the lock, will block until the lock is acquired. #try_lock bool try_lock() const; Acquire the lock, will not block, return true when the lock is successfully acquired, otherwise return false.</description>
-    </item>
-    
-    <item>
-      <title>String Utility</title>
-      <link>https://coostdocs.github.io/en/co/other/str/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/other/str/</guid>
-      <description>include: co/str.h.
-#String operations #str::cat template &amp;lt;typename ...X&amp;gt; inline fastring cat(X&amp;amp;&amp;amp; ... x); Added in v2.0.3. Concatenate any number of elements to make a string.
-示例
-str::cat(&amp;#34;hello&amp;#34;, &amp;#39; &amp;#39;, 23); // -&amp;gt; &amp;#34;hello 23&amp;#34; str::cat(&amp;#34;xx&amp;#34;, 3.14, &amp;#34;true&amp;#34;); // -&amp;gt; &amp;#34;xx3.14true&amp;#34; #str::replace fastring replace(const char* s, size_t n, const char* sub, size_t m, const char* to, size_t l, size_t t=0); fastring replace(const char* s, size_t n, const char* sub, const char* to, size_t t=0); fastring replace(const char* s, const char* sub, const char* to, size_t t=0); fastring replace(const fastring&amp;amp; s, const char* sub, const char* to, size_t t=0); fastring replace(const std::string&amp;amp; s, const char* sub, const char* to, size_t t=0); Replace substring sub in string s with to, n is the length of s, m is the length of sub, and l is the length of to; t is the maximum number of replacements, the default is 0 for unlimited.</description>
-    </item>
-    
-    <item>
-      <title>Unitest</title>
-      <link>https://coostdocs.github.io/en/co/unitest/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/unitest/</guid>
-      <description>include: co/unitest.h.
-#Basic concepts co.unitest is a unit testing framework, similar to google gtest, but easier to use.
-#Test Units and Test Cases A test program can be divided into multiple test units according to functions or modules, and there can be multiple test cases under each test unit. For example, a test unit can be defined for a class (or module) in C++, and a test case can be defined for each method in the class (or module).</description>
-    </item>
-    
-    <item>
-      <title>Benchmark</title>
-      <link>https://coostdocs.github.io/en/co/benchmark/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/benchmark/</guid>
-      <description>include: co/benchmark.h.
-#basic concept co.benchmark is a benchmark framework added in v3.0.1, which can be used for performance benchmarking.
-#BM_group #define BM_group(_name_) \ ......\ void _co_bm_group_##_name_(bm::xx::Group&amp;amp; _g_) The BM_group macro is used to define a benchmark group, which actually defines a function. Multiple benchmarks can be defined with BM_add in each group. The parameter _name_ is the group name, which is also part of name of the defined function. BM_group(atomic) is ok, but BM_group(co.</description>
-    </item>
-    
-    <item>
-      <title>Random Value</title>
-      <link>https://coostdocs.github.io/en/co/other/rand/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/other/rand/</guid>
-      <description>include: co/rand.h.
-#Random number (co::rand) 1. uint32 rand(); 2. uint32 rand(uint32&amp;amp; seed); 1, returns a random number between 1 and 2G-2, thread-safe. 2, returns a random number between 1 and 2G-2 with the specified seed number, which must be between 1 and 2G-2. This function will update the value of seed, it is not thread-safe. The value of seed in 2 can be initialized with the return value in 1. example uint32 x = co::rand(); uint32 y = co::rand(); uint32 seed = co::rand(); uint32 u = co::rand(seed); uint32 v = co::rand(seed); #Random string (co::randstr) 1.</description>
+      <guid>https://coostdocs.github.io/en/co/flag/</guid>
+      <description>#Header #include &amp;lt;co/flag.h&amp;gt; The API is in the flag namespace.
+#Overview flag provides command-line argument and configuration file parsing functionality. All component configuration items in coost are defined through flags.
+Defining a flag defines a global variable; the variable name is FLG_&amp;lt;name&amp;gt;; Supports both command-line arguments and configuration files; The command line supports -help to print help information, -mkconf to generate a configuration file, and -version to display the program version; #Defining Flags #DEF Macros DEF_bool(name, value, help, .</description>
     </item>
     
     <item>
@@ -357,43 +169,71 @@ str::cat(&amp;#34;hello&amp;#34;, &amp;#39; &amp;#39;, 23); // -&amp;gt; &amp;#3
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/net/rpc/</guid>
-      <description>include: co/rpc.h.
-Coost implements a coroutine-based RPC framework, which internally uses JSON as the data exchange format. Compared with RPC frameworks using binary protocols such as protobuf, it is more flexible and easier to use.
-Since v3.0, the RPC framework also supports HTTP protocol, and we are able to send a RPC request with the HTTP POST method. #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&amp;lt;void(Json&amp;amp;, Json&amp;amp;)&amp;gt; Fun; virtual const char* name() const = 0; virtual const co::map&amp;lt;const char*, Fun&amp;gt;&amp;amp; methods() const = 0; }; This class is a pure interface, which represents a RPC service.</description>
+      <description>#Header #include &amp;#34;co/rpc.h&amp;#34; The API is in the co namespace, and aliases are also provided:
+namespace rpc { using service = co::rpc_service; using server = co::rpc_server; using client = co::rpc_client; using method_t = co::rpc_method_t; } Before use, you need to call flag::parse(argc, argv); at the beginning of main.
+#Overview A lightweight RPC based on TCP + JSON. Protocol: 8-byte header + JSON body. Requests specify the method through the api field, in the format ServiceName.</description>
     </item>
     
     <item>
-      <title>Wait Group</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/wg/</link>
+      <title>Contact</title>
+      <link>https://coostdocs.github.io/en/about/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/wg/</guid>
-      <description>include: co/co.h.
-#co::wait_group co::wait_group is similar to sync.WaitGroup in golang and can be used to wait for the exit of a coroutine or thread.
-#constructor 1. explicit wait_group(uint32 n); 2. wait_group(); 3. wait_group(wait_group&amp;amp;&amp;amp; wg); 4. wait_group(const wait_group&amp;amp; wg); 1, initializes the internal counter to n. 2, default constructor, initializes the internal counter to 0. 3, move constructor. 4, copy constructor, only increases the internal reference count by 1. #add void add(uint32 n=1) const; Increment internal counter by n, n defaults to 1.</description>
+      <guid>https://coostdocs.github.io/en/about/contact/</guid>
+      <description>You can contact the author in the following ways:
+Email: idealvin at qq.com github: https://github.com/idealvin/coost zhihu: idealvin </description>
     </item>
     
     <item>
-      <title>Coroutine Pool</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/pool/</link>
+      <title>Logging</title>
+      <link>https://coostdocs.github.io/en/co/log/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/pool/</guid>
-      <description>include: co/co.h.
-#co::pool co::pool is a general-purpose coroutine pool, which is coroutine-safe and internally stores void* type pointers, which can be used as connection pool, memory pool or caches for other purposes.
-#constructor 1. pool(); 2. pool(pool&amp;amp;&amp;amp; p); 3. pool(const pool&amp;amp; p); 4. pool(std::function&amp;lt;void*()&amp;gt;&amp;amp;&amp;amp; ccb, ​​std::function&amp;lt;void(void*)&amp;gt;&amp;amp;&amp;amp; dcb, size_t cap=(size_t)-1); 1, default constructor, compared to 4, ccb and dcb are NULL.
-2, move constructor.
-3, copy constructor, only increases the internal reference count by 1.</description>
+      <guid>https://coostdocs.github.io/en/co/log/</guid>
+      <description>#Header #include &amp;lt;co/log.h&amp;gt; The API is in the log namespace.
+#Initialization and Shutdown log internally uses the flag component to define some configuration items, and logging behavior can be controlled through command-line arguments or a configuration file. In addition, the logging thread starts only after command-line arguments are parsed. Therefore, it must be called at the beginning of the main function:
+flag::parse(argc, argv); Shutdown API:
+void log::close(); Flushes the log buffer and exits the logging thread.</description>
     </item>
     
     <item>
-      <title>Hash</title>
-      <link>https://coostdocs.github.io/en/co/other/hash/</link>
+      <title>STL</title>
+      <link>https://coostdocs.github.io/en/co/other/stl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://coostdocs.github.io/en/co/other/hash/</guid>
-      <description>include: co/hash.h.
-#Hash #hash32 uint32 hash32(const void* s, size_t n); uint32 hash32(const char* s); uint32 hash32(const fastring&amp;amp; s) uint32 hash32(const std::string&amp;amp; s); This function returns a 32-bit murmur hash value. When s is a pointer, it is required to be sizeof(void*) byte aligned. #hash64 uint64 hash64(const void* s, size_t n); uint64 hash64(const char* s); uint64 hash64(const fastring&amp;amp; s); uint64 hash64(const std::string&amp;amp; s); This function returns a 64-bit murmur hash value. When s is a pointer, it is required to be 8-byte aligned.</description>
+      <guid>https://coostdocs.github.io/en/co/other/stl/</guid>
+      <description>#Header #include &amp;#34;co/stl.h&amp;#34; The API is in the co namespace.
+#Overview Provides aliases for standard containers, with the allocator replaced by co::stl_allocator. Provides formatted output for containers. co::vector is already defined in co/string.h; stl.h does not redefine it. #Comparators and Hash template&amp;lt;class T&amp;gt; struct co::less; template&amp;lt;class T&amp;gt; struct co::greater; template&amp;lt;class T&amp;gt; struct co::hash; namespace co::xx { template&amp;lt;class T&amp;gt; struct eq; } Specialized for const char*, comparing / hashing by string content.</description>
+    </item>
+    
+    <item>
+      <title>Unit Test</title>
+      <link>https://coostdocs.github.io/en/co/unitest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/unitest/</guid>
+      <description>#Header #include &amp;#34;co/unitest.h&amp;#34; #API There is only one public function, in the co namespace:
+int co::run_unitests(); Runs unit tests and returns the number of failed test cases; main is generally written in a fixed way: #include &amp;#34;co/unitest.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_unitests(); return 0; } #Defining a Test Unit DEF_test(name) { // test code // DEF_case(xxx) {} } The DEF_test macro defines a test unit. It is actually a function, and users can freely add code inside it, such as initialization code shared by test cases; name must be a valid variable name; When there are multiple DEF_tests, name must not be duplicated.</description>
+    </item>
+    
+    <item>
+      <title>Benchmark</title>
+      <link>https://coostdocs.github.io/en/co/benchmark/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/benchmark/</guid>
+      <description>#Header #include &amp;#34;co/benchmark.h&amp;#34; #API There is only one public function, in the co namespace:
+void co::run_benchmarks(); Run benchmarks; results are output in markdown table format. main is generally written in a fixed way: #include &amp;#34;co/benchmark.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); co::run_benchmarks(); return 0; } #Defining a Benchmark Group BM_group(name) { // BM_add(...) { ... } } The BM_group macro defines a benchmark group. It is actually a function, and users can freely add common initialization code, warm-up code, etc.</description>
+    </item>
+    
+    <item>
+      <title>Random Values</title>
+      <link>https://coostdocs.github.io/en/co/other/rand/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/other/rand/</guid>
+      <description>#Header #include &amp;#34;co/rand.h&amp;#34; The API is in the co namespace; flag::parse is not required.
+#Random Numbers // Thread-safe, returns 0 &amp;lt; x &amp;lt; 2^31-1 uint32 co::rand(); // seed must be in (0, 2^31-1); after the call it is updated to the return value uint32 co::rand(uint32&amp;amp; seed); // Thread-safe, returns a 64-bit random number uint64 co::rand64(); // splitmix64, seed can be 0; after the call it is updated uint64 co::rand64(uint64&amp;amp; seed); rand() / rand64() are thread-safe and use thread_local state internally.</description>
     </item>
     
     <item>
@@ -402,20 +242,9 @@ Since v3.0, the RPC framework also supports HTTP protocol, and we are able to se
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/json/</guid>
-      <description>include: co/json.h.
-co.json is a JSON library similar to rapidjson. Compared with rapidjson, it has better performance and is easier to use.
-#Basic concepts JSON is a simple data format that supports two data structures:
-A collection consisting of a series of key/value pairs. This type of structure is called object, which corresponds to struct, map, etc, in programming languages. A list composed of a series of value, this kind of structure is called array, which corresponds to vector, list, etc, in programming languages.</description>
-    </item>
-    
-    <item>
-      <title>Config</title>
-      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/conf/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/conf/</guid>
-      <description>#Config Coost uses co.flag to define config items for the coroutine module. Please refer to co.flag documents for detailed usage.
-#co_hook_log DEF_bool(co_hook_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print log for API hooks&amp;#34;); Print API hook related logs, default is false. Coost v3.0.1 renamed hook_log to co_hook_log. #co_sched_log DEF_bool(co_sched_log, false, &amp;#34;&amp;gt;&amp;gt;#1 print logs for coroutine schedulers&amp;#34;); Print debug logs for coroutine scheduling, default is false. Coost v3.0.1 renamed co_debug_log to co_sched_log. #co_sched_num DEF_uint32(co_sched_num, os::cpunum(), &amp;#34;&amp;gt;&amp;gt;#1 number of coroutine schedulers&amp;#34;); The number of coroutine scheduling threads, which defaults to the number of system CPU cores.</description>
+      <description>#Header #include &amp;#34;co/json.h&amp;#34; The API is in the json namespace.
+#json::any json::any represents any JSON value. Its type can be null, bool, int, double, string, array, or object.
+#Construction and Copying any(); // null any(decltype(nullptr)); // null any(any&amp;amp;&amp;amp; v); // move any(any&amp;amp; v); // move (non-const) any(const any&amp;amp;) = delete; void operator=(const any&amp;amp;) = delete; any&amp;amp; operator=(any&amp;amp;&amp;amp; v); // move any&amp;amp; operator=(any&amp;amp; v); // move any dup() const; // explicit deep copy any(bool v); any(double v); any(int64 v); any(int32 v); any(uint32 v); any(uint64 v); any(const void* p, size_t n); // initialize as string type any(const char* s); any(const co::string&amp;amp; s); any(const std::string&amp;amp; s); any(std::initializer_list&amp;lt;any&amp;gt; v); Copy construction and copy assignment are disabled.</description>
     </item>
     
     <item>
@@ -424,33 +253,30 @@ A collection consisting of a series of key/value pairs. This type of structure i
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/time/</guid>
-      <description>include: co/time.h.
-#epoch time The EPOCH is a specific time 1970-01-01 00:00:00 UTC, and the epoch time is the time since the EPOCH.
-#epoch::ms int64 ms(); Return milliseconds since EPOCH. #epoch::us int64 us(); Return microseconds since EPOCH. #monotonic time Monotonic time is a monotonic increasing time, it is implemented as the time since last reboot of system on most platforms. It is generally used for timing and is more stable than system time.</description>
+      <description>#Header #include &amp;#34;co/time.h&amp;#34; flag::parse is not required.
+sleep is in the time namespace; the rest are in the co namespace.
+#Current Time co::now struct Now { static int64 ns(); // nanoseconds, may overflow in 2262 static int64 us(); // microseconds static int64 ms(); // milliseconds static co::string str(const char* fmt=&amp;#34;%Y-%m-%d %H:%M:%S&amp;#34;); }; ns() / us() / ms() return Unix epoch timestamps (UTC). str() is based on strftime and returns a local time string.</description>
     </item>
     
     <item>
-      <title>Timed task scheduler</title>
+      <title>Scheduled Tasks</title>
       <link>https://coostdocs.github.io/en/co/other/tasked/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/tasked/</guid>
-      <description>include: co/tasked.h.
-#co::Tasked The class Tasked implements a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use it to schedule tasks that may block for a long time.
-Tasked was added to namespace co since v3.0.1. #Constructor 1. Tasked(); 2. Tasked(Tasked&amp;amp;&amp;amp; t); 1, the default constructor.</description>
+      <description>#Header #include &amp;#34;co/tasked.h&amp;#34; The API is in the co namespace; flag::parse is not required.
+#Overview A simple scheduled task scheduler with an internal background thread that runs tasks. The time unit is seconds, and the scheduling granularity is seconds. Suitable for low-frequency, uncommon tasks; not suitable for high-frequency, precise scheduling, or long-blocking tasks. #Definition struct tasked { tasked(); ~tasked(); tasked(tasked&amp;amp;&amp;amp; t); tasked(const tasked&amp;amp;) = delete; void operator=(const tasked&amp;amp;) = delete; void operator=(tasked&amp;amp;&amp;amp;) = delete; void run_in(closure&amp;amp;&amp;amp; c, int sec); void run_every(closure&amp;amp;&amp;amp; c, int sec); void run_at(closure&amp;amp;&amp;amp; c, int hour, int minute=0, int second=0); void run_daily(closure&amp;amp;&amp;amp; c, int hour=0, int minute=0, int second=0); void stop(); void* _p; }; run_in(c, sec): executes once after sec seconds; when sec &amp;lt;= 0, it wakes up immediately.</description>
     </item>
     
     <item>
-      <title>Path</title>
+      <title>File Path</title>
       <link>https://coostdocs.github.io/en/co/other/path/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/path/</guid>
-      <description>include: co/path.h.
-#path This library is ported from golang&amp;rsquo;s path package, the path separator must be / .
-#path::clean fastring clean(const char* s, size_t n); fastring clean(const char* s); fastring clean(const fastring&amp;amp; s); Return the shortest equivalent form of the path, the consecutive separators in the path will be removed.
-Example
-path::clean(&amp;#34;&amp;#34;); // &amp;#34;.&amp;#34; path::clean(&amp;#34;./x//y/&amp;#34;); // &amp;#34;x/y&amp;#34; path::clean(&amp;#34;./x/..&amp;#34;); // &amp;#34;.&amp;#34; path::clean(&amp;#34;./x/../..&amp;#34;); // &amp;#34;..&amp;#34; #path::join template&amp;lt;typename ...S&amp;gt; inline fastring join(S&amp;amp;&amp;amp;... s); Concatenate any number of strings into a complete path, the returned result is cleaned by path::clean.</description>
+      <description>#Header #include &amp;#34;co/path.h&amp;#34; The API is in the path namespace, not co.
+Ported from Go&amp;rsquo;s path package; the path separator is fixed as /.
+#Overview clean: returns the shortest equivalent path. join: joins multiple path elements. split: splits into dir and file at the last /. dir: returns the directory part. base: returns the last segment. ext: returns the extension. All functions returning co::string have three overloads: (const char*, size_t), (const char*), and (const co::string&amp;amp;).</description>
     </item>
     
     <item>
@@ -459,9 +285,8 @@ path::clean(&amp;#34;&amp;#34;); // &amp;#34;.&amp;#34; path::clean(&amp;#34;./x
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/fs/</guid>
-      <description>include: co/fs.h.
-The fs module implements common file system operations. It is recommended to use / uniformly as the path separator on different platforms.
-#Metadata operations #fs::exists bool exists(const char* path); bool exists(const fastring&amp;amp; path); bool exists(const std::string&amp;amp; path); Check whether the file exists, the parameter path is the path of a file or directory. #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp;amp; path); int64 fsize(const std::string&amp;amp; path); Get the file size.</description>
+      <description>#Header #include &amp;#34;co/fs.h&amp;#34; The API is in the fs namespace; flag::parse is not required.
+#Convenience Functions bool fs::exists(const char* path); bool fs::isdir (const char* path); int64 fs::mtime (const char* path); // modification time int64 fs::fsize (const char* path); // file size bool fs::mkdir(const char* path, bool p = false); bool fs::mkdir(char* path, bool p); // async-signal-safe bool fs::rm(const char* path, bool r = false); bool fs::mv(const char* from, const char* to); bool fs::symlink(const char* dst, const char* lnk); Returns bool: true on success, false on failure.</description>
     </item>
     
     <item>
@@ -470,20 +295,42 @@ The fs module implements common file system operations. It is recommended to use
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/other/os/</guid>
-      <description>include: co/os.h.
-#os #os::cpunum int cpunum(); Returns the number of system CPU cores. #os::cwd fastring cwd(); Returns path of the current working directory. On windows, \ in the results will be converted to /. #os::daemon void daemon(); Put the current process to run in the background, for linux only. #os::env 1. fastring env(const char* name); 2. bool env(const char* name, const char* value); 1, get value of the environment variable. 2, added in v2.</description>
+      <description>#Header #include &amp;#34;co/os.h&amp;#34; The API is in the os namespace; flag::parse is not required.
+#Environment Variables co::string os::env(const char* name); bool os::env(const char* name, const char* value); env(name): gets the value of an environment variable; returns an empty string if it does not exist. env(name, value): sets the value of an environment variable. If value is nullptr or an empty string, the variable is deleted. Returns true on success. The value is not UTF-8 transcoded.</description>
     </item>
     
     <item>
-      <title>Compiling</title>
+      <title>Hash and Encoding</title>
+      <link>https://coostdocs.github.io/en/co/other/hash/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/other/hash/</guid>
+      <description>#Header #include &amp;#34;co/base64.h&amp;#34; #include &amp;#34;co/md5.h&amp;#34; #include &amp;#34;co/murmur_hash.h&amp;#34; #include &amp;#34;co/sha256.h&amp;#34; The API is in the co namespace. All functions have overloads for (const void*, size_t), (const char*), (const co::string&amp;amp;), and (const std::string&amp;amp;).
+#base64 co::string co::base64_encode(const void* s, size_t n); co::string co::base64_decode(const void* s, size_t n); base64 encoding / decoding. decode returns an empty string on error. #md5 typedef struct { uint32 lo, hi; uint32 a, b, c, d; uint8 buffer[64]; uint32 block[16]; } md5_ctx_t; void md5_init(md5_ctx_t* ctx); void md5_update(md5_ctx_t* ctx, const void* s, size_t n); void md5_final(md5_ctx_t* ctx, uint8 res[16]); Streaming interface, suitable for large files.</description>
+    </item>
+    
+    <item>
+      <title>Compilation</title>
       <link>https://coostdocs.github.io/en/co/build/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/build/</guid>
-      <description>#Compiler requirements The compilers required are as follows:
-Linux: gcc 4.8+ Mac: clang 3.3+ Windows: vs2015+ #xmake Coost recommends using xmake as the build tool.
-#Install xmake For Windows, mac and debian/ubuntu, you can go directly to the release page of xmake to get the installation package. For other systems, please refer to xmake&amp;rsquo;s Installation instructions.
-#Build Run commands below in the root directory of co to build libco and other projects:</description>
+      <description>#Compiler Requirements The latest version of coost requires compiler support for C++17:
+Linux: gcc Mac: clang Windows: MSVC #Building with xmake coost recommends using xmake as the build tool.
+#Quick Start # All commands are executed in the coost root directory; this will not be repeated below. xmake # Build libco by default xmake -a # Build all projects (libco, benchmark, gen, test, unitest) In addition, you can use -v or -vD to make xmake print more detailed compilation information:</description>
+    </item>
+    
+    <item>
+      <title>FAQ</title>
+      <link>https://coostdocs.github.io/en/co/faq/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/faq/</guid>
+      <description>#FAQ #How do I modify the value of a configuration item? coost uses flag to define configuration items, which can be modified through command-line arguments or a configuration file.
+On the command line:
+-co_sched_num=2 -min_log_level 1 In the configuration file:
+co_sched_num = 2 min_log_level = 1 Users do not need to write the configuration file by hand; execute ./exe -mkconf to generate a configuration file.
+Alternatively, you can call flag::set_value to modify the default value of a flag:</description>
     </item>
     
   </channel>

@@ -3,25 +3,23 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/tasked.h.
-#co::Tasked The class Tasked implements a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use it to schedule tasks that may block for a long time.
-Tasked was added to namespace co since v3.0.1. #Constructor 1. Tasked(); 2. Tasked(Tasked&amp;&amp; t); 1, the default constructor.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Timed task scheduler" />
-<meta property="og:description" content="include: co/tasked.h.
-#co::Tasked The class Tasked implements a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use it to schedule tasks that may block for a long time.
-Tasked was added to namespace co since v3.0.1. #Constructor 1. Tasked(); 2. Tasked(Tasked&amp;&amp; t); 1, the default constructor." />
+<meta name="description" content="#Header #include &#34;co/tasked.h&#34; The API is in the co namespace; flag::parse is not required.
+#Overview A simple scheduled task scheduler with an internal background thread that runs tasks. The time unit is seconds, and the scheduling granularity is seconds. Suitable for low-frequency, uncommon tasks; not suitable for high-frequency, precise scheduling, or long-blocking tasks. #Definition struct tasked { tasked(); ~tasked(); tasked(tasked&amp;&amp; t); tasked(const tasked&amp;) = delete; void operator=(const tasked&amp;) = delete; void operator=(tasked&amp;&amp;) = delete; void run_in(closure&amp;&amp; c, int sec); void run_every(closure&amp;&amp; c, int sec); void run_at(closure&amp;&amp; c, int hour, int minute=0, int second=0); void run_daily(closure&amp;&amp; c, int hour=0, int minute=0, int second=0); void stop(); void* _p; }; run_in(c, sec): executes once after sec seconds; when sec &lt;= 0, it wakes up immediately.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="Scheduled Tasks" />
+<meta property="og:description" content="#Header #include &#34;co/tasked.h&#34; The API is in the co namespace; flag::parse is not required.
+#Overview A simple scheduled task scheduler with an internal background thread that runs tasks. The time unit is seconds, and the scheduling granularity is seconds. Suitable for low-frequency, uncommon tasks; not suitable for high-frequency, precise scheduling, or long-blocking tasks. #Definition struct tasked { tasked(); ~tasked(); tasked(tasked&amp;&amp; t); tasked(const tasked&amp;) = delete; void operator=(const tasked&amp;) = delete; void operator=(tasked&amp;&amp;) = delete; void run_in(closure&amp;&amp; c, int sec); void run_every(closure&amp;&amp; c, int sec); void run_at(closure&amp;&amp; c, int hour, int minute=0, int second=0); void run_daily(closure&amp;&amp; c, int hour=0, int minute=0, int second=0); void stop(); void* _p; }; run_in(c, sec): executes once after sec seconds; when sec &lt;= 0, it wakes up immediately." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/en/co/other/tasked/" /><meta property="article:section" content="co" />
 
 <meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
 
-<title>Timed task scheduler | Coost Docs</title>
+<title>Scheduled Tasks | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
 <link rel="icon" href="../../../../favicon.png" type="image/x-icon">
   <link rel="alternate" hreflang="cn" href="https://coostdocs.github.io/cn/co/other/tasked/" title="定时任务">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../en.search.min.e007b47e9f87d1d8fb1101e291614ac63580763262d3b7bef7e3d561e2399d92.js" integrity="sha256-4Ae0fp&#43;H0dj7EQHikWFKxjWAdjJi07e&#43;9&#43;PVYeI5nZI=" crossorigin="anonymous"></script>
+  <script defer src="../../../../en.search.min.256b00bbca9b4328facdb2770706f1ef8cd080dd1924edd9115802613a58ee10.js" integrity="sha256-JWsAu8qbQyj6zbJ3Bwbx74zQgN0ZJO3ZEVgCYTpY7hA=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,20 +88,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/about/co/" class="">Introduction</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/about/contact/" class="">Contact</a>
+    <a href="../../../../en/about/co/" class="">Overview</a>
   
 
         </li>
@@ -117,6 +102,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/about/support/" class="">Commercial Support</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/about/contact/" class="">Contact</a>
   
 
         </li>
@@ -160,19 +158,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/god/" class="">God Oriented Programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/mem/" class="">Memory Allocation</a>
   
 
@@ -186,7 +171,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/flag/" class="">flag</a>
+    <a href="../../../../en/co/string/" class="">String</a>
   
 
         </li>
@@ -199,7 +184,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/log/" class="">log</a>
+    <a href="../../../../en/co/flag/" class="">Configuration</a>
   
 
         </li>
@@ -212,7 +197,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/unitest/" class="">Unitest</a>
+    <a href="../../../../en/co/log/" class="">Logging</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/unitest/" class="">Unit Test</a>
   
 
         </li>
@@ -293,133 +291,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a8bcee0f770e9eedef784caa025649c4" class="toggle"  />
-    <label for="section-a8bcee0f770e9eedef784caa025649c4" class="flex justify-between">
-      <a role="button" class="">Coroutine</a>
-    </label>
+    <a href="../../../../en/co/concurrency/coroutine/" class="">Coroutine</a>
   
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/basic/" class="">Basic concepts</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/api/" class="">APIs</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/chan/" class="">Channel</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/event/" class="">Sync Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/io_event/" class="">IO Event</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/mutex/" class="">Mutex Lock</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/wg/" class="">Wait Group</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/pool/" class="">Coroutine Pool</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/concurrency/coroutine/conf/" class="">Config</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -438,7 +311,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
     <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
-      <a role="button" class="">Network Programming</a>
+      <a role="button" class="">Network</a>
     </label>
   
 
@@ -452,7 +325,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/byte_order/" class="">Byte order</a>
+    <a href="../../../../en/co/net/byte_order/" class="">Byte Order</a>
   
 
         </li>
@@ -465,33 +338,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/net/sock/" class="">Socket programming</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/mode/" class="">Network programming model</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/third/" class="">Use third-party network libraries</a>
+    <a href="../../../../en/co/net/sock/" class="">Socket Programming</a>
   
 
         </li>
@@ -505,19 +352,6 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../en/co/net/tcp/" class="">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -564,7 +398,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/console/" class="">Console</a>
+    <a href="../../../../en/co/other/console/" class="">Console Output</a>
   
 
         </li>
@@ -603,32 +437,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/fastring/" class="">fastring</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/fastream/" class="">fastream</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../en/co/other/stl/" class="">STL</a>
   
 
@@ -642,33 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/str/" class="">String Utility</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/rand/" class="">Random Value</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../en/co/other/hash/" class="">Hash</a>
+    <a href="../../../../en/co/other/rand/" class="">Random Values</a>
   
 
         </li>
@@ -694,7 +476,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/tasked/" class=" active">Timed task scheduler</a>
+    <a href="../../../../en/co/other/tasked/" class=" active">Scheduled Tasks</a>
   
 
         </li>
@@ -707,7 +489,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/other/path/" class="">Path</a>
+    <a href="../../../../en/co/other/path/" class="">File Path</a>
   
 
         </li>
@@ -739,6 +521,19 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/other/hash/" class="">Hash and Encoding</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -751,7 +546,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../en/co/build/" class="">Compiling</a>
+    <a href="../../../../en/co/build/" class="">Compilation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../en/co/faq/" class="">FAQ</a>
   
 
         </li>
@@ -798,7 +606,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Timed task scheduler</strong>
+  <strong>Scheduled Tasks</strong>
 
   <label for="toc-control">
     
@@ -816,19 +624,10 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#cotasked">co::Tasked</a>
-          <ul>
-            <li><a href="#constructor">Constructor</a></li>
-            <li><a href="#destructor">Destructor</a></li>
-            <li><a href="#f">F</a></li>
-            <li><a href="#run_at">run_at</a></li>
-            <li><a href="#run_daily">run_daily</a></li>
-            <li><a href="#run_every">run_every</a></li>
-            <li><a href="#run_in">run_in</a></li>
-            <li><a href="#stop">stop</a></li>
-            <li><a href="#code-example">Code example</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>
@@ -843,72 +642,59 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/tasked.h">co/tasked.h</a>.</p>
-<h2 id="cotasked"><a class="anchor" href="#cotasked">#</a>co::Tasked</h2>
-<p>The class <strong>Tasked</strong> implements a simple timed task scheduler. All tasks are scheduled internally by a single thread, but tasks can be added from any thread. When a task is blocked, it will affect all subsequent tasks. Therefore, it is not recommended to use it to schedule tasks that may block for a long time.</p>
-<blockquote class="book-hint info">
-  <code>Tasked</code> was added to namespace <code>co</code> since v3.0.1.
-</blockquote>
-
-<h3 id="constructor"><a class="anchor" href="#constructor">#</a>Constructor</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">Tasked</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">Tasked</span><span class="p">(</span><span class="n">Tasked</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, the default constructor. When the object is created, the scheduling thread will start immediately.</li>
-<li>2, the move constructor.</li>
+  <article class="markdown"><h2 id="header"><a class="anchor" href="#header">#</a>Header</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/tasked.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>The API is in the <code>co</code> namespace; <code>flag::parse</code> is not required.</p>
+<h2 id="overview"><a class="anchor" href="#overview">#</a>Overview</h2>
+<ul>
+<li>A simple scheduled task scheduler with an internal background thread that runs tasks.</li>
+<li>The time unit is seconds, and the scheduling granularity is seconds.</li>
+<li>Suitable for low-frequency, uncommon tasks; not suitable for high-frequency, precise scheduling, or long-blocking tasks.</li>
 </ul>
-<h3 id="destructor"><a class="anchor" href="#destructor">#</a>Destructor</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">Tasked</span><span class="p">();</span>
+<h2 id="definition"><a class="anchor" href="#definition">#</a>Definition</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">tasked</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tasked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">tasked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tasked</span><span class="p">(</span><span class="n">tasked</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tasked</span><span class="p">(</span><span class="k">const</span> <span class="n">tasked</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">tasked</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">tasked</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">run_in</span><span class="p">(</span><span class="n">closure</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sec</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">run_every</span><span class="p">(</span><span class="n">closure</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sec</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">run_at</span><span class="p">(</span><span class="n">closure</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">run_daily</span><span class="p">(</span><span class="n">closure</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="n">_p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>The destructor, stop the task scheduling thread.</li>
+<li><code>run_in(c, sec)</code>: executes once after <code>sec</code> seconds; when <code>sec &lt;= 0</code>, it wakes up immediately.</li>
+<li><code>run_every(c, sec)</code>: executes once every <code>sec</code> seconds.</li>
+<li><code>run_at(c, h, m, s)</code>: executes once at <code>hⓜ️s</code>; if the time has already passed, it is scheduled for the next day.</li>
+<li><code>run_daily(c, h, m, s)</code>: executes once every day at <code>hⓜ️s</code>.</li>
+<li><code>hour</code> ranges from 0-23, <code>minute</code> / <code>second</code> range from 0-59; there are <code>runtime_assert</code>s.</li>
+<li><code>stop()</code>: stops the scheduler, waits for the background thread to exit, and clears the task queue; repeated calls are safe.</li>
+<li>Automatically calls <code>stop()</code> on destruction.</li>
 </ul>
-<h3 id="f"><a class="anchor" href="#f">#</a>F</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">F</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>The task type.</li>
-</ul>
-<h3 id="run_at"><a class="anchor" href="#run_at">#</a>run_at</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_at</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_at</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Add a task to run at the specified time, <code>f</code> will run once at time of <code>hour:minute:second</code>.</li>
-<li><code>hour</code> must be an integer between 0-23, <code>minute</code> and <code>second</code> must be an integer between 0-59, and the default is 0.</li>
-</ul>
-<h3 id="run_daily"><a class="anchor" href="#run_daily">#</a>run_daily</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_daily</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_daily</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Add a periodic task that runs at a specified time every day, <code>f</code> will run once every day at the time of <code>hour:minute:second</code>.</li>
-<li><code>hour</code> must be an integer between 0-23, the default is 0, <code>minute</code> and <code>second</code> are integers between 0-59, and the default is 0.</li>
-</ul>
-<h3 id="run_every"><a class="anchor" href="#run_every">#</a>run_every</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_every</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_every</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Add a periodic task that runs every <code>n</code> seconds.</li>
-</ul>
-<h3 id="run_in"><a class="anchor" href="#run_in">#</a>run_in</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_in</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run_in</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>Add a task that runs once in <code>n</code> seconds.</li>
-</ul>
-<h3 id="stop"><a class="anchor" href="#stop">#</a>stop</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">stop</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>Stop the task scheduling thread, this method will be automatically called in the destructor.</li>
-<li>It is safe to call this method multiple times.</li>
-</ul>
-<h3 id="code-example"><a class="anchor" href="#code-example">#</a>Code example</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">Tasked</span> <span class="n">s</span><span class="p">;</span>                       <span class="c1">// create and start the scheduler
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_in</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                     <span class="c1">// run f 3 seconds later
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_every</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">3</span><span class="p">);</span>    <span class="c1">// run f every 3 seconds
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_at</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>                    <span class="c1">// run f once at 23:00:00
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_daily</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>                     <span class="c1">// run f at 00:00:00 every day
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_daily</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">23</span><span class="p">);</span>                 <span class="c1">// run f at 23:00:00 every day
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">run_daily</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>             <span class="c1">// run f at 23:30:00 every day
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>                           <span class="c1">// stop the scheduler
-</span></span></span></code></pre></div></article>
+<h2 id="example"><a class="anchor" href="#example">#</a>Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/tasked.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/time.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">tasked</span> <span class="n">t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="p">.</span><span class="n">run_in</span><span class="p">([]</span> <span class="p">{</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;run_in 3s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="p">.</span><span class="n">run_every</span><span class="p">([]</span> <span class="p">{</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;run_every 2s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="p">.</span><span class="n">run_at</span><span class="p">([]</span> <span class="p">{</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;run_at 10:30:00</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="p">.</span><span class="n">run_daily</span><span class="p">([]</span> <span class="p">{</span> <span class="n">co</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;daily 08:00</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">time</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -1030,19 +816,10 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#cotasked">co::Tasked</a>
-          <ul>
-            <li><a href="#constructor">Constructor</a></li>
-            <li><a href="#destructor">Destructor</a></li>
-            <li><a href="#f">F</a></li>
-            <li><a href="#run_at">run_at</a></li>
-            <li><a href="#run_daily">run_daily</a></li>
-            <li><a href="#run_every">run_every</a></li>
-            <li><a href="#run_in">run_in</a></li>
-            <li><a href="#stop">stop</a></li>
-            <li><a href="#code-example">Code example</a></li>
-          </ul>
-        </li>
+        <li><a href="#header">Header</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#example">Example</a></li>
       </ul>
     </li>
   </ul>

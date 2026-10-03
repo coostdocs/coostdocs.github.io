@@ -11,10 +11,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/concurrency/atomic/</guid>
-      <description>include: co/atomic.h.
-#Memory Order Since v3.0, co has added a support for memory order. The six memory orders in co are defined as follows:
-enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel, mo_seq_cst, }; The default memory order of atomic operations in co is mo_seq_cst.
-#APIs removed since v3.0 atomic_get, use atomic_load instead. atomic_set, use atomic_store instead. atomic_reset, use atomic_store(&amp;amp;x, 0) instead. #load &amp;amp; store #atomic_load template&amp;lt;typename T&amp;gt; inline T atomic_load(const T* p, memory_order_t mo = mo_seq_cst); This function gets the value of the variable pointed to by p, T is any built-in type (including pointer type) with a length of 1, 2, 4, 8 bytes.</description>
+      <description>#Header #include &amp;#34;co/atomic.h&amp;#34; The API is in the co namespace.
+#Memory Order using memorder_t = std::memory_order; constexpr memorder_t mo_relaxed = std::memory_order_relaxed; constexpr memorder_t mo_consume = std::memory_order_consume; constexpr memorder_t mo_acquire = std::memory_order_acquire; constexpr memorder_t mo_release = std::memory_order_release; constexpr memorder_t mo_acq_rel = std::memory_order_acq_rel; constexpr memorder_t mo_seq_cst = std::memory_order_seq_cst; #Load and Store template&amp;lt;typename T&amp;gt; T atomic_load(const T* p, memorder_t mo = mo_seq_cst); template&amp;lt;typename T, typename V&amp;gt; void atomic_store(T* p, V v, memorder_t mo = mo_seq_cst); atomic_load supports: mo_relaxed, mo_consume, mo_acquire, mo_seq_cst.</description>
     </item>
     
     <item>
@@ -23,8 +21,21 @@ enum memory_order_t { mo_relaxed, mo_consume, mo_acquire, mo_release, mo_acq_rel
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/en/co/concurrency/thread/</guid>
-      <description>include: co/thread.h.
-#Thread Coost v3.0.1 removed the header file co/thread.h, and removed the global class Thread and Mutex, which are nearly the same as std::thread and std::mutex in C++11. Users can use the std version directly. #co::thread_id uint32 thread_id(); Returns the id value of the current thread. #co::sync_event Coost v3.0.1 removed the global SyncEvent, please use co::sync_event instead. #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); Constructor, parameter manual_reset indicates whether to manually reset the event to unsynced state, parameter signaled indicates whether the initial state is synced.</description>
+      <description>#Header #include &amp;#34;co/thread.h&amp;#34; The API is in the co namespace.
+#Thread ID uint32 co::thread_id(); Returns the current thread id. #Synchronization Event std::condition_variable allows spurious wakeups, notify_one does not guarantee waking only one waiting thread, and wait requires a lock, making it inconvenient to use. coost implements co::sync_event to replace it. struct sync_event { sync_event(bool manual_reset, bool signaled); sync_event() : sync_event(false, false) {} ~sync_event(); sync_event(sync_event&amp;amp;&amp;amp; e) noexcept : _p(e._p) { e._p = 0; } sync_event(const sync_event&amp;amp;) = delete; void operator=(const sync_event&amp;amp;) = delete; void operator=(sync_event&amp;amp;&amp;amp;) = delete; void notify_one(); void notify_all(); void reset(); void wait(); bool wait(uint32 ms); void* _p; }; notify_one wakes only one waiting thread.</description>
+    </item>
+    
+    <item>
+      <title>Coroutine</title>
+      <link>https://coostdocs.github.io/en/co/concurrency/coroutine/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/en/co/concurrency/coroutine/</guid>
+      <description>#Header #include &amp;#34;co/co.h&amp;#34; The API is in the co namespace.
+go has been introduced into the global namespace via using co::go; and can be used directly.
+#Initialization Just include co/co.h; no explicit initialization is needed.
+You must call flag::parse(argc, argv); at the beginning of main to start the scheduling threads.
+#include &amp;#34;co/co.h&amp;#34; #include &amp;#34;co/flag.h&amp;#34; #include &amp;#34;co/print.h&amp;#34; int main(int argc, char** argv) { flag::parse(argc, argv); go([] { co::println(&amp;#34;coroutine test&amp;#34;); }); co::sleep(100); return 0; } #Getting Scheduler and Coroutine Information int co::sched_num(); sched_t* co::sched(); coro_t* co::coroutine(); int co::sched_id(); int co::coroutine_id(); sched_num(): number of schedulers, defaults to os::cpunum().</description>
     </item>
     
   </channel>
