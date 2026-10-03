@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/os.h.
-#os #os::cpunum int cpunum(); 返回系统 CPU 核数。 #os::cwd fastring cwd(); 返回当前工作目录。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::daemon void daemon(); 将当前进程放到后台运行，仅支持 linux 平台。 #os::env 1. fastring env(const char* name); 2. bool env(const char* name, const char* value); 1, 获取系统环境变量的值，参数 name 是环境变量名。 2, v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。 #os::exename fastring exename(); 返回当前进程名，不含路径。 #os::exepath fastring exepath(); 返回当前进程的完整路径。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::homedir fastring homedir(); 返回当前用户的 home 目录。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::pid int pid(); 返回当前进程的 id。 #os::signal typedef void (*sig_handler_t)(int); sig_handler_t signal(int sig, sig_handler_t handler, int flag=0); 设置信号处理函数，参数 sig 是信号值，参数 flag 是 SA_RESTART，SA_ONSTACK 等选项的组合。">
+<meta name="description" content="#头文件 #include &#34;co/os.h&#34; API 在命名空间 os，无需 flag::parse。
+#环境变量 co::string os::env(const char* name); bool os::env(const char* name, const char* value); env(name)：获取环境变量值，不存在返回空字符串。 env(name, value)：设置环境变量值，value 为 nullptr 或空字符串时删除该变量，成功返回 true。 值不做 UTF-8 转码。 #路径 co::string os::homedir(); // 当前用户 home 目录 co::string os::cwd(); // 当前工作目录 co::string os::exepath(); // 可执行文件路径 co::string os::exedir(); // 可执行文件所在目录 co::string os::exename(); // 可执行文件名 失败返回空字符串。 Windows 上返回 UTF-8，与 fs 一致。 exename() 含扩展名。 #进程与硬件 int os::pid(); int os::cpunum(); size_t os::pagesize(); pid()：当前进程 id。 cpunum()：逻辑 CPU 核数。 pagesize()：页大小（字节）。 #信号 typedef void (*sig_handler_t)(int); sig_handler_t os::signal(int sig, sig_handler_t handler, int flag=0); 只是 ::signal 的简单包装。 返回旧的处理函数。 Windows 上不支持 flag。 #执行命令 bool os::system(const char* cmd); 无 std::string 重载，需先 .">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="操作系统" />
-<meta property="og:description" content="include: co/os.h.
-#os #os::cpunum int cpunum(); 返回系统 CPU 核数。 #os::cwd fastring cwd(); 返回当前工作目录。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::daemon void daemon(); 将当前进程放到后台运行，仅支持 linux 平台。 #os::env 1. fastring env(const char* name); 2. bool env(const char* name, const char* value); 1, 获取系统环境变量的值，参数 name 是环境变量名。 2, v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。 #os::exename fastring exename(); 返回当前进程名，不含路径。 #os::exepath fastring exepath(); 返回当前进程的完整路径。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::homedir fastring homedir(); 返回当前用户的 home 目录。 在 windows 平台，返回值中的 \ 会转换成 /。 #os::pid int pid(); 返回当前进程的 id。 #os::signal typedef void (*sig_handler_t)(int); sig_handler_t signal(int sig, sig_handler_t handler, int flag=0); 设置信号处理函数，参数 sig 是信号值，参数 flag 是 SA_RESTART，SA_ONSTACK 等选项的组合。" />
+<meta property="og:description" content="#头文件 #include &#34;co/os.h&#34; API 在命名空间 os，无需 flag::parse。
+#环境变量 co::string os::env(const char* name); bool os::env(const char* name, const char* value); env(name)：获取环境变量值，不存在返回空字符串。 env(name, value)：设置环境变量值，value 为 nullptr 或空字符串时删除该变量，成功返回 true。 值不做 UTF-8 转码。 #路径 co::string os::homedir(); // 当前用户 home 目录 co::string os::cwd(); // 当前工作目录 co::string os::exepath(); // 可执行文件路径 co::string os::exedir(); // 可执行文件所在目录 co::string os::exename(); // 可执行文件名 失败返回空字符串。 Windows 上返回 UTF-8，与 fs 一致。 exename() 含扩展名。 #进程与硬件 int os::pid(); int os::cpunum(); size_t os::pagesize(); pid()：当前进程 id。 cpunum()：逻辑 CPU 核数。 pagesize()：页大小（字节）。 #信号 typedef void (*sig_handler_t)(int); sig_handler_t os::signal(int sig, sig_handler_t handler, int flag=0); 只是 ::signal 的简单包装。 返回旧的处理函数。 Windows 上不支持 flag。 #执行命令 bool os::system(const char* cmd); 无 std::string 重载，需先 ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/other/os/" /><meta property="article:section" content="co" />
 
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/os/" title="Operating System">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.9802d2d44a9b11eac0261c83da8c2f5a7b7339d82c18080f81009a7277b72494.js" integrity="sha256-mALS1EqbEerAJhyD2owvWntzOdgsGAgPgQCacne3JJQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.716d4b931d9bc14db968838090cbe0586e40ea272eed0153e5df8a1e133c19bb.js" integrity="sha256-cW1Lkx2bwU25aIOAkMvgWG5A6icu7QFT5d&#43;KHhM8Gbs=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -463,19 +463,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../cn/co/other/time/" class="">时间</a>
   
 
@@ -529,6 +516,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../cn/co/other/os/" class=" active">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">哈希与编码</a>
   
 
         </li>
@@ -680,19 +680,13 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#os">os</a>
-          <ul>
-            <li><a href="#oscpunum">os::cpunum</a></li>
-            <li><a href="#oscwd">os::cwd</a></li>
-            <li><a href="#osdaemon">os::daemon</a></li>
-            <li><a href="#osenv">os::env</a></li>
-            <li><a href="#osexename">os::exename</a></li>
-            <li><a href="#osexepath">os::exepath</a></li>
-            <li><a href="#oshomedir">os::homedir</a></li>
-            <li><a href="#ospid">os::pid</a></li>
-            <li><a href="#ossignal">os::signal</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#环境变量">环境变量</a></li>
+        <li><a href="#路径">路径</a></li>
+        <li><a href="#进程与硬件">进程与硬件</a></li>
+        <li><a href="#信号">信号</a></li>
+        <li><a href="#执行命令">执行命令</a></li>
+        <li><a href="#示例">示例</a></li>
       </ul>
     </li>
   </ul>
@@ -707,75 +701,76 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/os.h">co/os.h</a>.</p>
-<h2 id="os"><a class="anchor" href="#os">#</a>os</h2>
-<h3 id="oscpunum"><a class="anchor" href="#oscpunum">#</a>os::cpunum</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">cpunum</span><span class="p">();</span>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在命名空间 <code>os</code>，无需 <code>flag::parse</code>。</p>
+<h2 id="环境变量"><a class="anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f">#</a>环境变量</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span>       <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>返回系统 CPU 核数。</li>
+<li><code>env(name)</code>：获取环境变量值，不存在返回空字符串。</li>
+<li><code>env(name, value)</code>：设置环境变量值，<code>value</code> 为 <code>nullptr</code> 或空字符串时删除该变量，成功返回 <code>true</code>。</li>
+<li>值不做 UTF-8 转码。</li>
 </ul>
-<h3 id="oscwd"><a class="anchor" href="#oscwd">#</a>os::cwd</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">cwd</span><span class="p">();</span>
+<h2 id="路径"><a class="anchor" href="#%e8%b7%af%e5%be%84">#</a>路径</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">();</span>  <span class="c1">// 当前用户 home 目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">cwd</span><span class="p">();</span>      <span class="c1">// 当前工作目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exepath</span><span class="p">();</span>  <span class="c1">// 可执行文件路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exedir</span><span class="p">();</span>   <span class="c1">// 可执行文件所在目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">os</span><span class="o">::</span><span class="n">exename</span><span class="p">();</span>  <span class="c1">// 可执行文件名
+</span></span></span></code></pre></div><ul>
+<li>失败返回空字符串。</li>
+<li>Windows 上返回 UTF-8，与 <code>fs</code> 一致。</li>
+<li><code>exename()</code> 含扩展名。</li>
+</ul>
+<h2 id="进程与硬件"><a class="anchor" href="#%e8%bf%9b%e7%a8%8b%e4%b8%8e%e7%a1%ac%e4%bb%b6">#</a>进程与硬件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">size_t</span> <span class="n">os</span><span class="o">::</span><span class="n">pagesize</span><span class="p">();</span>
 </span></span></code></pre></div><ul>
-<li>返回当前工作目录。</li>
-<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
+<li><code>pid()</code>：当前进程 id。</li>
+<li><code>cpunum()</code>：逻辑 CPU 核数。</li>
+<li><code>pagesize()</code>：页大小（字节）。</li>
 </ul>
-<h3 id="osdaemon"><a class="anchor" href="#osdaemon">#</a>os::daemon</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">daemon</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>将当前进程放到后台运行，<strong>仅支持 linux 平台</strong>。</li>
-</ul>
-<h3 id="osenv"><a class="anchor" href="#osenv">#</a>os::env</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fastring</span> <span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">env</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 获取系统环境变量的值，参数 name 是环境变量名。</li>
-<li>2, v2.0.2 新增，设置环境变量的值，成功时返回 true，否则返回 false。</li>
-</ul>
-<h3 id="osexename"><a class="anchor" href="#osexename">#</a>os::exename</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">exename</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>返回当前进程名，不含路径。</li>
-</ul>
-<h3 id="osexepath"><a class="anchor" href="#osexepath">#</a>os::exepath</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">exepath</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>返回当前进程的完整路径。</li>
-<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
-</ul>
-<h3 id="oshomedir"><a class="anchor" href="#oshomedir">#</a>os::homedir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">homedir</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>返回当前用户的 home 目录。</li>
-<li>在 windows 平台，返回值中的 <code>\</code> 会转换成 <code>/</code>。</li>
-</ul>
-<h3 id="ospid"><a class="anchor" href="#ospid">#</a>os::pid</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">pid</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>返回当前进程的 id。</li>
-</ul>
-<h3 id="ossignal"><a class="anchor" href="#ossignal">#</a>os::signal</h3>
+<h2 id="信号"><a class="anchor" href="#%e4%bf%a1%e5%8f%b7">#</a>信号</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sig_handler_t</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">sig_handler_t</span> <span class="nf">signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">,</span> <span class="n">sig_handler_t</span> <span class="n">handler</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sig_handler_t</span> <span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">,</span> <span class="n">sig_handler_t</span> <span class="n">handler</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>
-<p>设置信号处理函数，参数 sig 是信号值，参数 flag 是 <code>SA_RESTART</code>，<code>SA_ONSTACK</code> 等选项的组合。</p>
-</li>
-<li>
-<p>参数 flag 仅适用于 linux/mac 平台，windows 平台会忽略此参数。</p>
-</li>
-<li>
-<p>此函数返回旧的信号处理函数。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<li>只是 <code>::signal</code> 的简单包装。</li>
+<li>返回旧的处理函数。</li>
+<li>Windows 上不支持 <code>flag</code>。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">f</span><span class="p">);</span>         <span class="c1">// user defined handler
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGABRT</span><span class="p">,</span> <span class="n">SIG_DFL</span><span class="p">);</span>  <span class="c1">// default handler
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">os</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">SIG_IGN</span><span class="p">);</span>  <span class="c1">// ignore SIGPIPE
-</span></span></span></code></pre></div></article>
+<h2 id="执行命令"><a class="anchor" href="#%e6%89%a7%e8%a1%8c%e5%91%bd%e4%bb%a4">#</a>执行命令</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">os</span><span class="o">::</span><span class="n">system</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">cmd</span><span class="p">);</span>
+</span></span></code></pre></div><ul>
+<li>无 <code>std::string</code> 重载，需先 <code>.c_str()</code>。</li>
+<li>非 Windows 基于 <code>popen</code> / <code>pclose</code>，输出直接到终端。</li>
+<li>返回 <code>bool</code>，表示命令是否执行成功。</li>
+</ul>
+<h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/os.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;homedir = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">homedir</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;cwd     = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">cwd</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;exepath = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">exepath</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;pid     = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">pid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;cpunum  = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">cpunum</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;page    = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">pagesize</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;PATH = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;PATH&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;MY_VAR = &#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">env</span><span class="p">(</span><span class="s">&#34;MY_VAR&#34;</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">::</span><span class="n">system</span><span class="p">(</span><span class="s">&#34;echo hello coost&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -897,19 +892,13 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#os">os</a>
-          <ul>
-            <li><a href="#oscpunum">os::cpunum</a></li>
-            <li><a href="#oscwd">os::cwd</a></li>
-            <li><a href="#osdaemon">os::daemon</a></li>
-            <li><a href="#osenv">os::env</a></li>
-            <li><a href="#osexename">os::exename</a></li>
-            <li><a href="#osexepath">os::exepath</a></li>
-            <li><a href="#oshomedir">os::homedir</a></li>
-            <li><a href="#ospid">os::pid</a></li>
-            <li><a href="#ossignal">os::signal</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#环境变量">环境变量</a></li>
+        <li><a href="#路径">路径</a></li>
+        <li><a href="#进程与硬件">进程与硬件</a></li>
+        <li><a href="#信号">信号</a></li>
+        <li><a href="#执行命令">执行命令</a></li>
+        <li><a href="#示例">示例</a></li>
       </ul>
     </li>
   </ul>

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/rand.h.
-#随机数(co::rand) 1. uint32 rand(); 2. uint32 rand(uint32&amp; seed); 1, 返回一个 1 到 2G-2 之间的随机数，线程安全。 2, 返回一个 1 到 2G-2 之间的随机数，需要用户指定种子数 seed，种子数必须在 1 到 2G-2 之间，此函数会更新 seed 的值，非线程安全。 可以用 1 中的返回值初始化 2 中的种子数。 示例 uint32 x = co::rand(); uint32 y = co::rand(); uint32 seed = co::rand(); uint32 u = co::rand(seed); uint32 v = co::rand(seed); #随机字符串(co::randstr) 1. fastring randstr(int n=15); 2. fastring randstr(const char* s, int n); 1, 返回一个长度为 n(默认为15) 的随机字符串，线程安全。 2, 返回一个长度为 n、由字符串 s 中的字符构成的随机字符串，s 中可以使用类似 0-9, a-z 的缩写，s 展开后的长度不能超过 255，线程安全。 randstr 基于 nanoid 算法实现，返回的随机字符串足够长时，一般也可以用作唯一 id。 示例 fastring s = co::randstr(); s = co::randstr(8); s = co::randstr(&#34;0123456789&#34;, 6); s = co::randstr(&#34;0-9a-f&#34;, 8); // 长度为8的16进制字符串 ">
+<meta name="description" content="#头文件 #include &#34;co/rand.h&#34; API 在 co 命名空间，无需 flag::parse。
+#接口 // 线程安全，返回 0 &lt; x &lt; 2^31-1 uint32 co::rand(); // seed 必须在 (0, 2^31-1)，调用后更新为返回值 uint32 co::rand(uint32&amp; seed); // 线程安全，返回 64 位随机数 uint64 co::rand64(); // splitmix64，seed 可为 0，调用后更新 uint64 co::rand64(uint64&amp; seed); // 写随机字符到 buf，末尾不添加 &#39;\0&#39; void co::randchars(void* buf, size_t bufsize); // 返回长度 n 的随机字符串，默认 15，线程安全 co::string co::randstr(uint32 n=15); // 使用指定字符集，支持 &#34;0-9&#34;、&#34;a-f&#34; 等范围 co::string co::randstr(const char* charset, uint32 n); rand() / rand64() / randstr() 线程安全，内部使用 thread_local 状态。 rand(seed) 的 seed 不能为 0，否则后续返回值恒为 0；也不能为 2^31-1。 rand64(seed) 对 seed 初值无要求。 randchars 默认字符集：a-z、A-Z、0-9、_、-，共 64 个字符。 randstr(charset, n) 支持范围缩写，如 &quot;0-9&quot;、&quot;a-f&quot;、&quot;0-9A-Za-z&quot;。 带 seed 的版本线程安全取决于调用方对 seed 的使用。 #示例 #include &#34;co/rand.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="随机值" />
-<meta property="og:description" content="include: co/rand.h.
-#随机数(co::rand) 1. uint32 rand(); 2. uint32 rand(uint32&amp; seed); 1, 返回一个 1 到 2G-2 之间的随机数，线程安全。 2, 返回一个 1 到 2G-2 之间的随机数，需要用户指定种子数 seed，种子数必须在 1 到 2G-2 之间，此函数会更新 seed 的值，非线程安全。 可以用 1 中的返回值初始化 2 中的种子数。 示例 uint32 x = co::rand(); uint32 y = co::rand(); uint32 seed = co::rand(); uint32 u = co::rand(seed); uint32 v = co::rand(seed); #随机字符串(co::randstr) 1. fastring randstr(int n=15); 2. fastring randstr(const char* s, int n); 1, 返回一个长度为 n(默认为15) 的随机字符串，线程安全。 2, 返回一个长度为 n、由字符串 s 中的字符构成的随机字符串，s 中可以使用类似 0-9, a-z 的缩写，s 展开后的长度不能超过 255，线程安全。 randstr 基于 nanoid 算法实现，返回的随机字符串足够长时，一般也可以用作唯一 id。 示例 fastring s = co::randstr(); s = co::randstr(8); s = co::randstr(&#34;0123456789&#34;, 6); s = co::randstr(&#34;0-9a-f&#34;, 8); // 长度为8的16进制字符串 " />
+<meta property="og:description" content="#头文件 #include &#34;co/rand.h&#34; API 在 co 命名空间，无需 flag::parse。
+#接口 // 线程安全，返回 0 &lt; x &lt; 2^31-1 uint32 co::rand(); // seed 必须在 (0, 2^31-1)，调用后更新为返回值 uint32 co::rand(uint32&amp; seed); // 线程安全，返回 64 位随机数 uint64 co::rand64(); // splitmix64，seed 可为 0，调用后更新 uint64 co::rand64(uint64&amp; seed); // 写随机字符到 buf，末尾不添加 &#39;\0&#39; void co::randchars(void* buf, size_t bufsize); // 返回长度 n 的随机字符串，默认 15，线程安全 co::string co::randstr(uint32 n=15); // 使用指定字符集，支持 &#34;0-9&#34;、&#34;a-f&#34; 等范围 co::string co::randstr(const char* charset, uint32 n); rand() / rand64() / randstr() 线程安全，内部使用 thread_local 状态。 rand(seed) 的 seed 不能为 0，否则后续返回值恒为 0；也不能为 2^31-1。 rand64(seed) 对 seed 初值无要求。 randchars 默认字符集：a-z、A-Z、0-9、_、-，共 64 个字符。 randstr(charset, n) 支持范围缩写，如 &quot;0-9&quot;、&quot;a-f&quot;、&quot;0-9A-Za-z&quot;。 带 seed 的版本线程安全取决于调用方对 seed 的使用。 #示例 #include &#34;co/rand." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/other/rand/" /><meta property="article:section" content="co" />
 
@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/rand/" title="Random Value">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.9802d2d44a9b11eac0261c83da8c2f5a7b7339d82c18080f81009a7277b72494.js" integrity="sha256-mALS1EqbEerAJhyD2owvWntzOdgsGAgPgQCacne3JJQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.716d4b931d9bc14db968838090cbe0586e40ea272eed0153e5df8a1e133c19bb.js" integrity="sha256-cW1Lkx2bwU25aIOAkMvgWG5A6icu7QFT5d&#43;KHhM8Gbs=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -463,19 +463,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../cn/co/other/time/" class="">时间</a>
   
 
@@ -529,6 +516,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">哈希与编码</a>
   
 
         </li>
@@ -680,12 +680,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li>
-          <ul>
-            <li><a href="#随机数corand">随机数(co::rand)</a></li>
-            <li><a href="#随机字符串corandstr">随机字符串(co::randstr)</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#接口">接口</a></li>
+        <li><a href="#示例">示例</a></li>
       </ul>
     </li>
   </ul>
@@ -700,46 +697,66 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/rand.h">co/rand.h</a>.</p>
-<h3 id="随机数corand"><a class="anchor" href="#%e9%9a%8f%e6%9c%ba%e6%95%b0corand">#</a>随机数(co::rand)</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">uint32</span> <span class="n">rand</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">uint32</span> <span class="n">rand</span><span class="p">(</span><span class="n">uint32</span><span class="o">&amp;</span> <span class="n">seed</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 返回一个 1 到 2G-2 之间的随机数，线程安全。</li>
-<li>2, 返回一个 1 到 2G-2 之间的随机数，需要用户指定种子数 <code>seed</code>，<strong>种子数必须在 1 到 2G-2 之间</strong>，此函数会更新 <code>seed</code> 的值，非线程安全。</li>
-</ul>
-<blockquote class="book-hint info">
-  可以用 1 中的返回值初始化 2 中的种子数。
-</blockquote>
-
-<ul>
-<li>示例</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">x</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">y</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">();</span>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rand.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间，无需 <code>flag::parse</code>。</p>
+<h2 id="接口"><a class="anchor" href="#%e6%8e%a5%e5%8f%a3">#</a>接口</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 线程安全，返回 0 &lt; x &lt; 2^31-1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint32</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">u</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">v</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="随机字符串corandstr"><a class="anchor" href="#%e9%9a%8f%e6%9c%ba%e5%ad%97%e7%ac%a6%e4%b8%b2corandstr">#</a>随机字符串(co::randstr)</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fastring</span> <span class="n">randstr</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">fastring</span> <span class="n">randstr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// seed 必须在 (0, 2^31-1)，调用后更新为返回值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint32</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">(</span><span class="n">uint32</span><span class="o">&amp;</span> <span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 线程安全，返回 64 位随机数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">co</span><span class="o">::</span><span class="n">rand64</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// splitmix64，seed 可为 0，调用后更新
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> <span class="n">co</span><span class="o">::</span><span class="n">rand64</span><span class="p">(</span><span class="n">uint64</span><span class="o">&amp;</span> <span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 写随机字符到 buf，末尾不添加 &#39;\0&#39;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">co</span><span class="o">::</span><span class="n">randchars</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">bufsize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 返回长度 n 的随机字符串，默认 15，线程安全
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="n">uint32</span> <span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 使用指定字符集，支持 &#34;0-9&#34;、&#34;a-f&#34; 等范围
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">charset</span><span class="p">,</span> <span class="n">uint32</span> <span class="n">n</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>1, 返回一个长度为 n(默认为15) 的随机字符串，线程安全。</li>
-<li>2, 返回一个长度为 n、由字符串 s 中的字符构成的随机字符串，s 中可以使用类似 <code>0-9</code>, <code>a-z</code> 的缩写，s 展开后的长度不能超过 255，线程安全。</li>
+<li><code>rand()</code> / <code>rand64()</code> / <code>randstr()</code> 线程安全，内部使用 thread_local 状态。</li>
+<li><code>rand(seed)</code> 的 seed 不能为 0，否则后续返回值恒为 0；也不能为 <code>2^31-1</code>。</li>
+<li><code>rand64(seed)</code> 对 seed 初值无要求。</li>
+<li><code>randchars</code> 默认字符集：<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>、<code>_</code>、<code>-</code>，共 64 个字符。</li>
+<li><code>randstr(charset, n)</code> 支持范围缩写，如 <code>&quot;0-9&quot;</code>、<code>&quot;a-f&quot;</code>、<code>&quot;0-9A-Za-z&quot;</code>。</li>
+<li>带 seed 的版本线程安全取决于调用方对 seed 的使用。</li>
 </ul>
-<blockquote class="book-hint info">
-  randstr 基于 <a href="https://github.com/ai/nanoid">nanoid</a> 算法实现，返回的随机字符串足够长时，一般也可以用作唯一 id。
-</blockquote>
-
-<ul>
-<li>示例</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="s">&#34;0123456789&#34;</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="s">&#34;0-9a-f&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// 长度为8的16进制字符串
-</span></span></span></code></pre></div></article>
+<h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/rand.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;rand()   = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;rand64() = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rand64</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">12345</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;rand(seed) = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;seed = &#34;</span><span class="p">,</span> <span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">uint64</span> <span class="n">seed64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;rand64(seed) = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">rand64</span><span class="p">(</span><span class="n">seed64</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;seed64 = &#34;</span><span class="p">,</span> <span class="n">seed64</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;randstr()        = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;randstr(8)       = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;randstr(0-9, 8)  = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="s">&#34;0-9&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;randstr(0-9a-f)  = &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">randstr</span><span class="p">(</span><span class="s">&#34;0-9a-f&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">randchars</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;randchars = &#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></article>
  
       
 
@@ -861,12 +878,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li>
-          <ul>
-            <li><a href="#随机数corand">随机数(co::rand)</a></li>
-            <li><a href="#随机字符串corandstr">随机字符串(co::randstr)</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#接口">接口</a></li>
+        <li><a href="#示例">示例</a></li>
       </ul>
     </li>
   </ul>

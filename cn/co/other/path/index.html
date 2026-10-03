@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/path.h.
-#path 此部分功能移植于 golang，路径分隔符必须为 /。
-#path::clean fastring clean(const char* s, size_t n); fastring clean(const char* s); fastring clean(const fastring&amp; s); 返回路径的最短等价形式，路径中连续的分隔符会被清除掉。
-示例
-path::clean(&#34;&#34;); // &#34;.&#34; path::clean(&#34;./x//y/&#34;); // &#34;x/y&#34; path::clean(&#34;./x/..&#34;); // &#34;.&#34; path::clean(&#34;./x/../..&#34;); // &#34;..&#34; #path::join template&lt;typename ...S&gt; inline fastring join(S&amp;&amp;... s); 将任意数量的字符串拼接成一个完整的路径，返回 path::clean 处理后的结果。
-参数中的空字符串将会被忽略。
-示例
-path::join(&#34;&#34;, &#34;&#34;); // &#34;&#34; path::join(&#34;x&#34;, &#34;y&#34;, &#34;z&#34;); // &#34;x/y/z&#34; path::join(&#34;/x/&#34;, &#34;y&#34;); // &#34;/x/y&#34; #path::split std::pair&lt;fastring, fastring&gt; split(const char* s, size_t n); std::pair&lt;fastring, fastring&gt; split(const char* s); std::pair&lt;fastring, fastring&gt; split(const fastring&amp; s); 将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。">
+<meta name="description" content="#头文件 #include &#34;co/path.h&#34; API 在 path 命名空间，不是 co。
+移植自 Go 的 path 包，路径分隔符固定为 /。
+#概述 clean：返回最短等价路径。 join：连接多个路径元素。 split：按最后一个 / 拆成 dir 和 file。 dir：返回目录部分。 base：返回最后一段。 ext：返回扩展名。 所有返回 co::string 的函数都有三个重载：(const char*, size_t)、(const char*)、(const co::string&amp;)。
+#clean co::string path::clean(const char* s, size_t n); 返回最短等价路径。
+path::clean(&#34;&#34;) // -&gt; &#34;.&#34; path::clean(&#34;.//x/&#34;) // -&gt; &#34;x&#34; path::clean(&#34;./x/../..&#34;) // -&gt; &#34;..&#34; path::clean(&#34;/x/../..&#34;) // -&gt; &#34;/&#34; path::clean(&#34;x//y//z&#34;) // -&gt; &#34;x/y/z&#34; #join template&lt;typename ...X&gt; co::string path::join(X&amp;&amp;... x); 连接任意数量的路径元素，结果会被 clean，空元素忽略。
+path::join(&#34;&#34;, &#34;&#34;) // -&gt; &#34;&#34; path::join(&#34;/x&#34;, &#34;y&#34;) // -&gt; &#34;/x/y&#34; path::join(&#34;/x/&#34;, &#34;y&#34;) // -&gt; &#34;/x/y&#34; #split std::pair&lt;co::string, co::string&gt; path::split(const char* s, size_t n); 按最后一个 / 拆成 dir 和 file，满足 path = dir &#43; file。">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="文件路径(path)" />
-<meta property="og:description" content="include: co/path.h.
-#path 此部分功能移植于 golang，路径分隔符必须为 /。
-#path::clean fastring clean(const char* s, size_t n); fastring clean(const char* s); fastring clean(const fastring&amp; s); 返回路径的最短等价形式，路径中连续的分隔符会被清除掉。
-示例
-path::clean(&#34;&#34;); // &#34;.&#34; path::clean(&#34;./x//y/&#34;); // &#34;x/y&#34; path::clean(&#34;./x/..&#34;); // &#34;.&#34; path::clean(&#34;./x/../..&#34;); // &#34;..&#34; #path::join template&lt;typename ...S&gt; inline fastring join(S&amp;&amp;... s); 将任意数量的字符串拼接成一个完整的路径，返回 path::clean 处理后的结果。
-参数中的空字符串将会被忽略。
-示例
-path::join(&#34;&#34;, &#34;&#34;); // &#34;&#34; path::join(&#34;x&#34;, &#34;y&#34;, &#34;z&#34;); // &#34;x/y/z&#34; path::join(&#34;/x/&#34;, &#34;y&#34;); // &#34;/x/y&#34; #path::split std::pair&lt;fastring, fastring&gt; split(const char* s, size_t n); std::pair&lt;fastring, fastring&gt; split(const char* s); std::pair&lt;fastring, fastring&gt; split(const fastring&amp; s); 将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。" />
+<meta property="og:description" content="#头文件 #include &#34;co/path.h&#34; API 在 path 命名空间，不是 co。
+移植自 Go 的 path 包，路径分隔符固定为 /。
+#概述 clean：返回最短等价路径。 join：连接多个路径元素。 split：按最后一个 / 拆成 dir 和 file。 dir：返回目录部分。 base：返回最后一段。 ext：返回扩展名。 所有返回 co::string 的函数都有三个重载：(const char*, size_t)、(const char*)、(const co::string&amp;)。
+#clean co::string path::clean(const char* s, size_t n); 返回最短等价路径。
+path::clean(&#34;&#34;) // -&gt; &#34;.&#34; path::clean(&#34;.//x/&#34;) // -&gt; &#34;x&#34; path::clean(&#34;./x/../..&#34;) // -&gt; &#34;..&#34; path::clean(&#34;/x/../..&#34;) // -&gt; &#34;/&#34; path::clean(&#34;x//y//z&#34;) // -&gt; &#34;x/y/z&#34; #join template&lt;typename ...X&gt; co::string path::join(X&amp;&amp;... x); 连接任意数量的路径元素，结果会被 clean，空元素忽略。
+path::join(&#34;&#34;, &#34;&#34;) // -&gt; &#34;&#34; path::join(&#34;/x&#34;, &#34;y&#34;) // -&gt; &#34;/x/y&#34; path::join(&#34;/x/&#34;, &#34;y&#34;) // -&gt; &#34;/x/y&#34; #split std::pair&lt;co::string, co::string&gt; path::split(const char* s, size_t n); 按最后一个 / 拆成 dir 和 file，满足 path = dir &#43; file。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/other/path/" /><meta property="article:section" content="co" />
 
@@ -31,7 +27,7 @@ path::join(&#34;&#34;, &#34;&#34;); // &#34;&#34; path::join(&#34;x&#34;, &#34;y
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/path/" title="Path">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.9802d2d44a9b11eac0261c83da8c2f5a7b7339d82c18080f81009a7277b72494.js" integrity="sha256-mALS1EqbEerAJhyD2owvWntzOdgsGAgPgQCacne3JJQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.716d4b931d9bc14db968838090cbe0586e40ea272eed0153e5df8a1e133c19bb.js" integrity="sha256-cW1Lkx2bwU25aIOAkMvgWG5A6icu7QFT5d&#43;KHhM8Gbs=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -475,19 +471,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../cn/co/other/time/" class="">时间</a>
   
 
@@ -541,6 +524,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">哈希与编码</a>
   
 
         </li>
@@ -692,16 +688,16 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#path">path</a>
-          <ul>
-            <li><a href="#pathclean">path::clean</a></li>
-            <li><a href="#pathjoin">path::join</a></li>
-            <li><a href="#pathsplit">path::split</a></li>
-            <li><a href="#pathdir">path::dir</a></li>
-            <li><a href="#pathbase">path::base</a></li>
-            <li><a href="#pathext">path::ext</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#clean">clean</a></li>
+        <li><a href="#join">join</a></li>
+        <li><a href="#split">split</a></li>
+        <li><a href="#dir">dir</a></li>
+        <li><a href="#base">base</a></li>
+        <li><a href="#ext">ext</a></li>
+        <li><a href="#示例">示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
@@ -716,121 +712,88 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/path.h">co/path.h</a>.</p>
-<h2 id="path"><a class="anchor" href="#path">#</a>path</h2>
-<p>此部分功能移植于 <a href="https://github.com/golang/go/blob/master/src/path/path.go">golang</a>，路径分隔符必须为 <code>/</code>。</p>
-<h3 id="pathclean"><a class="anchor" href="#pathclean">#</a>path::clean</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">clean</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>返回路径的最短等价形式，路径中连续的分隔符会被清除掉。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/path.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>path</code> 命名空间，不是 <code>co</code>。</p>
+<p>移植自 Go 的 <code>path</code> 包，路径分隔符固定为 <code>/</code>。</p>
+<h2 id="概述"><a class="anchor" href="#%e6%a6%82%e8%bf%b0">#</a>概述</h2>
+<ul>
+<li><code>clean</code>：返回最短等价路径。</li>
+<li><code>join</code>：连接多个路径元素。</li>
+<li><code>split</code>：按最后一个 <code>/</code> 拆成 dir 和 file。</li>
+<li><code>dir</code>：返回目录部分。</li>
+<li><code>base</code>：返回最后一段。</li>
+<li><code>ext</code>：返回扩展名。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>            <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x//y/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;x/y&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/..&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">);</span>   <span class="c1">// &#34;..&#34;
-</span></span></span></code></pre></div><h3 id="pathjoin"><a class="anchor" href="#pathjoin">#</a>path::join</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">S</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">fastring</span> <span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>将任意数量的字符串拼接成一个完整的路径，返回 <a href="#pathclean">path::clean</a> 处理后的结果。</p>
-</li>
-<li>
-<p>参数中的空字符串将会被忽略。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
+<p>所有返回 <code>co::string</code> 的函数都有三个重载：<code>(const char*, size_t)</code>、<code>(const char*)</code>、<code>(const co::string&amp;)</code>。</p>
+<h2 id="clean"><a class="anchor" href="#clean">#</a>clean</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>返回最短等价路径。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>           <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;.//x/&#34;</span><span class="p">)</span>      <span class="c1">// -&gt; &#34;x&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;..&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;/x/../..&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;x//y//z&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;x/y/z&#34;
+</span></span></span></code></pre></div><h2 id="join"><a class="anchor" href="#join">#</a>join</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">X</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="n">X</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">x</span><span class="p">);</span>
+</span></span></code></pre></div><p>连接任意数量的路径元素，结果会被 <code>clean</code>，空元素忽略。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>       <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;/x/y&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/x/y&#34;
+</span></span></span></code></pre></div><h2 id="split"><a class="anchor" href="#split">#</a>split</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>按最后一个 <code>/</code> 拆成 dir 和 file，满足 <code>path = dir + file</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &lt;&#34;/a/&#34;, &#34;&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &lt;&#34;/a/&#34;, &#34;b&#34;&gt;
+</span></span></span></code></pre></div><h2 id="dir"><a class="anchor" href="#dir">#</a>dir</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>返回目录部分，结果会被 <code>clean</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>     <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;/a&#34;
+</span></span></span></code></pre></div><h2 id="base"><a class="anchor" href="#base">#</a>base</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>返回最后一段，先去尾部斜杠。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">)</span>       <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">)</span>   <span class="c1">// -&gt; &#34;b&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;b&#34;
+</span></span></span></code></pre></div><p>路径全为斜杠时返回 <code>&quot;/&quot;</code>。</p>
+<h2 id="ext"><a class="anchor" href="#ext">#</a>ext</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p>返回文件扩展名（含 <code>.</code>）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;x/x.c&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;.c&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">)</span>    <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/b.c/&#34;</span><span class="p">)</span>  <span class="c1">// -&gt; &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a.&#34;</span><span class="p">)</span>     <span class="c1">// -&gt; &#34;.&#34;
+</span></span></span></code></pre></div><h2 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/path.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">clean</span><span class="p">(</span><span class="s">&#34;./x/../..&#34;</span><span class="p">));</span>       <span class="c1">// ..
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">,</span> <span class="s">&#34;z&#34;</span><span class="p">));</span>    <span class="c1">// /x/y/z
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="s">&#34; | &#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>       <span class="c1">// /a/ | b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">));</span>              <span class="c1">// /a
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b/&#34;</span><span class="p">));</span>            <span class="c1">// b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;x/x.c&#34;</span><span class="p">));</span>             <span class="c1">// .c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="注意事项"><a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a>注意事项</h2>
+<ul>
+<li>路径分隔符固定为 <code>/</code>，不区分平台。</li>
+<li><code>clean</code> 是其它函数的基础，结果都经过清理。</li>
+<li><code>join</code> 忽略空元素。</li>
+<li><code>split</code> 结果满足 <code>path = dir + file</code>。</li>
+<li><code>base(&quot;&quot;)</code> 和 <code>dir(&quot;&quot;)</code> 返回 <code>&quot;.&quot;</code>。</li>
+<li>路径全为斜杠时 <code>base</code> 返回 <code>&quot;/&quot;</code>。</li>
+<li><code>ext</code> 返回含 <code>.</code> 的扩展名，无扩展名返回 <code>&quot;&quot;</code>。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>         <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">,</span> <span class="s">&#34;z&#34;</span><span class="p">);</span>  <span class="c1">// &#34;x/y/z&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="s">&#34;/x/&#34;</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/x/y&#34;
-</span></span></span></code></pre></div><h3 id="pathsplit"><a class="anchor" href="#pathsplit">#</a>path::split</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">fastring</span><span class="p">,</span> <span class="n">fastring</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。</p>
-</li>
-<li>
-<p>返回结果满足性质 <code>path = dir + file</code>。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>     <span class="c1">// -&gt; { &#34;/&#34;, &#34;&#34; }
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>    <span class="c1">// -&gt; { &#34;/&#34;, &#34;a&#34; }
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>   <span class="c1">// -&gt; { &#34;/a/&#34;, &#34;&#34; }
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">split</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>  <span class="c1">// -&gt; { &#34;/a/&#34;, &#34;b&#34; }
-</span></span></span></code></pre></div><h3 id="pathdir"><a class="anchor" href="#pathdir">#</a>path::dir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>返回路径的目录部分，返回值是 <a href="#pathclean">path::clean</a> 处理后的结果。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;a/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>      <span class="c1">// &#34;/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/&#34;;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">dir</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>    <span class="c1">// &#34;/a&#34;;
-</span></span></span></code></pre></div><h3 id="pathbase"><a class="anchor" href="#pathbase">#</a>path::base</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">base</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>返回路径最后的一个元素。</p>
-</li>
-<li>
-<p>s 是空字符串时，返回 &ldquo;.&quot;。</p>
-</li>
-<li>
-<p>s 中字符全是 <code>/</code> 时，返回 &ldquo;/&quot;。</p>
-</li>
-<li>
-<p>其他情况，先将 s 末尾的 <code>/</code> 去掉。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>      <span class="c1">// &#34;.&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>     <span class="c1">// &#34;/&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/&#34;</span><span class="p">);</span>   <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a&#34;</span><span class="p">);</span>    <span class="c1">// &#34;a&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">base</span><span class="p">(</span><span class="s">&#34;/a/b&#34;</span><span class="p">);</span>  <span class="c1">// &#34;b&#34;
-</span></span></span></code></pre></div><h3 id="pathext"><a class="anchor" href="#pathext">#</a>path::ext</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">fastring</span> <span class="nf">ext</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>返回路径中的文件扩展名。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c&#34;</span><span class="p">);</span>   <span class="c1">// &#34;.c&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">);</span>    <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;/a.c/&#34;</span><span class="p">);</span>  <span class="c1">// &#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">path</span><span class="o">::</span><span class="n">ext</span><span class="p">(</span><span class="s">&#34;a.&#34;</span><span class="p">);</span>     <span class="c1">// &#34;.&#34;
-</span></span></span></code></pre></div></article>
+</article>
  
       
 
@@ -952,16 +915,16 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#path">path</a>
-          <ul>
-            <li><a href="#pathclean">path::clean</a></li>
-            <li><a href="#pathjoin">path::join</a></li>
-            <li><a href="#pathsplit">path::split</a></li>
-            <li><a href="#pathdir">path::dir</a></li>
-            <li><a href="#pathbase">path::base</a></li>
-            <li><a href="#pathext">path::ext</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#clean">clean</a></li>
+        <li><a href="#join">join</a></li>
+        <li><a href="#split">split</a></li>
+        <li><a href="#dir">dir</a></li>
+        <li><a href="#base">base</a></li>
+        <li><a href="#ext">ext</a></li>
+        <li><a href="#示例">示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>

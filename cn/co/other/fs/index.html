@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/fs.h.
-fs 模块最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 /。
-#元数据操作 #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path); 判断文件是否存在，参数 path 是文件或目录路径。 #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path); 获取文件大小，文件不存在或其他错误返回 -1。 #fs::isdir bool isdir(const char* path); bool isdir(const fastring&amp; path); bool isdir(const std::string&amp; path); 判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。 #fs::mtime int64 mtime(const char* path); int64 mtime(const fastring&amp; path); int64 mtime(const std::string&amp; path); 获取文件的修改时间，文件不存在时返回 -1。 #fs::mkdir bool mkdir(const char* path, bool p=false); bool mkdir(const fastring&amp; path, bool p=false); bool mkdir(const std::string&amp; path, bool p=false); 创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。 参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 mkdir -p ，父目录不存在时，先创建父目录。 #fs::mv bool mv(const char* from, const char* to); bool mv(const fastring&amp; from, const fastring&amp; to); bool mv(const std::string&amp; from, const std::string&amp; to); v3.">
+<meta name="description" content="#头文件 #include &#34;co/fs.h&#34; API 在 fs 命名空间，无需 flag::parse。
+#便捷函数 bool fs::exists(const char* path); bool fs::isdir (const char* path); int64 fs::mtime (const char* path); // 修改时间 int64 fs::fsize (const char* path); // 文件大小 bool fs::mkdir(const char* path, bool p = false); bool fs::mkdir(char* path, bool p); // async-signal-safe bool fs::rm(const char* path, bool r = false); bool fs::mv(const char* from, const char* to); bool fs::symlink(const char* dst, const char* lnk); 返回 bool，成功 true，失败 false。 mtime / fsize 失败返回 -1。 mkdir：p=true 等价 mkdir -p。 mkdir(char*, bool) 为 async-signal-safe 版本，会临时修改并恢复 path。 rm：r=true 递归删除；path 不存在返回 true；不跟随符号链接。 mv：行为同 Linux mv。 symlink 在 Windows 上需管理员权限。 出错后用 co::error() / co::strerror() 查询错误信息。 另有 co::string / std::string 版本重载。 #Windows 路径约定 用户传入 UTF-8 路径，coost 内部转 wchar_t。 返回给用户的路径也是 UTF-8。 用户无需关心 wchar_t，但要保证路径是合法 UTF-8。 #fs::file #打开模式 &#39;r&#39;: read open if exists &#39;a&#39;: append created if not exists &#39;w&#39;: write created if not exists, truncated if exists &#39;m&#39;: modify like &#39;w&#39;, but not truncated if exists &#39;&#43;&#39;: read/write created if not exists #定义 struct file { enum _seekfrom_t { seek_beg = 0, seek_cur = 1, seek_end = 2 }; file(); explicit file(size_t n); file(const char* path, char mode); file(const co::string&amp; path, char mode); file(const std::string&amp; path, char mode); file(file&amp;&amp; f) noexcept; ~file(); file(const file&amp;) = delete; void operator=(const file&amp;) = delete; void operator=(file&amp;&amp;) = delete; explicit operator bool() const noexcept; const char* path() const noexcept; int64 size() const noexcept; bool exists() const noexcept; bool open(const char* path, char mode); bool open(const co::string&amp; path, char mode); bool open(const std::string&amp; path, char mode); void close(); bool seek(int64 off, _seekfrom_t whence = seek_beg); size_t read(void* buf, size_t n); co::string read(size_t n); size_t write(const void* s, size_t n); size_t write(const char* s); size_t write(const co::string&amp; s); size_t write(const std::string&amp; s); size_t write(char c); void* _p; }; 不可拷贝，只可移动。 内部无缓冲区，Unix 基于 read/write，Windows 基于 ReadFile/WriteFile。 read(buf, n) 返回读取字节数；到文件尾或出错返回 0。 seek 返回 bool，whence 用 seek_beg / seek_cur / seek_end。 出错用 co::error() / co::strerror()。 #示例 fs::file f(&#34;test.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="文件系统" />
-<meta property="og:description" content="include: co/fs.h.
-fs 模块最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 /。
-#元数据操作 #fs::exists bool exists(const char* path); bool exists(const fastring&amp; path); bool exists(const std::string&amp; path); 判断文件是否存在，参数 path 是文件或目录路径。 #fs::fsize int64 fsize(const char* path); int64 fsize(const fastring&amp; path); int64 fsize(const std::string&amp; path); 获取文件大小，文件不存在或其他错误返回 -1。 #fs::isdir bool isdir(const char* path); bool isdir(const fastring&amp; path); bool isdir(const std::string&amp; path); 判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。 #fs::mtime int64 mtime(const char* path); int64 mtime(const fastring&amp; path); int64 mtime(const std::string&amp; path); 获取文件的修改时间，文件不存在时返回 -1。 #fs::mkdir bool mkdir(const char* path, bool p=false); bool mkdir(const fastring&amp; path, bool p=false); bool mkdir(const std::string&amp; path, bool p=false); 创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。 参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 mkdir -p ，父目录不存在时，先创建父目录。 #fs::mv bool mv(const char* from, const char* to); bool mv(const fastring&amp; from, const fastring&amp; to); bool mv(const std::string&amp; from, const std::string&amp; to); v3." />
+<meta property="og:description" content="#头文件 #include &#34;co/fs.h&#34; API 在 fs 命名空间，无需 flag::parse。
+#便捷函数 bool fs::exists(const char* path); bool fs::isdir (const char* path); int64 fs::mtime (const char* path); // 修改时间 int64 fs::fsize (const char* path); // 文件大小 bool fs::mkdir(const char* path, bool p = false); bool fs::mkdir(char* path, bool p); // async-signal-safe bool fs::rm(const char* path, bool r = false); bool fs::mv(const char* from, const char* to); bool fs::symlink(const char* dst, const char* lnk); 返回 bool，成功 true，失败 false。 mtime / fsize 失败返回 -1。 mkdir：p=true 等价 mkdir -p。 mkdir(char*, bool) 为 async-signal-safe 版本，会临时修改并恢复 path。 rm：r=true 递归删除；path 不存在返回 true；不跟随符号链接。 mv：行为同 Linux mv。 symlink 在 Windows 上需管理员权限。 出错后用 co::error() / co::strerror() 查询错误信息。 另有 co::string / std::string 版本重载。 #Windows 路径约定 用户传入 UTF-8 路径，coost 内部转 wchar_t。 返回给用户的路径也是 UTF-8。 用户无需关心 wchar_t，但要保证路径是合法 UTF-8。 #fs::file #打开模式 &#39;r&#39;: read open if exists &#39;a&#39;: append created if not exists &#39;w&#39;: write created if not exists, truncated if exists &#39;m&#39;: modify like &#39;w&#39;, but not truncated if exists &#39;&#43;&#39;: read/write created if not exists #定义 struct file { enum _seekfrom_t { seek_beg = 0, seek_cur = 1, seek_end = 2 }; file(); explicit file(size_t n); file(const char* path, char mode); file(const co::string&amp; path, char mode); file(const std::string&amp; path, char mode); file(file&amp;&amp; f) noexcept; ~file(); file(const file&amp;) = delete; void operator=(const file&amp;) = delete; void operator=(file&amp;&amp;) = delete; explicit operator bool() const noexcept; const char* path() const noexcept; int64 size() const noexcept; bool exists() const noexcept; bool open(const char* path, char mode); bool open(const co::string&amp; path, char mode); bool open(const std::string&amp; path, char mode); void close(); bool seek(int64 off, _seekfrom_t whence = seek_beg); size_t read(void* buf, size_t n); co::string read(size_t n); size_t write(const void* s, size_t n); size_t write(const char* s); size_t write(const co::string&amp; s); size_t write(const std::string&amp; s); size_t write(char c); void* _p; }; 不可拷贝，只可移动。 内部无缓冲区，Unix 基于 read/write，Windows 基于 ReadFile/WriteFile。 read(buf, n) 返回读取字节数；到文件尾或出错返回 0。 seek 返回 bool，whence 用 seek_beg / seek_cur / seek_end。 出错用 co::error() / co::strerror()。 #示例 fs::file f(&#34;test." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/other/fs/" /><meta property="article:section" content="co" />
 
@@ -21,7 +19,7 @@ fs 模块最小限度的实现了常用的文件系统操作，不同平台路�
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/other/fs/" title="File System">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.9802d2d44a9b11eac0261c83da8c2f5a7b7339d82c18080f81009a7277b72494.js" integrity="sha256-mALS1EqbEerAJhyD2owvWntzOdgsGAgPgQCacne3JJQ=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.716d4b931d9bc14db968838090cbe0586e40ea272eed0153e5df8a1e133c19bb.js" integrity="sha256-cW1Lkx2bwU25aIOAkMvgWG5A6icu7QFT5d&#43;KHhM8Gbs=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -465,19 +463,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/other/hash/" class="">Hash</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../cn/co/other/time/" class="">时间</a>
   
 
@@ -531,6 +516,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">哈希与编码</a>
   
 
         </li>
@@ -682,73 +680,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#元数据操作">元数据操作</a>
-          <ul>
-            <li><a href="#fsexists">fs::exists</a></li>
-            <li><a href="#fsfsize">fs::fsize</a></li>
-            <li><a href="#fsisdir">fs::isdir</a></li>
-            <li><a href="#fsmtime">fs::mtime</a></li>
-            <li><a href="#fsmkdir">fs::mkdir</a></li>
-            <li><a href="#fsmv">fs::mv</a></li>
-            <li><a href="#fsremove">fs::remove</a></li>
-            <li><a href="#fsrename">fs::rename</a></li>
-            <li><a href="#fssymlink">fs::symlink</a></li>
-            <li><a href="#代码示例">代码示例</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#便捷函数">便捷函数</a></li>
+        <li><a href="#windows-路径约定">Windows 路径约定</a></li>
         <li><a href="#fsfile">fs::file</a>
           <ul>
-            <li><a href="#filefile">file::file</a></li>
-            <li><a href="#filefile-1">file::~file</a></li>
-            <li><a href="#fileclose">file::close</a></li>
-            <li><a href="#fileexists">file::exists</a></li>
-            <li><a href="#fileopen">file::open</a></li>
-            <li><a href="#fileoperator-bool">file::operator bool</a></li>
-            <li><a href="#fileoperator">file::operator!</a></li>
-            <li><a href="#filepath">file::path</a></li>
-            <li><a href="#fileread">file::read</a></li>
-            <li><a href="#fileseek">file::seek</a></li>
-            <li><a href="#filesize">file::size</a></li>
-            <li><a href="#filewrite">file::write</a></li>
-            <li><a href="#代码示例-1">代码示例</a></li>
-          </ul>
-        </li>
-        <li><a href="#fsfstream">fs::fstream</a>
-          <ul>
-            <li><a href="#fstreamfstream">fstream::fstream</a></li>
-            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
-            <li><a href="#fstreamappend">fstream::append</a></li>
-            <li><a href="#fstreamclose">fstream::close</a></li>
-            <li><a href="#fstreamflush">fstream::flush</a></li>
-            <li><a href="#fstreamopen">fstream::open</a></li>
-            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
-            <li><a href="#fstreamoperator">fstream::operator!</a></li>
-            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
-            <li><a href="#fstreamreserve">fstream::reserve</a></li>
-            <li><a href="#代码示例-2">代码示例</a></li>
+            <li><a href="#打开模式">打开模式</a></li>
+            <li><a href="#定义">定义</a></li>
+            <li><a href="#示例">示例</a></li>
           </ul>
         </li>
         <li><a href="#fsdir">fs::dir</a>
           <ul>
-            <li><a href="#dirdir">dir::dir</a></li>
-            <li><a href="#dirdir-1">dir::~dir</a></li>
-            <li><a href="#dirall">dir::all</a></li>
-            <li><a href="#dirbegin">dir::begin</a></li>
-            <li><a href="#dirclose">dir::close</a></li>
-            <li><a href="#dirend">dir::end</a></li>
-            <li><a href="#diriterator">dir::iterator</a>
-              <ul>
-                <li><a href="#operator">operator*</a></li>
-                <li><a href="#operator-1">operator++</a></li>
-                <li><a href="#operator-2">operator==</a></li>
-                <li><a href="#operator-3">operator!=</a></li>
-              </ul>
-            </li>
-            <li><a href="#diropen">dir::open</a></li>
-            <li><a href="#dirpath">dir::path</a></li>
-            <li><a href="#代码示例-3">代码示例</a></li>
+            <li><a href="#示例-1">示例</a></li>
           </ul>
         </li>
+        <li><a href="#综合示例">综合示例</a></li>
       </ul>
     </li>
   </ul>
@@ -763,372 +710,165 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/fs.h">co/fs.h</a>.</p>
-<p><strong>fs</strong> 模块最小限度的实现了常用的文件系统操作，不同平台路径分隔符建议统一使用 <code>/</code>。</p>
-<h2 id="元数据操作"><a class="anchor" href="#%e5%85%83%e6%95%b0%e6%8d%ae%e6%93%8d%e4%bd%9c">#</a>元数据操作</h2>
-<h3 id="fsexists"><a class="anchor" href="#fsexists">#</a>fs::exists</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">exists</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">exists</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">exists</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>判断文件是否存在，参数 path 是文件或目录路径。</li>
-</ul>
-<h3 id="fsfsize"><a class="anchor" href="#fsfsize">#</a>fs::fsize</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">fsize</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">fsize</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">fsize</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>获取文件大小，文件不存在或其他错误返回 -1。</li>
-</ul>
-<h3 id="fsisdir"><a class="anchor" href="#fsisdir">#</a>fs::isdir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">isdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">isdir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">isdir</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>判断文件是否是目录，若 path 存在且是目录，则返回 true，否则返回 false。</li>
-</ul>
-<h3 id="fsmtime"><a class="anchor" href="#fsmtime">#</a>fs::mtime</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">mtime</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">mtime</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">mtime</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>获取文件的修改时间，文件不存在时返回 -1。</li>
-</ul>
-<h3 id="fsmkdir"><a class="anchor" href="#fsmkdir">#</a>fs::mkdir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mkdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">p</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mkdir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">p</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mkdir</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">p</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>创建目录，参数 path 是目录路径，参数 p 表示是否创建整个路径。</li>
-<li>参数 p 默认为 false，仅当父目录存在时，才会创建目录；参数 p 为 true 时，相当于 <code>mkdir -p</code> ，父目录不存在时，先创建父目录。</li>
-</ul>
-<h3 id="fsmv"><a class="anchor" href="#fsmv">#</a>fs::mv</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">to</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mv</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">mv</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>v3.0.2 新增，移动或重命名文件、目录，行为与 linux 系统中 <code>mv</code> 命令类似。</li>
-<li><code>to</code> 存在且为目录时，将 <code>from</code> 移动到目录 <code>to</code> 下面。</li>
-<li>若目标与 <code>from</code> 类型相同(都是目录或文件)，且目标不是非空目录，则目标会被覆盖掉。</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 假设目录 d 已存在
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">mv</span><span class="p">(</span><span class="s">&#34;xx.txt&#34;</span><span class="p">,</span> <span class="s">&#34;xx.log&#34;</span><span class="p">);</span>  <span class="c1">// xx.txt -&gt; xx.log
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">mv</span><span class="p">(</span><span class="s">&#34;xx.txt&#34;</span><span class="p">,</span> <span class="s">&#34;d&#34;</span><span class="p">);</span>       <span class="c1">// xx.txt -&gt; d/xx.txt
-</span></span></span></code></pre></div><h3 id="fsremove"><a class="anchor" href="#fsremove">#</a>fs::remove</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">r</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">r</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">r</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>删除文件或目录，参数 path 是路径。</li>
-<li>参数 r 默认为 false，仅删除文件或空目录；r 为 true 时，相当于 <code>rm -r</code>，可删除非空目录。</li>
-</ul>
-<h3 id="fsrename"><a class="anchor" href="#fsrename">#</a>fs::rename</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">rename</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">to</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">rename</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">rename</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>v3.0.2 中标记为 deprecated，可以使用 <a href="#fsmv">fs::mv</a> 取代之。</li>
-</ul>
-<h3 id="fssymlink"><a class="anchor" href="#fssymlink">#</a>fs::symlink</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">symlink</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">lnk</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">symlink</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">lnk</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">symlink</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">lnk</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>创建软链接，参数 dst 是目标文件或目录的路径，参数 lnk 是软链接的路径。</li>
-<li>此函数先调用 <code>fs::remove(lnk)</code> 删除旧的软链接，再创建新的软链接文件。</li>
-<li>在 windows 平台，此函数需要 admin 权限。</li>
-</ul>
-<h3 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">x</span> <span class="o">=</span> <span class="n">fs</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>  <span class="c1">// 判断文件是否存在
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">bool</span> <span class="n">x</span> <span class="o">=</span> <span class="n">fs</span><span class="o">::</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>   <span class="c1">// 判断文件是否为目录
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">int64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">fs</span><span class="o">::</span><span class="n">mtime</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>  <span class="c1">// 获取文件的修改时间
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">int64</span> <span class="n">x</span> <span class="o">=</span> <span class="n">fs</span><span class="o">::</span><span class="n">fsize</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>  <span class="c1">// 获取文件的大小
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/fs.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>fs</code> 命名空间，无需 <code>flag::parse</code>。</p>
+<h2 id="便捷函数"><a class="anchor" href="#%e4%be%bf%e6%8d%b7%e5%87%bd%e6%95%b0">#</a>便捷函数</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span>  <span class="n">fs</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span>  <span class="n">fs</span><span class="o">::</span><span class="n">isdir</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">int64</span> <span class="n">fs</span><span class="o">::</span><span class="n">mtime</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>  <span class="c1">// 修改时间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">int64</span> <span class="n">fs</span><span class="o">::</span><span class="n">fsize</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>  <span class="c1">// 文件大小
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">);</span>           <span class="c1">// mkdir a/b
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>     <span class="c1">// mkdir -p a/b
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">fs</span><span class="o">::</span><span class="n">mkdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">fs</span><span class="o">::</span><span class="n">mkdir</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">p</span><span class="p">);</span>  <span class="c1">// async-signal-safe
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span><span class="s">&#34;x/x.txt&#34;</span><span class="p">);</span>      <span class="c1">// rm x/x.txt
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">);</span>          <span class="c1">// rmdir a/b
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>    <span class="c1">// rm -r a/b     
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">rename</span><span class="p">(</span><span class="s">&#34;a/b&#34;</span><span class="p">,</span> <span class="s">&#34;a/c&#34;</span><span class="p">);</span>   <span class="c1">// mv a/b a/c
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">symlink</span><span class="p">(</span><span class="s">&#34;/usr&#34;</span><span class="p">,</span> <span class="s">&#34;x&#34;</span><span class="p">);</span>   <span class="c1">// ln -s /usr x
-</span></span></span></code></pre></div><h2 id="fsfile"><a class="anchor" href="#fsfile">#</a>fs::file</h2>
-<p><strong>fs::file</strong> 类实现了文件的基本读写操作，与 <code>fread</code> 与 <code>fwrite</code> 不同，它内部<strong>没有缓存</strong>，直接读写文件。</p>
-<h3 id="filefile"><a class="anchor" href="#filefile">#</a>file::file</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">file</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">file</span><span class="p">(</span><span class="n">file</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">)</span><span class="err">；</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">fs</span><span class="o">::</span><span class="n">rm</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">fs</span><span class="o">::</span><span class="n">mv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">to</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">fs</span><span class="o">::</span><span class="n">symlink</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">lnk</span><span class="p">);</span>
 </span></span></code></pre></div><ul>
-<li>1, 默认构造函数，创建一个空的 file 对象，不会打开任何文件。</li>
-<li>2, 移动构造函数，支持将 file 对象放到 STL 容器中。</li>
-<li>3-5, 打开指定的文件，参数 path 是文件路径，参数 mode 是打开模式。</li>
-<li>mode 是 <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'m'</code> 或 <code>'+'</code> 中的一种，r 是只读模式，w 是写模式，a 是追加模式，m 是修改模式，+ 是读写模式。</li>
-<li>mode 为 <code>'r'</code> 时，文件必须存在，否则打开失败。</li>
-<li>mode 为 <code>'w'</code> 时，文件不存在时自动创建，文件已存在时清空文件数据。</li>
-<li>mode 为 <code>'a'</code>, <code>'m'</code> 或 <code>'+'</code> 时，文件不存在时自动创建，文件已存在时不清空文件数据。</li>
-<li><code>'+'</code> 是 v3.0 新增，此模式下，读与写共享文件指针，因此在读、写操作前，一般需要调用 <a href="#fileseek">seek()</a> 方法设置偏移位置。</li>
+<li>返回 <code>bool</code>，成功 <code>true</code>，失败 <code>false</code>。</li>
+<li><code>mtime</code> / <code>fsize</code> 失败返回 <code>-1</code>。</li>
+<li><code>mkdir</code>：<code>p=true</code> 等价 <code>mkdir -p</code>。</li>
+<li><code>mkdir(char*, bool)</code> 为 async-signal-safe 版本，会临时修改并恢复 <code>path</code>。</li>
+<li><code>rm</code>：<code>r=true</code> 递归删除；<code>path</code> 不存在返回 <code>true</code>；不跟随符号链接。</li>
+<li><code>mv</code>：行为同 Linux <code>mv</code>。</li>
+<li><code>symlink</code> 在 Windows 上需管理员权限。</li>
+<li>出错后用 <code>co::error()</code> / <code>co::strerror()</code> 查询错误信息。</li>
+<li>另有 <code>co::string</code> / <code>std::string</code> 版本重载。</li>
 </ul>
-<h3 id="filefile-1"><a class="anchor" href="#filefile-1">#</a>file::~file</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">file</span><span class="p">();</span>
+<h2 id="windows-路径约定"><a class="anchor" href="#windows-%e8%b7%af%e5%be%84%e7%ba%a6%e5%ae%9a">#</a>Windows 路径约定</h2>
+<ul>
+<li>用户传入 UTF-8 路径，coost 内部转 <code>wchar_t</code>。</li>
+<li>返回给用户的路径也是 UTF-8。</li>
+<li>用户无需关心 <code>wchar_t</code>，但要保证路径是合法 UTF-8。</li>
+</ul>
+<h2 id="fsfile"><a class="anchor" href="#fsfile">#</a>fs::file</h2>
+<h3 id="打开模式"><a class="anchor" href="#%e6%89%93%e5%bc%80%e6%a8%a1%e5%bc%8f">#</a>打开模式</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&#39;r&#39;: read         open if exists
+</span></span><span class="line"><span class="cl">&#39;a&#39;: append       created if not exists
+</span></span><span class="line"><span class="cl">&#39;w&#39;: write        created if not exists, truncated if exists
+</span></span><span class="line"><span class="cl">&#39;m&#39;: modify       like &#39;w&#39;, but not truncated if exists
+</span></span><span class="line"><span class="cl">&#39;+&#39;: read/write   created if not exists
+</span></span></code></pre></div><h3 id="定义"><a class="anchor" href="#%e5%ae%9a%e4%b9%89">#</a>定义</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">file</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="nc">_seekfrom_t</span> <span class="p">{</span> <span class="n">seek_beg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">seek_cur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">seek_end</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="nf">file</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">(</span><span class="n">file</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">file</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="p">(</span><span class="k">const</span> <span class="n">file</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">file</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">file</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">path</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">int64</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span>  <span class="nf">exists</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">seek</span><span class="p">(</span><span class="n">int64</span> <span class="n">off</span><span class="p">,</span> <span class="n">_seekfrom_t</span> <span class="n">whence</span> <span class="o">=</span> <span class="n">seek_beg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">read</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">read</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">write</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">write</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="nf">write</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="n">_p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>析构函数，关闭之前打开的文件，释放相关资源。</li>
+<li>不可拷贝，只可移动。</li>
+<li><strong>内部无缓冲区</strong>，Unix 基于 <code>read</code>/<code>write</code>，Windows 基于 <code>ReadFile</code>/<code>WriteFile</code>。</li>
+<li><code>read(buf, n)</code> 返回读取字节数；到文件尾或出错返回 0。</li>
+<li><code>seek</code> 返回 <code>bool</code>，<code>whence</code> 用 <code>seek_beg</code> / <code>seek_cur</code> / <code>seek_end</code>。</li>
+<li>出错用 <code>co::error()</code> / <code>co::strerror()</code>。</li>
 </ul>
-<h3 id="fileclose"><a class="anchor" href="#fileclose">#</a>file::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
+<h3 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">file</span> <span class="n">f</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="sc">&#39;w&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">f</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#34;hello &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#34;coost</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 重新以只读模式打开
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="sc">&#39;r&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;content = &#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="fsdir"><a class="anchor" href="#fsdir">#</a>fs::dir</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">dir</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dir</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="nf">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dir</span><span class="p">(</span><span class="n">dir</span><span class="o">&amp;&amp;</span> <span class="n">d</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">dir</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">dir</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">dir</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">dir</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">path</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">all</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">iterator</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">iterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">iterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iterator</span> <span class="nf">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>关闭文件，析构函数中会自动调用此方法。</li>
-<li>多次调用此方法是安全的。</li>
+<li>不可拷贝，只可移动。</li>
+<li><code>all()</code> 返回目录下所有条目名，不含 <code>.</code> 和 <code>..</code>。</li>
+<li>迭代顺序由系统 API 决定，不保证顺序。</li>
+<li><code>iterator::operator*</code> 返回条目名，不含路径。</li>
 </ul>
-<h3 id="fileexists"><a class="anchor" href="#fileexists">#</a>file::exists</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">exists</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断文件是否存在。</li>
-<li>文件可能被其他进程删除，调用此方法可以判断之前打开的文件，是否仍然存在。</li>
-</ul>
-<h3 id="fileopen"><a class="anchor" href="#fileopen">#</a>file::open</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>此方法打开指定的文件，path 是文件路径，mode 是打开模式，见<a href="#filefile">构造函数</a>中的说明。</li>
-<li>此方法在打开文件前，会先关闭之前打开的文件。</li>
-</ul>
-<h3 id="fileoperator-bool"><a class="anchor" href="#fileoperator-bool">#</a>file::operator bool</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>将 fs::file 转换为 bool 类型，文件成功打开时返回 true，否则返回 false。</li>
-</ul>
-<h3 id="fileoperator"><a class="anchor" href="#fileoperator">#</a>file::operator!</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>文件未打开或打开失败时返回 true，否则返回 false。</li>
-</ul>
-<h3 id="filepath"><a class="anchor" href="#filepath">#</a>file::path</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">path</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回文件路径。</li>
-<li>若 file 对象并未关联任何文件，则返回空字符串 <code>&quot;&quot;</code>。</li>
-</ul>
-<h3 id="fileread"><a class="anchor" href="#fileread">#</a>file::read</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">size_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">fastring</span> <span class="n">read</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 读取数据到指定的 buffer 中，n 是要读取的字节数，返回实际读取的字节数。</li>
-<li>2, 与 1 类似，但以 fastring 的形式返回读取的数据，n 是要读取的字节数。</li>
-<li>此方法在遇到文件尾或发生错误时，实际读取的字节数可能小于 n。</li>
-</ul>
-<h3 id="fileseek"><a class="anchor" href="#fileseek">#</a>file::seek</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">seek</span><span class="p">(</span><span class="n">int64</span> <span class="n">off</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="o">=</span><span class="n">seek_beg</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>设置文件指针的当前位置，参数 off 是偏移位置，参数 whence 是起始位置，可以是 <code>file::seek_beg</code>, <code>file::seek_cur</code>, <code>file::seek_end</code> 中的一种。</li>
-<li>此方法对以 <code>'a'</code> (append) 模式打开的文件无效。</li>
-</ul>
-<h3 id="filesize"><a class="anchor" href="#filesize">#</a>file::size</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">int64</span> <span class="nf">size</span><span class="p">()</span>  <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>此方法返回文件的大小，文件未打开或打开失败时，调用此方法会返回 -1。</li>
-</ul>
-<h3 id="filewrite"><a class="anchor" href="#filewrite">#</a>file::write</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">size_t</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">size_t</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">size_t</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">size_t</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">size_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 写入指定长度的数据。</li>
-<li>2-4, 写入字符串。</li>
-<li>5, 写入单个字符。</li>
-<li>此方法返回实际写入的字节数，在磁盘空间不足或发生其他错误时，返回值可能小于 n。</li>
-<li>此方法内部已经处理了 <code>EINTR</code> 错误，用户无需额外处理。</li>
-</ul>
-<h3 id="代码示例-1"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">file</span> <span class="n">f</span><span class="p">;</span>               <span class="c1">// empty file
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">file</span> <span class="n">f</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="sc">&#39;w&#39;</span><span class="p">);</span>    <span class="c1">// write mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="sc">&#39;m&#39;</span><span class="p">);</span>        <span class="c1">// reopen with modify mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="sc">&#39;r&#39;</span><span class="p">);</span>        <span class="c1">// read mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">512</span><span class="p">);</span>  <span class="c1">// read at most 512 bytes
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fastring</span> <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>  <span class="c1">// read at most 32 bytes and return fastring
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">);</span>        <span class="c1">// append mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>   <span class="c1">// write 32 bytes
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span>         <span class="c1">// write a C string
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">);</span>             <span class="c1">// write a single character
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">,</span> <span class="sc">&#39;+&#39;</span><span class="p">);</span>        <span class="c1">// read/write mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>                <span class="c1">// seek to beginning before write
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>                <span class="c1">// seek to beginning before read 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>                <span class="c1">// close the file
-</span></span></span></code></pre></div><h2 id="fsfstream"><a class="anchor" href="#fsfstream">#</a>fs::fstream</h2>
-<p><a href="#fsfile">fs::file</a> 不支持缓存，写小文件性能较差，为此，coost 另外实现了支持缓存的 <code>fs::fstream</code> 类，fs::fstream 只用于写文件，不支持读操作。</p>
-<h3 id="fstreamfstream"><a class="anchor" href="#fstreamfstream">#</a>fstream::fstream</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fstream</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">fstream</span><span class="p">(</span><span class="n">fstream</span><span class="o">&amp;&amp;</span> <span class="n">fs</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="k">explicit</span> <span class="n">fstream</span><span class="p">(</span><span class="n">size_t</span> <span class="n">cap</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">fstream</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">cap</span><span class="o">=</span><span class="mi">8192</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="n">fstream</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">cap</span><span class="o">=</span><span class="mi">8192</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="n">fstream</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">cap</span><span class="o">=</span><span class="mi">8192</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 默认构造函数，内部缓存大小为 8k。</li>
-<li>2, 移动构造函数，可以将 fstream 对象放到 STL 容器中。</li>
-<li>3, 用参数 cap 指定缓存的大小。</li>
-<li>4-6, 打开指定的文件，path 是文件路径，mode 是模式，cap 是缓存大小，默认为 8k。</li>
-<li>参数 mode 是 <code>'w'</code> 或 <code>'a'</code> 中的一种，不支持读模式。</li>
-<li>mode 为 <code>'w'</code> 时，文件不存在时自动创建，文件已存在时清空文件数据。</li>
-<li>mode 为 <code>'a'</code> 时，文件不存在时自动创建，文件已存在时不会清空文件数据，在文件尾追加写。</li>
-</ul>
-<h3 id="fstreamfstream-1"><a class="anchor" href="#fstreamfstream-1">#</a>fstream::~fstream</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">fstream</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>析构函数，关闭打开的文件，释放相关的资源。</li>
-</ul>
-<h3 id="fstreamappend"><a class="anchor" href="#fstreamappend">#</a>fstream::append</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fstream</span><span class="o">&amp;</span> <span class="n">append</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>追加数据，参数 n 是数据的长度。</li>
-</ul>
-<h3 id="fstreamclose"><a class="anchor" href="#fstreamclose">#</a>fstream::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>关闭文件，析构函数中会自动调用此方法。</li>
-<li>多次调用此方法是安全的。</li>
-</ul>
-<h3 id="fstreamflush"><a class="anchor" href="#fstreamflush">#</a>fstream::flush</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">flush</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>将缓存中的数据写入文件。</li>
-</ul>
-<h3 id="fstreamopen"><a class="anchor" href="#fstreamopen">#</a>fstream::open</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="n">mode</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>打开指定的文件，参数 path 是文件路径，参数 mode 是打开模式，见<a href="#fstreamfstream">构造函数</a>中的说明。</li>
-<li>此方法在打开文件前，会关闭之前打开的文件。</li>
-</ul>
-<h3 id="fstreamoperator-bool"><a class="anchor" href="#fstreamoperator-bool">#</a>fstream::operator bool</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>将 fs::fstream 转换为 bool 类型，文件成功打开时返回 true，否则返回 false。</li>
-</ul>
-<h3 id="fstreamoperator"><a class="anchor" href="#fstreamoperator">#</a>fstream::operator!</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>文件未打开或打开失败时返回 true，否则返回 false。</li>
-</ul>
-<h3 id="fstreamoperator-1"><a class="anchor" href="#fstreamoperator-1">#</a>fstream::operator&laquo;</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">fstream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">fstream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="n">fstream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="n">fstream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">fastream</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="n">fstream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">T</span> <span class="n">v</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1-3, 参数 s 是字符串类型。</li>
-<li>4, 参数 s 是 fastream 类型。</li>
-<li>5, 参数 T 可以是任意内置类型，如 bool, char, int, double 等。</li>
-</ul>
-<h3 id="fstreamreserve"><a class="anchor" href="#fstreamreserve">#</a>fstream::reserve</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reserve</span><span class="p">(</span><span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>调整缓存容量，参数 n 是容量大小。若 n 小于之前的容量，则缓存容量保持不变。</li>
-</ul>
-<h3 id="代码示例-2"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-2">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">fstream</span> <span class="n">s</span><span class="p">;</span>                     <span class="c1">// cache size: 8k
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">fstream</span> <span class="n">s</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>               <span class="c1">// cache size: 4k
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">fstream</span> <span class="n">s</span><span class="p">(</span><span class="s">&#34;path&#34;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">);</span>        <span class="c1">// append mode, cache size: 8k
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fs</span><span class="o">::</span><span class="n">fstream</span> <span class="n">s</span><span class="p">(</span><span class="s">&#34;path&#34;</span><span class="p">,</span> <span class="sc">&#39;w&#39;</span><span class="p">,</span> <span class="mi">4096</span><span class="p">);</span>  <span class="c1">// write mode, cache size: 4k
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">8192</span><span class="p">);</span>                   <span class="c1">// make cache size at least 8k
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;path&#34;</span><span class="p">,</span> <span class="sc">&#39;a&#39;</span><span class="p">);</span>               <span class="c1">// open with append mode
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;hello world&#34;</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span>   <span class="c1">// operator&lt;&lt;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>              <span class="c1">// append
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>                         <span class="c1">// flush data in cache to file
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>                         <span class="c1">// close the file
-</span></span></span></code></pre></div><h2 id="fsdir"><a class="anchor" href="#fsdir">#</a>fs::dir</h2>
-<p>v3.0.1 中新增 <strong>fs::dir</strong> 类，用于读目录。</p>
-<h3 id="dirdir"><a class="anchor" href="#dirdir">#</a>dir::dir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="n">dir</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="n">dir</span><span class="p">(</span><span class="n">dir</span><span class="o">&amp;&amp;</span> <span class="n">d</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="k">explicit</span> <span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="k">explicit</span> <span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="k">explicit</span> <span class="n">dir</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 默认构造函数，创建空的 dir 对象，不打开任何目录。</li>
-<li>2, 移动构造函数。</li>
-<li>3-5, 打开 path 指定的目录。</li>
-</ul>
-<h3 id="dirdir-1"><a class="anchor" href="#dirdir-1">#</a>dir::~dir</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">~</span><span class="n">dir</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>析构函数，关闭打开的目录，释放相关资源。</li>
-</ul>
-<h3 id="dirall"><a class="anchor" href="#dirall">#</a>dir::all</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">fastring</span><span class="o">&gt;</span> <span class="n">all</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>读取目录下所有子项，<code>.</code> 与 <code>..</code> 会被忽略。</li>
-</ul>
-<h3 id="dirbegin"><a class="anchor" href="#dirbegin">#</a>dir::begin</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 begin iterator。</li>
-</ul>
-<h3 id="dirclose"><a class="anchor" href="#dirclose">#</a>dir::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>关闭目录，析构函数中会自动调用此方法。</li>
-<li>多次调用此方法是安全的。</li>
-</ul>
-<h3 id="dirend"><a class="anchor" href="#dirend">#</a>dir::end</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span> <span class="nf">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 end iterator。</li>
-</ul>
-<h3 id="diriterator"><a class="anchor" href="#diriterator">#</a>dir::iterator</h3>
-<p><code>dir::iterator</code> 类用于遍历 dir 对象中打开的目录。</p>
-<h4 id="operator"><a class="anchor" href="#operator">#</a>operator*</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fastring</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回 iterator 对应的文件或目录名。</li>
-</ul>
-<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator++</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>重载前缀 <code>++</code> 操作。</li>
-</ul>
-<h4 id="operator-2"><a class="anchor" href="#operator-2">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">iterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断两个 iterator 是否相等。</li>
-</ul>
-<h4 id="operator-3"><a class="anchor" href="#operator-3">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">iterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断两个 iterator 是否不相等。</li>
-</ul>
-<h3 id="diropen"><a class="anchor" href="#diropen">#</a>dir::open</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">fastring</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>打开 path 指定的目录，打开目录前会先关闭之前打开的目录。</li>
-</ul>
-<h3 id="dirpath"><a class="anchor" href="#dirpath">#</a>dir::path</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">path</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回目录的路径，若 dir 对象未关联任何目录，则返回空字符串 <code>&quot;&quot;</code>。</li>
-</ul>
-<h3 id="代码示例-3"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-3">#</a>代码示例</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">dir</span> <span class="n">d</span><span class="p">(</span><span class="s">&#34;xx&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">all</span><span class="p">();</span> <span class="c1">// 读取所有子项
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">d</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">d</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">it</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<h3 id="示例-1"><a class="anchor" href="#%e7%a4%ba%e4%be%8b-1">#</a>示例</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">fs</span><span class="o">::</span><span class="n">dir</span> <span class="n">d</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span> <span class="nl">name</span> <span class="p">:</span> <span class="n">d</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;entry: &#34;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="综合示例"><a class="anchor" href="#%e7%bb%bc%e5%90%88%e7%a4%ba%e4%be%8b">#</a>综合示例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/fs.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;exists(.) = &#34;</span><span class="p">,</span> <span class="n">fs</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;isdir(.)  = &#34;</span><span class="p">,</span> <span class="n">fs</span><span class="o">::</span><span class="n">isdir</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;tmp_fs_test/sub&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">file</span> <span class="n">f</span><span class="p">(</span><span class="s">&#34;tmp_fs_test/a.txt&#34;</span><span class="p">,</span> <span class="sc">&#39;w&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#34;hello coost</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">file</span> <span class="n">r</span><span class="p">(</span><span class="s">&#34;tmp_fs_test/a.txt&#34;</span><span class="p">,</span> <span class="sc">&#39;r&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;content = &#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">dir</span> <span class="n">d</span><span class="p">(</span><span class="s">&#34;tmp_fs_test&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">name</span> <span class="p">:</span> <span class="n">d</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;entry: &#34;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">mv</span><span class="p">(</span><span class="s">&#34;tmp_fs_test/a.txt&#34;</span><span class="p">,</span> <span class="s">&#34;tmp_fs_test/b.txt&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fs</span><span class="o">::</span><span class="n">rm</span><span class="p">(</span><span class="s">&#34;tmp_fs_test&#34;</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div></article>
  
@@ -1252,73 +992,22 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#元数据操作">元数据操作</a>
-          <ul>
-            <li><a href="#fsexists">fs::exists</a></li>
-            <li><a href="#fsfsize">fs::fsize</a></li>
-            <li><a href="#fsisdir">fs::isdir</a></li>
-            <li><a href="#fsmtime">fs::mtime</a></li>
-            <li><a href="#fsmkdir">fs::mkdir</a></li>
-            <li><a href="#fsmv">fs::mv</a></li>
-            <li><a href="#fsremove">fs::remove</a></li>
-            <li><a href="#fsrename">fs::rename</a></li>
-            <li><a href="#fssymlink">fs::symlink</a></li>
-            <li><a href="#代码示例">代码示例</a></li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#便捷函数">便捷函数</a></li>
+        <li><a href="#windows-路径约定">Windows 路径约定</a></li>
         <li><a href="#fsfile">fs::file</a>
           <ul>
-            <li><a href="#filefile">file::file</a></li>
-            <li><a href="#filefile-1">file::~file</a></li>
-            <li><a href="#fileclose">file::close</a></li>
-            <li><a href="#fileexists">file::exists</a></li>
-            <li><a href="#fileopen">file::open</a></li>
-            <li><a href="#fileoperator-bool">file::operator bool</a></li>
-            <li><a href="#fileoperator">file::operator!</a></li>
-            <li><a href="#filepath">file::path</a></li>
-            <li><a href="#fileread">file::read</a></li>
-            <li><a href="#fileseek">file::seek</a></li>
-            <li><a href="#filesize">file::size</a></li>
-            <li><a href="#filewrite">file::write</a></li>
-            <li><a href="#代码示例-1">代码示例</a></li>
-          </ul>
-        </li>
-        <li><a href="#fsfstream">fs::fstream</a>
-          <ul>
-            <li><a href="#fstreamfstream">fstream::fstream</a></li>
-            <li><a href="#fstreamfstream-1">fstream::~fstream</a></li>
-            <li><a href="#fstreamappend">fstream::append</a></li>
-            <li><a href="#fstreamclose">fstream::close</a></li>
-            <li><a href="#fstreamflush">fstream::flush</a></li>
-            <li><a href="#fstreamopen">fstream::open</a></li>
-            <li><a href="#fstreamoperator-bool">fstream::operator bool</a></li>
-            <li><a href="#fstreamoperator">fstream::operator!</a></li>
-            <li><a href="#fstreamoperator-1">fstream::operator&laquo;</a></li>
-            <li><a href="#fstreamreserve">fstream::reserve</a></li>
-            <li><a href="#代码示例-2">代码示例</a></li>
+            <li><a href="#打开模式">打开模式</a></li>
+            <li><a href="#定义">定义</a></li>
+            <li><a href="#示例">示例</a></li>
           </ul>
         </li>
         <li><a href="#fsdir">fs::dir</a>
           <ul>
-            <li><a href="#dirdir">dir::dir</a></li>
-            <li><a href="#dirdir-1">dir::~dir</a></li>
-            <li><a href="#dirall">dir::all</a></li>
-            <li><a href="#dirbegin">dir::begin</a></li>
-            <li><a href="#dirclose">dir::close</a></li>
-            <li><a href="#dirend">dir::end</a></li>
-            <li><a href="#diriterator">dir::iterator</a>
-              <ul>
-                <li><a href="#operator">operator*</a></li>
-                <li><a href="#operator-1">operator++</a></li>
-                <li><a href="#operator-2">operator==</a></li>
-                <li><a href="#operator-3">operator!=</a></li>
-              </ul>
-            </li>
-            <li><a href="#diropen">dir::open</a></li>
-            <li><a href="#dirpath">dir::path</a></li>
-            <li><a href="#代码示例-3">代码示例</a></li>
+            <li><a href="#示例-1">示例</a></li>
           </ul>
         </li>
+        <li><a href="#综合示例">综合示例</a></li>
       </ul>
     </li>
   </ul>
