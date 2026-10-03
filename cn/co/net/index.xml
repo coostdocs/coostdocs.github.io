@@ -11,13 +11,10 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/net/byte_order/</guid>
-      <description>include: co/byte_order.h.
-计算机中的数据在内存中是以字节(8 bit)为基本单位进行存储的，大端机采用大端字节序，即高位字节在低地址，低位字节在高地址，小端机则采用小端字节序，即低位字节在低地址，高位字节在高地址。
-单个字节在大、小端机器上是完全相同的，而多个字节的基本数据类型，在大、小端机器上有着不同的字节序。这里说的基本数据类型是指像 int, double 这样的内置类型，字符串不在此列，它是由单字节构成的序列，在大、小端机器上有着相同的存储形式。
-网络上传输的数据采用大端字节序，所谓的网络字节序也就是大端字节序。发送数据到网络上时，需要将其中的多字节基本类型转换成网络字节序，而从网络上接收数据时，则需要转换成所在主机的字节序。
-byte_order.h 定义了如下的方法：
-ntoh16 ntoh32 ntoh64 hton16 hton32 hton64 这些方法分别适用于长度为 2, 4, 8 字节的整数，其中 ntoh 系列将网络字节序转换成主机字节序，hton 系列则将主机字节序转换成网络字节序。
-代码示例 uint32 h = 777; uint32 n = hton32(h); </description>
+      <description>#头文件 #include &amp;#34;co/byte_order.h&amp;#34; API 在 co 命名空间。
+#概述 数据在内存中以字节（8 bit）为基本单位存储。 大端机：高位字节在低地址，低位字节在高地址。 小端机：低位字节在低地址，高位字节在高地址。 单个字节在大、小端机器上完全相同。 多字节基本类型（如 int、double）在大、小端机器上字节序不同。 字符串(co::string / std::string)由单字节构成，不受字节序影响。 网络传输采用大端字节序（网络字节序）。 发送数据到网络前，需将多字节基本类型转成网络字节序；接收后需转回主机字节序。
+#API uint16 hton16(uint16 v); uint32 hton32(uint32 v); uint64 hton64(uint64 v); uint16 ntoh16(uint16 v); uint32 ntoh32(uint32 v); uint64 ntoh64(uint64 v); 分别适用于 2、4、8 字节整数。 hton 系列：主机字节序 → 网络字节序。 ntoh 系列：网络字节序 → 主机字节序。 示例:
+uint32 h = 777; uint32 n = hton32(h); </description>
     </item>
     
     <item>
@@ -26,37 +23,9 @@ ntoh16 ntoh32 ntoh64 hton16 hton32 hton64 这些方法分别适用于长度为 2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/net/sock/</guid>
-      <description>include: co/co.h.
-#Socket APIs co 提供了常用的协程化的 socket API，以支持基于协程的网络编程。
-大部分 API 形式上与原生的 socket API 保持一致，这样可以减轻用户的学习负担，熟悉 socket 编程的用户可以轻松上手。
-这些 API 大部分需要在协程中使用，它们在 I/O 阻塞或调用 sleep 等操作时，调度线程会挂起当前协程，切换到其他等待中的协程运行，调度线程本身并不会阻塞。借助这些 API，用户可以轻松的实现高并发、高性能的网络程序。
-#术语约定 阻塞
-在描述 co 中的一些 socket API 时，会用到阻塞一词，如 accept, recv，文档中说它们会阻塞，是指当前的协程会阻塞，而当前的调度线程并不会阻塞(可以切换到其他协程运行)。用户看到的是协程，而不是调度线程，因此从用户的角度看，它们是阻塞的。实际上，这些 API 内部使用 non-blocking socket，并不会真的阻塞，只是在 socket 上没有数据可读或者无法立即写入数据时，调度线程会挂起当前协程，当 socket 变为可读或可写时，调度线程会重新唤起该协程，继续 I/O 操作。
-non-blocking socket
-co 中的 socket API 必须使用 non-blocking socket，在 windows 平台还要求 socket 支持 overlapped I/O，win32 API 创建的 socket 默认都支持 overlapped I/O，用户一般不需要担心这个问题。为了叙述方便，这里约定文档中说到 non-blocking socket 时，同时也表示它在 windows 上支持 overlapped I/O。</description>
-    </item>
-    
-    <item>
-      <title>网络编程模式</title>
-      <link>https://coostdocs.github.io/cn/co/net/mode/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/net/mode/</guid>
-      <description>#基于协程的网络编程模式 协程可以用同步的方式，实现高并发、高性能的网络程序。协程虽然会阻塞，但调度线程可以在大量的协程间快速切换，因此要实现高并发，只需要创建大量的协程即可。
-以 TCP 程序为例，服务端一般采用一个连接一个协程的模式，为每个客户端连接创建新的协程，在协程中处理连接上的数据。客户端没必要一个连接一个协程，一般使用连接池，多个协程共用连接池中的连接。
-#服务端网络模型 void on_connection(int fd) { while (true) { co::recv(fd, ...); // recv request from client process(...); // process the request co::send(fd, ...); // send response to client } } void server_fun() { while (true) { int fd = co::accept(...); if (fd != -1) go(on_connection, fd); } } go(server_fun); 服务端采用一个连接一个协程的模型。 在一个协程中，调用 co::accept() 接受客户端连接。 有连接到来时，创建一个新的协程，在协程中处理连接上的数据。 on_connection() 是处理连接的协程函数，接收、处理与发送数据，在该协程中以完全同步的方式进行，不需要任何异步回调。 #客户端网络模型 void client_fun() { while (true) { if (!connected) co::connect(...); // connect to the server co::send(.</description>
-    </item>
-    
-    <item>
-      <title>使用三方网络库</title>
-      <link>https://coostdocs.github.io/cn/co/net/third/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/net/third/</guid>
-      <description>#协程中使用三方网络库 在协程中使用三方网络库有两种方式：
-直接使用三方网络库的阻塞 API，此方式最简单，依赖于 co 内部的系统 API hook。 使用三方网络库的非阻塞 API，此方式需要借助 co::io_event 将其转换为同步方式。 #系统 API hook 原理 API hook 简单来说就是拦截系统 API 请求，如果该请求是在协程中，且使用 blocking socket，就将 socket 修改成 non-blocking 模式，当 socket 不可读或写时，利用 co::io_event 或 co 中更底层的接口等待 I/O 事件，I/O 事件到来时，再唤醒协程，调用系统原生的 socket API 完成 I/O 操作。
-#使用非阻塞 API 下面是基于 openssl 的非阻塞 API 实现的 recv 方法：
-int recv(S* s, void* buf, int n, int ms) { CHECK(co::sched()) &amp;lt;&amp;lt; &amp;#34;must be called in coroutine..&amp;#34;; int r, e; int fd = SSL_get_fd((SSL*)s); if (fd &amp;lt; 0) return -1; do { ERR_clear_error(); r = SSL_read((SSL*)s, buf, n); if (r &amp;gt; 0) return r; // success if (r == 0) return 0; e = SSL_get_error((SSL*)s, r); if (e == SSL_ERROR_WANT_READ) { co::io_event ev(fd, co::ev_read); if (!</description>
+      <description>#头文件 #include &amp;#34;co/sock.h&amp;#34; API 在 co 命名空间。使用前需在 main 开头调用 flag::parse(argc, argv);。
+sock_t 在全局命名空间。
+#概述 基于协程的 socket API。 I/O 相关 API 不阻塞调度线程，必须在协程中调用。 出错可用 co::error() / co::strerror() 获取错误信息。 #地址 co::sockaddr struct sockaddr { sockaddr(); sockaddr(const char* host, uint16 port); bool valid() const; int af() const; }; 支持 IPv4、IPv6、域名解析。 af() 返回 AF_INET 或 AF_INET6。 可直接打印，格式 127.0.0.1:8080。 #I/O 事件类型 enum ev_t { ev_read = 1, ev_write = 2, }; 不支持按位或组合。 #创建 socket sock_t co::tcp_socket(int af=0); sock_t co::udp_socket(int af=0); sock_t co::tcp_server_socket(const char* host, uint16 port, int backlog=4096); af=0 默认 AF_INET。 创建的 socket 已是 non-block。 tcp_server_socket：创建 TCP socket，绑定地址并监听。 #socket 操作 int co::close(sock_t fd, int ms=0); int co::bind(sock_t fd, const sockaddr&amp;amp; addr); int co::listen(sock_t fd, int backlog=4096); int co::connect(sock_t fd, const sockaddr&amp;amp; addr, int ms=-1); sock_t co::accept(sock_t fd, sockaddr* addr=nullptr); close(fd, ms)：延迟 ms 毫秒关闭，防恶意攻击。 connect：ms=-1 不超时，超时错误码 ETIMEDOUT。 accept 成功返回 socket，错误返回 (sock_t)-1，其余成功返回 0，错误返回 -1。 #收发 int co::recv(sock_t fd, void* buf, int n, int ms=-1); int co::recvn(sock_t fd, void* buf, int n, int ms=-1); int co::recvfrom(sock_t fd, void* buf, int n, sockaddr&amp;amp; addr, int ms=-1); int co::send(sock_t fd, const void* buf, int n, int ms=-1); int co::sendto(sock_t fd, const void* buf, int n, const sockaddr&amp;amp; addr, int ms=-1); recv：单次读取，可能少于 n。 recvn：精确读取 n 字节，适合固定长度头部协议。 recvfrom：UDP 接收；函数返回时，addr 中填充发送方地址。 send：成功返回 n 表示全部发送；出错或超时状态未定义。 sendto：UDP 发送。 ms=-1 不超时，超时错误码 ETIMEDOUT。 #socket 选项 void co::set_reuseaddr(sock_t fd); void co::set_tcp_nodelay(sock_t fd); void co::set_tcp_keepalive(sock_t fd); void co::set_send_buffer_size(sock_t fd, int n); void co::set_recv_buffer_size(sock_t fd, int n); void co::set_nonblock(sock_t fd); void co::set_cloexec(sock_t fd); // 非 Windows set_send_buffer_size / set_recv_buffer_size 必须在连接前调用。 #其它 int co::reset_tcp_socket(sock_t fd, int ms=0); co::sockaddr co::peeraddr(sock_t fd); reset_tcp_socket：重置连接，不进 timed_wait，一般用于服务端。 peeraddr：返回对端地址。 #示例 #TCP 客户端 #include &amp;#34;co/co.</description>
     </item>
     
     <item>
@@ -65,20 +34,9 @@ int recv(S* s, void* buf, int n, int ms) { CHECK(co::sched()) &amp;lt;&amp;lt; &
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/net/tcp/</guid>
-      <description>include: co/tcp.h.
-#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
-#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;amp;&amp;amp; c); 构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。 #Connection::~Connection Connection::~Connection(); 析构函数，调用 close() 关闭连接。 #Connection::close int close(int ms = 0); 关闭连接，参数 ms &amp;gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。 #Connection::recv int recv(void* buf, int n, int ms=-1); 接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &amp;gt;0，超时或发生错误时返回值 &amp;lt;0，对端关闭连接时返回 0。 #Connection::recvn int recvn(void* buf, int n, int ms=-1); 接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &amp;lt;0，对端关闭连接时返回 0。 #Connection::reset int reset(int ms = 0) 重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &amp;gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。 #Connection::send int send(const void* buf, int n, int ms=-1); 发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &amp;lt;=0。 #Connection::socket int socket() const; 返回内部的 socket 描述符，连接已关闭时返回 -1。 #Connection::strerror const char* strerror() const; Connection 中的方法报错时，可以调用此方法查看错误信息。 #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：</description>
-    </item>
-    
-    <item>
-      <title>HTTP</title>
-      <link>https://coostdocs.github.io/cn/co/net/http/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://coostdocs.github.io/cn/co/net/http/</guid>
-      <description>include: co/http.h.
-#http::Client http::Client 是基于协程的 http 客户端，它基于 libcurl 实现。
-#Client::Client explicit Client(const char* serv_url); 构造函数，参数 serv_url 是服务器的 url 地址，它的形式是 protocol://host:port，下面的 server url 都是合理的： &amp;ldquo;github.com&amp;rdquo; &amp;ldquo;https://github.com&amp;rdquo; &amp;ldquo;http://127.0.0.1:7788&amp;rdquo; &amp;ldquo;http://[::1]:8888&amp;rdquo; http::Client 对象创建时，并不会立即建立连接。 #Client::~Client Client::~Client(); 析构函数，关闭连接，释放 libcurl 相关资源。 #Client::add_header void add_header(const char* key, const char* val); void add_header(const char* key, int val); 添加 HTTP 头部，用户在进行 HTTP 请求前，可以用此方法添加头部，这些头部会自动添加到后续所有请求中。 第 2 个版本中，参数 val 是整数，内部自动转换成字符串。 #Client::body const fastring&amp;amp; body() const; 获取当前 HTTP 请求的响应体。 #Client::close void close(); 关闭 HTTP 连接，一般需要在协程中调用此方法。 调用此方法后，http::Client 对象就不能再用了，直到用户调用 reset() 方法重置 server url。 #Client::del void del(const char* url, const char* s, size_t n); void del(const char* url, const char* s); void del(const char* url); HTTP DELETE 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 前两个版本，适用于带 body 部分的 DELETE 请求，参数 s 是 body，n 是 s 的长度，第 2 个版本 s 以 &amp;lsquo;\0&amp;rsquo; 结尾。 第 3 个版本适用于不带 body 的 DELETE 请求。 #Client::easy_handle void* easy_handle() const; 返回 libcurl 的 easy handle。 #Client::get void get(const char* url); HTTP GET 请求，必须在协程中调用。 参数 url 必须是 &#39;/&#39; 开头的字符串。 #Client::head void head(const char* url); HTTP HEAD 请求，必须在协程中调用。 参数 url 必须是 / 开头的字符串。 #Client::header const char* header(const char* key); const fastring&amp;amp; header() const; 第 1 个版本获取当前 HTTP 响应中 header 的值，header 不存在时，返回一个空字符串。</description>
+      <description>#头文件 #include &amp;#34;co/tcp.h&amp;#34; API 在 co 命名空间，同时提供别名：
+namespace tcp { using client = co::tcp_client; using server = co::tcp_server; } 使用前需在 main 开头调用 flag::parse(argc, argv);。
+#tcp_client struct tcp_client { tcp_client(const char* server_host, uint16 server_port); tcp_client(const tcp_client&amp;amp; c); ~tcp_client(); tcp_client(tcp_client&amp;amp;&amp;amp;) = delete; void operator=(const tcp_client&amp;amp; c) = delete; void operator=(tcp_client&amp;amp;&amp;amp; c) = delete; bool connected() const; bool connect(int ms); void disconnect(); void close(); int recv(void* buf, int n, int ms=-1); int recvn(void* buf, int n, int ms=-1); int send(const void* buf, int n, int ms=-1); }; 必须在协程中使用。 server_host 为空时默认 &amp;quot;127.</description>
     </item>
     
     <item>
@@ -87,9 +45,9 @@ int recv(S* s, void* buf, int n, int ms) { CHECK(co::sched()) &amp;lt;&amp;lt; &
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://coostdocs.github.io/cn/co/net/rpc/</guid>
-      <description>include: co/rpc.h.
-coost 实现了一个基于协程的 RPC 框架，它内部使用 JSON 格式传输数据，与使用 protobuf 等二进制协议的 RPC 框架相比，它更加灵活，用起来更方便。
-从 v3.0 开始，RPC 框架同时也支持 HTTP 协议，可以用 HTTP 的 POST 方法调用 RPC 服务。 #rpc::Service class Service { public: Service() = default; virtual ~Service() = default; typedef std::function&amp;lt;void(Json&amp;amp;, Json&amp;amp;)&amp;gt; Fun; virtual const char* name() const = 0; virtual const co::map&amp;lt;const char*, Fun&amp;gt;&amp;amp; methods() const = 0; }; 接口类，它表示一个 RPC service，一个 RPC server 中可以包含多个 service。 方法 name() 返回 service 名，methods() 返回所有的 RPC 接口及其业务处理函数。 用户不需要关心此类。 #rpc::Server #Server::Server Server(); 默认构造函数，用户不需要关心。 #Server::add_service 1.</description>
+      <description>#头文件 #include &amp;#34;co/rpc.h&amp;#34; API 在 co 命名空间，同时提供别名：
+namespace rpc { using service = co::rpc_service; using server = co::rpc_server; using client = co::rpc_client; using method_t = co::rpc_method_t; } 使用前需在 main 开头调用 flag::parse(argc, argv);。
+#概述 基于 TCP + JSON 的轻量 RPC。 协议：8 字节 header + JSON body。 请求通过 api 字段指定方法，格式 ServiceName.method_name，如 HelloWorld.hello。 #协议 #Header struct Header { uint16 flags; // reserved, 0 uint16 magic; // 0x7777 uint32 len; // body len, network byte order }; // 8 bytes magic = 0x7777，用于校验。 len 是 body 长度，网络字节序。 body 是 JSON 文本。 #请求 {&amp;#34;api&amp;#34;: &amp;#34;ServiceName.</description>
     </item>
     
   </channel>

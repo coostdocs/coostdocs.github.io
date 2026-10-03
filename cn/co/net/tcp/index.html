@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/tcp.h.
-#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
-#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c); 构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。 #Connection::~Connection Connection::~Connection(); 析构函数，调用 close() 关闭连接。 #Connection::close int close(int ms = 0); 关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。 #Connection::recv int recv(void* buf, int n, int ms=-1); 接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。 #Connection::recvn int recvn(void* buf, int n, int ms=-1); 接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。 #Connection::reset int reset(int ms = 0) 重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。 #Connection::send int send(const void* buf, int n, int ms=-1); 发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。 #Connection::socket int socket() const; 返回内部的 socket 描述符，连接已关闭时返回 -1。 #Connection::strerror const char* strerror() const; Connection 中的方法报错时，可以调用此方法查看错误信息。 #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：">
+<meta name="description" content="#头文件 #include &#34;co/tcp.h&#34; API 在 co 命名空间，同时提供别名：
+namespace tcp { using client = co::tcp_client; using server = co::tcp_server; } 使用前需在 main 开头调用 flag::parse(argc, argv);。
+#tcp_client struct tcp_client { tcp_client(const char* server_host, uint16 server_port); tcp_client(const tcp_client&amp; c); ~tcp_client(); tcp_client(tcp_client&amp;&amp;) = delete; void operator=(const tcp_client&amp; c) = delete; void operator=(tcp_client&amp;&amp; c) = delete; bool connected() const; bool connect(int ms); void disconnect(); void close(); int recv(void* buf, int n, int ms=-1); int recvn(void* buf, int n, int ms=-1); int send(const void* buf, int n, int ms=-1); }; 必须在协程中使用。 server_host 为空时默认 &quot;127.">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="TCP" />
-<meta property="og:description" content="include: co/tcp.h.
-#tcp::Connection tcp::Connection 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。
-#Connection::Connection Connection(int sock); Connection(void* ssl); Connection(Connection&amp;&amp; c); 构造函数，Connection 由 tcp::Server 创建，用户不需要手动创建。 第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。 从 v2.0.2 开始，用户不能继承 Connection 类。 #Connection::~Connection Connection::~Connection(); 析构函数，调用 close() 关闭连接。 #Connection::close int close(int ms = 0); 关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。 从 v2.0.1 开始，此方法可以在协程或非协程中调用。 #Connection::recv int recv(void* buf, int n, int ms=-1); 接收数据，与 co::recv 类似。 此方法必须在协程中调用。 此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。 #Connection::recvn int recvn(void* buf, int n, int ms=-1); 接收指定长度的数据，与 co::recvn 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。 #Connection::reset int reset(int ms = 0) 重置 TCP 连接，与 close() 不同，它不会进入 TIME_WAIT 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。 此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。 #Connection::send int send(const void* buf, int n, int ms=-1); 发送数据，与 co::send() 类似。 此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。 #Connection::socket int socket() const; 返回内部的 socket 描述符，连接已关闭时返回 -1。 #Connection::strerror const char* strerror() const; Connection 中的方法报错时，可以调用此方法查看错误信息。 #tcp::Server tcp::Server 是基于协程的 TCP 服务端，它的特性如下：" />
+<meta property="og:description" content="#头文件 #include &#34;co/tcp.h&#34; API 在 co 命名空间，同时提供别名：
+namespace tcp { using client = co::tcp_client; using server = co::tcp_server; } 使用前需在 main 开头调用 flag::parse(argc, argv);。
+#tcp_client struct tcp_client { tcp_client(const char* server_host, uint16 server_port); tcp_client(const tcp_client&amp; c); ~tcp_client(); tcp_client(tcp_client&amp;&amp;) = delete; void operator=(const tcp_client&amp; c) = delete; void operator=(tcp_client&amp;&amp; c) = delete; bool connected() const; bool connect(int ms); void disconnect(); void close(); int recv(void* buf, int n, int ms=-1); int recvn(void* buf, int n, int ms=-1); int send(const void* buf, int n, int ms=-1); }; 必须在协程中使用。 server_host 为空时默认 &quot;127." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/net/tcp/" /><meta property="article:section" content="co" />
 
@@ -21,7 +21,7 @@
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/net/tcp/" title="TCP">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.ad82589e54c59c4627bf718c6a647413551b819a5f77b1ac5793b7453111d7d1.js" integrity="sha256-rYJYnlTFnEYnv3GMamR0E1UbgZpfd7GsV5O3RTER19E=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.9802d2d44a9b11eac0261c83da8c2f5a7b7339d82c18080f81009a7277b72494.js" integrity="sha256-mALS1EqbEerAJhyD2owvWntzOdgsGAgPgQCacne3JJQ=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -353,46 +353,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="../../../../cn/co/net/mode/" class="">网络编程模式</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/co/net/third/" class="">使用三方网络库</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="../../../../cn/co/net/tcp/" class=" active">TCP</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="../../../../cn/co/net/http/" class="">HTTP</a>
   
 
         </li>
@@ -721,46 +682,19 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#tcpconnection">tcp::Connection</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#tcp_client">tcp_client</a>
           <ul>
-            <li><a href="#connectionconnection">Connection::Connection</a></li>
-            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
-            <li><a href="#connectionclose">Connection::close</a></li>
-            <li><a href="#connectionrecv">Connection::recv</a></li>
-            <li><a href="#connectionrecvn">Connection::recvn</a></li>
-            <li><a href="#connectionreset">Connection::reset</a></li>
-            <li><a href="#connectionsend">Connection::send</a></li>
-            <li><a href="#connectionsocket">Connection::socket</a></li>
-            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+            <li><a href="#示例">示例</a></li>
           </ul>
         </li>
-        <li><a href="#tcpserver">tcp::Server</a>
+        <li><a href="#tcp_server">tcp_server</a>
           <ul>
-            <li><a href="#serverserver">Server::Server</a></li>
-            <li><a href="#serverconn_num">Server::conn_num</a></li>
-            <li><a href="#serveron_connection">Server::on_connection</a></li>
-            <li><a href="#serveron_exit">Server::on_exit</a></li>
-            <li><a href="#serverstart">Server::start</a></li>
-            <li><a href="#serverexit">Server::exit</a></li>
+            <li><a href="#连接回调">连接回调</a></li>
+            <li><a href="#示例-1">示例</a></li>
           </ul>
         </li>
-        <li><a href="#tcpclient">tcp::Client</a>
-          <ul>
-            <li><a href="#clientclient">Client::Client</a></li>
-            <li><a href="#clientclient-1">Client::~Client</a></li>
-            <li><a href="#clientclose">Client::close</a></li>
-            <li><a href="#clientconnect">Client::connect</a></li>
-            <li><a href="#clientconnected">Client::connected</a></li>
-            <li><a href="#clientdisconnect">Client::disconnect</a></li>
-            <li><a href="#clientrecv">Client::recv</a></li>
-            <li><a href="#clientrecvn">Client::recvn</a></li>
-            <li><a href="#clientsend">Client::send</a></li>
-            <li><a href="#clientsocket">Client::socket</a></li>
-            <li><a href="#clientstrerror">Client::strerror</a></li>
-          </ul>
-        </li>
-        <li><a href="#tcp-服务端代码示例">TCP 服务端代码示例</a></li>
-        <li><a href="#tcp-客户端代码示例">TCP 客户端代码示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
@@ -775,312 +709,148 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/tcp.h">co/tcp.h</a>.</p>
-<h2 id="tcpconnection"><a class="anchor" href="#tcpconnection">#</a>tcp::Connection</h2>
-<p><code>tcp::Connection</code> 类是对 TCP 连接的简单封装，用于实现 TCP server，客户端不需要用这个类。当服务端启用 SSL 时，tcp::Connection 会用 SSL 传输数据。</p>
-<h3 id="connectionconnection"><a class="anchor" href="#connectionconnection">#</a>Connection::Connection</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Connection</span><span class="p">(</span><span class="kt">int</span> <span class="n">sock</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">ssl</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="p">(</span><span class="n">Connection</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">);</span>
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/tcp.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间，同时提供别名：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">tcp</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">client</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">server</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">tcp_server</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用前需在 <code>main</code> 开头调用 <code>flag::parse(argc, argv);</code>。</p>
+<h2 id="tcp_client"><a class="anchor" href="#tcp_client">#</a>tcp_client</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">tcp_client</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">server_host</span><span class="p">,</span> <span class="n">uint16</span> <span class="n">server_port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_client</span><span class="p">(</span><span class="k">const</span> <span class="n">tcp_client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">tcp_client</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_client</span><span class="p">(</span><span class="n">tcp_client</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">tcp_client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">tcp_client</span><span class="o">&amp;&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">connected</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">connect</span><span class="p">(</span><span class="kt">int</span> <span class="n">ms</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">disconnect</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">recvn</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">send</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>构造函数，<code>Connection</code> 由 <code>tcp::Server</code> 创建，用户不需要手动创建。</li>
-<li>第 1 个版本构造一般的 TCP 连接，第 2 个版本构造使用 SSL 传输数据的 TCP 连接，第 3 个是移动构造函数。</li>
-<li>从 v2.0.2 开始，用户不能继承 <code>Connection</code> 类。</li>
+<li>必须在协程中使用。</li>
+<li><code>server_host</code> 为空时默认 <code>&quot;127.0.0.1&quot;</code>。</li>
+<li>拷贝构造只复制 host、port，不共享连接。</li>
+<li>析构时自动 <code>disconnect()</code>。</li>
+<li><code>connect(ms)</code>：已连接返回 <code>true</code>；失败内部已 <code>disconnect()</code>，返回 <code>false</code>；成功后自动 <code>set_tcp_nodelay</code>。</li>
+<li><code>disconnect()</code> / <code>close()</code>：等价，重复调用安全。</li>
+<li><code>recv</code> / <code>recvn</code> / <code>send</code>：转发到 <code>co::recv</code> / <code>co::recvn</code> / <code>co::send</code>。</li>
 </ul>
-<h3 id="connectionconnection-1"><a class="anchor" href="#connectionconnection-1">#</a>Connection::~Connection</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">::~</span><span class="n">Connection</span><span class="p">();</span>
+<blockquote class="book-hint warning">
+  tcp_client 不能多协程同时使用，可以将 tcp_client 放入 co::pool 复用。
+</blockquote>
+
+<h3 id="示例"><a class="anchor" href="#%e7%a4%ba%e4%be%8b">#</a>示例</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/tcp.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">([]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">tcp_client</span> <span class="n">c</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">c</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="mi">3000</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;connect failed: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">strerror</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;recv: &#34;</span><span class="p">,</span> <span class="n">co</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">c</span><span class="p">.</span><span class="n">disconnect</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="tcp_server"><a class="anchor" href="#tcp_server">#</a>tcp_server</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">tcp_server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_server</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="n">uint16</span> <span class="n">port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">tcp_server</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_server</span><span class="p">(</span><span class="k">const</span> <span class="n">tcp_server</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_server</span><span class="p">(</span><span class="n">tcp_server</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">tcp_server</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">tcp_server</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="n">conn_cb_t</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">sock_t</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_server</span><span class="o">&amp;</span> <span class="n">on_connection</span><span class="p">(</span><span class="n">conn_cb_t</span><span class="o">&amp;&amp;</span> <span class="n">cb</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tcp_server</span><span class="o">&amp;</span> <span class="n">on_connection</span><span class="p">(</span><span class="k">const</span> <span class="n">conn_cb_t</span><span class="o">&amp;</span> <span class="n">cb</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="nf">conn_num</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>析构函数，调用 <a href="#connectionclose">close()</a> 关闭连接。</li>
+<li>采用一个连接一个协程(one couroutine per connection)模型。</li>
+<li><code>ip</code> 为空时默认 <code>&quot;0.0.0.0&quot;</code>。</li>
+<li><code>on_connection</code> 必须在 <code>start()</code> 前调用，返回 <code>*this</code> 支持链式调用。</li>
+<li><code>start()</code>：启动后台协程监听，每次 accept 成功后在独立协程中执行回调。</li>
+<li><code>stop()</code>：停止监听，语义上是「停止接受新连接」，不是「优雅关闭服务」。</li>
+<li><code>conn_num()</code>：正在被回调处理的连接数，线程安全。</li>
 </ul>
-<h3 id="connectionclose"><a class="anchor" href="#connectionclose">#</a>Connection::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>关闭连接，参数 ms &gt; 0 时，延迟一段时间再关闭连接。</li>
-<li>从 v2.0.1 开始，此方法可以在协程或非协程中调用。</li>
-</ul>
-<h3 id="connectionrecv"><a class="anchor" href="#connectionrecv">#</a>Connection::recv</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>接收数据，与 <a href="../sock/#corecv">co::recv</a> 类似。</li>
-<li>此方法必须在协程中调用。</li>
-<li>此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
-</ul>
-<h3 id="connectionrecvn"><a class="anchor" href="#connectionrecvn">#</a>Connection::recvn</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recvn</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>接收指定长度的数据，与 <a href="../sock/#corecvn">co::recvn</a> 类似。</li>
-<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
-</ul>
-<h3 id="connectionreset"><a class="anchor" href="#connectionreset">#</a>Connection::reset</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">reset</span><span class="p">(</span><span class="kt">int</span> <span class="n">ms</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</span></span></code></pre></div><ul>
-<li>重置 TCP 连接，与 <a href="#connectionclose">close()</a> 不同，它不会进入 <code>TIME_WAIT</code> 状态。参数 ms &gt; 0 时，延迟一段时间再重置连接。</li>
-<li>此方法必须在 I/O 线程(一般是进行 I/O 操作的协程)中调用。</li>
-</ul>
-<h3 id="connectionsend"><a class="anchor" href="#connectionsend">#</a>Connection::send</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">send</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>发送数据，与 <a href="../sock/#cosend">co::send()</a> 类似。</li>
-<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。</li>
-</ul>
-<h3 id="connectionsocket"><a class="anchor" href="#connectionsocket">#</a>Connection::socket</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">socket</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回内部的 socket 描述符，连接已关闭时返回 -1。</li>
-</ul>
-<h3 id="connectionstrerror"><a class="anchor" href="#connectionstrerror">#</a>Connection::strerror</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">strerror</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>Connection 中的方法报错时，可以调用此方法查看错误信息。</li>
-</ul>
-<h2 id="tcpserver"><a class="anchor" href="#tcpserver">#</a>tcp::Server</h2>
-<p><code>tcp::Server</code> 是基于协程的 TCP 服务端，它的特性如下：</p>
+<h3 id="连接回调"><a class="anchor" href="#%e8%bf%9e%e6%8e%a5%e5%9b%9e%e8%b0%83">#</a>连接回调</h3>
 <ul>
-<li>支持 IPv4 与 IPv6。</li>
-<li>支持 SSL (需要 openssl)。</li>
-<li>采用一个连接一个协程的模型。</li>
+<li>每个连接在独立协程中执行回调。</li>
+<li>回调前自动设置 <code>keepalive</code> 和 <code>nodelay</code>。</li>
+<li><strong>回调结束后 <code>tcp_server</code> 不会自动 <code>co::close(fd)</code></strong>，用户必须在回调中自己关闭。</li>
+<li>回调结束后 <code>conn_num</code> 减 1。</li>
 </ul>
-<h3 id="serverserver"><a class="anchor" href="#serverserver">#</a>Server::Server</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>构造函数，初始化。</li>
-</ul>
-<h3 id="serverconn_num"><a class="anchor" href="#serverconn_num">#</a>Server::conn_num</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">conn_num</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回当前的客户端连接数。</li>
-</ul>
-<h3 id="serveron_connection"><a class="anchor" href="#serveron_connection">#</a>Server::on_connection</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_connection</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Connection</span><span class="p">)</span><span class="o">&gt;&amp;&amp;</span> <span class="n">f</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_connection</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Connection</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">f</span><span class="p">);</span>
+<h3 id="示例-1"><a class="anchor" href="#%e7%a4%ba%e4%be%8b-1">#</a>示例</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/tcp.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/print.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_connection</span><span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="n">f</span><span class="p">)(</span><span class="n">Connection</span><span class="p">),</span> <span class="n">T</span><span class="o">*</span> <span class="n">o</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>设置处理客户端连接的回调函数。</p>
-</li>
-<li>
-<p>第 1, 2 个版本中，参数 f 是 <code>void f(Connection)</code> 类型的函数，或 <code>std::function&lt;void(Connection)&gt;</code> 类型的函数对象。</p>
-</li>
-<li>
-<p>第 3 个版本中，参数 f 是类中的方法，参数 o 是 T 类型的指针。</p>
-</li>
-<li>
-<p>从 v2.0.2 开始，f 的参数改为 tcp::Connection 对象，而非指针，用户不需要手动 delete。</p>
-</li>
-<li>
-<p>服务端接收到新的客户端连接时，会新建一个协程，并在协程中调用此方法设置的回调函数，处理新连接上的数据。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">tcp</span><span class="o">::</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">tcp_server</span> <span class="n">s</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">7777</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">on_connection</span><span class="p">([](</span><span class="n">sock_t</span> <span class="n">fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;new connection: &#34;</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">tcp</span><span class="o">::</span><span class="n">Server</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">on_connection</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">co</span><span class="o">::</span><span class="n">recvn</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">uint32</span> <span class="n">body_len</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint32</span><span class="o">*</span><span class="p">)</span><span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">string</span> <span class="n">body</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">body</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">body_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">recvn</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">body</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">body_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&#34;body: &#34;</span><span class="p">,</span> <span class="n">body</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">tcp</span><span class="o">::</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="p">.</span><span class="n">recv</span><span class="p">(...);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">process</span><span class="p">(...);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="p">.</span><span class="n">send</span><span class="p">(...);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="n">conn</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">co</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="serveron_exit"><a class="anchor" href="#serveron_exit">#</a>Server::on_exit</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Server</span><span class="o">&amp;</span> <span class="n">on_exit</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;&amp;&amp;</span> <span class="n">cb</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>设置一个 callback，它将在 server 退出时被调用。</li>
-</ul>
-<h3 id="serverstart"><a class="anchor" href="#serverstart">#</a>Server::start</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ca</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>
-<p>启动 TCP server，此方法不会阻塞当前线程。</p>
-</li>
-<li>
-<p>参数 ip 是服务器 ip，可以是 IPv4 或 IPv6 地址，参数 port 是服务器端口。</p>
-</li>
-<li>
-<p>参数 key 是存放 SSL private key 的 PEM 文件路径，参数 ca 是存放 SSL 证书的 PEM 文件路径，默认 key 和 ca 是 NULL，不启用 SSL。</p>
-</li>
-<li>
-<p>从 v3.0 开始，server 启动后就不再依赖于 tcp::Server 对象。</p>
-</li>
-<li>
-<p>示例</p>
-</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">tcp</span><span class="o">::</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">tcp</span><span class="o">::</span><span class="n">Server</span><span class="p">().</span><span class="n">on_connection</span><span class="p">(</span><span class="n">f</span><span class="p">).</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">);</span>
-</span></span></code></pre></div><h3 id="serverexit"><a class="anchor" href="#serverexit">#</a>Server::exit</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exit</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>v2.0.2 新增。</li>
-<li>退出 TCP server，关闭 listening socket，不再接收新的连接。</li>
-<li><strong>此方法不会关闭之前已经建立的连接</strong>。</li>
-<li>若需要在 server 退出后，关闭之前建立的连接，可以参考 <a href="https://github.com/idealvin/cocoyaxi/blob/master/test/so/tcp2.cc">test/tcp2.cc</a> 或 co 中 <code>http::Server</code> 与 <code>rpc::Server</code> 的实现。</li>
-</ul>
-<h2 id="tcpclient"><a class="anchor" href="#tcpclient">#</a>tcp::Client</h2>
-<p><code>tcp::Client</code> 是基于协程的 TCP 客户端，它有如下特性：</p>
+</span></span></code></pre></div><h2 id="注意事项"><a class="anchor" href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">#</a>注意事项</h2>
 <ul>
-<li>支持 IPv4 与 IPv6。</li>
-<li>支持 SSL (需要安装 openssl)。</li>
-<li>一个客户端对象，对应一个连接。</li>
-<li>它必须在协程中使用。</li>
-<li>它不是协程安全的，同一时刻，不能有多个协程对它进行操作。</li>
-</ul>
-<h3 id="clientclient"><a class="anchor" href="#clientclient">#</a>Client::Client</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_ssl</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Client</span><span class="p">(</span><span class="k">const</span> <span class="n">Client</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>构造函数。参数 ip 是服务端 ip，可以是域名、IPv4 或 IPv6 地址；参数 port 是服务端口；参数 use_ssl 表示是否启用 SSL 传输，默认为 false。</li>
-<li>第 2 个版本是拷贝构造函数，仅拷贝 ip, port, use_ssl。</li>
-<li>tcp::Client 构建时，并没有建立连接。</li>
-<li>一般建议在调用 recv, send 前，判断连接是否建立，没有的话就调用 <a href="#clientconnect">connect()</a> 方法建立连接，这种方式可以实现自动重连。</li>
-</ul>
-<h3 id="clientclient-1"><a class="anchor" href="#clientclient-1">#</a>Client::~Client</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Client</span><span class="o">::~</span><span class="n">Client</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>析构函数，调用 <a href="#clientdisconnect">disconnect()</a> 方法关闭连接。</li>
-</ul>
-<h3 id="clientclose"><a class="anchor" href="#clientclose">#</a>Client::close</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>关闭连接，与 disconnect() 相同。</li>
-</ul>
-<h3 id="clientconnect"><a class="anchor" href="#clientconnect">#</a>Client::connect</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">connect</span><span class="p">(</span><span class="kt">int</span> <span class="n">ms</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>建立连接，参数 ms 是超时时间，单位为毫秒。</li>
-<li>此方法必须在协程中调用。</li>
-<li>此方法成功时返回 true，否则返回 false。失败时，用户可以调用 <a href="#clientstrerror">strerror()</a> 方法查看错误信息。</li>
-</ul>
-<h3 id="clientconnected"><a class="anchor" href="#clientconnected">#</a>Client::connected</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">connected</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断是否已经建立连接。</li>
-</ul>
-<h3 id="clientdisconnect"><a class="anchor" href="#clientdisconnect">#</a>Client::disconnect</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">disconnect</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>从 v2.0.1 开始，可以在协程或非协程中调用。</li>
-<li>多次调用此方法是安全的，析构函数中会自动调用此方法。</li>
-</ul>
-<h3 id="clientrecv"><a class="anchor" href="#clientrecv">#</a>Client::recv</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recv</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>接收数据，与 <a href="../sock/#corecv">co::recv()</a> 类似。</li>
-<li>此方法必须在协程中调用。</li>
-<li>此方法成功时返回值 &gt;0，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
-</ul>
-<h3 id="clientrecvn"><a class="anchor" href="#clientrecvn">#</a>Client::recvn</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">recvn</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>接收指定长度的数据，与 <a href="../sock/#corecvn">co::recvn()</a> 类似。</li>
-<li>此方法必须在协程中调用。</li>
-<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;0，对端关闭连接时返回 0。</li>
-</ul>
-<h3 id="clientsend"><a class="anchor" href="#clientsend">#</a>Client::send</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">send</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ms</span><span class="o">=-</span><span class="mi">1</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>发送数据，与 <a href="../sock/#cosend">co::send()</a> 类似。</li>
-<li>此方法必须在协程中调用。</li>
-<li>此方法成功时返回 n，超时或发生错误时返回值 &lt;=0。</li>
-</ul>
-<h3 id="clientsocket"><a class="anchor" href="#clientsocket">#</a>Client::socket</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">socket</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回内部的 socket 描述符。</li>
-<li>未建立连接或连接已经关闭时，返回值是 -1。</li>
-</ul>
-<h3 id="clientstrerror"><a class="anchor" href="#clientstrerror">#</a>Client::strerror</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">strerror</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>tcp::Client 中的方法报错时，可以调用此方法查看错误信息。</li>
-</ul>
-<h2 id="tcp-服务端代码示例"><a class="anchor" href="#tcp-%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>TCP 服务端代码示例</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_connection</span><span class="p">(</span><span class="n">tcp</span><span class="o">::</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>         <span class="cm">/* client close the connection */</span>
-</span></span><span class="line"><span class="cl">            <span class="n">conn</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* error */</span>
-</span></span><span class="line"><span class="cl">            <span class="n">conn</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;server recv &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">fastring</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;server send pong&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">r</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#34;pong&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;server send error: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">conn</span><span class="p">.</span><span class="n">strerror</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">                <span class="n">conn</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">tcp</span><span class="o">::</span><span class="n">Server</span> <span class="n">s</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">on_connection</span><span class="p">(</span><span class="n">on_connection</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">);</span>                                    <span class="c1">// no ssl
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">s</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="s">&#34;privkey.pem&#34;</span><span class="p">,</span> <span class="s">&#34;certificate.pem&#34;</span><span class="p">);</span>  <span class="c1">// use ssl
-</span></span></span></code></pre></div><ul>
-<li>上面的例子实现了一个简单的 ping-pong server，收到客户端发送的 ping 时，回复一个 pong。</li>
-</ul>
-<h2 id="tcp-客户端代码示例"><a class="anchor" href="#tcp-%e5%ae%a2%e6%88%b7%e7%ab%af%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>TCP 客户端代码示例</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">use_ssl</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">tcp</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">proto</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">pool</span> <span class="n">pool</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="p">[]()</span> <span class="p">{</span><span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">new</span> <span class="n">tcp</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="o">*</span><span class="n">proto</span><span class="p">);</span> <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span><span class="k">delete</span> <span class="p">(</span><span class="n">tcp</span><span class="o">::</span><span class="n">Client</span><span class="o">*</span><span class="p">)</span> <span class="n">p</span><span class="p">;}</span>
-</span></span><span class="line"><span class="cl"><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">client_fun</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">pool_guard</span><span class="o">&lt;</span><span class="n">tcp</span><span class="o">::</span><span class="n">Client</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">pool</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">(</span><span class="mi">3000</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;connect failed: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">strerror</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span> <span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;client send ping&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="s">&#34;ping&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;client send error: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">strerror</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">recv</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;client recv error: &#34;</span><span class="o">&lt;&lt;</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">strerror</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;server close the connection&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;client recv &#34;</span><span class="o">&lt;&lt;</span> <span class="n">fastring</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">&lt;&lt;</span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">proto</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">tcp</span><span class="o">::</span><span class="n">Client</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">7788</span><span class="p">,</span> <span class="n">use_ssl</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">go</span><span class="p">(</span><span class="n">client_fun</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ul>
-<li>上面的例子中，我们用 <a href="../../concurrency/coroutine/pool/">co::pool</a> 缓存客户端连接，不同协程可以共用 pool 中的连接。</li>
+<li><code>tcp_client::connect</code> 失败时内部已 <code>disconnect()</code>，无需手动清理。</li>
+<li><code>tcp_client::send</code> 成功时保证全部发送；出错或超时时状态未定义。</li>
+<li><code>tcp_server::stop()</code> 只停止监听，不关闭已接受的连接。</li>
+<li>用户回调中必须自己 <code>co::close(fd)</code>。</li>
+<li><code>conn_num()</code> 反映的是正在被回调处理的连接数，不是已建立的连接数。</li>
+<li>监听地址为通配地址（<code>0.0.0.0</code> 或 <code>::</code>）时，<code>stop()</code> 内部会用 <code>127.0.0.1</code> 连接自己以唤醒 <code>accept</code>。</li>
+<li><code>tcp_server</code> 析构会先 <code>stop()</code> 再释放资源。</li>
 </ul>
 </article>
  
@@ -1204,46 +974,19 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#tcpconnection">tcp::Connection</a>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#tcp_client">tcp_client</a>
           <ul>
-            <li><a href="#connectionconnection">Connection::Connection</a></li>
-            <li><a href="#connectionconnection-1">Connection::~Connection</a></li>
-            <li><a href="#connectionclose">Connection::close</a></li>
-            <li><a href="#connectionrecv">Connection::recv</a></li>
-            <li><a href="#connectionrecvn">Connection::recvn</a></li>
-            <li><a href="#connectionreset">Connection::reset</a></li>
-            <li><a href="#connectionsend">Connection::send</a></li>
-            <li><a href="#connectionsocket">Connection::socket</a></li>
-            <li><a href="#connectionstrerror">Connection::strerror</a></li>
+            <li><a href="#示例">示例</a></li>
           </ul>
         </li>
-        <li><a href="#tcpserver">tcp::Server</a>
+        <li><a href="#tcp_server">tcp_server</a>
           <ul>
-            <li><a href="#serverserver">Server::Server</a></li>
-            <li><a href="#serverconn_num">Server::conn_num</a></li>
-            <li><a href="#serveron_connection">Server::on_connection</a></li>
-            <li><a href="#serveron_exit">Server::on_exit</a></li>
-            <li><a href="#serverstart">Server::start</a></li>
-            <li><a href="#serverexit">Server::exit</a></li>
+            <li><a href="#连接回调">连接回调</a></li>
+            <li><a href="#示例-1">示例</a></li>
           </ul>
         </li>
-        <li><a href="#tcpclient">tcp::Client</a>
-          <ul>
-            <li><a href="#clientclient">Client::Client</a></li>
-            <li><a href="#clientclient-1">Client::~Client</a></li>
-            <li><a href="#clientclose">Client::close</a></li>
-            <li><a href="#clientconnect">Client::connect</a></li>
-            <li><a href="#clientconnected">Client::connected</a></li>
-            <li><a href="#clientdisconnect">Client::disconnect</a></li>
-            <li><a href="#clientrecv">Client::recv</a></li>
-            <li><a href="#clientrecvn">Client::recvn</a></li>
-            <li><a href="#clientsend">Client::send</a></li>
-            <li><a href="#clientsocket">Client::socket</a></li>
-            <li><a href="#clientstrerror">Client::strerror</a></li>
-          </ul>
-        </li>
-        <li><a href="#tcp-服务端代码示例">TCP 服务端代码示例</a></li>
-        <li><a href="#tcp-客户端代码示例">TCP 客户端代码示例</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
       </ul>
     </li>
   </ul>
