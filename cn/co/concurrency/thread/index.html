@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="include: co/co.h.
-#线程 v3.0.1 删除了 co/thread.h 头文件，移除了全局的 Thread 与 Mutex 类，其功能与 C&#43;&#43;11 中的 std::thread 与 std::mutex 一样，用户可以直接使用 std 版本。 #co::thread_id uint32 thread_id(); 返回当前线程的 id 值。 #co::sync_event 同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 wait() 方法等待同步信号，生产者线程则调用 signal() 方法产生同步信号。co::sync_event 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。
-v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之。 #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); 构造函数，参数 manual_reset 表示是否手动将同步状态设置成未同步，参数 signaled 表示初始状态是否为同步状态。 #sync_event::reset void reset(); 将事件设置成未同步状态。 当构造函数中 manual_reset 为 true 时，用户在调用 wait() 后需要手动调用此方法，将事件设置成未同步状态。 #sync_event::signal void signal(); 产生同步信号，将事件设置成同步状态。 #sync_event::wait 1. void wait(); 2. bool wait(uint32 ms); 1, 一直等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &#34;co/co.">
+<meta name="description" content="#头文件 #include &#34;co/thread.h&#34; API 在 co 命名空间。
+#线程 id uint32 co::thread_id(); 返回当前线程 id。 #同步事件 std::condition_variable 允许虚假唤醒(spurious wakeup)，notify_one 不保证只唤醒一个等待线程，wait 需要带锁，用起来不方便。coost 实现 co::sync_event 取代之。 struct sync_event { sync_event(bool manual_reset, bool signaled); sync_event() : sync_event(false, false) {} ~sync_event(); sync_event(sync_event&amp;&amp; e) noexcept : _p(e._p) { e._p = 0; } sync_event(const sync_event&amp;) = delete; void operator=(const sync_event&amp;) = delete; void operator=(sync_event&amp;&amp;) = delete; void notify_one(); void notify_all(); void reset(); void wait(); bool wait(uint32 ms); void* _p; }; notify_one 只唤醒一个等待线程。 notify_all 唤醒所有等待线程。 wait 阻塞直到被唤醒或超时，不会虚假唤醒。 支持自动重置、手动重置模式，自动模式下，wait 结束时会将信号重置为 unsignaled 状态。 reset 用于手动重置模式，将信号重置为 unsignaled 状态。 ">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="线程" />
-<meta property="og:description" content="include: co/co.h.
-#线程 v3.0.1 删除了 co/thread.h 头文件，移除了全局的 Thread 与 Mutex 类，其功能与 C&#43;&#43;11 中的 std::thread 与 std::mutex 一样，用户可以直接使用 std 版本。 #co::thread_id uint32 thread_id(); 返回当前线程的 id 值。 #co::sync_event 同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 wait() 方法等待同步信号，生产者线程则调用 signal() 方法产生同步信号。co::sync_event 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。
-v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之。 #constructor explicit sync_event(bool manual_reset=false, bool signaled=false); 构造函数，参数 manual_reset 表示是否手动将同步状态设置成未同步，参数 signaled 表示初始状态是否为同步状态。 #sync_event::reset void reset(); 将事件设置成未同步状态。 当构造函数中 manual_reset 为 true 时，用户在调用 wait() 后需要手动调用此方法，将事件设置成未同步状态。 #sync_event::signal void signal(); 产生同步信号，将事件设置成同步状态。 #sync_event::wait 1. void wait(); 2. bool wait(uint32 ms); 1, 一直等待直到事件变成同步状态。 2, 等待直到事件变成同步状态或超时。参数 ms 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。 当构造函数中 manual_reset 为 false 时，wait() 结束时会自动将事件设置成未同步状态。 #代码示例 #include &#34;co/co." />
+<meta property="og:description" content="#头文件 #include &#34;co/thread.h&#34; API 在 co 命名空间。
+#线程 id uint32 co::thread_id(); 返回当前线程 id。 #同步事件 std::condition_variable 允许虚假唤醒(spurious wakeup)，notify_one 不保证只唤醒一个等待线程，wait 需要带锁，用起来不方便。coost 实现 co::sync_event 取代之。 struct sync_event { sync_event(bool manual_reset, bool signaled); sync_event() : sync_event(false, false) {} ~sync_event(); sync_event(sync_event&amp;&amp; e) noexcept : _p(e._p) { e._p = 0; } sync_event(const sync_event&amp;) = delete; void operator=(const sync_event&amp;) = delete; void operator=(sync_event&amp;&amp;) = delete; void notify_one(); void notify_all(); void reset(); void wait(); bool wait(uint32 ms); void* _p; }; notify_one 只唤醒一个等待线程。 notify_all 唤醒所有等待线程。 wait 阻塞直到被唤醒或超时，不会虚假唤醒。 支持自动重置、手动重置模式，自动模式下，wait 结束时会将信号重置为 unsignaled 状态。 reset 用于手动重置模式，将信号重置为 unsignaled 状态。 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://coostdocs.github.io/cn/co/concurrency/thread/" /><meta property="article:section" content="co" />
 
-<meta property="article:modified_time" content="2023-09-09T08:51:44+08:00" />
+<meta property="article:modified_time" content="2026-10-03T09:04:44+08:00" />
 
 <title>线程 | Coost Docs</title>
 <link rel="manifest" href="../../../../manifest.json">
@@ -21,7 +19,7 @@ v3.0.1 移除了全局范围的 SyncEvent，请使用 co::sync_event 替代之�
   <link rel="alternate" hreflang="en" href="https://coostdocs.github.io/en/co/concurrency/thread/" title="Thread">
 <link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
   <script defer src="../../../../flexsearch.min.js"></script>
-  <script defer src="../../../../cn.search.min.4de3884448a57c52df68fa03f8ab3ac03882a6a3bb7bc1c6d35af6a915e60557.js" integrity="sha256-TeOIREilfFLfaPoD&#43;Ks6wDiCpqO7e8HG01r2qRXmBVc=" crossorigin="anonymous"></script>
+  <script defer src="../../../../cn.search.min.6b1dbfea48533465c619920d9039ee8468cade94a228ad375277e5a3fd4b0bb4.js" integrity="sha256-ax2/6khTNGXGGZINkDnuhGjK3pSiKK03Unflo/1LC7Q=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -846,32 +844,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#线程">线程</a>
-          <ul>
-            <li><a href="#cothread_id">co::thread_id</a></li>
-            <li><a href="#cosync_event">co::sync_event</a>
-              <ul>
-                <li><a href="#constructor">constructor</a></li>
-                <li><a href="#sync_eventreset">sync_event::reset</a></li>
-                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
-                <li><a href="#sync_eventwait">sync_event::wait</a></li>
-                <li><a href="#代码示例">代码示例</a></li>
-              </ul>
-            </li>
-            <li><a href="#cotls">co::tls</a>
-              <ul>
-                <li><a href="#constructor-1">constructor</a></li>
-                <li><a href="#tlsget">tls::get</a></li>
-                <li><a href="#tlsset">tls::set</a></li>
-                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
-                <li><a href="#tlsoperator">tls::operator*</a></li>
-                <li><a href="#operator">operator==</a></li>
-                <li><a href="#operator-1">operator!=</a></li>
-                <li><a href="#operator-bool">operator bool</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#线程-id">线程 id</a></li>
+        <li><a href="#同步事件">同步事件</a></li>
       </ul>
     </li>
   </ul>
@@ -886,120 +861,44 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>include: <a href="https://github.com/idealvin/coost/blob/master/include/co/co.h">co/co.h</a>.</p>
-<h2 id="线程"><a class="anchor" href="#%e7%ba%bf%e7%a8%8b">#</a>线程</h2>
-<blockquote class="book-hint warning">
-  v3.0.1 删除了 <code>co/thread.h</code> 头文件，移除了全局的 <code>Thread</code> 与 <code>Mutex</code> 类，其功能与 C++11 中的 <code>std::thread</code> 与 <code>std::mutex</code> 一样，用户可以直接使用 std 版本。
+  <article class="markdown"><h2 id="头文件"><a class="anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6">#</a>头文件</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/thread.h&#34;</span><span class="cp">
+</span></span></span></code></pre></div><p>API 在 <code>co</code> 命名空间。</p>
+<h2 id="线程-id"><a class="anchor" href="#%e7%ba%bf%e7%a8%8b-id">#</a>线程 id</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="n">co</span><span class="o">::</span><span class="n">thread_id</span><span class="p">();</span>
+</span></span></code></pre></div><ul>
+<li>返回当前线程 id。</li>
+</ul>
+<h2 id="同步事件"><a class="anchor" href="#%e5%90%8c%e6%ad%a5%e4%ba%8b%e4%bb%b6">#</a>同步事件</h2>
+<blockquote class="book-hint info">
+  <code>std::condition_variable</code> 允许虚假唤醒(spurious wakeup)，<code>notify_one</code> 不保证只唤醒一个等待线程，<code>wait</code> 需要带锁，用起来不方便。coost 实现 <code>co::sync_event</code> 取代之。
 </blockquote>
 
-<h3 id="cothread_id"><a class="anchor" href="#cothread_id">#</a>co::thread_id</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">uint32</span> <span class="nf">thread_id</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>返回当前线程的 id 值。</li>
-</ul>
-<h3 id="cosync_event"><a class="anchor" href="#cosync_event">#</a>co::sync_event</h3>
-<p>同步事件是多线程间的一种同步机制，适用于生产者-消费者模型。消费者线程调用 <code>wait()</code> 方法等待同步信号，生产者线程则调用 <code>signal()</code> 方法产生同步信号。<code>co::sync_event</code> 支持多生产者、多消费者，但实际应用中，单个消费者的情况比较多。</p>
-<blockquote class="book-hint warning">
-  v3.0.1 移除了全局范围的 <code>SyncEvent</code>，请使用 <code>co::sync_event</code> 替代之。
-</blockquote>
-
-<h4 id="constructor"><a class="anchor" href="#constructor">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="nf">sync_event</span><span class="p">(</span><span class="kt">bool</span> <span class="n">manual_reset</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">signaled</span><span class="o">=</span><span class="nb">false</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>构造函数，参数 <code>manual_reset</code> 表示是否手动将同步状态设置成未同步，参数 <code>signaled</code> 表示初始状态是否为同步状态。</li>
-</ul>
-<h4 id="sync_eventreset"><a class="anchor" href="#sync_eventreset">#</a>sync_event::reset</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>将事件设置成未同步状态。</li>
-<li>当构造函数中 <code>manual_reset</code> 为 true 时，用户在调用 <a href="#sync_eventwait">wait()</a> 后需要手动调用此方法，将事件设置成未同步状态。</li>
-</ul>
-<h4 id="sync_eventsignal"><a class="anchor" href="#sync_eventsignal">#</a>sync_event::signal</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">signal</span><span class="p">();</span>
-</span></span></code></pre></div><ul>
-<li>产生同步信号，将事件设置成同步状态。</li>
-</ul>
-<h4 id="sync_eventwait"><a class="anchor" href="#sync_eventwait">#</a>sync_event::wait</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="kt">void</span> <span class="n">wait</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="kt">bool</span> <span class="n">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>1, 一直等待直到事件变成同步状态。</li>
-<li>2, 等待直到事件变成同步状态或超时。参数 <code>ms</code> 指定超时时间，单位为毫秒。若事件变成同步状态，返回 true，否则返回 false。</li>
-<li>当构造函数中 <code>manual_reset</code> 为 false 时，<a href="#sync_eventwait">wait()</a> 结束时会自动将事件设置成未同步状态。</li>
-</ul>
-<h4 id="代码示例"><a class="anchor" href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">#</a>代码示例</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;co/co.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">manual_reset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">co</span><span class="o">::</span><span class="n">sync_event</span> <span class="n">ev</span><span class="p">(</span><span class="n">manual_reset</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">sync_event</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sync_event</span><span class="p">(</span><span class="kt">bool</span> <span class="n">manual_reset</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">signaled</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sync_event</span><span class="p">()</span> <span class="o">:</span> <span class="n">sync_event</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">sync_event</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f1</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f1: timedout..&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f1: event signaled..&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">manual_reset</span><span class="p">)</span> <span class="n">ev</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sync_event</span><span class="p">(</span><span class="n">sync_event</span><span class="o">&amp;&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">_p</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">_p</span><span class="p">)</span> <span class="p">{</span> <span class="n">e</span><span class="p">.</span><span class="n">_p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f2</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">LOG</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f2: send a signal..&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ev</span><span class="p">.</span><span class="n">signal</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sync_event</span><span class="p">(</span><span class="k">const</span> <span class="n">sync_event</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">sync_event</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">sync_event</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">f1</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">f2</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">co</span><span class="o">::</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="cotls"><a class="anchor" href="#cotls">#</a>co::tls</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">tls</span><span class="p">;</span>
-</span></span></code></pre></div><p><code>co::tls</code> 对系统的 <strong>thread local</strong> 接口进行封装。</p>
-<blockquote class="book-hint warning">
-  v3.0.1 中移除了 <code>thread_ptr</code>，取而代之提供了 <code>co::tls</code>。
-</blockquote>
-
-<h4 id="constructor-1"><a class="anchor" href="#constructor-1">#</a>constructor</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">tls</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">notify_one</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">notify_all</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">wait</span><span class="p">(</span><span class="n">uint32</span> <span class="n">ms</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="n">_p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><ul>
-<li>构造函数，分配系统资源及初始化。</li>
-</ul>
-<h4 id="tlsget"><a class="anchor" href="#tlsget">#</a>tls::get</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回当前线程拥有的指针值。</li>
-</ul>
-<h4 id="tlsset"><a class="anchor" href="#tlsset">#</a>tls::set</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">set</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">);</span>
-</span></span></code></pre></div><ul>
-<li>设置当前线程拥有的指针值。</li>
-</ul>
-<h4 id="tlsoperator-"><a class="anchor" href="#tlsoperator-">#</a>tls::operator-&gt;</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回当前线程拥有的指针值。</li>
-</ul>
-<h4 id="tlsoperator"><a class="anchor" href="#tlsoperator">#</a>tls::operator*</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>返回当前线程拥有指针所指向对象的引用。</li>
-</ul>
-<h4 id="operator"><a class="anchor" href="#operator">#</a>operator==</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断当前线程所拥有的指针是否等于 <code>p</code>。</li>
-</ul>
-<h4 id="operator-1"><a class="anchor" href="#operator-1">#</a>operator!=</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>判断当前线程所拥有的指针是否不等于 <code>p</code>。</li>
-</ul>
-<h4 id="operator-bool"><a class="anchor" href="#operator-bool">#</a>operator bool</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">explicit</span> <span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span></span></code></pre></div><ul>
-<li>当前线程所拥有的指针不是 NULL 时，返回 true，否则返回 false。</li>
+<li><code>notify_one</code> 只唤醒一个等待线程。</li>
+<li><code>notify_all</code> 唤醒所有等待线程。</li>
+<li><code>wait</code> 阻塞直到被唤醒或超时，不会虚假唤醒。</li>
+<li>支持自动重置、手动重置模式，自动模式下，<code>wait</code> 结束时会将信号重置为 <code>unsignaled</code> 状态。</li>
+<li><code>reset</code> 用于手动重置模式，将信号重置为 <code>unsignaled</code> 状态。</li>
 </ul>
 </article>
  
@@ -1053,9 +952,9 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/265464652ec7af99f0d224db2a618227cb64a318" title='最后修改者 idealvin | 2023/09/09' target="_blank" rel="noopener">
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/cc3bd3e93bb735e4df43db2704f6d3b1a4aa9cd9" title='最后修改者 idealvin | 2026/10/03' target="_blank" rel="noopener">
       <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>2023/09/09</span>
+      <span>2026/10/03</span>
     </a>
   </div>
 
@@ -1123,32 +1022,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#线程">线程</a>
-          <ul>
-            <li><a href="#cothread_id">co::thread_id</a></li>
-            <li><a href="#cosync_event">co::sync_event</a>
-              <ul>
-                <li><a href="#constructor">constructor</a></li>
-                <li><a href="#sync_eventreset">sync_event::reset</a></li>
-                <li><a href="#sync_eventsignal">sync_event::signal</a></li>
-                <li><a href="#sync_eventwait">sync_event::wait</a></li>
-                <li><a href="#代码示例">代码示例</a></li>
-              </ul>
-            </li>
-            <li><a href="#cotls">co::tls</a>
-              <ul>
-                <li><a href="#constructor-1">constructor</a></li>
-                <li><a href="#tlsget">tls::get</a></li>
-                <li><a href="#tlsset">tls::set</a></li>
-                <li><a href="#tlsoperator-">tls::operator-&gt;</a></li>
-                <li><a href="#tlsoperator">tls::operator*</a></li>
-                <li><a href="#operator">operator==</a></li>
-                <li><a href="#operator-1">operator!=</a></li>
-                <li><a href="#operator-bool">operator bool</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+        <li><a href="#头文件">头文件</a></li>
+        <li><a href="#线程-id">线程 id</a></li>
+        <li><a href="#同步事件">同步事件</a></li>
       </ul>
     </li>
   </ul>
