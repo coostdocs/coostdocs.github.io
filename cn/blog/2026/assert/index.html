@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#assert 宏 C 标准库 &lt;assert.h&gt; 中的 assert 宏可用于运行时断言，但仅在未定义 NDEBUG 时生效。一旦定义 NDEBUG，assert 逻辑就会被完全消除，例如：
+assert(f()); 此时 f() 不会被调用。若 f() 带有必要的副作用（如更新状态、释放资源、完成初始化或执行关键校验），就可能导致错误的程序行为。
+#debug 与 release 模式 所谓 debug 模式与 release 模式，并非 C/C&#43;&#43; 语言层面的标准，而是人为划分或约定，本质上只是一套编译选项组合（如优化级别、调试符号生成、_DEBUG/NDEBUG 宏定义等）。
+通常，debug 模式会加入调试信息，release 模式会开启优化并定义 NDEBUG 宏。这意味着 C 标准库中的 assert 宏不适用于 release 模式。
+#测试与生产环境 一个常见的想法是：测试环境使用 debug 版本，生产环境使用 release 版本。这种做法可能带来如下问题：
+测试环境运行正常，生产环境却崩溃； 问题无法在测试环境复现，难以排查。 此外，若程序中使用了 assert，断言在生产环境被消除后，逻辑错误可能继续执行，造成更严重的后果。
+为避免上述问题，在实践中，测试环境与生产环境通常应保持一致。在此意义上，debug 版本通常只用于开发者个人调试。
+事实上，也可以抛开所谓的 debug、release 模式：在编译时始终开启优化；如果不在意二进制文件稍大一些，还可以始终加入调试信息，以便排查问题。
+#runtime_assert 宏 前面讨论了 assert 宏，它仅在未定义 NDEBUG 时生效。为了保持程序行为的一致性，我们需要一种在任何构建模式下都有效的运行时断言机制。C&#43;&#43; 标准只提供编译期断言 static_assert，不提供专门的运行时断言；coost v4.0 引入 runtime_assert 宏，弥补了这一短板。
+runtime_assert 宏在头文件 co/assert.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="关于运行时断言" />
+<meta property="og:description" content="#assert 宏 C 标准库 &lt;assert.h&gt; 中的 assert 宏可用于运行时断言，但仅在未定义 NDEBUG 时生效。一旦定义 NDEBUG，assert 逻辑就会被完全消除，例如：
+assert(f()); 此时 f() 不会被调用。若 f() 带有必要的副作用（如更新状态、释放资源、完成初始化或执行关键校验），就可能导致错误的程序行为。
+#debug 与 release 模式 所谓 debug 模式与 release 模式，并非 C/C&#43;&#43; 语言层面的标准，而是人为划分或约定，本质上只是一套编译选项组合（如优化级别、调试符号生成、_DEBUG/NDEBUG 宏定义等）。
+通常，debug 模式会加入调试信息，release 模式会开启优化并定义 NDEBUG 宏。这意味着 C 标准库中的 assert 宏不适用于 release 模式。
+#测试与生产环境 一个常见的想法是：测试环境使用 debug 版本，生产环境使用 release 版本。这种做法可能带来如下问题：
+测试环境运行正常，生产环境却崩溃； 问题无法在测试环境复现，难以排查。 此外，若程序中使用了 assert，断言在生产环境被消除后，逻辑错误可能继续执行，造成更严重的后果。
+为避免上述问题，在实践中，测试环境与生产环境通常应保持一致。在此意义上，debug 版本通常只用于开发者个人调试。
+事实上，也可以抛开所谓的 debug、release 模式：在编译时始终开启优化；如果不在意二进制文件稍大一些，还可以始终加入调试信息，以便排查问题。
+#runtime_assert 宏 前面讨论了 assert 宏，它仅在未定义 NDEBUG 时生效。为了保持程序行为的一致性，我们需要一种在任何构建模式下都有效的运行时断言机制。C&#43;&#43; 标准只提供编译期断言 static_assert，不提供专门的运行时断言；coost v4.0 引入 runtime_assert 宏，弥补了这一短板。
+runtime_assert 宏在头文件 co/assert." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coostdocs.github.io/cn/blog/2026/assert/" /><meta property="article:section" content="blog" />
+
+<meta property="article:modified_time" content="2026-10-21T14:29:07+08:00" />
+
+<title>关于运行时断言 | Coost Docs</title>
+<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" href="../../../../favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="../../../../book.min.7d9e434d4874347dbf9ce4c70ab878af2a9a1b16a0ab082f0425bfe637819058.css" integrity="sha256-fZ5DTUh0NH2/nOTHCrh4ryqaGxagqwgvBCW/5jeBkFg=" crossorigin="anonymous">
+  <script defer src="../../../../flexsearch.min.js"></script>
+  <script defer src="../../../../cn.search.min.9ec340d26195e9dbf5b5903909ab790106b20ff80a27bdcc3d5d142810e1803e.js" integrity="sha256-nsNA0mGV6dv1tZA5Cat5AQayD/gKJ73MPV0UKBDhgD4=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+
+<link href='../../../../css/github.css' rel='stylesheet' type='text/css' />
+
+
+
+  <script defer src="https://events.vercount.one/js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="../../../../cn/"><span>Coost Docs</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>关于</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/co/" class="">总体介绍</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/support/" class="">商业支持</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/about/contact/" class="">联系方式</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b57fa9e78d8a8d44279b9b64514df241" class="toggle" checked />
+    <label for="section-b57fa9e78d8a8d44279b9b64514df241" class="flex justify-between">
+      <a role="button" class="">博客</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-d89b1b3e81811b86e0a98140283257a3" class="toggle" checked />
+    <label for="section-d89b1b3e81811b86e0a98140283257a3" class="flex justify-between">
+      <a role="button" class="">2026</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/blog/2026/assert/" class=" active">关于运行时断言</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>参考文档</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/def/" class="">基本定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/mem/" class="">内存分配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/string/" class="">字符串</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/flag/" class="">配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/log/" class="">日志</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/unitest/" class="">单元测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/benchmark/" class="">基准测试</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/json/" class="">JSON</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b823a0d731c4d472c5b015b832e5d976" class="toggle"  />
+    <label for="section-b823a0d731c4d472c5b015b832e5d976" class="flex justify-between">
+      <a role="button" class="">并发</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/atomic/" class="">原子操作</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/thread/" class="">线程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/concurrency/coroutine/" class="">协程</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-752f64a904309658adbf6062b2c3d8c1" class="toggle"  />
+    <label for="section-752f64a904309658adbf6062b2c3d8c1" class="flex justify-between">
+      <a role="button" class="">网络</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/byte_order/" class="">字节序</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/sock/" class="">socket 编程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/tcp/" class="">TCP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/net/rpc/" class="">RPC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-76a5d3cff40a8cc3b003b19d517c02e9" class="toggle"  />
+    <label for="section-76a5d3cff40a8cc3b003b19d517c02e9" class="flex justify-between">
+      <a role="button" class="">其他</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/console/" class="">终端输出</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/defer/" class="">defer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/error/" class="">错误</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/stl/" class="">STL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/rand/" class="">随机值</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/time/" class="">时间</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/tasked/" class="">定时任务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/path/" class="">文件路径</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/fs/" class="">文件系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/os/" class="">操作系统</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/other/hash/" class="">哈希与编码</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/build/" class="">编译</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="../../../../cn/co/faq/" class="">FAQ</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="../../../../svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>关于运行时断言</strong>
+
+  <label for="toc-control">
+    
+    <img src="../../../../svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#assert-宏">assert 宏</a></li>
+        <li><a href="#debug-与-release-模式">debug 与 release 模式</a></li>
+        <li><a href="#测试与生产环境">测试与生产环境</a></li>
+        <li><a href="#runtime_assert-宏">runtime_assert 宏</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h2 id="assert-宏"><a class="anchor" href="#assert-%e5%ae%8f">#</a>assert 宏</h2>
+<p>C 标准库 <code>&lt;assert.h&gt;</code> 中的 <code>assert</code> 宏可用于运行时断言，但仅在未定义 <code>NDEBUG</code> 时生效。一旦定义 <code>NDEBUG</code>，<code>assert</code> 逻辑就会被完全消除，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">assert</span><span class="p">(</span><span class="n">f</span><span class="p">());</span>
+</span></span></code></pre></div><p>此时 <code>f()</code> 不会被调用。若 <code>f()</code> 带有必要的副作用（如更新状态、释放资源、完成初始化或执行关键校验），就可能导致错误的程序行为。</p>
+<h2 id="debug-与-release-模式"><a class="anchor" href="#debug-%e4%b8%8e-release-%e6%a8%a1%e5%bc%8f">#</a>debug 与 release 模式</h2>
+<p>所谓 debug 模式与 release 模式，并非 C/C++ 语言层面的标准，而是人为划分或约定，本质上只是一套编译选项组合（如优化级别、调试符号生成、<code>_DEBUG</code>/<code>NDEBUG</code> 宏定义等）。</p>
+<p>通常，debug 模式会加入调试信息，release 模式会开启优化并定义 <code>NDEBUG</code> 宏。这意味着 C 标准库中的 <code>assert</code> 宏不适用于 release 模式。</p>
+<h2 id="测试与生产环境"><a class="anchor" href="#%e6%b5%8b%e8%af%95%e4%b8%8e%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83">#</a>测试与生产环境</h2>
+<p>一个常见的想法是：测试环境使用 debug 版本，生产环境使用 release 版本。这种做法可能带来如下问题：</p>
+<ul>
+<li>测试环境运行正常，生产环境却崩溃；</li>
+<li>问题无法在测试环境复现，难以排查。</li>
+</ul>
+<p>此外，若程序中使用了 <code>assert</code>，断言在生产环境被消除后，逻辑错误可能继续执行，造成更严重的后果。</p>
+<p>为避免上述问题，在实践中，<strong>测试环境与生产环境通常应保持一致</strong>。在此意义上，debug 版本通常只用于开发者个人调试。</p>
+<p>事实上，也可以抛开所谓的 debug、release 模式：在编译时始终开启优化；如果不在意二进制文件稍大一些，还可以始终加入调试信息，以便排查问题。</p>
+<h2 id="runtime_assert-宏"><a class="anchor" href="#runtime_assert-%e5%ae%8f">#</a>runtime_assert 宏</h2>
+<p>前面讨论了 <code>assert</code> 宏，它仅在未定义 <code>NDEBUG</code> 时生效。为了保持程序行为的一致性，我们需要一种在任何构建模式下都有效的运行时断言机制。C++ 标准只提供编译期断言 <code>static_assert</code>，不提供专门的运行时断言；<a href="https://github.com/idealvin/coost">coost</a> v4.0 引入 <code>runtime_assert</code> 宏，弥补了这一短板。</p>
+<p><code>runtime_assert</code> 宏在头文件 <code>co/assert.h</code> 中定义，用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">runtime_assert</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">runtime_assert</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#34;1 + 1 must == 2&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>runtime_assert</code> 不依赖 <code>NDEBUG</code>，在任何模式下都不会被消除。断言失败时，程序会终止运行；如果用户同时使用了 coost 日志组件，还会打印程序崩溃时的堆栈信息。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+  
+
+
+
+  
+    
+  
+    
+  
+
+
+
+<div class="book-languages" tabindex="0" aria-haspopup="true">
+  <ul>
+    <li class="flex align-center">
+      <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+      中文
+    </li> 
+  </ul>
+
+  <ul class="book-languages-list">
+    
+    <li class="active">
+      <a href="../../../../cn/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </li>
+    
+    <li class="">
+      <a href="../../../../en/" class="flex align-center">
+        <img src="../../../../svg/translate.svg" class="book-icon" alt="Languages" />
+        English
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+
+
+
+  <div class="book-date"><a class="flex align-center" href="https://github.com/coostdocs/codoc/commit/2d6e1c444145e89f77597d32f6375be91f49edfc" title='最后修改者 idealvin | 2026/10/21' target="_blank" rel="noopener">
+      <img src="../../../../svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>2026/10/21</span>
+    </a>
+  </div>
+
+
+
+  <div class="book-edit">
+    <a class="flex align-center" href="https://github.com/coostdocs/codoc/edit/master/content/cn/blog/2026/assert.md" target="_blank" rel="noopener">
+      <img src="../../../../svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+
+
+
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/lua.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+<script>hljs.configure({ languages: [] }); hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="idealvin/codoc-comments"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#assert-宏">assert 宏</a></li>
+        <li><a href="#debug-与-release-模式">debug 与 release 模式</a></li>
+        <li><a href="#测试与生产环境">测试与生产环境</a></li>
+        <li><a href="#runtime_assert-宏">runtime_assert 宏</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

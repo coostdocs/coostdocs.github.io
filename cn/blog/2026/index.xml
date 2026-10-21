@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2026 on Coost Docs</title>
+    <link>https://coostdocs.github.io/cn/blog/2026/</link>
+    <description>Recent content in 2026 on Coost Docs</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://coostdocs.github.io/cn/blog/2026/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于运行时断言</title>
+      <link>https://coostdocs.github.io/cn/blog/2026/assert/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://coostdocs.github.io/cn/blog/2026/assert/</guid>
+      <description>#assert 宏 C 标准库 &amp;lt;assert.h&amp;gt; 中的 assert 宏可用于运行时断言，但仅在未定义 NDEBUG 时生效。一旦定义 NDEBUG，assert 逻辑就会被完全消除，例如：
+assert(f()); 此时 f() 不会被调用。若 f() 带有必要的副作用（如更新状态、释放资源、完成初始化或执行关键校验），就可能导致错误的程序行为。
+#debug 与 release 模式 所谓 debug 模式与 release 模式，并非 C/C++ 语言层面的标准，而是人为划分或约定，本质上只是一套编译选项组合（如优化级别、调试符号生成、_DEBUG/NDEBUG 宏定义等）。
+通常，debug 模式会加入调试信息，release 模式会开启优化并定义 NDEBUG 宏。这意味着 C 标准库中的 assert 宏不适用于 release 模式。
+#测试与生产环境 一个常见的想法是：测试环境使用 debug 版本，生产环境使用 release 版本。这种做法可能带来如下问题：
+测试环境运行正常，生产环境却崩溃； 问题无法在测试环境复现，难以排查。 此外，若程序中使用了 assert，断言在生产环境被消除后，逻辑错误可能继续执行，造成更严重的后果。
+为避免上述问题，在实践中，测试环境与生产环境通常应保持一致。在此意义上，debug 版本通常只用于开发者个人调试。
+事实上，也可以抛开所谓的 debug、release 模式：在编译时始终开启优化；如果不在意二进制文件稍大一些，还可以始终加入调试信息，以便排查问题。
+#runtime_assert 宏 前面讨论了 assert 宏，它仅在未定义 NDEBUG 时生效。为了保持程序行为的一致性，我们需要一种在任何构建模式下都有效的运行时断言机制。C++ 标准只提供编译期断言 static_assert，不提供专门的运行时断言；coost v4.0 引入 runtime_assert 宏，弥补了这一短板。
+runtime_assert 宏在头文件 co/assert.</description>
+    </item>
+    
+  </channel>
+</rss>
